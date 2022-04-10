@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Avaulto-dapp",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
