@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ViewMessagePage } from './view-message.page';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ViewMessagePageRoutingModule } from './view-message-routing.module';
+import { NftGalleryPageRoutingModule } from './nft-gallery-routing.module';
+
+import { NftGalleryPage } from './nft-gallery.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewMessagePageRoutingModule
+    NftGalleryPageRoutingModule
   ],
-  declarations: [ViewMessagePage]
+  declarations: [NftGalleryPage]
 })
-export class ViewMessagePageModule {}
+export class NftGalleryPageModule {}

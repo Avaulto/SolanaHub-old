@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "avaulto-v2": {
+      "hosting": {
+        "app": [
+          "avaulto-dapp"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "avaulto-v2"
+  }
+}
