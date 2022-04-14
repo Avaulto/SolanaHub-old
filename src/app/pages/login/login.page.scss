@@ -1,0 +1,114 @@
+#avaulto-login-wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+app-logo {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+
+#left-box {
+    background-color: #9FA7B4;
+}
+
+#right-box {
+    background-color: #898989;
+}
+
+#right-box,
+#left-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+::ng-deep ion-slides {
+
+    .swiper-pagination-bullet {
+        width: 12px;
+        height: 12px;
+        background: white;
+        border: 1px solid #04172C;
+        opacity: 1;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #04172C;
+    }
+}
+
+#go-back-btn {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    width: 99px;
+    height: 33px;
+    background: #E1EBF7;
+    border-radius: 5px;
+}
+
+#avaulto-slider-intro {
+    width: 434px;
+    height: 532px;
+    background: white;
+    border-radius: 8px;
+}
+
+.intro-content {
+    margin-bottom: 176px;
+    width: 364px;
+}
+
+.intro-slide {
+    height: 532px;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 30px;
+    flex-direction: column;
+
+    h1 {
+        font-weight: 700;
+        font-size: 26px;
+    }
+
+    fa-icon {
+        font-size: 103px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+
+// right side style
+#oAuth-sign-in {
+    display: flex;
+    height: 100px;
+    justify-content: space-around;
+}
+.divider{
+    height: 1px;
+    width: 100%;
+    background-color: white;
+    margin: 30px 0;
+}
+.sign-in-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 10px;
+    input{
+        margin-bottom: 10px;
+    }
+    button{
+        
+        width: 99px;
+        height: 33px;
+        background: #E1EBF7;
+        border-radius: 5px;
+    }
+}

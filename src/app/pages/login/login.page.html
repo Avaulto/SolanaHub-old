@@ -1,9 +1,70 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login</ion-title>
-  </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
+  <div id="avaulto-login-wrapper">
+    <div id="left-box">
+      <app-logo></app-logo>
+
+      <div id="avaulto-slider-intro">
+        <ion-slides pager="true" [options]="slideOpts">
+          <ion-slide class="intro-slide">
+            <h1>Get started!</h1>
+            <div class="intro-content">
+              <fa-icon [icon]="icon"></fa-icon>
+              <p>
+                Avaulto is a proof of stake blockchain company that aims to deliver high-end quality nodes of multiple
+                blockchains that support staking mechanisms
+              </p>
+            </div>
+          </ion-slide>
+          <ion-slide>
+            <h1>Slide 2</h1>
+          </ion-slide>
+          <ion-slide>
+            <h1>Slide 3</h1>
+          </ion-slide>
+        </ion-slides>
+      </div>
+    </div>
+
+    <div id="right-box">
+      <button id="go-back-btn">go back</button>
+      <div id="avaulto-sign-in">
+        <div id="oAuth-sign-in">
+          <div class="auth-otp">
+            <fa-icon [icon]="gAuthIcon" ></fa-icon>
+          </div>
+          <div class="auth-otp">
+            <fa-icon [icon]="facebookAuthIcon" ></fa-icon>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div id="email-sign-in">
+          <ion-segment #segmentAuthTab value="sign-in" color="light">
+            <ion-segment-button value="sign-in">
+              <ion-label>sign in by email</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="register">
+              <ion-label>register</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+          <div class="sign-in-inputs" *ngIf="segmentAuthTab.value == 'sign-in'">
+            <input type="email" placeholder="email">
+            <input type="password" placeholder="password" />
+            <button>login</button>
+          </div>
+          <div class="sign-in-inputs" *ngIf="segmentAuthTab.value == 'register'">
+            <input type="email" placeholder="email">
+            <input type="password" placeholder="password" />
+            <input type="password" placeholder="password again" />
+            <button>register</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 </ion-content>

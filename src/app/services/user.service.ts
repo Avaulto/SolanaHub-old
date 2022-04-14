@@ -35,11 +35,13 @@ export class UserService {
   }
   // Verify JWT in localstorage with server & load user's info.
   // This runs once on application startup.
-  populate() {
+  public populate():void  {
     // If JWT detected, attempt to get & store user's info
-    if (true) {
+    if (false) {
+      this.isAuthenticatedSubject.next(true);
         // this.setAuth(data)
     } else {
+      this.purgeAuth()
       // Remove any potential remnants of previous auth states
       // this.purgeAuth();
     }
@@ -61,7 +63,7 @@ export class UserService {
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
 
-    this.navCtrl.navigateRoot("/home", { animated: true });
+    this.navCtrl.navigateRoot("/login", { animated: true });
   }
 
   // attemptAuth(credentials, type): Observable<User> {

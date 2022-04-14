@@ -8,9 +8,9 @@ import { RouterModule } from "@angular/router";
 import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 
 // import componenets
-// import {
-
-// } from "./components";
+import {
+  LogoComponent
+} from "./components";
 
 // // import directives
 // import {
@@ -26,6 +26,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     SafePipe,
     ReversePipe,
     ReversePipe,
+    LogoComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +48,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     FilterPipe,
     SafePipe,
     ReversePipe,
+    LogoComponent
   ]
 })
 export class SharedModule {}

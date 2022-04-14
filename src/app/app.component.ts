@@ -6,6 +6,7 @@ import {
   resolveToWalletAddress,
   getParsedNftAccountsByOwner,
 } from "@nfteyez/sol-rayz";
+import { ApiService, UserService } from './services';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,9 @@ import {
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() { }
+  constructor(private apiService: ApiService, private userService:UserService) { }
   async ngOnInit(): Promise<void> {
+    this.userService.populate();
     (async () => {
       // connection
       // const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
@@ -31,6 +33,7 @@ export class AppComponent {
         publicAddress,
       });
       console.log(nftArray)
+      this.apiService.get(nftArray[0].data.uri).subscribe(r=>console.log(r))
 
     })();
 
