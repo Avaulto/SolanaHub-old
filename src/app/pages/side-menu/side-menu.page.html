@@ -1,0 +1,42 @@
+<ion-grid>
+  <ion-row>
+    <ion-col size="3">
+      <div id="side-menu">
+        <app-logo></app-logo>
+        <div id="routes-wrapper">
+          <div *ngFor="let p of pages">
+            {{p | json}}
+            <!-- Standard Menu Item -->
+            <ion-menu-toggle *ngIf="p.url">
+              <ion-item class="menu-item" [routerLink]="p.url" routerDirection="root" routerLinkActive="active">
+                <ion-label>
+                  {{ p.title }}
+                </ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+    
+            <ion-item class="menu-item" button *ngIf="p.children?.length > 0" (click)="p.open = !p.open">
+                 <ion-label>
+                {{ p.title }}
+              </ion-label>
+            </ion-item>
+            <ion-list *ngIf="p.open">
+              <ion-menu-toggle>
+                <ion-item *ngFor="let sub of p.children" class="menu-item" [routerLink]="sub.url" routerDirection="root"
+                  routerLinkActive="active">
+                  <ion-label>
+                    {{ sub.title }}
+                  </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+    
+          </div>
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="9">
+      <ion-router-outlet id="content"></ion-router-outlet>
+    </ion-col>
+  </ion-row>
+</ion-grid>

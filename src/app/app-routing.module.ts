@@ -5,22 +5,23 @@ import { AuthGuard } from './services';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'side-menu',
     pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then( m => m.HomePageModule),
-    canActivate:[AuthGuard]
   },
   {
     path: 'login',
     loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'nft-gallery',
-    loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule)
+    path: 'side-menu',
+    canActivate:[AuthGuard],
+    loadChildren: () => import('./pages/side-menu/side-menu.module').then( m => m.SideMenuPageModule)
   },
+  // {
+  //   path: 'nft-gallery',
+  //   loadChildren: () => import('./pages/home/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
+  //   canActivate:[AuthGuard]
+  // },
 ];
 
 @NgModule({

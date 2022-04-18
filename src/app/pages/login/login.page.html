@@ -8,7 +8,7 @@
       <app-logo></app-logo>
 
       <div id="avaulto-slider-intro">
-        <ion-slides pager="true" [options]="slideOpts">
+        <ion-slides pager="true"  [options]="slideOpts">
           <ion-slide class="intro-slide">
             <h1>Get started!</h1>
             <div class="intro-content">
@@ -33,7 +33,7 @@
       <button id="go-back-btn">go back</button>
       <div id="avaulto-sign-in">
         <div id="oAuth-sign-in">
-          <div class="auth-otp">
+          <div class="auth-otp" (click)="auth.GoogleAuth()">
             <fa-icon [icon]="gAuthIcon" ></fa-icon>
           </div>
           <div class="auth-otp">

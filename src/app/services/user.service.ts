@@ -7,6 +7,8 @@ import { map, distinctUntilChanged, catchError } from "rxjs/operators";
 import { toastMessageService } from "./toast-message.service";
 import { NavController } from "@ionic/angular";
 
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+
 @Injectable({
   providedIn: "root",
 })
@@ -20,6 +22,7 @@ export class UserService {
   public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
   constructor(
+    private store: Firestore,
     private apiService: ApiService,
     private navCtrl: NavController,
     private messages: toastMessageService
@@ -54,7 +57,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(true);
 
     // switch redirect by first visin or not
-    this.navCtrl.navigateForward("/on-bording", { replaceUrl: true });
+    this.navCtrl.navigateForward("/side-menu", { replaceUrl: true });
   }
 
   purgeAuth() {

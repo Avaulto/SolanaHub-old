@@ -7,10 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage
-  }
+  },
+
 ];
 
 @NgModule({
+  declarations:[],
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
