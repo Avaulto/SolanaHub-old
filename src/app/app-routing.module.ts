@@ -17,6 +17,14 @@ const routes: Routes = [
     canActivate:[AuthGuard],
     loadChildren: () => import('./pages/side-menu/side-menu.module').then( m => m.SideMenuPageModule)
   },
+  {
+    path: 'wallet',
+    loadChildren: () => import('./pages/wallet/wallet.module').then( m => m.WalletPageModule)
+  },
+  {
+    path: 'defi',
+    loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
+  },
   // {
   //   path: 'nft-gallery',
   //   loadChildren: () => import('./pages/home/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),

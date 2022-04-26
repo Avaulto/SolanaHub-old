@@ -8,11 +8,11 @@ import { UserService } from './user.service';
 export class AuthService {
 
   constructor(
-    private userService:UserService,
+    private userService: UserService,
     private afAuth: AngularFireAuth // Inject Firebase auth service
   ) {
-     // Setting logged in user in localstorage else null
-     this.afAuth.authState.subscribe((user) => {
+    // Setting logged in user in localstorage else null
+    this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userService.setAuth(user)
         localStorage.setItem('user', JSON.stringify(this.userService.getCurrentUser()));
@@ -25,7 +25,17 @@ export class AuthService {
       }
     });
   }
-  
+  public anonymousAuth() {
+    return this.afAuth.signInAnonymously();
+  }
+  // Sign in with Google
+  public createUserWithEmailAndPassword(email: string, password: any): Promise<any> {
+    return this.afAuth.createUserWithEmailAndPassword(email, password)
+  }
+  // Sign in with Google
+  public emailAndPwAuth(email: string, password: any): Promise<any> {
+    return this.afAuth.signInWithEmailAndPassword(email, password)
+  }
   // Sign in with Google
   public GoogleAuth(): Promise<any> {
     return this._AuthLogin(new GoogleAuthProvider());
@@ -36,7 +46,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then((result) => {
         this.userService.setAuth(result);
-        console.log(result , 'You have been successfully logged in!');
+        console.log(result, 'You have been successfully logged in!');
       })
       .catch((error) => {
         console.log(error);

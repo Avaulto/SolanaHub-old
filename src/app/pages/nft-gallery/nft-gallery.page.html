@@ -1,10 +1,44 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>nft-gallery</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-grid class="ion-padding">
+  <ion-row class="data-box ion-padding ion-align-items-center">
+    <ion-col size="8">
+      <div class="heading-4 ion-text-uppercase">total value</div>
+      <span class="heading-2">$10.00</span>
+    </ion-col >
+    <ion-col size="4">
+      <ion-radio-group (ionFocus)="setSort($event)"  value="newest">
+        <span>filter</span>
+       
+          <ion-radio  value="newest"></ion-radio> newest
+     
+          <ion-radio value="oldest"></ion-radio> oldest
+        
 
-<ion-content>
-test
-</ion-content>
-test
+      </ion-radio-group>
+    </ion-col>
+  </ion-row>
+  <ion-row class="data-box ion-padding"   style="flex-direction: column;height: 84%;">
+    <ion-row>
+      <ion-col size="12">
+        <div class="heading-4">NFTs</div>
+      </ion-col>
+    </ion-row>
+    <ion-content scroll-y style="--background:transparent;">
+    <ion-row>
+
+        <ion-col size="12">
+          
+          <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
+        </ion-col>
+        <ion-col size="12">
+          
+          <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
+        </ion-col>
+        <ion-col size="12">
+          
+          <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
+        </ion-col>
+
+      </ion-row>
+    </ion-content>
+  </ion-row>
+</ion-grid>

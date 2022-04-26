@@ -19,12 +19,29 @@ const routes: Routes = [
       {
         path: "home",
         loadChildren: () =>
-          import("../home/home-routing.module").then((m) => m.HomePageRoutingModule),
+          import("../home/home.module").then((m) => m.HomePageModule),
       },
       {
         path: "nft-gallery",
         loadChildren: () =>
-          import("../nft-gallery/nft-gallery-routing.module").then((m) => m.NftGalleryPageRoutingModule),
+          import("../nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
+      },
+      
+        {
+          path: "nft-gallery/:id",
+          loadChildren: () =>
+            import("../nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
+        },
+      
+      {
+        path: "wallet/:id",
+        loadChildren: () =>
+          import("../wallet/wallet.module").then((m) => m.WalletPageModule),
+      },
+      {
+        path: "defi",
+        loadChildren: () =>
+          import("../defi/defi.module").then((m) => m.DefiPageModule),
       },
     ],
   },

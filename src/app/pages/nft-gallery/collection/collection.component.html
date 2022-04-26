@@ -1,0 +1,17 @@
+<ion-grid>
+  <ion-row  class="col-group ion-margin-vertical ion-align-items-center">
+    
+      <ion-img [src]="collection.collectionImage"></ion-img>
+      <span class="col-name heading-4" >{{collection.collectionName}}</span>
+      <span class="col-worth">$150.00</span>
+  </ion-row>
+  <ion-row class="ion-justify-content-between">
+
+    <div class="nft-item" *ngFor="let nft of collection.NFTdata" [routerLink]="nft.mintAddr" routerDirection="forward">
+      <ion-item *ngIf="hideSkelaton == false">
+        <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      </ion-item>
+      <ion-img (ionImgDidLoad)="hideSkelaton = true" [src]="nft.image"></ion-img>
+    </div>
+  </ion-row>
+</ion-grid>

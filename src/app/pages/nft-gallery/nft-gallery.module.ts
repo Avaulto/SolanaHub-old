@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NftGalleryPageRoutingModule } from './nft-gallery-routing.module';
 
 import { NftGalleryPage } from './nft-gallery.page';
+import { CollectionComponent } from './collection/collection.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { NftGalleryPage } from './nft-gallery.page';
     IonicModule,
     NftGalleryPageRoutingModule
   ],
-  declarations: [NftGalleryPage]
+  declarations: [NftGalleryPage,CollectionComponent]
 })
 export class NftGalleryPageModule {}

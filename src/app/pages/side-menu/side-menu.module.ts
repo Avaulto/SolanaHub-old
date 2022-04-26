@@ -8,6 +8,7 @@ import { SideMenuPageRoutingModule } from './side-menu-routing.module';
 
 import { SideMenuPage } from './side-menu.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NftsComponent } from '../home/nfts/nfts.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     SideMenuPageRoutingModule
   ],
-  declarations: [SideMenuPage]
+  declarations: [SideMenuPage,NftsComponent]
 })
 export class SideMenuPageModule {}

@@ -10,25 +10,104 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
-// @import "~@ionic/angular/css/core.css";
+@import "~@ionic/angular/css/core.css";
 
-// /* Basic CSS for apps built with Ionic */
-// @import "~@ionic/angular/css/normalize.css";
-// @import "~@ionic/angular/css/structure.css";
-// @import "~@ionic/angular/css/typography.css";
-// @import '~@ionic/angular/css/display.css';
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
 
-// /* Optional CSS utils that can be commented out */
-// @import "~@ionic/angular/css/padding.css";
-// @import "~@ionic/angular/css/float-elements.css";
-// @import "~@ionic/angular/css/text-alignment.css";
-// @import "~@ionic/angular/css/text-transformation.css";
-// @import "~@ionic/angular/css/flex-utils.css";
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
 
-*{
-    font-family: '';
+@import url('./poppins-font.scss');
+
+* {
+    font-family: 'Poppins', sans-serif;
     border: 0;
     outline: 0;
     margin: 0;
     padding: 0;
+    font-size: 13px;
+    color: white;
+}
+
+
+.title {
+    text-transform: capitalize;
+    font-weight: 500;
+    font-size: 24px;
+    margin: 0;
+}
+
+.sub-title {}
+
+.data-box {
+    min-width: 377px;
+    min-height: 110px;
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background: rgb(6 24 50 / 60%);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.24);
+    border-radius: 4px;
+}
+
+.heading-1 {
+    font-weight: 300;
+    font-size: 34px;
+    line-height: 51px;
+}
+
+.heading-2 {
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 33px;
+}
+
+.heading-3 {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.heading-4 {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.heading-5 {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.heading-6 {
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+.sub-strong {
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.sub {
+    font-weight: 300;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.button-text {
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 16px;
 }

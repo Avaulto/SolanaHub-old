@@ -1,0 +1,17 @@
+
+ion-item{
+    --background: transparent;
+    background: transparent;
+}
+ion-radio-group{
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 0 auto;
+    text-transform: capitalize;
+}
+app-collection{
+    margin-bottom: 40px;
+    display: block;
+}

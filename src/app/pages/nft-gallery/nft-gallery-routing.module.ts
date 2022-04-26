@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: NftGalleryPage
+  },
+  {
+    path: 'nft-page',
+    loadChildren: () => import('./nft-page/nft-page.module').then( m => m.NftPagePageModule),
   }
 ];
 

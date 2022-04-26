@@ -1,18 +1,15 @@
-<ion-header>
-
-</ion-header>
-
-<ion-content>
+<ion-grid>
   <div id="avaulto-login-wrapper">
     <div id="left-box">
       <app-logo></app-logo>
 
       <div id="avaulto-slider-intro">
-        <ion-slides pager="true"  [options]="slideOpts">
+        <ion-slides pager="true" [options]="slideOpts">
           <ion-slide class="intro-slide">
-            <h1>Get started!</h1>
+            <h1 class="title">Get started!</h1>
+            <ion-img src="/assets/images/slide-placeholder.svg" alt="PLACEHOLDER"></ion-img>
             <div class="intro-content">
-              <fa-icon [icon]="icon"></fa-icon>
+              <!-- <fa-icon [icon]="icon"></fa-icon> -->
               <p>
                 Avaulto is a proof of stake blockchain company that aims to deliver high-end quality nodes of multiple
                 blockchains that support staking mechanisms
@@ -27,44 +24,67 @@
           </ion-slide>
         </ion-slides>
       </div>
+      <div id="social-footer">
+        <div class="social-item" *ngFor="let item of socials">
+          <a [href]="item.url" target="_blank">
+            <fa-icon [icon]="item.icon"></fa-icon>
+          </a>
+        </div>
+      </div>
     </div>
 
     <div id="right-box">
       <button id="go-back-btn">go back</button>
       <div id="avaulto-sign-in">
-        <div id="oAuth-sign-in">
-          <div class="auth-otp" (click)="auth.GoogleAuth()">
-            <fa-icon [icon]="gAuthIcon" ></fa-icon>
-          </div>
-          <div class="auth-otp">
-            <fa-icon [icon]="facebookAuthIcon" ></fa-icon>
+        <div id="oAuth-sign-in" class="auth-border">
+          <h1 class="title">sign in</h1>
+          <!-- <p>one click login</p> -->
+          <div id="aAuth-options">
+            <div class="auth-otp" (click)="auth.GoogleAuth()">
+              <fa-icon [icon]="gAuthIcon"></fa-icon> Google
+            </div>
+            <div class="auth-otp" (click)="auth.anonymousAuth()">
+              Anonymously
+            </div>
           </div>
         </div>
-        <div class="divider"></div>
-        <div id="email-sign-in">
-          <ion-segment #segmentAuthTab value="sign-in" color="light">
+        <div class="divider">OR</div>
+        <div id="email-sign-in" class="auth-border">
+          <!-- <ion-segment #segmentAuthTab value="sign-in" color="light">
             <ion-segment-button value="sign-in">
-              <ion-label>sign in by email</ion-label>
+              <ion-label>by email</ion-label>
             </ion-segment-button>
             <ion-segment-button value="register">
               <ion-label>register</ion-label>
             </ion-segment-button>
-          </ion-segment>
-          <div class="sign-in-inputs" *ngIf="segmentAuthTab.value == 'sign-in'">
-            <input type="email" placeholder="email">
-            <input type="password" placeholder="password" />
+          </ion-segment> -->
+          <div id="segmented-email-auth">
+            <span (click)="setSignType('sign-in')" [class.active]="segmentAuthTab == 'sign-in'">by email</span>
+            <span (click)="setSignType('register')" [class.active]="segmentAuthTab == 'register'">register</span>
+          </div>
+          <form [formGroup]="signForm" autocomplete="off" (ngSubmit)="submitForm()" class="sign-in-inputs">
+            <input type="email" [class.error]="!signForm.controls['email'].valid && signForm.controls['email']?.touched"
+              formControlName="email" placeholder="email">
+
+            <input type="password"
+              [class.error]="!signForm.controls['password'].valid && signForm.controls['password']?.touched"
+              formControlName="password" 
+              placeholder="password" />
+
+            <input type="password"
+            [class.error]="!signForm.controls['passwordAgain'].valid && signForm.controls['passwordAgain']?.touched"
+             *ngIf="segmentAuthTab == 'register'"
+              formControlName="passwordAgain"
+              placeholder="password again" />
+
+            <div class="msg" *ngIf="signForm.invalid && signForm.touched && isSubmitted">
+              form not valid
+            </div>
             <button>login</button>
-          </div>
-          <div class="sign-in-inputs" *ngIf="segmentAuthTab.value == 'register'">
-            <input type="email" placeholder="email">
-            <input type="password" placeholder="password" />
-            <input type="password" placeholder="password again" />
-            <button>register</button>
-          </div>
+          </form>
         </div>
       </div>
 
     </div>
   </div>
-
-</ion-content>
+</ion-grid>
