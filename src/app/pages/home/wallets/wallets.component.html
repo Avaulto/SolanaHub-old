@@ -2,22 +2,24 @@
 <div id="wallets-list">
   <ion-row class="wallet" *ngFor="let wallet of wallets">
     <ion-col size="6">
-      <ion-row>
+      <ion-row class="ion-justify-content-between ion-align-items-center">
         <ion-col size="2"><ion-img [src]="wallet.icon"></ion-img></ion-col>
-        <ion-col size="8">
-          <ion-row>
-            {{wallet.addr.substring(0,6)}}
-          </ion-row>
-          <ion-row>
+        <ion-col size="9">
+          <div>
+            {{wallet.addr}}
+          </div>
+          <div>
             {{wallet.balance}}
-          </ion-row>
+          </div>
         </ion-col>
       </ion-row>
     </ion-col>
     <ion-col size="6">
-      <ion-row>
-        <ion-col size="2">30%</ion-col>
-        <ion-col size="10"></ion-col>
+      <ion-row class="ion-justify-content-between ion-align-items-center">
+        <ion-col size="2">{{wallet.baseOfPortfolio}}</ion-col>
+        <ion-col size="9">
+          <div class="bar" [style]="'width:' + wallet.baseOfPortfolio"></div>
+        </ion-col>
       </ion-row>
     </ion-col>
   </ion-row>

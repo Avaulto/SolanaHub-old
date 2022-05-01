@@ -1,9 +1,46 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>wallet</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-grid class="ion-padding">
+  <ion-row class="ion-justify-content-between ion-align-items-center data-box ion-padding">
+    <ion-col size="11">
+      <ion-row  class="ion-align-items-center">
+        <ion-col size="1" class="ion-margin-end">
+          <div class="walletQR">
+            <qrcode [qrdata]="wallet.addr" [width]="78" [errorCorrectionLevel]="'M'"></qrcode>
+            <!-- <ion-img src="/assets/images/icons/" alt="qr wallet"></ion-img> -->
+          </div>
+        </ion-col>
+        <ion-col size="10">
+          <ion-row style="width: 150px;" class="ion-justify-content-between ion-align-items-center">
 
-<ion-content>
-
-</ion-content>
+            <div class="heading-4 ion-text-uppercase">{{wallet.shortAddr}}</div>
+            <ion-icon name="copy-outline"></ion-icon>
+            <ion-icon name="link-outline"></ion-icon>
+          </ion-row>
+          <ion-row>
+            <div class="heading-2">${{wallet.balance}}</div>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col size="1" >
+      <ion-row class="ion-justify-content-center">
+        <ion-icon name="trash-outline"></ion-icon>    
+      </ion-row>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-justify-content-between ion-align-items-center ion-padding">
+    <ion-col size="7" class="data-box">
+      staking box
+    </ion-col>
+    <ion-col size="4"  class="data-box">
+      tokens box
+    </ion-col>
+    </ion-row>
+    <ion-row class="ion-justify-content-between ion-align-items-center ion-padding">
+      <ion-col size="7"  class="data-box">
+        NFT box
+      </ion-col>
+      <ion-col size="4"  class="data-box"> 
+        token data box
+      </ion-col>
+    </ion-row>
+</ion-grid>

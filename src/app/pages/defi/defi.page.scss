@@ -1,0 +1,17 @@
+.brand-wrapper{
+    background: white;
+    height: 78px;
+    width: 78px;
+    display: flex;
+    justify-content: center;
+    border-radius: 4px;
+    ion-img{
+        width: 30px;
+    }
+}
+
+.brand-desc{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

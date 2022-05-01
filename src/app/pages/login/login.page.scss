@@ -130,17 +130,26 @@ app-logo {
     #aAuth-options {
         display: flex;
         justify-content: center;
+        ion-button{
+            --padding-bottom: 12px;
+            --padding-end: 12px;
+            --padding-start: 12px;
+            --padding-top: 12px;
+           
+            --background: #FFFFFF;
+            color: black;
+            --color: black;
+            --border-radius: 4px;
+            margin: 0px 14px;
+            cursor: pointer;
+            ion-icon{
+                color: black;
+                font-size: 16px;
+                margin-inline-end: 8px;
+            }
+        }
     }
 
-    .auth-otp {
-        padding: 4.5px 16px;
-        background: #FFFFFF;
-        border: 1px solid #848DA4;
-        box-sizing: border-box;
-        border-radius: 4px;
-        margin: 0px 14px;
-        cursor: pointer;
-    }
 }
 
 .divider {
@@ -161,16 +170,15 @@ app-logo {
 #segmented-email-auth {
     text-align: center;
     font-weight: 500;
-    font-size: 16px;
     color: white;
-    text-transform: capitalize;
     width: 170px;
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
-    margin-bottom: 71px;
+    margin-bottom: 69px;
     span{
         cursor: pointer;
+        font-size: 14px;
     }
     span.active{
         border-bottom: 2px solid var(--ion-color-primary);
@@ -183,8 +191,9 @@ app-logo {
         align-items: center;
         margin-top: 10px;
 
-        input {
-            border: 1px solid #BDC1CD;
+        ion-input {
+            border: 1px solid transparent;
+            background-color: #04172C;
             box-sizing: border-box;
             border-radius: 4px;
             width: 300px;
@@ -192,12 +201,13 @@ app-logo {
             margin-bottom: 16px;
             padding: 0 8px;
             text-transform: capitalize;
+            --placeholder-color: white;
             &.error{
                 border: 2px solid #FE5B5B;
             }
-            ::placeholder {
-                color: #848DA4;
-            }
+            // ::placeholder {
+            //     color: white;
+            // }
         }
 
         .msg{
@@ -207,11 +217,14 @@ app-logo {
             text-transform: capitalize;
             color: #FE5B5B;
         }
-        button {
+        ion-button {
             color: white;
             background: var(--ion-color-primary);
             border-radius: 4px;
-            padding: 12px;
+            --padding-bottom: 12px;
+            --padding-end: 12px;
+            --padding-start: 12px;
+            --padding-top: 12px;
             text-transform: capitalize;
         }
     }

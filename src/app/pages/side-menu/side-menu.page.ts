@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { faBox, faHome, faImage, faScrewdriverWrench, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faBox, faHome, faImage, faPlus, faScrewdriverWrench, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-side-menu',
@@ -8,7 +9,18 @@ import { faBox, faHome, faImage, faScrewdriverWrench, faWallet } from '@fortawes
 })
 export class SideMenuPage implements OnInit {
   public profileIcon = faScrewdriverWrench;
-  constructor() { }
+  constructor(private menu: MenuController) {
+    this.openFirst()
+   }
+  openFirst() {
+    this.menu.enable(true, 'first');
+    this.menu.open('first');
+  }
+
+  openEnd() {
+    this.menu.open('end');
+  }
+
   currencies: string[] = ['BTC','USD'];
   pages: any = [
     {
@@ -29,10 +41,11 @@ export class SideMenuPage implements OnInit {
           icon:faWallet
         },
         {
-          title: "wallet address",
-          sub:'$653',
-          url: "/side-menu/wallet/test3",
-          icon:faWallet
+          title: "add wallet",
+          // sub:'$653',
+          url: "/side-menu/new-wallet",
+          icon:faPlus,
+          action: this.addNewWallet()
         },
       ],
     },
@@ -47,7 +60,9 @@ export class SideMenuPage implements OnInit {
       icon:faBox
     }
   ];
-
+  addNewWallet(){
+    console.log('add new wallet')
+  }
   ngOnInit() {
   }
   selectCurrency(ev){

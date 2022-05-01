@@ -1,4 +1,5 @@
 <ion-grid>
+  
   <ion-row class="ion-nowrap ">
     <ion-col size="2" id="side-menu">
 
@@ -8,17 +9,17 @@
       <div id="routes-wrapper">
         <div *ngFor="let p of pages">
           <ion-item class="menu-item" button [routerLink]="p.url" routerLinkActive="active">
-            <fa-icon [icon]="p.icon" size="xs" *ngIf="!p.open"></fa-icon>
+            <fa-icon [icon]="p.icon"  *ngIf="!p.open"></fa-icon>
 
             <ion-label>
               {{ p.title }}
             </ion-label>
           </ion-item>
           <ion-list>
-            <ion-item *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
+            <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
               routerLinkActive="active">
               <div class="menu-icon">
-                <fa-icon [icon]="sub.icon" size="xs"></fa-icon>
+                <fa-icon [icon]="sub.icon" size="sm"></fa-icon>
               </div>
               <div class="wallet-info">
                 <ion-label>
@@ -29,6 +30,7 @@
                 </ion-label>
               </div>
             </ion-item>
+            
           </ion-list>
         </div>
         <div id="footer-menu">
@@ -43,7 +45,7 @@
 
             </ion-radio-group>
           </ion-item>
-          <ion-item id="profile-item">
+          <ion-item id="profile-item" class="menu-item"  routerLink="/side-menu/profile" routerLinkActive="active">
 
             <fa-icon [icon]="profileIcon" size="xs"></fa-icon>
             <ion-label>

@@ -34,6 +34,7 @@
     "@metaplex/js": "^4.12.0",
     "@nfteyez/sol-rayz": "^0.10.2",
     "@solana/web3.js": "^1.37.1",
+    "angularx-qrcode": "^13.0.14",
     "crypto-browserify": "^3.12.0",
     "rxjs": "~6.6.0",
     "secretjs": "^1.2.0-beta.66",

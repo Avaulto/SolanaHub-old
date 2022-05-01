@@ -17,6 +17,8 @@ import {
 
 // } from "./directives";
 
+import { QRCodeModule } from 'angularx-qrcode';
+
 // font awesome
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
@@ -36,6 +38,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     RouterModule,
     FontAwesomeModule,
     IonicModule,
+    QRCodeModule,
     // BrowserAnimationsModule,
   ],
   exports: [
@@ -44,6 +47,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    QRCodeModule,
     RouterModule,
     FilterPipe,
     SafePipe,

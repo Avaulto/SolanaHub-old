@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilsService } from 'src/app/services';
 
 interface Wallet {
   name:string;
-  addr: string;
+  addr: any;
   balance: number;
+  baseOfPortfolio:string;
   icon: string;
 }
 @Component({
@@ -15,24 +17,27 @@ export class WalletsComponent implements OnInit {
 
   public wallets: Wallet[] = [{
     name: 'secret',
-    addr:'secret10hq2llxe3lecmaxpqfpnvf942xxdgpkuwnjd0t',
-    balance: 10,
-    icon:''
+    addr:this.utils.addrShorthand('secret10hq2llxe3lecmaxpqfpnvf942xxdgpkuwnjd0t').addrShort,
+    balance: 8,
+    baseOfPortfolio: '50%',
+    icon:'/assets/images/Secret.png'
   },
   {
     name: 'atom',
-    addr:'cosmos10hq2llxe3lecmaxpqfpnvf942xxdgpkuvkxyjh',
-    balance: 10,
-    icon:''
+    addr:this.utils.addrShorthand('cosmos10hq2llxe3lecmaxpqfpnvf942xxdgpkuvkxyjh').addrShort,
+    balance: 5,
+    baseOfPortfolio: '30%',
+    icon:'/assets/images/atom.webp'
   },
   {
     name: 'juno',
-    addr:'juno10hq2llxe3lecmaxpqfpnvf942xxdgpku6y9l4t',
-    balance: 10,
-    icon:''
+    addr: this.utils.addrShorthand('juno10hq2llxe3lecmaxpqfpnvf942xxdgpku6y9l4t').addrShort,
+    balance: 2.5,
+    baseOfPortfolio: '20%',
+    icon:'/assets/images/juno.webp'
   }
 ]
-  constructor() { }
+  constructor(private utils: UtilsService) { }
 
   ngOnInit() {}
 

@@ -11,6 +11,12 @@ declare global {
 })
 export class UtilsService {
   constructor() {}
+  public addrShorthand(addr: string): {addr: string, addrShort:string} {
+    return {addr, addrShort: addr.substring(0,6) +'....' + addr.substring(42,45)}
+  }
+  public getBlockchainAssets(addr: string){
+    let assets = {};
+  }
   // generateUUID() {
   //   return uuidv4();
   // }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { faDiscord, faGithub, faGoogle, faMedium, faMediumM, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faGasPump } from '@fortawesome/free-solid-svg-icons';
+import { faExclamationCircle, faGasPump } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
@@ -12,6 +12,7 @@ export class LoginPage implements OnInit {
   public gAuthIcon = faGoogle
   public signForm: FormGroup;
   public isSubmitted: boolean = false;
+  public tooltipIcon = faExclamationCircle;
   constructor(
     public auth:AuthService,
     private fb:FormBuilder

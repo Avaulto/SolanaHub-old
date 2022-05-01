@@ -25,6 +25,14 @@ const routes: Routes = [
     path: 'defi',
     loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
   },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
+  },
+  {
+    path: 'new-wallet',
+    loadChildren: () => import('./pages/new-wallet/new-wallet.module').then( m => m.NewWalletPageModule)
+  },
   // {
   //   path: 'nft-gallery',
   //   loadChildren: () => import('./pages/home/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),

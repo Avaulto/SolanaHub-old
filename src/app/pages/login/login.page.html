@@ -40,12 +40,14 @@
           <h1 class="title">sign in</h1>
           <!-- <p>one click login</p> -->
           <div id="aAuth-options">
-            <div class="auth-otp" (click)="auth.GoogleAuth()">
-              <fa-icon [icon]="gAuthIcon"></fa-icon> Google
-            </div>
-            <div class="auth-otp" (click)="auth.anonymousAuth()">
+            <ion-button class="auth-otp" (click)="auth.GoogleAuth()">
+              <ion-icon name="logo-google"></ion-icon>
+              Google
+            </ion-button>
+            <ion-button class="auth-otp"  (click)="auth.anonymousAuth()">
+              <ion-icon slot="start" name="information-circle-outline"></ion-icon>
               Anonymously
-            </div>
+            </ion-button>
           </div>
         </div>
         <div class="divider">OR</div>
@@ -58,29 +60,32 @@
               <ion-label>register</ion-label>
             </ion-segment-button>
           </ion-segment> -->
-          <div id="segmented-email-auth">
+          <div id="segmented-email-auth" class="ion-text-uppercase">
             <span (click)="setSignType('sign-in')" [class.active]="segmentAuthTab == 'sign-in'">by email</span>
             <span (click)="setSignType('register')" [class.active]="segmentAuthTab == 'register'">register</span>
           </div>
           <form [formGroup]="signForm" autocomplete="off" (ngSubmit)="submitForm()" class="sign-in-inputs">
-            <input type="email" [class.error]="!signForm.controls['email'].valid && signForm.controls['email']?.touched"
-              formControlName="email" placeholder="email">
+            <ion-input type="email" [class.error]="!signForm.controls['email'].valid && signForm.controls['email']?.touched"
+            formControlName="email" placeholder="email"></ion-input>
 
-            <input type="password"
+       
+
+            <ion-input type="password"
               [class.error]="!signForm.controls['password'].valid && signForm.controls['password']?.touched"
               formControlName="password" 
-              placeholder="password" />
+              placeholder="password" ></ion-input>
 
-            <input type="password"
+
+            <ion-input type="password"
             [class.error]="!signForm.controls['passwordAgain'].valid && signForm.controls['passwordAgain']?.touched"
              *ngIf="segmentAuthTab == 'register'"
               formControlName="passwordAgain"
-              placeholder="password again" />
+              placeholder="password again" ></ion-input>
 
             <div class="msg" *ngIf="signForm.invalid && signForm.touched && isSubmitted">
               form not valid
             </div>
-            <button>login</button>
+            <ion-button>login</ion-button>
           </form>
         </div>
       </div>
