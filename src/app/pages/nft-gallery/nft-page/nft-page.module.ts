@@ -7,12 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { NftPagePageRoutingModule } from './nft-page-routing.module';
 
 import { NftPagePage } from './nft-page.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+SharedModule,
     NftPagePageRoutingModule
   ],
   declarations: [NftPagePage]

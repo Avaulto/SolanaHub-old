@@ -32,6 +32,7 @@ export class UserService {
   private formatErrors(error: any) {
     this.messages.msg.next({
       message: error.error,
+      icon:'alert-circle-outline',
       segmentClass: "toastError",
     });
     return throwError(error);
@@ -57,7 +58,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(true);
 
     // switch redirect by first visin or not
-    this.navCtrl.navigateForward("/side-menu", { replaceUrl: true });
+    this.navCtrl.navigateForward("/side-menu/nft-gallery", { replaceUrl: true });
   }
 
   purgeAuth() {

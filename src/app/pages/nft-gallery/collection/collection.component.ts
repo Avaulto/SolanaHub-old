@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-collection',
@@ -8,10 +9,13 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 export class CollectionComponent implements OnChanges {
   @Input() collection;
   hideSkelaton: boolean = false;
-  constructor() { }
+  constructor(private navCtrl: NavController) { }
 
   ngOnChanges(){
     console.log(this.collection)
   }
 
+  goToNFTpage(nft){
+    this.navCtrl.navigateForward('/side-menu/nft-gallery/'+nft.mintAddr,{state: nft})
+  }
 }

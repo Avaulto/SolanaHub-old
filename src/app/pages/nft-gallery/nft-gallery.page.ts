@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/services';
 
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
+import { NFTdata, NFTGroup } from 'src/app/models';
 
  declare global {
   interface Window {
@@ -19,20 +20,7 @@ import { clusterApiUrl, Connection } from "@solana/web3.js";
   }
 }
 
-interface NFTGroup {
-  collectionName: string,
-  collectionImage: string,
-  NFTdata: NFTdata[]
-}
 
-interface NFTdata {
-  name: string,
-  description: string,
-  image: string,
-  value: number,
-  mintAddr: string,
-  attr: any
-}
 @Component({
   selector: 'app-nft-gallery',
   templateUrl: './nft-gallery.page.html',
@@ -65,9 +53,11 @@ export class NftGalleryPage implements OnInit {
         publicAddress,
       });
       nftArray.forEach(item => {
-
+        console.log(item);
+        // console.log('parent:', item)
         this.apiService.get(item.data.uri).subscribe(r => {
-          const nft: NFTdata = { name: item.data.name, image: r.image, description: r.description, mintAddr: item.mint, value: 0, attr: r.attributes }
+          console.log(r)
+          const nft: NFTdata = { collectionName: 'Marinade Chefs', collectionImage: 'https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image', name: item.data.name, image: r.image, description: r.description, mintAddr: item.mint, value: 0, attr: r.attributes, explorerURL: 'https://solscan.io/token/'+item.mint,websiteURL: r.external_url  }
           solanaNFTs.NFTdata.push(nft)
         })
       })

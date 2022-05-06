@@ -12,9 +12,6 @@ import { NftsComponent } from '../home/nfts/nfts.component';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
     SharedModule,
     SideMenuPageRoutingModule
   ],

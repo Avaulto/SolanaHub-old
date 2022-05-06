@@ -9,6 +9,7 @@ import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 
 // import componenets
 import {
+  DataBoxComponent,
   LogoComponent
 } from "./components";
 
@@ -28,6 +29,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     SafePipe,
     ReversePipe,
     ReversePipe,
+    DataBoxComponent,
     LogoComponent
   ],
   imports: [
@@ -47,11 +49,13 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    IonicModule,
     QRCodeModule,
     RouterModule,
     FilterPipe,
     SafePipe,
     ReversePipe,
+    DataBoxComponent,
     LogoComponent
   ]
 })

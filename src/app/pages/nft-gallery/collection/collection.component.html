@@ -7,7 +7,7 @@
   </ion-row>
   <ion-row class="ion-justify-content-between">
 
-    <div class="nft-item" *ngFor="let nft of collection.NFTdata" [routerLink]="nft.mintAddr" routerDirection="forward">
+    <div class="nft-item ion-margin-bottom" *ngFor="let nft of collection.NFTdata" (click)="goToNFTpage(nft)">
       <ion-item *ngIf="hideSkelaton == false">
         <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
       </ion-item>

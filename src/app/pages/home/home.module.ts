@@ -10,12 +10,11 @@ import { RewardsComponent } from './rewards/rewards.component';
 import { NftsComponent } from './nfts/nfts.component';
 import { WalletsComponent } from './wallets/wallets.component';
 import { ChartComponent } from './chart/chart.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+SharedModule,
     HomePageRoutingModule
   ],
   declarations: [HomePage,BalanceComponent,RewardsComponent,NftsComponent,ChartComponent, WalletsComponent]

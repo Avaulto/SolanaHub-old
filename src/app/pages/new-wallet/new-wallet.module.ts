@@ -7,12 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { NewWalletPageRoutingModule } from './new-wallet-routing.module';
 
 import { NewWalletPage } from './new-wallet.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+SharedModule,
     NewWalletPageRoutingModule
   ],
   declarations: [NewWalletPage]

@@ -1,2 +1,3 @@
-export * from './user'
-export * from './toastData';
+export * from './user.model'
+export * from './toastData.model';
+export * from './NFT.model'

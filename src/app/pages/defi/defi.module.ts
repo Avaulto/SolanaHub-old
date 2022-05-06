@@ -7,12 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { DefiPageRoutingModule } from './defi-routing.module';
 
 import { DefiPage } from './defi.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+    SharedModule,
     DefiPageRoutingModule
   ],
   declarations: [DefiPage]

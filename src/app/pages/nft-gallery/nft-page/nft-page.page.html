@@ -1,9 +1,50 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>nft-page</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-grid class="ion-padding">
+    <ion-button class="ion-text-capitalize ion-margin-bottom button-text" (click)="back()" color="secondary">go back</ion-button>
+    <ion-row class="data-box ion-padding ion-justify-content-start">
+        <ion-col size="6" class="ion-padding">
+            <ion-row class="ion-margin-bottom">
+                <div class="col-group">
+                    <ion-img [src]="NFT.collectionImage"></ion-img>
+                    <span class="ion-margin-start heading-4" >{{NFT.collectionName}}</span>
+                </div>
+                <!-- <ion-col size="2">
+                    <ion-img [src]="NFT.collectionImage"></ion-img>
+                </ion-col>
+                <ion-col size="9">
+                    {{NFT.collectionName}}
+                </ion-col> -->
+            </ion-row>
+            <ion-row class="heading-1 ion-margin-bottom">{{NFT.name}}</ion-row>
+            <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">description</ion-row>
+            <ion-row class="ion-margin-bottom">{{NFT.description}}</ion-row>
+            <ion-row class="ion-margin-bottom ion-align-items-center"> 
 
-<ion-content>
+                    <div id="art-icon"  class="ion-margin-end">
+                        <ion-icon name="color-palette-outline"></ion-icon>
+                    </div>
+             
+                <div class="ion-text-capitalize" >
+                    token address: <br>
+                    <ion-col size="12" class="sub">{{NFT.mintAddr}}</ion-col>
+                </div>
 
-</ion-content>
+            </ion-row>
+            <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">Attributes</ion-row>
+            <ion-row class="ion-justify-content-between">
+                <div class="nft-attr ion-margin-bottom" *ngFor="let attr of NFT.attr">
+                    <div class="sub-strong">{{attr.trait_type}}</div>
+                    <span class="sub">{{attr.value}}</span>
+                </div>
+            </ion-row>
+            <ion-row class="ion-margin-bottom ion-text-capitalize">
+                <a class="button-text ion-align-items-center" [href]="NFT.websiteURL" target="_blank"><ion-icon name="link-outline"></ion-icon> website</a>
+            </ion-row>
+            <ion-row class="ion-align-items-center ion-text-capitalize">
+                <a class="button-text ion-align-items-center" [href]="NFT.explorerURL" target="_blank"><ion-icon name="list-outline"></ion-icon> view on explorer</a>
+            </ion-row>
+        </ion-col>
+        <ion-col size="6" style="display: flex;" class="ion-align-items-center">
+            <ion-img [src]="NFT.image" alt="NFT img"></ion-img>
+        </ion-col>
+    </ion-row>
+</ion-grid>
