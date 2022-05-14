@@ -202,6 +202,9 @@ app-logo {
             padding: 0 8px;
             text-transform: capitalize;
             --placeholder-color: white;
+            &.has-focus{
+                border: 2px solid var(--ion-color-primary);
+            }
             &.error{
                 border: 2px solid #FE5B5B;
             }

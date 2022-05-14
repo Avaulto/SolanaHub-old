@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { faDiscord, faGithub, faGoogle, faMedium, faMediumM, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faExclamationCircle, faGasPump } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  @ViewChild('errEl') errEl: ElementRef;
   public gAuthIcon = faGoogle
   public signForm: FormGroup;
   public isSubmitted: boolean = false;
@@ -21,8 +22,6 @@ export class LoginPage implements OnInit {
         email: new FormControl('',[Validators.required, Validators.email]),
         password: new FormControl('',[Validators.minLength(6), Validators.required]),
       })
-      this.signForm.valueChanges.subscribe(val =>console.log(val, this.signForm))
-
     }
     
   public segmentAuthTab:string = 'sign-in'
@@ -43,9 +42,22 @@ export class LoginPage implements OnInit {
     }
     return  this.signForm 
   }
-  submitForm(){
+  async submitForm(){
     this.isSubmitted = true
-    console.log(this.signForm.value)
+    const {email, password} = this.signForm.value;
+    console.log(this.segmentAuthTab)
+    try {
+      
+    if(this.segmentAuthTab == 'register'){
+      const res = await this.auth.createUserWithEmailAndPassword(email, password);
+    }else{
+        await this.auth.signInWithEmailAndPw(email,password);
+    }
+  } catch (error) {
+    console.log(error)
+      this.errEl.nativeElement.innerHTML = error.message
+  }
+    // this.isSubmitted = false;
   }
   public icon=faGasPump;
   slideOpts = {

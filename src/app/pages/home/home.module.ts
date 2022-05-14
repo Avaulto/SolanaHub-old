@@ -8,15 +8,15 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { BalanceComponent } from './balance/balance.component';
 import { RewardsComponent } from './rewards/rewards.component';
 import { NftsComponent } from './nfts/nfts.component';
-import { WalletsComponent } from './wallets/wallets.component';
 import { ChartComponent } from './chart/chart.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
 SharedModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    SharedModule
   ],
-  declarations: [HomePage,BalanceComponent,RewardsComponent,NftsComponent,ChartComponent, WalletsComponent]
+  declarations: [HomePage,BalanceComponent,RewardsComponent,NftsComponent,ChartComponent]
 })
 export class HomePageModule {}

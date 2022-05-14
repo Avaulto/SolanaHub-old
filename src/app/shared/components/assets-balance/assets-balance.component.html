@@ -1,0 +1,29 @@
+<div class="heading-4 ion-margin-bottom ion-text-uppercase">{{title}}</div>
+<div id="assets-list">
+  <ion-row class="wallet ion-align-items-center" *ngFor="let asset of assets" (click)="goToWalletpage(asset.addr, asset)">
+    <ion-col size="6">
+      <ion-row class="ion-justify-content-between ion-align-items-center">
+        <ion-col size="2"><ion-img [src]="asset.icon"></ion-img></ion-col>
+        <ion-col size="9">
+          <div class="short-wallet-addr"> 
+            {{asset.addrShort}}
+          </div>
+          <div class="button-text">
+            <span class="global-selected-pair">
+              $34.78
+            </span>
+            {{asset.balance}}
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+    <ion-col size="6">
+      <ion-row class="ion-justify-content-between ion-align-items-center">
+        <ion-col size="2">{{asset.baseOfPortfolio}}</ion-col>
+        <ion-col size="9">
+          <div class="bar" [style]="'width:' + asset.baseOfPortfolio"></div>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+  </ion-row>
+</div>

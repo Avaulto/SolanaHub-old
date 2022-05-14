@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
 // import * as moment from "moment";
 // import { v4 as uuidv4 } from "uuid";
 declare global {
@@ -11,8 +12,15 @@ declare global {
 })
 export class UtilsService {
   constructor() {}
+  private _systemPair = new BehaviorSubject<string>('USD' as string);
+  public updateSystemPair(string): void{
+    this._systemPair.next(string);
+  }
   public addrShorthand(addr: string): {addr: string, addrShort:string} {
-    return {addr, addrShort: addr.substring(0,6) +'....' + addr.substring(42,45)}
+    return {addr, addrShort: addr.substring(0,6) +'....' + addr.substring(addr.length - 5,addr.length)}
+  }
+  public calcPair(){
+    this._systemPair.value
   }
   public getBlockchainAssets(addr: string){
     let assets = {};

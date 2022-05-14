@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserService } from './user.service';
+import { ToasterService } from './toaster.service';
+import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+
   constructor(
+    private toasterService: ToasterService,
     private userService: UserService,
     private afAuth: AngularFireAuth // Inject Firebase auth service
   ) {
@@ -25,16 +29,38 @@ export class AuthService {
       }
     });
   }
+  private formatErrors(error: any) {
+    console.log('my err', error)
+    this.toasterService.msg.next({
+      message: error.message,
+      icon:'alert-circle-outline',
+      segmentClass: "toastError",
+    });
+    return throwError(error);
+  }
+
   public anonymousAuth() {
     return this.afAuth.signInAnonymously();
   }
   // Sign in with Google
-  public createUserWithEmailAndPassword(email: string, password: any): Promise<any> {
-    return this.afAuth.createUserWithEmailAndPassword(email, password)
+  public async createUserWithEmailAndPassword(email: string, password: any): Promise<any> {
+    try {
+      const newUser = await this.afAuth.createUserWithEmailAndPassword(email, password)
+      return newUser
+      // this.userService.setAuth(result);
+    } catch (error) {
+      this.formatErrors(error)
+    }
   }
   // Sign in with Google
-  public emailAndPwAuth(email: string, password: any): Promise<any> {
-    return this.afAuth.signInWithEmailAndPassword(email, password)
+  public async signInWithEmailAndPw(email: string, password: any): Promise<any> {
+    try {
+      const user = await this.afAuth.signInWithEmailAndPassword(email, password)
+      return user;
+      // this.userService.setAuth(result);
+    } catch (error) {
+      return error;
+    }
   }
   // Sign in with Google
   public GoogleAuth(): Promise<any> {

@@ -1,0 +1,26 @@
+:host{
+    margin-bottom: 40px;
+    display: block;
+}
+.col-group {
+    ion-img {
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .col-name{
+        margin: 0 8px;
+    }
+    .col-worth {
+        padding: 2px 4px;
+        background: #093A61;
+        border-radius: 5px;
+    }
+}
+
+.nft-item ion-img {
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+}

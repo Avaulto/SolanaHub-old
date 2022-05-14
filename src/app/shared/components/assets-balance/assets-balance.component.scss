@@ -1,5 +1,7 @@
 .wallet {
     margin-block-end: 21px;
+    cursor: pointer;
+
     ion-img {
         width: 26px;
     }
@@ -7,11 +9,13 @@
         font-weight: 600;
         font-size: 12px;
         line-height: 18px;
-        text-transform: capitalize;
     }
 }
 .bar{
     height: 8px;
     background: #FE5B94;
     border-radius: 8px;
+}
+.global-selected-pair{
+    color: #fd49ad;
 }

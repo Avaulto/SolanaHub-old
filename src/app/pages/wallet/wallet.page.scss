@@ -1,9 +1,55 @@
-.walletQR{
+.walletQR {
     width: 78px;
     height: 78px;
     background-color: royalblue;
 }
-ion-icon{
+
+ion-icon {
     font-size: 16px;
     cursor: pointer;
+}
+
+#coin-data {
+    ion-img {
+        width: 30px;
+    }
+
+    span {
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    #coin-price {
+        font-weight: 500;
+        font-size: 24px;
+    }
+
+    .price-bg {
+        padding: 2px 4px;
+        font-size: 12px;
+        background: #093A61;
+        border-radius: 5px;
+        width: 51px;
+        height: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    p {
+        font-weight: 400;
+        font-size: 14px;
+        max-height: 200px;
+        overflow-y: scroll;
+    }
+
+    a {
+        text-decoration: none;
+        display: flex;
+    }
+
+    ion-icon {
+        font-size: 14px;
+        margin-inline-end: 10px;
+    }
 }

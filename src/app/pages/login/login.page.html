@@ -64,7 +64,7 @@
             <span (click)="setSignType('sign-in')" [class.active]="segmentAuthTab == 'sign-in'">by email</span>
             <span (click)="setSignType('register')" [class.active]="segmentAuthTab == 'register'">register</span>
           </div>
-          <form [formGroup]="signForm" autocomplete="off" (ngSubmit)="submitForm()" class="sign-in-inputs">
+          <form [formGroup]="signForm" autocomplete="off" class="sign-in-inputs">
             <ion-input type="email" [class.error]="!signForm.controls['email'].valid && signForm.controls['email']?.touched"
             formControlName="email" placeholder="email"></ion-input>
 
@@ -82,10 +82,10 @@
               formControlName="passwordAgain"
               placeholder="password again" ></ion-input>
 
-            <div class="msg" *ngIf="signForm.invalid && signForm.touched && isSubmitted">
+            <div class="msg" #errEl *ngIf="signForm.invalid && signForm.touched && isSubmitted">
               form not valid
             </div>
-            <ion-button>login</ion-button>
+            <ion-button type="button" (click)="submitForm()">login</ion-button>
           </form>
         </div>
       </div>

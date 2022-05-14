@@ -10,7 +10,8 @@ import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 // import componenets
 import {
   DataBoxComponent,
-  LogoComponent
+  LogoComponent,
+  AssetsBalanceComponent
 } from "./components";
 
 // // import directives
@@ -30,7 +31,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     ReversePipe,
     ReversePipe,
     DataBoxComponent,
-    LogoComponent
+    LogoComponent,
+    AssetsBalanceComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +58,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     SafePipe,
     ReversePipe,
     DataBoxComponent,
-    LogoComponent
+    LogoComponent,
+    AssetsBalanceComponent
   ]
 })
 export class SharedModule {}

@@ -4,10 +4,10 @@ import { Observable, BehaviorSubject, ReplaySubject, throwError } from "rxjs";
 import { ApiService } from "./api.service";
 import { User } from "../models";
 import { map, distinctUntilChanged, catchError } from "rxjs/operators";
-import { toastMessageService } from "./toast-message.service";
 import { NavController } from "@ionic/angular";
 
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { ToasterService } from "./toaster.service";
 
 @Injectable({
   providedIn: "root",
@@ -25,12 +25,12 @@ export class UserService {
     private store: Firestore,
     private apiService: ApiService,
     private navCtrl: NavController,
-    private messages: toastMessageService
+    private toasterService: ToasterService
   ) {}
 
   // catch error
   private formatErrors(error: any) {
-    this.messages.msg.next({
+    this.toasterService.msg.next({
       message: error.error,
       icon:'alert-circle-outline',
       segmentClass: "toastError",
@@ -58,7 +58,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(true);
 
     // switch redirect by first visin or not
-    this.navCtrl.navigateForward("/side-menu/nft-gallery", { replaceUrl: true });
+    this.navCtrl.navigateForward("/side-menu/wallet/test", { replaceUrl: true });
   }
 
   purgeAuth() {
