@@ -1,0 +1,27 @@
+<ion-grid>
+  <ng-container *ngIf="hasStake; else noStake">
+
+  </ng-container>
+  <ng-template #noStake>
+    <div id="stake-box">
+      <div id="stake-apr-box">
+        <div>16.5% <span>APR</span></div>
+        <p id="">Earn passive income from your crypto by staking it.</p>
+      </div>
+      <ion-row id="stake">
+        <div id="">stake</div>
+        <div id="balance">Available balance: 0.00</div>
+      </ion-row>
+      <ion-row id="stake-amount">
+        <ion-input placeholder="Amount"></ion-input>
+      </ion-row>
+      <ion-row id="node">
+        <div id="node-select">Choose node</div>
+      </ion-row>
+      <ion-row id="stake-amount">
+        <ion-select></ion-select>
+      </ion-row>
+    </div>
+  </ng-template>
+
+</ion-grid>

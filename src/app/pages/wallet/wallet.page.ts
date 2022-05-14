@@ -13,6 +13,7 @@ import { DataAggregatorService } from 'src/app/services/data-aggregator.service'
 export class WalletPage implements OnInit {
   nftCollections: NFTGroup[] = []
   deleteWallet: boolean = false;
+  segmentUtilTab: string = 'stake'
   public wallet: Asset ={
     name: 'secret',
     addr:'secret10hq2llxe3lecmaxpqfpnvf942xxdgpkuwnjd0t',
@@ -49,6 +50,9 @@ export class WalletPage implements OnInit {
   }
   constructor(private utils: UtilsService,private apiService:ApiService ,private dataAggregator:DataAggregatorService) { }
 
+  setUtil(util: string){
+    this.segmentUtilTab = util;
+  }
   ngOnInit() {
     this.dataAggregator.getCoinData(this.wallet.name).subscribe(coinData => this.wallet.coinData = coinData);
     this._getNfts();

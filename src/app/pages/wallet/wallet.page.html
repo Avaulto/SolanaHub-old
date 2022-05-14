@@ -10,10 +10,10 @@
             </div>
           </ion-col>
           <ion-col size="10">
-            <ion-row style="width: 150px;" class="ion-justify-content-between ion-align-items-center">
+            <ion-row class=" ion-align-items-center">
 
-              <div class="heading-4 ion-text-uppercase">{{wallet.addrShort}}</div>
-              <ion-icon name="copy-outline"></ion-icon>
+              <div class="heading-4 ion-text-uppercase ion-margin-end">{{wallet.addrShort}}</div>
+              <ion-icon name="copy-outline" class="ion-margin-end"></ion-icon>
               <ion-icon name="link-outline"></ion-icon>
             </ion-row>
             <ion-row>
@@ -34,16 +34,38 @@
           <ion-row class="ion-justify-content-center">
             <ion-button color="primary" class="ion-margin-end ion-text-capitalize button-text">Yes, delete wallet
             </ion-button>
-            <ion-button class="button-text ion-text-capitalize" fill="outline"
-              (click)="showDeleteUI(false)">cancel</ion-button>
+            <ion-button class="button-text ion-text-capitalize" fill="outline" (click)="showDeleteUI(false)">cancel
+            </ion-button>
           </ion-row>
         </ion-col>
       </ng-template>
     </ion-row>
 
     <ion-row class="ion-justify-content-between ion-align-items-start">
-      <ion-col size="7.7" class="data-box ion-padding">
-        <div class="heading-4 ion-text-uppercase">staking box</div>
+      <ion-col size="7.7" class="data-box">
+        <div id="segmented-util" class="ion-text-uppercase">
+          <div id="segment-header">
+            <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
+            <span (click)="setUtil('reward')" [class.active]="segmentUtilTab == 'reward'">reward</span>
+            <span (click)="setUtil('send')" [class.active]="segmentUtilTab == 'send'">send</span>
+            <span (click)="setUtil('history')" [class.active]="segmentUtilTab == 'history'">history</span>
+          </div>
+          <div [ngSwitch]="segmentUtilTab" class="ion-padding">
+            <p *ngSwitchCase="'stake'">
+              <app-stake></app-stake>
+            </p>
+            <p *ngSwitchCase="'reward'">
+              <app-reward></app-reward>
+            </p>
+            <p *ngSwitchCase="'send'">
+              <app-send></app-send>
+            </p>
+            <p *ngSwitchCase="'history'">
+              <app-history></app-history>
+            </p>
+          </div>
+        </div>
+
       </ion-col>
       <ion-col sizeSm="12" sizeLg="4" class="data-box ion-padding">
         <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>

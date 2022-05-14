@@ -9,6 +9,10 @@ import { WalletPageRoutingModule } from './wallet-routing.module';
 import { WalletPage } from './wallet.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CollectionComponent } from './collection/collection.component';
+import { StakeComponent } from './stake/stake.component';
+import { RewardComponent } from './reward/reward.component';
+import { SendComponent } from './send/send.component';
+import { HistoryComponent } from './history/history.component';
 
 @NgModule({
   imports: [
@@ -16,6 +20,6 @@ import { CollectionComponent } from './collection/collection.component';
     SharedModule,
     WalletPageRoutingModule
   ],
-  declarations: [WalletPage,CollectionComponent]
+  declarations: [WalletPage,CollectionComponent, StakeComponent,RewardComponent,SendComponent,HistoryComponent]
 })
 export class WalletPageModule {}
