@@ -31,6 +31,7 @@ export class NftGalleryPage implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
+    console.log('gallery loaded');
     // this.askSecretNft();
     (async () => {
       let solanaNFTs: NFTGroup = {

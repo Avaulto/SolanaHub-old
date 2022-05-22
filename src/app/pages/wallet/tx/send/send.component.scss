@@ -1,0 +1,16 @@
+#send-box{
+    width: 324px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+#send-amount{
+    position: relative;
+    span{
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
+}

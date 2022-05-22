@@ -1,0 +1,36 @@
+.line{
+    border-bottom: 1px solid rgb(132 141 164 / 20%);
+    padding-bottom: 14px;
+}
+.tx-record{
+   ion-col{
+    height: 57px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgb(132 141 164 / 20%);
+}
+}
+.type{
+    display: flex;
+    align-items: center;
+}
+.table-icon {
+    width: 26px;
+    height: 26px;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+    // default style as receive row
+    ion-icon{
+        color:var(--ion-color-primary);
+        transform: rotate(45deg);
+        &.sent{
+            color:#FF845A;
+            transform: rotate(315deg);
+        }
+    }
+    
+}

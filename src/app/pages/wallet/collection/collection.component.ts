@@ -16,6 +16,6 @@ export class CollectionComponent implements OnChanges {
   }
 
   goToNFTpage(nft){
-    this.navCtrl.navigateForward('/side-menu/nft-gallery/'+nft.mintAddr,{state: nft})
+    this.navCtrl.navigateForward('side-menu/nft-gallery/'+nft.mintAddr,{state: nft})
   }
 }

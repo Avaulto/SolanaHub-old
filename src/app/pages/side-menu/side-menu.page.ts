@@ -29,8 +29,8 @@ export class SideMenuPage implements OnInit {
       icon:faHome,
       children: [
         {
-          title: "wallet address",
-          sub:'$123',
+          title: "BFMufP....pPGu6",
+          sub:'$8000',
           url: "/side-menu/wallet/test",
           icon:faWallet
         },
@@ -48,11 +48,6 @@ export class SideMenuPage implements OnInit {
           action: this.addNewWallet()
         },
       ],
-    },
-    {
-      title: "nft",
-      url: "/side-menu/nft-gallery",
-      icon:faImage
     },
     {
       title: "Defi",

@@ -1,6 +1,6 @@
 <ion-grid class="ion-padding">
-    <ion-button class="ion-text-capitalize ion-margin-bottom button-text" (click)="back()" color="secondary">go back</ion-button>
-    <ion-row class="data-box ion-padding ion-justify-content-start">
+    <app-go-back-btn></app-go-back-btn>
+        <ion-row class="data-box ion-padding ion-justify-content-start">
         <ion-col size="6" class="ion-padding">
             <ion-row class="ion-margin-bottom">
                 <div class="col-group">
@@ -30,8 +30,8 @@
 
             </ion-row>
             <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">Attributes</ion-row>
-            <ion-row class="ion-justify-content-between">
-                <div class="nft-attr ion-margin-bottom" *ngFor="let attr of NFT.attr">
+            <ion-row>
+                <div class="nft-attr ion-margin-bottom ion-margin-end" *ngFor="let attr of NFT.attr">
                     <div class="sub-strong">{{attr.trait_type}}</div>
                     <span class="sub">{{attr.value}}</span>
                 </div>

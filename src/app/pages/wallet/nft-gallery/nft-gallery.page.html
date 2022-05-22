@@ -1,4 +1,5 @@
 <ion-grid class="ion-padding">
+  <app-go-back-btn></app-go-back-btn>
   <ion-row class="data-box ion-padding ion-align-items-center">
     <ion-col size="9">
       <div class="heading-4 ion-text-uppercase">total value</div>
@@ -25,16 +26,7 @@
     <ion-content scroll-y style="--background:transparent;">
     <ion-row>
 
-        <ion-col size="12">
-          
-          <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
-        </ion-col>
-        <ion-col size="12">
-          
-          <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
-        </ion-col>
-        <ion-col size="12">
-          
+        <ion-col size="12">  
           <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
         </ion-col>
 

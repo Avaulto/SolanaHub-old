@@ -1,0 +1,38 @@
+<ion-grid>
+
+    <form id="stake-box" class="ion-text-capitalize">
+      <ion-row class="ion-margin-bottom" id="stake-apr-box">
+        <div>~6.5% <span>APY</span></div>
+        <p id="">Earn passive income from your crypto by staking it.</p>
+      </ion-row>
+      <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+        <div id="">stake</div>
+        <div id="balance">Available balance: 0.00</div>
+      </ion-row>
+      <ion-row id="stake-amount">
+        <ion-input class="button-text" placeholder="Amount"></ion-input>
+        <span class="heading-6" (click)="setMaxAmount()">MAX</span>
+      </ion-row>
+      <ion-row style="margin-bottom:8px" class="heading-6" id="node-select">
+        Choose node
+      </ion-row>
+      <ion-row class="ion-margin-bottom" >
+        <ion-select interface="popover" value="select-node" >
+          <ion-select-option value="select-node">
+           
+              <ion-img src='https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image'></ion-img>
+              <ion-text>select node</ion-text>
+            
+          </ion-select-option>
+          <ion-select-option value="bird">Bird</ion-select-option>
+          <ion-select-option value="cat">Cat</ion-select-option>
+          <ion-select-option value="dog">Dog</ion-select-option>
+          <ion-select-option value="honeybadger">Honey Badger</ion-select-option>
+        </ion-select>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-button  class="ion-text-capitalize">stake</ion-button>
+      </ion-row>
+    </form>
+
+</ion-grid>

@@ -1,4 +1,5 @@
 export interface Asset {
+    walletType?: string;
     name:string;
     addr: any;
     addrShort: string;

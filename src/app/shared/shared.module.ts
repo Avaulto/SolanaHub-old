@@ -11,7 +11,8 @@ import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 import {
   DataBoxComponent,
   LogoComponent,
-  AssetsBalanceComponent
+  AssetsBalanceComponent,
+  GoBackBtnComponent
 } from "./components";
 
 // // import directives
@@ -32,7 +33,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     ReversePipe,
     DataBoxComponent,
     LogoComponent,
-    AssetsBalanceComponent
+    AssetsBalanceComponent,
+    GoBackBtnComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +61,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     ReversePipe,
     DataBoxComponent,
     LogoComponent,
-    AssetsBalanceComponent
+    AssetsBalanceComponent,
+    GoBackBtnComponent
   ]
 })
 export class SharedModule {}

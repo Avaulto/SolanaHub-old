@@ -21,23 +21,37 @@ const routes: Routes = [
         loadChildren: () =>
           import("../home/home.module").then((m) => m.HomePageModule),
       },
-      {
-        path: "nft-gallery",
-        loadChildren: () =>
-          import("../nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
-      },
 
-      {
-        path: "nft-gallery/:id",
-        loadChildren: () =>
-          import("../nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
-      },
 
       {
         path: "wallet/:id",
         loadChildren: () =>
           import("../wallet/wallet.module").then((m) => m.WalletPageModule),
+          // children:[
+          //   {
+          //     path: "nft-gallery",
+          //     loadChildren: () =>
+          //       import("../wallet/nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
+          //   },
+          
+          //   {
+          //     path: "nft-gallery/:id",
+          //     loadChildren: () =>
+          //       import("../wallet/nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
+          //   },
+          // ]
       },
+                  {
+              path: "nft-gallery",
+              loadChildren: () =>
+                import("../wallet/nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
+            },
+          
+            {
+              path: "nft-gallery/:id",
+              loadChildren: () =>
+                import("../wallet/nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
+            },
       {
         path: "new-wallet",
         loadChildren: () =>

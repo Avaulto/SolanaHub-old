@@ -189,29 +189,9 @@ app-logo {
         flex-direction: column;
         justify-content: space-around;
         align-items: center;
+        width: 300px;
+        margin: 0 auto;
         margin-top: 10px;
-
-        ion-input {
-            border: 1px solid transparent;
-            background-color: #04172C;
-            box-sizing: border-box;
-            border-radius: 4px;
-            width: 300px;
-            height: 40px;
-            margin-bottom: 16px;
-            padding: 0 8px;
-            text-transform: capitalize;
-            --placeholder-color: white;
-            &.has-focus{
-                border: 2px solid var(--ion-color-primary);
-            }
-            &.error{
-                border: 2px solid #FE5B5B;
-            }
-            // ::placeholder {
-            //     color: white;
-            // }
-        }
 
         .msg{
             font-weight: 500;

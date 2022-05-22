@@ -1,0 +1,78 @@
+<ion-grid>
+  <ion-row id="available-balance " class="stake-balance ion-align-items-center  ion-justify-content-between">
+    <ion-col size="10" class="flex-item-center">
+
+      <div class="table-icon">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </div>
+      <div>
+        Available balance
+      </div>
+    </ion-col>
+    <ion-col class="ion-text-right" size="2">
+      544 SOL
+    </ion-col>
+  </ion-row>
+  <ion-row id="frozen-balance" class="stake-balance ion-align-items-center  ion-justify-content-between">
+    <ion-col size="10" class="flex-item-center">
+
+      <div class="table-icon">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </div>
+      <div>
+        Frozen balance
+      </div>
+    </ion-col>
+    <ion-col class="ion-text-right" size="2">
+      544 SOL
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="stake-balance heading-6 ion-text-capitalize ion-align-items-center ion-justify-content-between"
+    *ngFor="let SA of stakeAccounts">
+    <ion-col class="flex-item-center">
+      <div class="table-icon">
+        <ion-img [src]="SA.validatorInfo.image"></ion-img>
+      </div>
+      <div class="validator-info">
+        {{SA.validatorInfo.name}} <br>
+        <span class="sub">
+          fee: {{SA.validatorInfo.fee}}% uptime: {{SA.validatorInfo.uptime}}%
+        </span>
+      </div>
+    </ion-col>
+
+    <ion-col size="2">
+      {{SA.accountAddr}}
+    </ion-col>
+    <ion-col size="1.5">
+      {{SA.balance}}
+    </ion-col>
+    <ion-col size="1">
+      <span [ngSwitch]="SA.status">
+        <p *ngSwitchCase="'activating'">
+          <ion-icon name="hourglass-outline"></ion-icon>
+        </p>
+        <p *ngSwitchCase="'deactivating'">
+          <ion-icon name="hourglass-outline"></ion-icon>
+        </p>
+        <p *ngSwitchCase="'active'">
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+        </p>
+        <p *ngSwitchDefault>
+          <ion-icon name="close-outline"></ion-icon>
+        </p>
+      </span>
+    </ion-col>
+
+      <ion-col size="2.5" style="text-align:right" [ngSwitch]="SA.status">
+        <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'">unstake</ion-button>
+        <ion-button fill="outline" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
+        <ion-button fill="outline" color="primary" *ngSwitchCase="'active'">unstake</ion-button>
+        <ion-button fill="outline" color="secondary" *ngSwitchDefault>withraw stake</ion-button>
+
+      </ion-col>
+
+
+  </ion-row>
+</ion-grid>

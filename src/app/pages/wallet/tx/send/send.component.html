@@ -1,0 +1,35 @@
+<ion-grid id="send-box" class="ion-text-capitalize">
+  <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+    <div id="">to</div>
+  </ion-row>
+  <ion-row>
+    <ion-input class="button-text" placeholder="wallet address"></ion-input>
+    <span class="heading-6"></span>
+  </ion-row>
+  <ion-row  style="margin-bottom:8px"  class="heading-6 ion-justify-content-between">
+    <div id="">Amount</div>
+  </ion-row>
+  <ion-row id="send-amount" style="margin-bottom:8px;">
+    <ion-input class="button-text" placeholder="Amount"></ion-input>
+    <span class="heading-6" (click)="setMaxAmount()">MAX</span>
+  </ion-row>
+
+  
+  <ion-row id="network-speed" class="ion-margin-bottom">
+    <div class="heading-6" style="margin-bottom:8px;">Network speed</div>
+    <ion-select interface="popover" value="select-speed">
+      <ion-select-option value="select-speed">
+
+        <ion-icon name="caret-down-outline"></ion-icon>
+        <ion-text>select speed</ion-text>
+
+      </ion-select-option>
+      <ion-select-option value="bird">Bird</ion-select-option>
+      <ion-select-option value="cat">Cat</ion-select-option>
+    </ion-select>
+  </ion-row>
+  
+  <ion-row class="ion-justify-content-center">
+    <ion-button  class="ion-text-capitalize">Review transaction</ion-button>
+  </ion-row>
+</ion-grid>

@@ -11,13 +11,11 @@ import { NFTdata } from 'src/app/models';
 export class NftPagePage implements OnInit {
   // @Input() NFTData
   public NFT: NFTdata | any;
-  constructor(private navCtrl:NavController,private router:Router) { }
+  constructor(private router:Router) { }
 
   ngOnInit() {
     this.NFT = this.router.getCurrentNavigation()?.extras?.state
     // console.log(this.router.getCurrentNavigation().extras.state)
   }
-  back(): void {
-    this.navCtrl.back({animated:true});
-}
+
 }

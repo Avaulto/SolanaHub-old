@@ -9,17 +9,30 @@ import { WalletPageRoutingModule } from './wallet-routing.module';
 import { WalletPage } from './wallet.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CollectionComponent } from './collection/collection.component';
-import { StakeComponent } from './stake/stake.component';
-import { RewardComponent } from './reward/reward.component';
-import { SendComponent } from './send/send.component';
-import { HistoryComponent } from './history/history.component';
+import { StakeComponent } from './tx/stake/stake.component';
+
+import { NgSelectModule } from '@ng-select/ng-select';
+import { RewardComponent } from './tx/reward/reward.component';
+import { SendComponent } from './tx/send/send.component';
+import { HistoryComponent } from './tx/history/history.component';
+import { TxComponent } from './tx/tx.component';
+import { SpotStakeComponent } from './tx/spot-stake/spot-stake.component';
 
 @NgModule({
   imports: [
     SharedModule,
     SharedModule,
+    NgSelectModule,
     WalletPageRoutingModule
   ],
-  declarations: [WalletPage,CollectionComponent, StakeComponent,RewardComponent,SendComponent,HistoryComponent]
+  declarations: [WalletPage,
+    CollectionComponent,
+    TxComponent,
+     StakeComponent,
+     SpotStakeComponent,
+     RewardComponent,
+     SendComponent,
+     HistoryComponent
+    ]
 })
 export class WalletPageModule {}

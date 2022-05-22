@@ -65,18 +65,20 @@
             <span (click)="setSignType('register')" [class.active]="segmentAuthTab == 'register'">register</span>
           </div>
           <form [formGroup]="signForm" autocomplete="off" class="sign-in-inputs">
-            <ion-input type="email" [class.error]="!signForm.controls['email'].valid && signForm.controls['email']?.touched"
+            <ion-input class="button-text" type="email" [class.error]="!signForm.controls['email'].valid && signForm.controls['email']?.touched"
             formControlName="email" placeholder="email"></ion-input>
 
        
 
             <ion-input type="password"
+            class="button-text"
               [class.error]="!signForm.controls['password'].valid && signForm.controls['password']?.touched"
               formControlName="password" 
               placeholder="password" ></ion-input>
 
 
             <ion-input type="password"
+            class="button-text"
             [class.error]="!signForm.controls['passwordAgain'].valid && signForm.controls['passwordAgain']?.touched"
              *ngIf="segmentAuthTab == 'register'"
               formControlName="passwordAgain"

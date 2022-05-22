@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reward.component.scss'],
 })
 export class RewardComponent implements OnInit {
-
+  hasReward: boolean =false;
   constructor() { }
 
   ngOnInit() {}

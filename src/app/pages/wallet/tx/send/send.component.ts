@@ -10,5 +10,7 @@ export class SendComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
-
+  setMaxAmount(){
+    
+  }
 }
