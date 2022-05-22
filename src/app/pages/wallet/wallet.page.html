@@ -45,8 +45,14 @@
       <ion-col size="7.7" class="data-box">
         <app-tx></app-tx>
       </ion-col>
-      <ion-col sizeSm="12" sizeLg="4" class="data-box ion-padding">
-        <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>
+      
+      <ion-col sizeSm="12" sizeLg="4">
+        <div class="data-box ion-padding">
+          <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>
+        </div>
+        <div class="data-box ion-padding">
+          <app-defi></app-defi>
+        </div>
       </ion-col>
 
     </ion-row>

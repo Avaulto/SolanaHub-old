@@ -5,11 +5,11 @@
       <div class="table-icon">
         <ion-icon name="wallet-outline"></ion-icon>
       </div>
-      <div>
+      <div class="heading-6">
         Available balance
       </div>
     </ion-col>
-    <ion-col size="2.5" class="ion-text-left" >
+    <ion-col size="2.5" class="sub ion-text-left" >
       24 SOL
     </ion-col>
     <ion-col style="text-align:right"  size="2.5">
@@ -32,22 +32,22 @@
       <div class="table-icon">
         <ion-icon name="lock-closed-outline"></ion-icon>
       </div>
-      <div>
+      <div class="heading-6">
         Frozen balance
       </div>
     </ion-col>
-    <ion-col class="ion-text-right" size="2">
+    <ion-col class="ion-text-right " size="2">
       544 SOL
     </ion-col>
   </ion-row>
 
-  <ion-row class="stake-balance ion-margin-bottom  heading-6 ion-text-capitalize ion-align-items-center ion-justify-content-between"
+  <ion-row class="stake-balance ion-margin-bottom ion-text-capitalize ion-align-items-center ion-justify-content-between"
     *ngFor="let SA of stakeAccounts">
     <ion-col class="flex-item-center">
       <div class="table-icon">
         <ion-img [src]="SA.validatorInfo.image"></ion-img>
       </div>
-      <div class="validator-info">
+      <div class="validator-info heading-6">
         {{SA.validatorInfo.name}} <br>
         <span class="sub">
           fee: {{SA.validatorInfo.fee}}% uptime: {{SA.validatorInfo.uptime}}%
@@ -55,10 +55,10 @@
       </div>
     </ion-col>
 
-    <ion-col size="2">
+    <ion-col size="2" class="sub">
       {{SA.accountAddr}}
     </ion-col>
-    <ion-col size="1.5">
+    <ion-col size="1.5" class="sub">
       {{SA.balance}}
     </ion-col>
     <ion-col size="1">

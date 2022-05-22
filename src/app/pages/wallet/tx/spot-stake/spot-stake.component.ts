@@ -10,6 +10,7 @@ export class SpotStakeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { }
+  
   public stakeAccounts = [
     {
       validatorInfo: {
