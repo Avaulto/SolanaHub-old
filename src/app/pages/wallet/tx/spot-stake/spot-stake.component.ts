@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./spot-stake.component.scss'],
 })
 export class SpotStakeComponent implements OnInit {
-
+  public showStake: boolean = false;
   constructor() { }
 
   ngOnInit() { }

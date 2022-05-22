@@ -1,6 +1,6 @@
 <ion-grid>
   <ion-row id="available-balance " class="stake-balance ion-align-items-center  ion-justify-content-between">
-    <ion-col size="10" class="flex-item-center">
+    <ion-col size="7" class="flex-item-center">
 
       <div class="table-icon">
         <ion-icon name="wallet-outline"></ion-icon>
@@ -9,9 +9,22 @@
         Available balance
       </div>
     </ion-col>
-    <ion-col class="ion-text-right" size="2">
-      544 SOL
+    <ion-col size="2.5" class="ion-text-left" >
+      24 SOL
     </ion-col>
+    <ion-col style="text-align:right"  size="2.5">
+    <ion-button  (click)="showStake = !showStake"  class="ion-text-capitalize">
+      <span *ngIf="!showStake">
+        new stake
+      </span> 
+      <span *ngIf="showStake">
+        hide stake box
+      </span> 
+    </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="showStake" class="ion-margin-top ion-justify-content-center">
+    <app-stake></app-stake>
   </ion-row>
   <ion-row id="frozen-balance" class="stake-balance ion-align-items-center  ion-justify-content-between">
     <ion-col size="10" class="flex-item-center">
@@ -28,7 +41,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-row class="stake-balance heading-6 ion-text-capitalize ion-align-items-center ion-justify-content-between"
+  <ion-row class="stake-balance ion-margin-bottom  heading-6 ion-text-capitalize ion-align-items-center ion-justify-content-between"
     *ngFor="let SA of stakeAccounts">
     <ion-col class="flex-item-center">
       <div class="table-icon">
@@ -65,14 +78,13 @@
       </span>
     </ion-col>
 
-      <ion-col size="2.5" style="text-align:right" [ngSwitch]="SA.status">
-        <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'">unstake</ion-button>
-        <ion-button fill="outline" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
-        <ion-button fill="outline" color="primary" *ngSwitchCase="'active'">unstake</ion-button>
-        <ion-button fill="outline" color="secondary" *ngSwitchDefault>withraw stake</ion-button>
+    <ion-col size="2.5" style="text-align:right" [ngSwitch]="SA.status">
+      <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'">unstake</ion-button>
+      <ion-button fill="outline" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
+      <ion-button fill="outline" color="primary" *ngSwitchCase="'active'">unstake</ion-button>
+      <ion-button fill="outline" color="secondary" *ngSwitchDefault>withraw stake</ion-button>
 
-      </ion-col>
-
-
+    </ion-col>
   </ion-row>
+
 </ion-grid>
