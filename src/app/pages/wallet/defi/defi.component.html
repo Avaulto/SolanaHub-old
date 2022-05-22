@@ -1,14 +1,14 @@
 <div class="heading-4 ion-margin-bottom ion-text-uppercase">defi</div>
 <ion-grid>
-  <ion-row class="ion-justify-content-between ion-align-items-center">
+  <ion-row style="margin-block-end: 21px;" *ngFor="let defi of defiApps" class="ion-justify-content-between ion-align-items-center">
     <ion-col size="2">
       <div id="defi-icon">
-        <ion-img src="https://jup.ag/svg/jupiter-logo.svg" alt="jupiter swap"></ion-img>
+        <ion-img [src]="defi.img" alt="app logo"></ion-img>
       </div>
     </ion-col>
     <ion-col size="6" class="ion-text-left">
-      <div class="heading-6">Jupiter</div>
-      <span class="sub">Swap Infrastructure for Solana</span> 
+      <div class="heading-6">{{defi.name}}</div>
+      <span class="sub">{{defi.desc}}</span> 
     </ion-col>
     <ion-col size="4" class="ion-text-right">
       <ion-button>view</ion-button>
