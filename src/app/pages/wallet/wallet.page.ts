@@ -6,6 +6,7 @@ import { PublicKey } from '@solana/web3.js';
 import { Asset, NFTdata, NFTGroup } from 'src/app/models';
 import { ApiService, UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
+import { SolanaFunctionsService } from 'src/app/services/solana-functions.service';
 
 @Component({
   selector: 'app-wallet',
@@ -54,13 +55,16 @@ export class WalletPage implements OnInit {
   constructor(private utils: UtilsService,
     private apiService:ApiService ,
     private dataAggregator:DataAggregatorService,
-
+    private solanaFn: SolanaFunctionsService
     ) { }
 
 
   ngOnInit() {
     // this.dataAggregator.getSolWalletData('JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD').subscribe(val =>console.log(val))
     this.dataAggregator.getCoinData(this.wallet.name).subscribe(coinData => this.wallet.coinData = coinData);
+    const pk = new PublicKey('JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD')
+    this.solanaFn.getStakeAccountsInfo(pk);
+    // this.solanaFn.getStakeAccountsByOwner(pk)
     this._getNfts();
   }
 

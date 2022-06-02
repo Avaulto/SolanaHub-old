@@ -10,13 +10,15 @@ import { RewardsComponent } from './rewards/rewards.component';
 import { NftsComponent } from './nfts/nfts.component';
 import { ChartComponent } from './chart/chart.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [
-SharedModule,
+    SharedModule,
     HomePageRoutingModule,
-    SharedModule
+    SharedModule,
+    NgChartsModule
   ],
-  declarations: [HomePage,BalanceComponent,RewardsComponent,NftsComponent,ChartComponent]
+  declarations: [HomePage, BalanceComponent, RewardsComponent, NftsComponent, ChartComponent]
 })
-export class HomePageModule {}
+export class HomePageModule { }

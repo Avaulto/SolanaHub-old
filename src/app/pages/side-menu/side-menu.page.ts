@@ -56,7 +56,6 @@ export class SideMenuPage implements OnInit {
     }
   ];
   addNewWallet(){
-    console.log('add new wallet')
   }
   ngOnInit() {
   }

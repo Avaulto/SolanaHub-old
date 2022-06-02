@@ -58,7 +58,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(true);
 
     // switch redirect by first visin or not
-    this.navCtrl.navigateForward("/side-menu/wallet/test", { replaceUrl: true });
+    this.navCtrl.navigateForward("/side-menu/home", { replaceUrl: true });
   }
 
   purgeAuth() {

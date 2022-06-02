@@ -10,7 +10,6 @@ export class BalanceComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('test')
   }
 
 }
