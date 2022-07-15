@@ -58,7 +58,7 @@ export class UserService {
     this.isAuthenticatedSubject.next(true);
 
     // switch redirect by first visin or not
-    this.navCtrl.navigateForward("/side-menu/home", { replaceUrl: true });
+    // this.navCtrl.navigateForward("/side-menu/home", { replaceUrl: true });
   }
 
   purgeAuth() {
@@ -67,7 +67,7 @@ export class UserService {
     // Set auth status to false
     this.isAuthenticatedSubject.next(false);
 
-    this.navCtrl.navigateRoot("/login", { animated: true });
+    // this.navCtrl.navigateRoot("/login", { animated: true });
   }
 
   // attemptAuth(credentials, type): Observable<User> {

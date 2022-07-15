@@ -5,7 +5,6 @@ import {
   getParsedNftAccountsByOwner,
 } from "@nfteyez/sol-rayz";
 
-import { SecretNetworkClient, Wallet } from "secretjs";
 
 
 import { ApiService } from 'src/app/services';
@@ -71,73 +70,7 @@ export class NftGalleryPage implements OnInit {
 
   }
 
-  async askSecretNft() {
-    const permitName = "secretswap.io";
-    const allowedTokens = ["secret18vd8fpwxzck93qlwghaj6arh4p7c5n8978vsyg"];
-    const permissions = ["balance" /* , "history", "allowance" */];
-
-    const wallet = new Wallet(
-      "grant rice replace explain federal release fix clever romance raise often wild taxi quarter soccer fiber love must tape steak together observe swap guitar",
-    );
-    const myAddress = wallet.address;
-    const chainId = "pulsar-2";
-    // To create a signer secret.js client, also pass in a wallet
-    const secretjs = await SecretNetworkClient.create({
-      grpcWebUrl: "http://rpc.pulsar.griptapejs.com:9091",
-      chainId,
-      wallet,
-      walletAddress: myAddress,
-    });
-    console.log(secretjs)
-    const { signature } = await window.keplr.signAmino(
-      chainId,
-      myAddress,
-      {
-        chain_id: chainId,
-        account_number: "0", // Must be 0
-        sequence: "0", // Must be 0
-        fee: {
-          amount: [{ denom: "uscrt", amount: "0" }], // Must be 0 uscrt
-          gas: "1", // Must be 1
-        },
-        msgs: [
-          {
-            type: "query_permit", // Must be "query_permit"
-            value: {
-              permit_name: permitName,
-              allowed_tokens: allowedTokens,
-              permissions: [""],
-            },
-          },
-        ],
-        memo: "", // Must be empty
-      },
-      {
-        preferNoSetFee: true, // Fee must be 0, so hide it from the user
-        preferNoSetMemo: true, // Memo must be empty, so hide it from the user
-      }
-    );
-
-    // const { balance } = await secretjs.queryContractSmart(
-    //   "secret18vd8fpwxzck93qlwghaj6arh4p7c5n8978vsyg",
-    //   {
-    //     with_permit: {
-    //       query: { balance: {} },
-    //       permit: {
-    //         params: {
-    //           permit_name: permitName,
-    //           allowed_tokens: allowedTokens,
-    //           chain_id: chainId,
-    //           permissions: permissions,
-    //         },
-    //         signature: signature,
-    //       },
-    //     },
-    //   }
-    // );
-
-    // console.log(balance.amount);
-  }
+ 
   getAssosiateAccounts() {
 
     (async () => {

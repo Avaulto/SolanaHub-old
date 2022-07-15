@@ -46,7 +46,6 @@
 }
 
 .data-box {
-    min-width: 377px;
     min-height: 110px;
     margin-bottom: 24px;
     box-sizing: border-box;
@@ -160,17 +159,17 @@ ion-input, ion-select {
     --border-style: solid;
     --button-color: white;
 
-    &.suc {
+    &.toastSuc {
         --border-color: var(--ion-color-primary);
         --button-color: var(--ion-color-primary);
     }
 
-    &.err {
+    &.toastError {
         --border-color: #FBBC05;
         --button-color: #FBBC05;
     }
 
-    &.info {
+    &.toastInfo {
         --border-color: #4285F4;
         --button-color: #4285F4;
     }

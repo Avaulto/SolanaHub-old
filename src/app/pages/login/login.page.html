@@ -1,40 +1,26 @@
 <ion-grid>
-  <div id="avaulto-login-wrapper">
-    <div id="left-box">
-      <app-logo></app-logo>
+  <app-logo></app-logo>
+  <ion-row id="avaulto-login-wrapper" >
+    <ion-col sizeMd="6" class="ion-hide-md-down" id="left-box">
 
       <div id="avaulto-slider-intro">
         <ion-slides pager="true" [options]="slideOpts">
-          <ion-slide class="intro-slide">
-            <h1 class="title">Get started!</h1>
-            <ion-img src="/assets/images/slide-placeholder.svg" alt="PLACEHOLDER"></ion-img>
+          <ion-slide class="intro-slide" *ngFor="let slide of slidesInfo">
+            <h1 class="title">{{slide.title}}</h1>
+            <ion-img [src]="slide.image" alt="slide image"></ion-img>
             <div class="intro-content">
               <!-- <fa-icon [icon]="icon"></fa-icon> -->
               <p>
-                Avaulto is a proof of stake blockchain company that aims to deliver high-end quality nodes of multiple
-                blockchains that support staking mechanisms
+                {{slide.desc}}
               </p>
             </div>
           </ion-slide>
-          <ion-slide>
-            <h1>Slide 2</h1>
-          </ion-slide>
-          <ion-slide>
-            <h1>Slide 3</h1>
-          </ion-slide>
         </ion-slides>
       </div>
-      <div id="social-footer">
-        <div class="social-item" *ngFor="let item of socials">
-          <a [href]="item.url" target="_blank">
-            <fa-icon [icon]="item.icon"></fa-icon>
-          </a>
-        </div>
-      </div>
-    </div>
+    </ion-col>
 
-    <div id="right-box">
-      <button id="go-back-btn">go back</button>
+    <ion-col sizeMd="6" sizeXs="12" id="right-box">
+      <button color="primary" id="go-back-btn"><a href="https://avaulto.com/">go back</a></button>
       <div id="avaulto-sign-in">
         <div id="oAuth-sign-in" class="auth-border">
           <h1 class="title">sign in</h1>
@@ -45,8 +31,11 @@
               Google
             </ion-button>
             <ion-button class="auth-otp"  (click)="auth.anonymousAuth()">
-              <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+              <span style="display:flex;" tooltip="Anonymous login will allow you to use our dashboard without saving any personal identifier on our servers but this also means that data loss is probable in some conditions">
+                <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+              </span>
               Anonymously
+              <span></span>
             </ion-button>
           </div>
         </div>
@@ -92,6 +81,13 @@
         </div>
       </div>
 
+    </ion-col>
+  </ion-row>
+    <div id="social-footer">
+      <div class="social-item" *ngFor="let item of socials">
+        <a [href]="item.url" target="_blank">
+          <fa-icon [icon]="item.icon"></fa-icon>
+        </a>
+      </div>
     </div>
-  </div>
 </ion-grid>

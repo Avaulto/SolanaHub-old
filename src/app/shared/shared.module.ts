@@ -17,14 +17,16 @@ import {
 
 // // import directives
 // import {
+  
+  // } from "./directives";
+  
+  import { QRCodeModule } from 'angularx-qrcode';
+  
+  // font awesome
+  import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
-// } from "./directives";
-
-import { QRCodeModule } from 'angularx-qrcode';
-
-// font awesome
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-
+  // toop tip
+  import { TooltipModule } from 'ng2-tooltip-directive';
 @NgModule({
   declarations: [
     FilterPipe,
@@ -45,6 +47,7 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     FontAwesomeModule,
     IonicModule,
     QRCodeModule,
+    TooltipModule,
     // BrowserAnimationsModule,
   ],
   exports: [
@@ -62,7 +65,8 @@ import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
     DataBoxComponent,
     LogoComponent,
     AssetsBalanceComponent,
-    GoBackBtnComponent
+    GoBackBtnComponent,
+    TooltipModule
   ]
 })
 export class SharedModule {}

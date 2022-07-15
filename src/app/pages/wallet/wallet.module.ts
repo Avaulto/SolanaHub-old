@@ -11,7 +11,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { CollectionComponent } from './collection/collection.component';
 import { StakeComponent } from './tx/stake/stake.component';
 
-import { NgSelectModule } from '@ng-select/ng-select';
 import { RewardComponent } from './tx/reward/reward.component';
 import { SendComponent } from './tx/send/send.component';
 import { HistoryComponent } from './tx/history/history.component';
@@ -23,7 +22,6 @@ import { DefiComponent } from './defi/defi.component';
   imports: [
     SharedModule,
     SharedModule,
-    NgSelectModule,
     WalletPageRoutingModule
   ],
   declarations: [WalletPage,

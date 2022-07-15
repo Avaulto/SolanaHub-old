@@ -20,6 +20,9 @@ import { SharedModule } from './shared/shared.module';
 import { SETTINGS as AUTH_SETTINGS, USE_DEVICE_LANGUAGE } from '@angular/fire/compat/auth';
 import { AngularFireModule } from '@angular/fire/compat';
 
+
+import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -29,6 +32,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     IonicModule.forRoot(),
     AppRoutingModule,
     FontAwesomeModule,
+    HdWalletAdapterModule.forRoot({ autoConnect: true }),
     AngularFireModule.initializeApp(environment.firebase),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAnalytics(() => getAnalytics()),

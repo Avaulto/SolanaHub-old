@@ -21,52 +21,31 @@ const routes: Routes = [
         loadChildren: () =>
           import("../home/home.module").then((m) => m.HomePageModule),
       },
-
-
       {
-        path: "wallet/:id",
-        loadChildren: () =>
-          import("../wallet/wallet.module").then((m) => m.WalletPageModule),
-          // children:[
-          //   {
-          //     path: "nft-gallery",
-          //     loadChildren: () =>
-          //       import("../wallet/nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
-          //   },
-          
-          //   {
-          //     path: "nft-gallery/:id",
-          //     loadChildren: () =>
-          //       import("../wallet/nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
-          //   },
-          // ]
+        path: "wallet",
+        loadChildren: () => import("../wallet/wallet.module").then((m) => m.WalletPageModule),
       },
-                  {
-              path: "nft-gallery",
-              loadChildren: () =>
-                import("../wallet/nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
-            },
-          
-            {
-              path: "nft-gallery/:id",
-              loadChildren: () =>
-                import("../wallet/nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
-            },
       {
-        path: "new-wallet",
+        path: "nft-gallery",
         loadChildren: () =>
-          import("../new-wallet/new-wallet.module").then((m) => m.NewWalletPageModule),
+          import("../nft-gallery/nft-gallery.module").then((m) => m.NftGalleryPageModule),
+      },
+
+      {
+        path: "nft-gallery/:id",
+        loadChildren: () =>
+          import("../nft-gallery/nft-page/nft-page.module").then((m) => m.NftPagePageModule),
       },
       {
         path: "defi",
         loadChildren: () =>
           import("../defi/defi.module").then((m) => m.DefiPageModule),
       },
-      {
-        path: "profile",
-        loadChildren: () =>
-          import("../profile/profile.module").then((m) => m.ProfilePageModule),
-      },
+      // {
+      //   path: "profile",
+      //   loadChildren: () =>
+      //     import("../profile/profile.module").then((m) => m.ProfilePageModule),
+      // },
     ],
   },
 ];

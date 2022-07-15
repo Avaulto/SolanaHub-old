@@ -8,13 +8,13 @@ const routes: Routes = [
     redirectTo: 'side-menu',
     pathMatch: 'full'
   },
-  {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  },
+  // {
+  //   path: 'login',
+  //   loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
+  // },
   {
     path: 'side-menu',
-    canActivate:[AuthGuard],
+    // canActivate:[AuthGuard],
     loadChildren: () => import('./pages/side-menu/side-menu.module').then( m => m.SideMenuPageModule)
   },
   {
@@ -33,11 +33,11 @@ const routes: Routes = [
     path: 'new-wallet',
     loadChildren: () => import('./pages/new-wallet/new-wallet.module').then( m => m.NewWalletPageModule)
   },
-  // {
-  //   path: 'nft-gallery',
-  //   loadChildren: () => import('./pages/home/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
-  //   canActivate:[AuthGuard]
-  // },
+  {
+    path: 'nft-gallery',
+    loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
+    // canActivate:[AuthGuard]
+  },
 ];
 
 @NgModule({

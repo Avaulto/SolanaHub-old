@@ -30,9 +30,9 @@ export class AuthService {
     });
   }
   private formatErrors(error: any) {
-    console.log('my err', error)
+    console.log('my err', error.message)
     this.toasterService.msg.next({
-      message: error.message,
+      message: error.message.replaceAll('Firebase: Error','').replaceAll('(','').replaceAll(')',''),
       icon:'alert-circle-outline',
       segmentClass: "toastError",
     });
@@ -59,7 +59,7 @@ export class AuthService {
       return user;
       // this.userService.setAuth(result);
     } catch (error) {
-      return error;
+      this.formatErrors(error)
     }
   }
   // Sign in with Google

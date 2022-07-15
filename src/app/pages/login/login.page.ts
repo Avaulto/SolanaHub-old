@@ -23,7 +23,21 @@ export class LoginPage implements OnInit {
         password: new FormControl('',[Validators.minLength(6), Validators.required]),
       })
     }
-    
+  public slidesInfo = [{
+    title:'Get started!',
+    desc:`easly track your assets in 1 ultimate app, get full review of your portfolio, from all your favirite assest`,
+    image:'assets/images/slide-placeholder.svg'
+  },
+  {
+    title:'1 wallet',
+    desc:`your everyday use wallet for perform any transactions, read history from multipale wallets & assets`,
+    image:'assets/images/slide-placeholder.svg'
+  },
+  {
+    title:'Defi made easy',
+    desc:`Start staking, swaping, LP & get your NFT, all at one place! `,
+    image:'assets/images/slide-placeholder.svg'
+  }]
   public segmentAuthTab:string = 'sign-in'
   ngOnInit() {
     
