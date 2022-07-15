@@ -14,14 +14,14 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "~13.2.2",
-    "@angular/core": "~13.2.2",
+    "@angular/common": "^14.0.6",
+    "@angular/core": "^14.0.6",
     "@angular/fire": "^7.3.0",
-    "@angular/forms": "~13.2.2",
-    "@angular/localize": "~13.2.2",
-    "@angular/platform-browser": "~13.2.2",
-    "@angular/platform-browser-dynamic": "~13.2.2",
-    "@angular/router": "~13.2.2",
+    "@angular/forms": "^14.0.6",
+    "@angular/localize": "^14.0.6",
+    "@angular/platform-browser": "^14.0.6",
+    "@angular/platform-browser-dynamic": "^14.0.6",
+    "@angular/router": "^14.0.6",
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.4.3",
     "@capacitor/haptics": "1.1.4",
@@ -53,15 +53,15 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~13.2.3",
+    "@angular-devkit/build-angular": "^14.0.6",
     "@angular-eslint/builder": "~13.0.1",
     "@angular-eslint/eslint-plugin": "~13.0.1",
     "@angular-eslint/eslint-plugin-template": "~13.0.1",
     "@angular-eslint/template-parser": "~13.0.1",
-    "@angular/cli": "~13.2.3",
-    "@angular/compiler": "~13.2.2",
-    "@angular/compiler-cli": "~13.2.2",
-    "@angular/language-service": "~13.2.2",
+    "@angular/cli": "^14.0.6",
+    "@angular/compiler": "^14.0.6",
+    "@angular/compiler-cli": "^14.0.6",
+    "@angular/language-service": "^14.0.6",
     "@capacitor/cli": "3.4.3",
     "@ionic/angular-toolkit": "^6.0.0",
     "@ionic/cli": "6.19.0",
@@ -85,7 +85,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
-    "typescript": "~4.4.4"
+    "typescript": "~4.7.4"
   },
   "description": "An Ionic project"
 }

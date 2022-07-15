@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, RequiredValidator, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, RequiredValidator, Validators } from '@angular/forms';
 import { faDiscord, faGithub, faGoogle, faMedium, faMediumM, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faExclamationCircle, faGasPump } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,16 +11,16 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginPage implements OnInit {
   @ViewChild('errEl') errEl: ElementRef;
   public gAuthIcon = faGoogle
-  public signForm: FormGroup;
+  public signForm: UntypedFormGroup;
   public isSubmitted: boolean = false;
   public tooltipIcon = faExclamationCircle;
   constructor(
     public auth:AuthService,
-    private fb:FormBuilder
+    private fb:UntypedFormBuilder
     ) { 
       this.signForm = this.fb.group({
-        email: new FormControl('',[Validators.required, Validators.email]),
-        password: new FormControl('',[Validators.minLength(6), Validators.required]),
+        email: new UntypedFormControl('',[Validators.required, Validators.email]),
+        password: new UntypedFormControl('',[Validators.minLength(6), Validators.required]),
       })
     }
   public slidesInfo = [{
@@ -50,7 +50,7 @@ export class LoginPage implements OnInit {
   generateFb(type:string){
 
     if(type == 'register'){
-      this.signForm.addControl('passwordAgain', new FormControl('',[Validators.minLength(6), Validators.required]))
+      this.signForm.addControl('passwordAgain', new UntypedFormControl('',[Validators.minLength(6), Validators.required]))
     }else{
       this.signForm.removeControl('passwordAgain')
     }
