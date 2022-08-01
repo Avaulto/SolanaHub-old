@@ -13,7 +13,7 @@ import { finalize } from "rxjs/operators";
 @Injectable({
   providedIn: "root"
 })
-export class HttpTokenInterceptor implements HttpInterceptor {
+export class CustomInterceptor implements HttpInterceptor {
   constructor(
     public loaderService: LoaderService
   ) {}
@@ -27,6 +27,7 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     };
 
 
+    this.loaderService.show();
     const request = req.clone({ setHeaders: headersConfig });
     return next.handle(request).pipe(finalize(() => this.loaderService.hide()));
   }

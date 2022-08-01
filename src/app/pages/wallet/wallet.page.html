@@ -1,94 +1,84 @@
 <ion-grid class="ion-padding">
-  <ion-content scroll-y style="--background:transparent;">
-    <ion-row class="ion-justify-content-between ion-align-items-center data-box ">
-      <ion-col size="9" class="ion-padding">
-        <ion-row class="ion-align-items-center">
-          <ion-col size="1.5" class="ion-margin-end">
-            <div class="walletQR">
-              <qrcode [qrdata]="wallet.addr" [width]="78" [errorCorrectionLevel]="'M'"></qrcode>
-              <!-- <ion-img src="/assets/images/icons/" alt="qr wallet"></ion-img> -->
-            </div>
-          </ion-col>
-          <ion-col size="10">
-            <ion-row class=" ion-align-items-center">
+  <ng-container *ngIf="isReady$ | async; else elseTemplate">
+    <ion-content scroll-y style="--background:transparent;">
+      <ion-row class="ion-justify-content-between ion-align-items-center data-box ">
+        <ion-col size="9" class="ion-padding">
+          <ion-row class="ion-align-items-center">
+            <ion-col size="1.5" class="ion-margin-end">
+              <div class="walletQR">
+                <qrcode [qrdata]="wallet?.addr" [allowEmptyString]="true" [width]="78" [errorCorrectionLevel]="'M'"></qrcode>
+                <!-- <ion-img src="/assets/images/icons/" alt="qr wallet"></ion-img> -->
+              </div>
+            </ion-col>
+            <ion-col size="10">
+              <ion-row class=" ion-align-items-center">
 
-              <div class="heading-4 ion-margin-end">{{wallet.addrShort}}</div>
-              <ion-icon name="copy-outline" class="ion-margin-end"></ion-icon>
-              <ion-icon name="link-outline"></ion-icon>
-            </ion-row>
-            <ion-row>
-              <div class="heading-2">${{wallet.balance}}</div>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-col>
-      <ng-container *ngIf="!deleteWallet; else deleteUI">
-        <ion-col size="1">
-          <ion-row class="ion-justify-content-center">
-            <ion-icon (click)="showDeleteUI(true)" name="trash-outline"></ion-icon>
-          </ion-row>
-        </ion-col>
-      </ng-container>
-      <ng-template #deleteUI>
-        <ion-col size="3">
-          <ion-row class="ion-justify-content-center">
-            <ion-button color="primary" class="ion-margin-end ion-text-capitalize button-text">Yes, delete wallet
-            </ion-button>
-            <ion-button class="button-text ion-text-capitalize" fill="outline" (click)="showDeleteUI(false)">cancel
-            </ion-button>
-          </ion-row>
-        </ion-col>
-      </ng-template>
-    </ion-row>
-
-    <ion-row class="ion-justify-content-between ion-align-items-start">
-      <ion-col size="7.7">
-        <div class="data-box ion-padding">
-          <app-tx></app-tx>
-        </div>
-        <div class="data-box ion-padding">
-          <ion-row class="ion-justify-content-between">
-            <div class="heading-4 ion-text-uppercase">NFTs</div>
-            <ion-button routerLink="nft-gallery" routerDirection="forward" fill="outline">view all</ion-button>
-          </ion-row>
-          <ion-row>
-            <ion-col size="12">
-              <app-collection *ngFor="let collection of nftCollections" [collection]="collection"></app-collection>
+                <div class="heading-4 ion-margin-end">{{wallet.addrShort}}</div>
+                <ion-icon name="copy-outline" class="ion-margin-end"></ion-icon>
+                <a [href]="'https://solana.fm/address/'+ this.wallet.addr" target="_blank">
+                  <ion-icon name="link-outline"></ion-icon>
+                </a>
+              </ion-row>
+              <ion-row>
+                <div class="heading-2">{{wallet.balance}}</div>
+              </ion-row>
+              <ion-row>
+                <div class="heading-6">${{(wallet.balance * wallet.coinData?.price?.usd ).toFixed(2)}}</div>
+              </ion-row>
             </ion-col>
           </ion-row>
-        </div>
-        <!-- heree -->
+        </ion-col>
 
-      </ion-col>
+      </ion-row>
 
-      <ion-col sizeSm="12" sizeLg="4">
-        <div class="data-box ion-padding">
-          <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>
-        </div>
-        <div class="data-box ion-padding">
-          <app-defi></app-defi>
-        </div>
-        <div class="data-box ion-padding" id="coin-data">
-          <ion-row class="ion-align-items-center ion-margin-bottom">
-            <ion-img class="ion-margin-end" [src]="wallet.coinData?.image?.small"></ion-img>
-            <span>{{wallet.name}}</span>
-          </ion-row>
-          <ion-row class="ion-align-items-center ion-margin-bottom"><span class="ion-margin-end"
-              id="coin-price">${{wallet.coinData?.price?.usd}} </span> <span class="price-bg"
-              id="coin-price-change">{{wallet?.coinData?.price_change_percentage_24h_in_currency?.usd}}%</span>
-          </ion-row>
-          <ion-row class="ion-margin-bottom">
-            <p>{{wallet.coinData?.desc}}</p>
-          </ion-row>
-          <ion-row class="ion-margin-bottom ion-text-capitalize">
-            <a class="button-text ion-align-items-center" [href]="wallet.coinData.website" target="_blank">
-              <ion-icon name="link-outline"></ion-icon> website
-            </a>
-          </ion-row>
+      <ion-row class="ion-justify-content-between ion-align-items-start">
+        <ion-col size="7.7">
+          <div class="data-box ion-padding">
+            <app-tx [wallet]="wallet"></app-tx>
+          </div>
+          <!-- <div class="data-box ion-padding">
+            <ion-row>
+              <ion-col size="12">
+                <app-accounts></app-accounts>
+              </ion-col>
+            </ion-row>
+          </div>
+   -->
 
-        </div>
-      </ion-col>
+        </ion-col>
 
-    </ion-row>
-  </ion-content>
+        <ion-col sizeSm="12" sizeLg="4">
+          <div class="data-box ion-padding">
+            <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>
+          </div>
+          <div class="data-box ion-padding">
+            <app-defi></app-defi>
+          </div>
+          <div class="data-box ion-padding" id="coin-data">
+            <ion-row class="ion-align-items-center ion-margin-bottom">
+              <ion-img class="ion-margin-end" [src]="wallet.coinData?.image?.small"></ion-img>
+              <span>{{wallet.name}}</span>
+            </ion-row>
+            <ion-row class="ion-align-items-center ion-margin-bottom"><span class="ion-margin-end"
+                id="coin-price">${{wallet.coinData?.price?.usd}} </span> <span class="price-bg"
+                id="coin-price-change">{{wallet?.coinData?.price_change_percentage_24h_in_currency?.usd}}%</span>
+            </ion-row>
+            <ion-row class="ion-margin-bottom">
+              <p>{{wallet.coinData?.desc}}</p>
+            </ion-row>
+            <ion-row class="ion-margin-bottom ion-text-capitalize">
+              <a class="button-text ion-align-items-center" [href]="wallet.coinData.website" target="_blank">
+                <ion-icon name="link-outline"></ion-icon> website
+              </a>
+            </ion-row>
+
+          </div>
+        </ion-col>
+
+      </ion-row>
+    </ion-content>
+    </ng-container>
+    <ng-template #elseTemplate>
+      wallet not connected
+    </ng-template>
 </ion-grid>

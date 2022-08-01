@@ -8,12 +8,14 @@ import { DefiPageRoutingModule } from './defi-routing.module';
 
 import { DefiPage } from './defi.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SwapComponent } from './swap/swap.component';
+import { SelectDappComponent } from './select-dapp/select-dapp.component';
 
 @NgModule({
   imports: [
     SharedModule,
     DefiPageRoutingModule
   ],
-  declarations: [DefiPage]
+  declarations: [DefiPage,SwapComponent,SelectDappComponent]
 })
 export class DefiPageModule {}

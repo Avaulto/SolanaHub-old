@@ -1,6 +1,6 @@
 #stake-box {
     display: block;
-    width: 324px;
+    width: 400px;
     max-width: 100%;
     margin: 0 auto;
 }
@@ -15,6 +15,7 @@
     justify-content: center;
     text-align: center;
     text-transform: capitalize;
+
     div {
         font-weight: 600;
         font-size: 24px;
@@ -30,9 +31,11 @@
         font-size: 12px;
     }
 }
-#stake-amount{
+
+#stake-amount {
     position: relative;
-    span{
+
+    span {
         cursor: pointer;
         position: absolute;
         color: var(--ion-color-primary);
@@ -41,4 +44,48 @@
         top: 12px;
     }
 }
+
+
+#node-selection {
+    width: 100%;
+
+    ion-icon {
+        font-size: 16px;
+    }
+
+    #node-options {
+        margin-top: 6px;
+        background: #04172C;
+        border-radius: 4px;
+        ion-icon{
+            display: none;
+        }
+    }
+
+    #search-box {
+        position: relative;
+        width: 92%;
+        margin: 0 auto;
+        padding: 10px 0 ;
+        ion-input {
+            border: 1px solid var(--ion-color-primary);
+            border-radius: 4px;
+            height: 38px;
+            margin: 0 auto;
+        }
+
+        ion-icon {
+            position: absolute;
+            right: 18px;
+            top: 18px;
+        }
+    }
+    #node-list {
+        --background: transparent;
+        height: 154px;
+    }
+
+
+}
+
 

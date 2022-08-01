@@ -1,0 +1,19 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+ion-button {
+    width: 100%;
+    letter-spacing: 1.5px;
+
+    span {
+        margin-inline-start: 4px;
+    }
+
+    ion-img {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        width: 15px;
+    }
+}

@@ -5,7 +5,7 @@ import { AuthGuard } from './services';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'side-menu',
+    redirectTo: 'home',
     pathMatch: 'full'
   },
   // {
@@ -13,9 +13,9 @@ const routes: Routes = [
   //   loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   // },
   {
-    path: 'side-menu',
-    // canActivate:[AuthGuard],
-    loadChildren: () => import('./pages/side-menu/side-menu.module').then( m => m.SideMenuPageModule)
+    path: "home",
+    loadChildren: () =>
+      import("./pages/home/home.module").then((m) => m.HomePageModule),
   },
   {
     path: 'wallet',
@@ -24,14 +24,6 @@ const routes: Routes = [
   {
     path: 'defi',
     loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
-  },
-  {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
-  },
-  {
-    path: 'new-wallet',
-    loadChildren: () => import('./pages/new-wallet/new-wallet.module').then( m => m.NewWalletPageModule)
   },
   {
     path: 'nft-gallery',

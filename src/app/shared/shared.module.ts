@@ -12,7 +12,11 @@ import {
   DataBoxComponent,
   LogoComponent,
   AssetsBalanceComponent,
-  GoBackBtnComponent
+  GoBackBtnComponent,
+  WalletConnectComponent,
+  WalletAdapterOptionsComponent,
+  WalletConnectedDropdownComponent,
+  LoaderComponent
 } from "./components";
 
 // // import directives
@@ -36,7 +40,11 @@ import {
     DataBoxComponent,
     LogoComponent,
     AssetsBalanceComponent,
-    GoBackBtnComponent
+    GoBackBtnComponent,
+    WalletConnectComponent,
+    WalletAdapterOptionsComponent,
+    WalletConnectedDropdownComponent,
+    LoaderComponent
   ],
   imports: [
     CommonModule,
@@ -66,7 +74,11 @@ import {
     LogoComponent,
     AssetsBalanceComponent,
     GoBackBtnComponent,
-    TooltipModule
+    TooltipModule,
+    WalletConnectComponent,
+    WalletAdapterOptionsComponent,
+    WalletConnectedDropdownComponent,
+    LoaderComponent
   ]
 })
 export class SharedModule {}

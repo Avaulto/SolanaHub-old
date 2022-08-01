@@ -1,0 +1,13 @@
+<div id="solana-wallet-connect">
+  <ng-container *ngIf=" (isReady$ | async) === false; else elseTemplate">
+    <ion-button (click)="showWalletAdapters()" expand="block">
+      <ion-icon name="flash-sharp"></ion-icon> connect wallet
+    </ion-button>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <ion-button (click)="showConnectWalletActions($event)" fill="outline" expand="block">
+      <ion-img [src]="(wallet$ | async)?.adapter?.icon"></ion-img>
+      <span> {{walletPublicKey }} </span>
+    </ion-button>
+  </ng-template>
+</div>

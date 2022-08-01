@@ -1,6 +1,8 @@
+import { PublicKey } from "@solana/web3.js";
+
 export interface Asset {
-    walletType?: string;
     name:string;
+    publicKey?: PublicKey
     addr: any;
     addrShort: string;
     balance: number;

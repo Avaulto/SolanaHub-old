@@ -1,24 +1,23 @@
 <div id="segmented-util" class="ion-text-uppercase">
   <div id="segment-header">
     <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
-    <span (click)="setUtil('reward')" [class.active]="segmentUtilTab == 'reward'">reward</span>
+    <span (click)="setUtil('accounts')" [class.active]="segmentUtilTab == 'accounts'">accounts</span>
     <span (click)="setUtil('send')" [class.active]="segmentUtilTab == 'send'">send</span>
     <span (click)="setUtil('history')" [class.active]="segmentUtilTab == 'history'">history</span>
   </div>
-  <div [ngSwitch]="segmentUtilTab" class="ion-padding">
+  <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
     <p *ngSwitchCase="'stake'">
-      <ng-container *ngIf="!hasStake; else noStake">
-        <app-spot-stake></app-spot-stake>
-      </ng-container>
-      <ng-template #noStake>
-        <app-stake></app-stake>
-      </ng-template>
+      
+        <app-stake [wallet]="wallet" [validatorData]="validatorData"></app-stake>
+
     </p>
-    <p *ngSwitchCase="'reward'">
-      <app-reward></app-reward>
-    </p>
+    <p *ngSwitchCase="'accounts'">
+      
+      <!-- <app-accounts [wallet]="wallet" [stakeAccounts]="stakeAccounts"></app-accounts> -->
+
+  </p>
     <p *ngSwitchCase="'send'">
-      <app-send></app-send>
+      <app-send [wallet]="wallet"></app-send>
     </p>
     <p *ngSwitchCase="'history'">
       <app-history></app-history>

@@ -59,7 +59,6 @@ export class LoginPage implements OnInit {
   async submitForm(){
     this.isSubmitted = true
     const {email, password} = this.signForm.value;
-    console.log(this.segmentAuthTab)
     try {
       
     if(this.segmentAuthTab == 'register'){

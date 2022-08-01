@@ -1,0 +1,91 @@
+<ion-grid>
+<app-loader *ngIf="stakeAccounts.length == 0"></app-loader>
+  <!-- <ion-row id="available-balance " class="stake-balance ion-align-items-center  ion-justify-content-between">
+    <ion-col size="7" class="flex-item-center">
+
+      <div class="table-icon">
+        <ion-icon name="wallet-outline"></ion-icon>
+      </div>
+      <div class="heading-6">
+        Available balance
+      </div>
+    </ion-col>
+    <ion-col size="2.5" class="sub ion-text-left" >
+      24 SOL
+    </ion-col>
+    <ion-col style="text-align:right"  size="2.5">
+    <ion-button  (click)="showStake = !showStake"  class="ion-text-capitalize">
+      <span *ngIf="!showStake">
+        new stake
+      </span> 
+      <span *ngIf="showStake">
+        hide stake box
+      </span> 
+    </ion-button>
+    </ion-col>
+  </ion-row> -->
+  <!-- <ion-row class="ion-margin-top ion-justify-content-center">
+    <app-stake></app-stake>
+  </ion-row>
+  <ion-row id="frozen-balance" class="stake-balance ion-align-items-center  ion-justify-content-between">
+    <ion-col size="10" class="flex-item-center">
+
+      <div class="table-icon">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+      </div>
+      <div class="heading-6">
+        Frozen balance
+      </div>
+    </ion-col>
+    <ion-col class="ion-text-right " size="2">
+      544 SOL
+    </ion-col>
+  </ion-row> -->
+  <!-- <div class="heading-4 ion-margin-bottom ion-text-uppercase">Accounts</div> -->
+  <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
+    *ngFor="let account of stakeAccounts">
+    <ion-col class="flex-item-center">
+      <div class="table-icon">
+        <ion-img [src]="account.validatorData.image"></ion-img>
+      </div>
+      <div class="validator-info heading-6">
+        {{account.validatorData.name}} <br>
+        <span class="sub">
+          fee: {{account.validatorData.commission}}% uptime: {{account.validatorData.wizScore}}%
+        </span>
+      </div>
+    </ion-col>
+
+    <ion-col size="2" class="sub">
+      {{account.shortAddr}}
+    </ion-col>
+    <ion-col size="1.5" class="sub">
+      {{account.balance}}
+    </ion-col>
+    <ion-col size="1">
+      <span [ngSwitch]="account.state">
+        <p *ngSwitchCase="'activating'">
+          <ion-icon name="hourglass-outline"></ion-icon>
+        </p>
+        <p *ngSwitchCase="'deactivating'">
+          <ion-icon name="hourglass-outline"></ion-icon>
+        </p>
+        <p *ngSwitchCase="'active'">
+          <ion-icon name="checkmark-done-outline"></ion-icon>
+        </p>
+        <p *ngSwitchDefault>
+          <ion-icon name="close-outline"></ion-icon>
+        </p>
+      </span>
+    </ion-col>
+
+    <ion-col size="2.5" style="text-align:right" [ngSwitch]="account.state">
+      <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" >unstake</ion-button>
+      <ion-button fill="outline" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
+      <ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">unstake</ion-button>
+      <ion-button fill="outline" color="secondary" *ngSwitchDefault>withraw stake</ion-button>
+
+    </ion-col>
+  </ion-row>
+
+</ion-grid>

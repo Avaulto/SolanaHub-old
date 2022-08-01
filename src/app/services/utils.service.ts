@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, filter, Observable } from "rxjs";
 // import * as moment from "moment";
 // import { v4 as uuidv4 } from "uuid";
 declare global {
@@ -16,8 +16,8 @@ export class UtilsService {
   public updateSystemPair(string): void{
     this._systemPair.next(string);
   }
-  public addrShorthand(addr: string): {addr: string, addrShort:string} {
-    return {addr, addrShort: addr.substring(0,6) +'....' + addr.substring(addr.length - 5,addr.length)}
+  public addrUtil(addr: string): {addr: string, addrShort:string} {
+    return {addr, addrShort: addr?.substring(0, 4) + '...' + addr.substring(addr.length - 4, addr.length[addr.length])}
   }
   public calcPair(){
     this._systemPair.value
@@ -25,6 +25,7 @@ export class UtilsService {
   public getBlockchainAssets(addr: string){
     let assets = {};
   }
+  isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
   // generateUUID() {
   //   return uuidv4();
   // }

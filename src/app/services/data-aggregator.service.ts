@@ -46,7 +46,7 @@ export class DataAggregatorService {
     const headers = { Headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) }
     return this.apiService.get(`${this._sonarAPI}/${address}`,null,  headers).pipe(
       map((data) => {
-        console.log(data)
+        // console.log(data)
         return data;
       }),
       catchError((error) => this._formatErrors(error))

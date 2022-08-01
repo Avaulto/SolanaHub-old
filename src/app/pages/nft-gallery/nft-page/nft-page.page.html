@@ -36,8 +36,8 @@
                     <span class="sub">{{attr.value}}</span>
                 </div>
             </ion-row>
-            <ion-row class="ion-margin-bottom ion-text-capitalize">
-                <a class="button-text ion-align-items-center" [href]="NFT.websiteURL" target="_blank"><ion-icon name="link-outline"></ion-icon> website</a>
+            <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT.external_url">
+                <a class="button-text ion-align-items-center" [href]="NFT.external_url" target="_blank"><ion-icon name="link-outline"></ion-icon> website</a>
             </ion-row>
             <ion-row class="ion-align-items-center ion-text-capitalize">
                 <a class="button-text ion-align-items-center" [href]="NFT.explorerURL" target="_blank"><ion-icon name="list-outline"></ion-icon> view on explorer</a>

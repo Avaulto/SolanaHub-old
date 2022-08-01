@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { NavController } from '@ionic/angular';
 import { getParsedNftAccountsByOwner, resolveToWalletAddress } from '@nfteyez/sol-rayz';
-import { PublicKey } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { Asset, NFTdata, NFTGroup } from 'src/app/models';
 import { ApiService, UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
-import { SolanaFunctionsService } from 'src/app/services/solana-functions.service';
+import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
+import { ValidatorData } from 'src/app/shared/models/validatorData.model';
+
 
 @Component({
   selector: 'app-wallet',
@@ -14,21 +17,24 @@ import { SolanaFunctionsService } from 'src/app/services/solana-functions.servic
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit {
-  nftCollections: NFTGroup[] = []
-  deleteWallet: boolean = false;
+  readonly isReady$ = this._walletStore.connected$
+  // nftCollections: NFTGroup[] = []
+  // deleteWallet: boolean = false;
+  public validatorData: ValidatorData[];
+  public stakeAccounts
+  public publicKey: PublicKey = null;
   public wallet: Asset ={
-    walletType: 'solana',
     name: 'solana',
-    addr:'BFMufPp4wW276nFzB7FVHgtY8FTahzn53kxxJaNpPGu6',
-    addrShort:this.utils.addrShorthand('BFMufPp4wW276nFzB7FVHgtY8FTahzn53kxxJaNpPGu6').addrShort,
-    balance: 8000.00,
+    addr: '',
+    addrShort: '',
+    balance: 0,
     baseOfPortfolio: '50%',
     icon:'/assets/images/Secret.png',
     coinData: {},
     // todo - GET owner tokens from the blockchain
     tokens: [{
       name: 'MNDE',
-      addrShort:this.utils.addrShorthand('5JsBHVF9p9DWhKYiTV59S3gdeSVXodMmrv9TGoiLVuEY').addrShort,
+      addrShort:this.utils.addrUtil('5JsBHVF9p9DWhKYiTV59S3gdeSVXodMmrv9TGoiLVuEY').addrShort,
       addr: '5JsBHVF9p9DWhKYiTV59S3gdeSVXodMmrv9TGoiLVuEY',
       balance: 55148.33,
       // themeCurrency: 5423,
@@ -37,7 +43,7 @@ export class WalletPage implements OnInit {
     },
     {
       name: 'RAY',
-      addrShort:this.utils.addrShorthand('9SYCRB5XoN3bnxCKSD868z3ceav6RFpHeyJtMRYCViw6').addrShort,
+      addrShort:this.utils.addrUtil('9SYCRB5XoN3bnxCKSD868z3ceav6RFpHeyJtMRYCViw6').addrShort,
       addr: '9SYCRB5XoN3bnxCKSD868z3ceav6RFpHeyJtMRYCViw6',
       balance: 2.25464,
       baseOfPortfolio: '30%',
@@ -45,7 +51,7 @@ export class WalletPage implements OnInit {
     },
     {
       name: 'USDC',
-      addrShort: this.utils.addrShorthand('GT2vRFB8X1oHcpKwt5EHidFeUX6WUvbxrpfZRqXTEkEe').addrShort,
+      addrShort: this.utils.addrUtil('GT2vRFB8X1oHcpKwt5EHidFeUX6WUvbxrpfZRqXTEkEe').addrShort,
       addr: 'GT2vRFB8X1oHcpKwt5EHidFeUX6WUvbxrpfZRqXTEkEe',
       balance: 1201,
       baseOfPortfolio: '20%',
@@ -55,23 +61,41 @@ export class WalletPage implements OnInit {
   constructor(private utils: UtilsService,
     private apiService:ApiService ,
     private dataAggregator:DataAggregatorService,
-    private solanaFn: SolanaFunctionsService
+    private solanaUtilsService: SolanaUtilsService,
+    private _connectionStore: ConnectionStore,
+    private _walletStore: WalletStore,
     ) { }
 
 
   ngOnInit() {
     // this.dataAggregator.getSolWalletData('JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD').subscribe(val =>console.log(val))
     this.dataAggregator.getCoinData(this.wallet.name).subscribe(coinData => this.wallet.coinData = coinData);
-    const pk = new PublicKey('JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD')
-    this.solanaFn.getStakeAccountsInfo(pk);
-    // this.solanaFn.getStakeAccountsByOwner(pk)
-    this._getNfts();
+
+    this._walletStore.anchorWallet$.subscribe(async wallet => {
+      if(wallet){
+
+        this.setWallet(wallet)
+        
+          const balanace = await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey);
+          this.wallet.balance = Number((balanace / LAMPORTS_PER_SOL).toFixed(3));
+        
+
+        // const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.publicKey)
+        // const native = splAccounts.filter(token => token.account.data.)
+        // console.log(stakeAccounts)
+        // this._getNfts(pk);
+      }
+    })
+
   }
 
-  public showDeleteUI(show: boolean): void{
-    this.deleteWallet = show;
+  private setWallet(wallet: any){
+    const walletAddrs = this.utils.addrUtil(wallet.publicKey.toBase58());
+    this.wallet.publicKey = wallet.publicKey;
+    this.wallet.addr = walletAddrs.addr
+    this.wallet.addrShort = walletAddrs.addrShort
   }
-  private _getNfts(){
+  private _getNfts(pk: PublicKey){
     (async () => {
       let solanaNFTs: NFTGroup = {
         collectionName: 'Marinade Chefs',
@@ -102,8 +126,7 @@ export class WalletPage implements OnInit {
           })
         }
         })
-      this.nftCollections.push(solanaNFTs)
-      console.log(this.nftCollections)
+      // this.nftCollections.push(solanaNFTs)
     })();
   }
 }

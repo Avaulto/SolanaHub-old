@@ -36,7 +36,12 @@
     font-size: 13px;
     color: white;
 }
-
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; 
+}
 
 .title {
     text-transform: capitalize;
@@ -101,7 +106,14 @@
     font-size: 11px;
     line-height: 16px;
 }
+.ButtonText{
+font-size: 12px;
+font-weight: 500;
+line-height: 18px;
+letter-spacing: 0em;
+text-align: left;
 
+}
 
 .ion-color-primary.button-disabled {
     --ion-color-base: #092F4E !important;
@@ -112,6 +124,9 @@ ion-button{
     height: 32px;
     text-transform: capitalize;
     font-size: 12px;
+    &[disabled]{
+        opacity: 0.8;
+    }
 }
 ion-input, ion-select {
     border: 2px solid transparent;
@@ -151,7 +166,7 @@ ion-input, ion-select {
     --color: white;
     --background: #04172C;
     --height: 50px;
-    --width: 258px;
+    --width: 280px;
     --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     --border-radius: 4px;
     font-size: 12px;
@@ -173,4 +188,13 @@ ion-input, ion-select {
         --border-color: #4285F4;
         --button-color: #4285F4;
     }
+}
+
+
+.wallet-connect-dropdown{
+    --width:130px;
+    padding: 12px;
+}
+.wallet-adapter-options{
+    --width:350px;
 }

@@ -13,11 +13,6 @@ export class ChartComponent implements AfterViewInit {
   constructor() { }
 
   ngAfterViewInit(): void {
-    console.log('runs')
-    this.createLineChart();
-  }
-  ionViewWillEnter() {
-    console.log('runs')
     this.createLineChart();
   }
   createLineChart() {

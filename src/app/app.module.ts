@@ -22,9 +22,12 @@ import { AngularFireModule } from '@angular/fire/compat';
 
 
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
+import { CustomInterceptor } from './services/http.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, SideMenuPage],
     imports: [
         SharedModule,
         BrowserModule,
@@ -45,6 +48,7 @@ import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
         { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
         { provide: USE_DEVICE_LANGUAGE, useValue: true },
         ScreenTrackingService, UserTrackingService
     ],

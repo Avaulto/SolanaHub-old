@@ -8,15 +8,15 @@ import { WalletPageRoutingModule } from './wallet-routing.module';
 
 import { WalletPage } from './wallet.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CollectionComponent } from './collection/collection.component';
 import { StakeComponent } from './tx/stake/stake.component';
 
-import { RewardComponent } from './tx/reward/reward.component';
-import { SendComponent } from './tx/send/send.component';
-import { HistoryComponent } from './tx/history/history.component';
+import { SendComponent } from './send/send.component';
+import { HistoryComponent } from './history/history.component';
 import { TxComponent } from './tx/tx.component';
 import { SpotStakeComponent } from './tx/spot-stake/spot-stake.component';
 import { DefiComponent } from './defi/defi.component';
+import { AccountsComponent } from './tx/accounts/accounts.component';
+import { ValidatorComponent } from './tx/stake/validator/validator.component';
 
 @NgModule({
   imports: [
@@ -24,12 +24,13 @@ import { DefiComponent } from './defi/defi.component';
     SharedModule,
     WalletPageRoutingModule
   ],
-  declarations: [WalletPage,
-    CollectionComponent,
+  declarations: [
+    WalletPage,
+    AccountsComponent,
     TxComponent,
      StakeComponent,
+     ValidatorComponent,
      SpotStakeComponent,
-     RewardComponent,
      SendComponent,
      HistoryComponent,
      DefiComponent
