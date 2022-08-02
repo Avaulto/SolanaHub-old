@@ -6,10 +6,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  readonly isReady$ = this._walletStore.connected$
   constructor(
-    private _walletStore: WalletStore
   ) {
-    this.isReady$.subscribe(val =>console.log(val))
    }
 }

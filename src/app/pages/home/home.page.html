@@ -1,5 +1,4 @@
 <ion-grid class="ion-padding">
-    <ng-container *ngIf="isReady$ | async; else elseTemplate">
         <ion-row class="ion-justify-content-between ">
             <ion-col sizeSm="12" sizeLg="3.7" class="data-box ion-padding">
                 <app-balance></app-balance>
@@ -17,9 +16,5 @@
                 <app-assets-balance title="wallets"></app-assets-balance>
             </ion-col>
         </ion-row>
-    </ng-container>
-    <ng-template #elseTemplate>
-       wallet not connected
-    </ng-template>
 
 </ion-grid>

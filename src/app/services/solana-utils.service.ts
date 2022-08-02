@@ -61,7 +61,7 @@ export class SolanaUtilsService {
 
   public async getStakeAccountsByOwner(publicKey: PublicKey) {
     const validatorsTest = await this.connection.getClusterNodes();
-    console.log(validatorsTest)
+    // console.log(validatorsTest)
     const sortedStakeAccounts: StakeAccountExtended[] = []
 
     // get stake account

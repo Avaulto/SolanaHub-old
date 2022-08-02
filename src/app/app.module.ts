@@ -25,9 +25,10 @@ import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { CustomInterceptor } from './services/http.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
+import { WalletNotConnectedStateComponent } from './wallet-not-connected-state/wallet-not-connected-state.component';
 
 @NgModule({
-    declarations: [AppComponent, SideMenuPage],
+    declarations: [AppComponent, SideMenuPage, WalletNotConnectedStateComponent],
     imports: [
         SharedModule,
         BrowserModule,

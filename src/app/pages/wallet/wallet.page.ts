@@ -80,9 +80,9 @@ export class WalletPage implements OnInit {
           this.wallet.balance = Number((balanace / LAMPORTS_PER_SOL).toFixed(3));
         
 
-        // const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.publicKey)
+        const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey)
         // const native = splAccounts.filter(token => token.account.data.)
-        // console.log(stakeAccounts)
+        console.log(splAccounts)
         // this._getNfts(pk);
       }
     })

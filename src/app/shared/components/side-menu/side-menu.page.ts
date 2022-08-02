@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faKickstarterK } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRightArrowLeft, faBox, faBoxOpen, faDroplet, faHandHoldingDroplet, faHome, faImage, faPalette, faPlus, faScrewdriverWrench, faSeedling, faSwimmingPool, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightArrowLeft, faBox, faBoxOpen, faDroplet, faHandHoldingDroplet, faHome, faImage, faPalette, faPlus, faScrewdriverWrench, faSeedling, faShieldHeart, faSwimmingPool, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { MenuController } from '@ionic/angular';
 
 
@@ -45,31 +45,46 @@ export class SideMenuPage implements OnInit {
       icon: faPalette
     },
     {
-      title: "Defi",
-      icon: faBox,
-      children: [
-        {
-          title: "swap",
-          url: "/defi/swap",
-          icon: faArrowRightArrowLeft,
-        },
-        {
-          title: "staking",
-          url: "/defi/staking",
-          icon: faDroplet,
-        },
-        {
-          title: "liquid staking",
-          url: "/defi/liquid-staking",
-          icon: faHandHoldingDroplet,
-        },
-        {
-          title: "pools",
-          url: "/defi/pools",
-          icon: faSwimmingPool,
-        },
-      ]
+      title: "swap",
+      url: "/defi/swap",
+      icon: faArrowRightArrowLeft,
     },
+    {
+      title: "liquid staking",
+      url: "/defi/liquid-staking",
+      icon: faHandHoldingDroplet,
+    },
+    {
+      title: "pools",
+      url: "/defi/pools",
+      icon: faSwimmingPool,
+    },
+    {
+      title: "support-us",
+      url: "/defi/pools",
+      icon: faShieldHeart,
+    },
+    // {
+    //   title: "Defi",
+    //   icon: faBox,
+    //   children: [
+    //     {
+    //       title: "swap",
+    //       url: "/defi/swap",
+    //       icon: faArrowRightArrowLeft,
+    //     },
+    //     {
+    //       title: "liquid staking",
+    //       url: "/defi/liquid-staking",
+    //       icon: faHandHoldingDroplet,
+    //     },
+    //     {
+    //       title: "pools",
+    //       url: "/defi/pools",
+    //       icon: faSwimmingPool,
+    //     },
+    //   ]
+    // },
 
   ];
   addNewWallet() {

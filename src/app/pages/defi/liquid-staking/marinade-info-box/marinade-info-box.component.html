@@ -1,0 +1,43 @@
+
+<ion-row class="ion-justify-content-between ion-text-capitalize">
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+      Total SOL staked
+      </div>
+      <app-loader *ngIf="!marinadeInfo?.TVL"></app-loader>
+      <div class="heading-2">
+          {{(marinadeInfo?.TVL?.staked_sol).toLocaleString()}}
+      </div>
+      <div class="heading-5">=  ${{(marinadeInfo?.TVL?.staked_usd).toLocaleString()}}</div>
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+      ratio
+      </div>
+      <app-loader *ngIf="!marinadeInfo?.msolRatio"></app-loader>
+      <div class="heading-2">
+          {{marinadeInfo?.msolRatio}} mSOL / 1.00 SOL
+      </div>
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+          shared between 
+      </div> 
+      <app-loader *ngIf="!marinadeInfo?.amountOfValidators"></app-loader>
+      <div class="heading-2">
+          {{marinadeInfo?.amountOfValidators}}
+      </div>
+      <div class="heading-4">validators</div>
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+          mSOL supply
+      </div> 
+      <app-loader *ngIf="!marinadeInfo?.supply"></app-loader>
+      <div class="heading-2">
+          {{marinadeInfo?.supply}}
+      </div>
+      <!-- <div class="heading-5">validators</div> -->
+  </ion-col>
+
+</ion-row>
