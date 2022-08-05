@@ -5,10 +5,9 @@
   <div class="node-info">
     <div class="node-name ButtonText">{{validatorData?.name || 'select node'}}</div>
     <ion-icon *ngIf="showDropDownIcon" name="chevron-down-outline" [ngClass]="{'selected-validator': showValidatorList}"></ion-icon>
-    <div  *ngIf="validatorData" class="node-sub sub">
-      <span>fee: {{validatorData.commission}}% </span>
-      <span>estimated APY: {{validatorData.apy_estimate}}% </span>
-      <span>Wiz score: {{validatorData.wizScore}}</span>
+    <div  *ngIf="validatorData" class="node-sub">
+      <span class="sub">fee: {{validatorData.commission}}% </span>
+      <span class="sub">estimated APY: {{validatorData.apy_estimate}}% </span>
     </div>
   </div>
 </div>

@@ -22,7 +22,9 @@
         }
     }
 }
-
+ion-row{
+    margin-bottom:8px;
+}
 
 #liquid-stake-form{
     width: 324px;
@@ -31,7 +33,6 @@
 }
 #stake-apr-box {
     height: 99px;
-    width: inherit;
     background: linear-gradient(99.46deg, #FF845A 13.88%, #FD49AD 124.05%);
     border-radius: 6px;
     display: flex;
@@ -55,7 +56,11 @@
         font-size: 12px;
     }
 }
-
+#balance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 #stake-amount{
     position: relative;
     span{
@@ -66,4 +71,9 @@
         right: 15px;
         top: 12px;
     }
+}
+
+#exchange-rate{
+    display: flex;
+    align-items: center;
 }

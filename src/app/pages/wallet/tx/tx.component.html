@@ -1,5 +1,5 @@
-<div id="segmented-util" class="ion-text-uppercase">
-  <div id="segment-header">
+<div id="segmented-util">
+  <div id="segment-header" class="ion-text-uppercase">
     <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
     <span (click)="setUtil('accounts')" [class.active]="segmentUtilTab == 'accounts'">accounts</span>
     <span (click)="setUtil('send')" [class.active]="segmentUtilTab == 'send'">send</span>
@@ -8,12 +8,12 @@
   <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
     <p *ngSwitchCase="'stake'">
       
-        <app-stake [wallet]="wallet" [validatorData]="validatorData"></app-stake>
+        <app-stake [avgApy]="avgApy" [wallet]="wallet" [validatorData]="validatorData"></app-stake>
 
     </p>
     <p *ngSwitchCase="'accounts'">
       
-      <!-- <app-accounts [wallet]="wallet" [stakeAccounts]="stakeAccounts"></app-accounts> -->
+      <app-accounts [wallet]="wallet" ></app-accounts>
 
   </p>
     <p *ngSwitchCase="'send'">

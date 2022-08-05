@@ -34,6 +34,7 @@ export class TxInterceptService {
       transaction.compileMessage(),
       'confirmed',
     )).value;
+    console.log('to send', lamportToSend,'tx fee', txFee,'balance', balance)
     const balanceCheck = lamportToSend < balance + txFee ? true : false;
     if (!balanceCheck) {
       this._formatErrors({ message: 'not enogh balance' })
@@ -68,16 +69,23 @@ export class TxInterceptService {
 
   }
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string) {
+    const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
+      StakeProgram.space,
+    );
+    if(lamportsToDelegate < minimumAmount){
+      return this._formatErrors({message:`minimum size for stake account creation is: ${minimumAmount / LAMPORTS_PER_SOL} sol`})
+    }
+
     const createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey) => {
-      const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
-        StakeProgram.space,
-      );
+  
+
+      console.log('minimum account', minimumAmount)
       const fromPubkey = stakeAccountOwner;
       const newStakeAccount = new Keypair();
       const authorizedPubkey = stakeAccountOwner;
       const authorized = new Authorized(authorizedPubkey, authorizedPubkey);
       const lockup = new Lockup(0, 0, fromPubkey);
-      const lamports = minimumAmount + lamportToSend;
+      const lamports = lamportToSend;
       const stakeAccountIns: CreateStakeAccountParams = {
         fromPubkey,
         stakePubkey: newStakeAccount.publicKey,

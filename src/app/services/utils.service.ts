@@ -25,6 +25,9 @@ export class UtilsService {
   public getBlockchainAssets(addr: string){
     let assets = {};
   }
+  public fixedNum(number): number{
+    return Number(number.toFixed(3))
+  }
   isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
   // generateUUID() {
   //   return uuidv4();

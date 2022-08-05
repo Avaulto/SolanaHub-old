@@ -5,6 +5,7 @@ import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import bn from 'bn.js'
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
+import { UtilsService } from 'src/app/services';
 
 @Component({
   selector: 'app-liquid-staking',
@@ -29,7 +30,8 @@ export class LiquidStakingComponent implements OnInit {
   constructor(
     private solanaUtilsService: SolanaUtilsService,
     private txInterceptService: TxInterceptService,
-    private _walletStore: WalletStore
+    private _walletStore: WalletStore,
+    private utilsService: UtilsService
   ) { }
 
   ngOnInit() {
@@ -38,8 +40,7 @@ export class LiquidStakingComponent implements OnInit {
         this.wallet = wallet;
         this.initMarinade();
         const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
-        this.solBalance = Number(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL).toFixed(3));
-        console.log(this.solBalance)
+        this.solBalance = this.utilsService.fixedNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
         this.mSOLBalance = splAccounts.filter(account => account.account.data['parsed'].info.mint == "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So")[0].account.data['parsed'].info.tokenAmount.amount / LAMPORTS_PER_SOL
         console.log(splAccounts,this.mSOLBalance)
       }
@@ -50,7 +51,7 @@ export class LiquidStakingComponent implements OnInit {
     this.segmentUtilTab = util;
   }
   setMaxAmountSOL(){
-    this.stakeAmount = this.solBalance;
+    this.stakeAmount = this.solBalance - 0.0001;
     console.log(this.stakeAmount, this.solBalance)
   }
   setMaxAmountMSOL(){

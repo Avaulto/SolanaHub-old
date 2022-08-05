@@ -2,12 +2,13 @@
 
   <form [formGroup]="stakeForm" id="stake-box" class="ion-text-capitalize">
     <ion-row class="ion-margin-bottom" id="stake-apr-box">
-      <div>~6.5% <span>APY</span></div>
+      <div>~{{avgApy}}% <span>APY</span></div>
       <p id="">Earn passive income from your crypto by staking it.</p>
     </ion-row>
     <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
       <div id="">stake</div>
-      <div id="balance">Available balance: {{wallet?.balance}}</div>
+      <div id="balance">Available balance: {{wallet?.balance}} <ion-icon tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.
+        " placement="top" name="alert-circle-outline"></ion-icon> </div>
     </ion-row>
     <ion-row id="stake-amount">
       <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
@@ -28,13 +29,13 @@
 
         <div id="node-options" *ngIf="showValidatorList">
           <div class="nodes" id="search-box">
-            <ion-input (ionChange)="onSearch($event.target)" type="search" placeholder="search"></ion-input>
+            <ion-input (ionChange)="onSearch($event.target)"  type="search" placeholder="search"></ion-input>
             <ion-icon name="search-outline"></ion-icon>
           </div>
    
             <ion-content  id="node-list">
-              <app-loader *ngIf="loaderService.isLoading | async"></app-loader>
-              <ion-virtual-scroll [items]="validatorData | filter: 'name':searchTerm" approxItemHeight="54px">
+              <app-loader *ngIf="validatorData.length == 0"></app-loader>
+              <ion-virtual-scroll *ngIf="validatorData.length > 0" [items]="validatorData | filter: 'name':searchTerm" approxItemHeight="54px">
                 <div *virtualItem="let validator">
                   <app-validator [validatorData]="validator" [searchTerm]="searchTerm"
                     (setSelectedValidator)="setSelectedValidator($event)"></app-validator>
@@ -50,5 +51,5 @@
       <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button" class="ion-text-capitalize">stake</ion-button>
     </ion-row>
   </form>
-
+<app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc>
 </ion-grid>

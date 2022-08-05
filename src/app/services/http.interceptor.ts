@@ -29,6 +29,8 @@ export class CustomInterceptor implements HttpInterceptor {
 
     this.loaderService.show();
     const request = req.clone({ setHeaders: headersConfig });
-    return next.handle(request).pipe(finalize(() => this.loaderService.hide()));
+    return next.handle(request).pipe(
+      finalize(() => this.loaderService.hide())
+      );
   }
 }

@@ -17,10 +17,10 @@ import { SpotStakeComponent } from './tx/spot-stake/spot-stake.component';
 import { DefiComponent } from './defi/defi.component';
 import { AccountsComponent } from './tx/accounts/accounts.component';
 import { ValidatorComponent } from './tx/stake/validator/validator.component';
+import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
 
 @NgModule({
   imports: [
-    SharedModule,
     SharedModule,
     WalletPageRoutingModule
   ],
@@ -28,12 +28,13 @@ import { ValidatorComponent } from './tx/stake/validator/validator.component';
     WalletPage,
     AccountsComponent,
     TxComponent,
-     StakeComponent,
-     ValidatorComponent,
-     SpotStakeComponent,
-     SendComponent,
-     HistoryComponent,
-     DefiComponent
-    ]
+    StakeComponent,
+    ValidatorComponent,
+    SpotStakeComponent,
+    SendComponent,
+    HistoryComponent,
+    DefiComponent,
+    ApyCalcComponent
+  ]
 })
-export class WalletPageModule {}
+export class WalletPageModule { }

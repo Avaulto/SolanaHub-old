@@ -2,12 +2,11 @@
     display: block;
     width: 400px;
     max-width: 100%;
-    margin: 0 auto;
+    margin: 8px auto;
 }
 
 #stake-apr-box {
     height: 99px;
-    width: inherit;
     background: linear-gradient(99.46deg, #FF845A 13.88%, #FD49AD 124.05%);
     border-radius: 6px;
     display: flex;
@@ -15,7 +14,6 @@
     justify-content: center;
     text-align: center;
     text-transform: capitalize;
-
     div {
         font-weight: 600;
         font-size: 24px;
@@ -44,7 +42,14 @@
         top: 12px;
     }
 }
-
+#balance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    ion-icon{
+        margin-inline-start: 6px;
+    }
+}
 
 #node-selection {
     width: 100%;

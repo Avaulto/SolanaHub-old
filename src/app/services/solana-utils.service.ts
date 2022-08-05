@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ConnectionStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, Connection, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
 import { StakeAccountExtended } from '../shared/models/stakeAccountData.model';
 import { ApiService } from './api.service';
@@ -15,7 +15,7 @@ import { UtilsService } from './utils.service';
 })
 export class SolanaUtilsService {
   public connection: Connection;
-  public validatorsData:ValidatorData[];
+  public validatorsData: BehaviorSubject<ValidatorData[]> = new BehaviorSubject([] as ValidatorData[]);
   constructor(
     private apiService: ApiService,
     private toasterService: ToasterService,
@@ -40,7 +40,7 @@ export class SolanaUtilsService {
   public getValidatorData(vote_identity: string = ''): Observable<any> {
     return this.apiService.get(`https://api.stakewiz.com/validators/${vote_identity}`).pipe(
       map((validators) => {
-        const filteredValidators: ValidatorData[] = validators.filter(validator => validator.delinquent == false).map(validator => {
+        const filteredValidators: ValidatorData[] = validators.map(validator => {
           return {
             name: validator.name || '',
             image: validator.image || '/assets/images/icons/node-placeholder.svg',
@@ -52,16 +52,24 @@ export class SolanaUtilsService {
             uptime: validator.uptime
           }
         })
-        this.validatorsData = filteredValidators;
+        this.validatorsData.next(filteredValidators);
         return filteredValidators;
       }),
       catchError(this._formatErrors)
     );
   }
+  public getAvgApy(){
+    return this.apiService.get(`https://api.stakewiz.com/cluster_stats`).pipe(
+      map((clusterInfo) => {
+        const {avg_apy} = clusterInfo;
 
+        return avg_apy
+      }),
+      catchError(this._formatErrors)
+    );
+  }
   public async getStakeAccountsByOwner(publicKey: PublicKey) {
-    const validatorsTest = await this.connection.getClusterNodes();
-    // console.log(validatorsTest)
+
     const sortedStakeAccounts: StakeAccountExtended[] = []
 
     // get stake account
@@ -87,8 +95,9 @@ export class SolanaUtilsService {
       const stake = account.account.data.parsed.info.stake.delegation.stake
       const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
       const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
-      // console.log( validatorVoteKey, account,this.validatorData )
-      const validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey )[0]
+
+      const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey )[0]
+      console.log(active,state)
       // console.log(validator)
       const stakeAccountInfo: StakeAccountExtended = {
         addr,
