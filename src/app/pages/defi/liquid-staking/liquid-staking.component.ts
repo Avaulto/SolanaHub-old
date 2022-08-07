@@ -6,6 +6,8 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import bn from 'bn.js'
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import { UtilsService } from 'src/app/services';
+import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
+import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-liquid-staking',
@@ -13,20 +15,18 @@ import { UtilsService } from 'src/app/services';
   styleUrls: ['./liquid-staking.component.scss'],
 })
 export class LiquidStakingComponent implements OnInit {
-  public segmentUtilTab: string = 'stake'
+  public marinade: Marinade;
+  public marinadeInfo;  
   public wallet;
-  public solBalance: number = 0;
-  public mSOLBalance: number = 0;
-  marinadeInfo;
-
-  formSubmitted: boolean = false;
-  stakeAmount: number;
-  unStakeAmount: number;
-  // @ViewChild('stakeAmount') stakeAmount: IonInput;
-  // @ViewChild('unStakeAmount') unStakeAmount: IonInput;
-
-  
-  private marinade: Marinade;
+  public stakeAccountsLength: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
+    switchMap(async (wallet) => {
+      const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
+      return stakeAccounts.length
+    }),
+    //  filter((res: any[]) => res.length > 0),
+    distinctUntilChanged()
+  )
+  public solBalance = 0;
   constructor(
     private solanaUtilsService: SolanaUtilsService,
     private txInterceptService: TxInterceptService,
@@ -34,60 +34,32 @@ export class LiquidStakingComponent implements OnInit {
     private utilsService: UtilsService
   ) { }
 
-  ngOnInit() {
+
+  async ngOnInit() {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
       if (wallet) {
         this.wallet = wallet;
-        this.initMarinade();
-        const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
         this.solBalance = this.utilsService.fixedNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        this.mSOLBalance = splAccounts.filter(account => account.account.data['parsed'].info.mint == "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So")[0].account.data['parsed'].info.tokenAmount.amount / LAMPORTS_PER_SOL
-        console.log(splAccounts,this.mSOLBalance)
+        this.initMarinade();
+        //const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
       }
     })
   }
 
-  setUtil(util: string){
-    this.segmentUtilTab = util;
-  }
-  setMaxAmountSOL(){
-    this.stakeAmount = this.solBalance - 0.0001;
-    console.log(this.stakeAmount, this.solBalance)
-  }
-  setMaxAmountMSOL(){
-    this.unStakeAmount = this.mSOLBalance;
-  }
-  async initMarinade() {
+
+  async initMarinade(): Promise<void> {
     const config = new MarinadeConfig({
       connection: this.solanaUtilsService.connection,
       publicKey: this.wallet.publicKey
     })
     this.marinade = new Marinade(config)
-    const stake = await this.marinade.getMarinadeState();
-    console.log(this.marinade , stake)
-  }
-  async liquidStake() {
-    console.log('init stake')
-    const amount:number = Number(this.stakeAmount);
-    const sol = new bn(amount * LAMPORTS_PER_SOL);
-
-    const {
-      associatedMSolTokenAccountAddress,
-      transaction,
-    } = await this.marinade.deposit(sol);
-    console.log(associatedMSolTokenAccountAddress.toBase58())
-    this.txInterceptService.sendTx([transaction], this.wallet.publicKey)
-    // console.log(signature)
-  }
-  public async liquidUnstake() {
-    const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
-    const {
-      associatedMSolTokenAccountAddress,
-      transaction,
-    } = await this.marinade.liquidUnstake(sol)
-    console.log(associatedMSolTokenAccountAddress)
-    // sign and send the `transaction`
-    this.txInterceptService.sendTx([transaction], this.wallet.publicKey)
+    const state = await this.marinade.getMarinadeState();
+    // console.log(this.marinade.depositStakeAccount , state)
   }
 
+
+  public stakePate: 'sol' | 'stakeAcc' = 'sol'
+  public selectStakePath(option: 'sol' | 'stakeAcc'): void{
+    this.stakePate = option
+  }
 }

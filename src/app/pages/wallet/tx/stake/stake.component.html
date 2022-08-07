@@ -22,28 +22,20 @@
 
       <div id="node-selection">
 
-
-        <app-validator (click)="showValidatorList = !showValidatorList" [showValidatorList]="showValidatorList"
+        <app-select-item 
+        [item]="selectedValidator"
+        (click)="showValidatorList = !showValidatorList" 
+        [isDropDownOpen]="showValidatorList"
+         [showDropDownIcon]="true"
+         >
+        </app-select-item>
+        <!-- <app-validator (click)="showValidatorList = !showValidatorList" [showValidatorList]="showValidatorList"
           [validatorData]="selectedValidator" [showDropDownIcon]="true">
-        </app-validator>
+        </app-validator> -->
 
-        <div id="node-options" *ngIf="showValidatorList">
-          <div class="nodes" id="search-box">
-            <ion-input (ionChange)="onSearch($event.target)"  type="search" placeholder="search"></ion-input>
-            <ion-icon name="search-outline"></ion-icon>
-          </div>
-   
-            <ion-content  id="node-list">
-              <app-loader *ngIf="validatorData.length == 0"></app-loader>
-              <ion-virtual-scroll *ngIf="validatorData.length > 0" [items]="validatorData | filter: 'name':searchTerm" approxItemHeight="54px">
-                <div *virtualItem="let validator">
-                  <app-validator [validatorData]="validator" [searchTerm]="searchTerm"
-                    (setSelectedValidator)="setSelectedValidator($event)"></app-validator>
-                </div>
-              </ion-virtual-scroll>
-            </ion-content>
-        
-        </div>
+        <app-select-box *ngIf="showValidatorList"  [dataset]="validatorsData" [filterBy]="'name'" (onSelectItem)="setSelectedValidator($event)">
+          
+        </app-select-box>
 
       </div>
     </ion-row>

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ValidatorComponent } from './validator.component';
+import { StakeSolBoxComponent } from './stake-sol-box.component';
 
-describe('ValidatorComponent', () => {
-  let component: ValidatorComponent;
-  let fixture: ComponentFixture<ValidatorComponent>;
+describe('StakeSolBoxComponent', () => {
+  let component: StakeSolBoxComponent;
+  let fixture: ComponentFixture<StakeSolBoxComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ValidatorComponent ],
+      declarations: [ StakeSolBoxComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ValidatorComponent);
+    fixture = TestBed.createComponent(StakeSolBoxComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

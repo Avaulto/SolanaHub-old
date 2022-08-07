@@ -16,7 +16,6 @@ import { TxComponent } from './tx/tx.component';
 import { SpotStakeComponent } from './tx/spot-stake/spot-stake.component';
 import { DefiComponent } from './defi/defi.component';
 import { AccountsComponent } from './tx/accounts/accounts.component';
-import { ValidatorComponent } from './tx/stake/validator/validator.component';
 import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
     AccountsComponent,
     TxComponent,
     StakeComponent,
-    ValidatorComponent,
     SpotStakeComponent,
     SendComponent,
     HistoryComponent,

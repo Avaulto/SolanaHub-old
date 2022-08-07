@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { observable, Observable, Subscriber } from 'rxjs';
+import { map, observable, Observable, Subscriber, switchMap } from 'rxjs';
 import { Asset } from 'src/app/models';
 import { LoaderService, UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
@@ -15,7 +15,19 @@ import { ValidatorData } from 'src/app/shared/models/validatorData.model';
 })
 export class StakeComponent implements OnInit {
   @Input() wallet: Asset;
-  @Input() validatorData: ValidatorData[] = [];
+  public validatorsData: Observable<ValidatorData[] | any> = this.solanaUtilsService.currentValidatorData
+  .pipe(map((validators) => {
+    console.log(validators)
+    const validatorsExtended = validators.map((validator:ValidatorData) => {
+      return {
+        name: validator.name,
+        vote_identity: validator.vote_identity,
+         image: validator.image,
+         selectable:true,
+          extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%'}}
+    })
+    return validatorsExtended
+  }))
   @Input() avgApy: number;
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
@@ -30,9 +42,9 @@ export class StakeComponent implements OnInit {
   constructor(
     public loaderService:LoaderService,
     private fb:FormBuilder,
+    private solanaUtilsService: SolanaUtilsService,
     private txInterceptService: TxInterceptService,
-    private utils:UtilsService,
-    private solanaUtils: SolanaUtilsService
+    private utils:UtilsService
     ) { }
   ngOnInit() {
     this.stakeForm = this.fb.group({
@@ -48,11 +60,8 @@ export class StakeComponent implements OnInit {
     const fixedAmount = this.utils.fixedNum(this.wallet.balance - 0.0001)
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
-  onSearch(term: any) {
-    this.searchTerm = term.value;
-  }
+
   setSelectedValidator(validator:ValidatorData) {
-    this.searchTerm = ''
     this.rewardInfo.apy = validator.apy_estimate;
     
     this.selectedValidator = validator;

@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { observable, Observable, Subscriber } from 'rxjs';
 import { Asset } from 'src/app/models';
-import { LoaderService } from 'src/app/services';
+import { LoaderService, UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import {  TxInterceptService } from 'src/app/services/txIntercept.service';
 
@@ -23,7 +23,7 @@ export class SendComponent implements OnInit {
     public loaderService:LoaderService,
     private fb:FormBuilder,
     private txInterceptService: TxInterceptService,
-    private solanaUtils: SolanaUtilsService
+    private utils: UtilsService,
     ) { }
   ngOnInit() {
     this.sendSolForm = this.fb.group({
@@ -32,7 +32,9 @@ export class SendComponent implements OnInit {
     })
   }
   setMaxAmount() {
-    this.sendSolForm.controls.amount.setValue(this.wallet.balance - 0.01);
+    const fixedAmount = this.utils.fixedNum(this.wallet.balance - 0.0001)
+    console.log(fixedAmount, this.wallet.balance)
+    this.sendSolForm.controls.amount.setValue(fixedAmount);
   }
 
 

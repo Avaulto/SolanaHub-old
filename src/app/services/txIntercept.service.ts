@@ -34,7 +34,6 @@ export class TxInterceptService {
       transaction.compileMessage(),
       'confirmed',
     )).value;
-    console.log('to send', lamportToSend,'tx fee', txFee,'balance', balance)
     const balanceCheck = lamportToSend < balance + txFee ? true : false;
     if (!balanceCheck) {
       this._formatErrors({ message: 'not enogh balance' })
@@ -78,8 +77,6 @@ export class TxInterceptService {
 
     const createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey) => {
   
-
-      console.log('minimum account', minimumAmount)
       const fromPubkey = stakeAccountOwner;
       const newStakeAccount = new Keypair();
       const authorizedPubkey = stakeAccountOwner;

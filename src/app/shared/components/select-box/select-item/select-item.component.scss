@@ -1,7 +1,7 @@
 :host{
     display: block;
 }
-.nodes {
+.list-item {
     width: 100%;
     background: #04172C;
     display: flex;
@@ -18,7 +18,7 @@
 }
 
 
-.node-info {
+.list-item-info {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,13 +32,13 @@
         color: var(--ion-color-primary);
         position: absolute;
         right: 15px;
-        &.selected-validator{
+        &.selected-item{
             transform: rotate(180deg);
         }
     }
 }
 
-.node-img {
+.list-item-img {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,9 +50,12 @@
         overflow: hidden;
     }
 }
-.node-sub {
+.list-item-sub {
     width: 100%;
     span {
         margin-inline-end: 8px;
     }
+}
+.not-supported{
+    opacity: 0.7;
 }

@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { Jupiter, RouteInfo, TOKEN_LIST_URL } from '@jup-ag/core'
 import { clusterApiUrl, Connection, PublicKey } from '@solana/web3.js';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 
 @Component({
@@ -19,7 +20,6 @@ export class SwapComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log('swap load')
     this.initJup()
     this.fetchTokenList()
   }
@@ -34,10 +34,48 @@ export class SwapComponent implements OnInit {
       // platformFeeAndAccounts:  NO_PLATFORM_FEE,
       routeCacheDuration: 10_000, // Will not refetch data on computeRoutes for up to 10 seconds
     });
-    console.log(jupiter)
+    // console.log(jupiter)
   }
+  public tokensList = new BehaviorSubject([] as []);
+  public currentTokenList = this.tokensList.asObservable()
   public async fetchTokenList(){
-    const tokens: Token[] = await (await fetch(TOKEN_LIST_URL['mainnet-beta'])).json(); 
-    console.log(tokens)
+    const tokens = await (await fetch(TOKEN_LIST_URL['mainnet-beta'])).json(); 
+    const tokensListPrep = this.prepTokenList(tokens);
+    console.log(tokensListPrep)
+    this.tokensList.next(tokensListPrep);
+    // const filterSolToken = tokens.filter(token => token.address == "So11111111111111111111111111111111111111111")[0];
+    // this.swapPair.pairOne = this.prepTokenData(filterSolToken);
+
+    // console.log(this.swapPair)
+  }
+  private prepTokenList(tokens){
+    return tokens.map(token =>{
+      return this.prepTokenData(token)
+    })
+  }
+  private prepTokenData(token){
+    const { name, address, logoURI, symbol} = token
+    return {name,address,selectable:true, symbol, image: logoURI, extraData: {symbol}}
+  }
+  public swapPair = {
+    pairOne: {},
+    pairTwo: {}
+  }
+  public showCoinsListOne: boolean = false;
+  public showCoinsListTwo: boolean = false;
+  setSelectedFirstPair(pair) {
+      console.log(pair)
+    this.swapPair.pairOne = pair;
+    this.showCoinsListOne = !this.showCoinsListOne
+
+  }
+  setSelectedSecondPair(pair) {
+    
+    this.swapPair.pairTwo = pair;
+    this.showCoinsListTwo = !this.showCoinsListTwo
+
+  }
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
   }
 }

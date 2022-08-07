@@ -72,8 +72,8 @@ export class WalletPage implements OnInit {
     this.dataAggregator.getCoinData(this.wallet.name).subscribe(coinData => this.wallet.coinData = coinData);
 
     this._walletStore.anchorWallet$.subscribe(async wallet => {
+      console.log(wallet)
       if(wallet){
-
         this.setWallet(wallet)
         
           const balanace = await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey);
@@ -82,7 +82,7 @@ export class WalletPage implements OnInit {
 
         const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey)
         // const native = splAccounts.filter(token => token.account.data.)
-        console.log(splAccounts)
+        // console.log(splAccounts)
         // this._getNfts(pk);
       }
     })

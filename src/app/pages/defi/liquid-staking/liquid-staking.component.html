@@ -9,94 +9,60 @@
     </ion-row>
     <app-marinade-info-box (onMarinadeInfo)="marinadeInfo = $event"></app-marinade-info-box>
     <ion-row class="ion-justify-content-between">
-        <ion-col size="12" class="data-box ion-padding">
-            <div id="segmented-util" class="ion-text-uppercase">
-                <div id="segment-header">
-                    <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">liquid stake</span>
-                    <span (click)="setUtil('unstake')" [class.active]="segmentUtilTab == 'unstake'">liquid
-                        unstake</span>
-                </div>
-                <div [ngSwitch]="segmentUtilTab" id="liquid-stake-form" class="ion-padding-vertical">
-                    <p *ngSwitchCase="'stake'">
-                        <ion-row class="ion-margin-bottom" id="stake-apr-box">
-                            <div>~{{marinadeInfo?.apy}}% <span>APY</span></div>
-                            <p id="">Stake SOL and use mSOL while earning rewards</p>
-                        </ion-row>
+        <ion-col size="5.9" class="data-box ion-padding">
+            <ion-row class="ion-margin-bottom" id="stake-apr-box">
+                <div>~{{marinadeInfo?.apy}}% <span>APY</span></div>
+                <p id="">Stake SOL and use mSOL while earning rewards</p>
+            </ion-row>
+            <ion-row class="ion-text-capitalize">
+                <h4 class="heading-4">choose your way to liquid stake</h4>
+                <ion-row id="btn-controls" class=" ion-align-items-center ion-margin-bottom ion-justify-content-between">
 
-                        <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-                            <div id="">SOL Amount</div>
-                            <div id="balance">
-                                Available balance: {{solBalance}}
-                                <ion-icon
-                                    tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."
-                                    placement="top" name="alert-circle-outline"></ion-icon>
-                            </div>
-                        </ion-row>
+                    <ion-col sizeLg="5.8" sizeMd="12"class="stake-by" [ngClass]="{'selectedStakePath': stakePate == 'sol'}"
+                        (click)="selectStakePath('sol')">
+                        <div class="select-group">
+                            <span>
+                                Deposit SOL
+                            </span>
+                            <ion-checkbox mode="ios" [checked]="stakePate == 'sol'" color="primary"></ion-checkbox>
+                        </div>
+                        <span class="sub">
+                            {{solBalance}} SOL
+                        </span>
 
-                        <ion-row id="stake-amount" style="margin-bottom:8px;">
-                            <ion-input class="button-text" [(ngModel)]="stakeAmount" placeholder="Amount"></ion-input>
-                            <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
-                        </ion-row>
-                        <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-                            <div id="">mSOL You will receive</div>
-                        </ion-row>
+                    </ion-col>
+                    <ion-col sizeLg="5.8" sizeMd="12" class="stake-by" [ngClass]="{'selectedStakePath': stakePate == 'stakeAcc'}"
+                        (click)="selectStakePath('stakeAcc')">
+                        <div class="select-group">
+                            <span>
+                                Deposit Account
+                            </span>
+                            <ion-checkbox mode="ios" [checked]="stakePate == 'stakeAcc'" color="primary"></ion-checkbox>
+                        </div>
+                        <span class="sub">
+                            {{(stakeAccountsLength | async)}} stake accounts
+                        </span>
 
-                        <ion-row id="recive-amount" style="margin-bottom:8px;">
-                            <ion-input readonly [value]="(marinadeInfo?.msolRatio * (stakeAmount || 0 )).toFixed(3)">
-                            </ion-input>
-                        </ion-row>
-                        <ion-row class="ion-justify-content-center">
-                            <!-- <app-loader></app-loader> -->
-                            <ion-button (click)="liquidStake()" [disabled]="!stakeAmount" class="ion-text-capitalize">
-                                stake
-                            </ion-button>
-                        </ion-row>
-                    </p>
-                    <p *ngSwitchCase="'unstake'">
-                        <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-                            <div id="">MSOL Amount</div>
-                            <div id="balance">Available balance: {{mSOLBalance}}</div>
-                        </ion-row>
-
-                        <ion-row id="stake-amount" style="margin-bottom:8px;">
-                            <ion-input class="button-text" [(ngModel)]="unStakeAmount" placeholder="Amount"></ion-input>
-                            <span class="heading-6" (click)="setMaxAmountMSOL()">MAX</span>
-                        </ion-row>
-                        <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-                            <div id="">You will receive</div>
-                        </ion-row>
-
-                        <ion-row id="sol-recive-amount" style="margin-bottom:8px;">
-                            <ion-input readonly [value]="((unStakeAmount || 0 ) / marinadeInfo?.msolRatio).toFixed(3)">
-                            </ion-input>
-                        </ion-row>
-                        <ion-row class="sub">
-                            Unstake fee: from 0.3%
-                        </ion-row>
-                        <ion-row class="ion-justify-content-center">
-                            <!-- <app-loader></app-loader> -->
-                            <ion-button (click)="liquidUnstake()" [disabled]="!unStakeAmount"
-                                class="ion-text-capitalize">
-                                instant unstake
-                            </ion-button>
-                        </ion-row>
-                      
-                    </p>
-                    <ion-row class="ion-justify-content-between ion-align-items-center">
-                        <div id="exchange-rate">
-                            exchange rate
-                            <ion-icon
-                            maxWidth="300px"
+                    </ion-col>
+                </ion-row>
+                <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
+                    <div>
+                        exchange rate
+                        <ion-icon maxWidth="300px"
                             tooltip="SOL/mSOL exchange rate is determined by a formula: Marinade’s SOL staked / current mSOL supply. Because staked SOL is earning yield, it grows in size vs. mSOL over time. When you swap mSOL back to SOL, you receive more SOL than you staked/swapped before."
                             placement="top" name="alert-circle-outline"></ion-icon>
-                        </div>
-                        <div>
-                            1 SOL = {{marinadeInfo?.msolRatio}} mSOL
-                        </div>
-                    </ion-row>
-                </div>
-            </div>
-
+                    </div>
+                    <div>
+                        1 SOL = {{marinadeInfo?.msolRatio}} mSOL
+                    </div>
+                </ion-row>
+            </ion-row>
+        </ion-col>
+        <ion-col size="5.9" class="data-box ion-padding">
+            <app-stake-sol-box *ngIf="stakePate == 'sol'" [marinade]="marinade" [marinadeInfo]="marinadeInfo">
+            </app-stake-sol-box>
+            <app-stake-account-box *ngIf="stakePate == 'stakeAcc'"  [marinade]="marinade" [marinadeInfo]="marinadeInfo">
+            </app-stake-account-box>
         </ion-col>
     </ion-row>
 </ion-grid>

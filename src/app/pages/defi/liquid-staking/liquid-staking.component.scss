@@ -3,34 +3,6 @@
         width: 200px;
     }
 }
-#segment-header {
-    border-bottom: 1px solid rgb(132 141 164 / 20%);
-    text-align: center;
-    padding-top: 21px;
-    padding-bottom: 10.5px;
-    span {
-        cursor: pointer;
-        font-weight: 500;
-        font-size: 14px;
-        margin-inline-end: 40px;
-        &:last-child{
-            margin-inline-end: 0;
-        }
-        &.active{
-            border-bottom: 3px solid var(--ion-color-primary);
-            padding-bottom: 7px;
-        }
-    }
-}
-ion-row{
-    margin-bottom:8px;
-}
-
-#liquid-stake-form{
-    width: 324px;
-    max-width: 100%;
-    margin: 0 auto;
-}
 #stake-apr-box {
     height: 99px;
     background: linear-gradient(99.46deg, #FF845A 13.88%, #FD49AD 124.05%);
@@ -56,24 +28,36 @@ ion-row{
         font-size: 12px;
     }
 }
-#balance {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+
+
+#btn-controls {
+    width: 100%;
 }
-#stake-amount{
-    position: relative;
-    span{
-        cursor: pointer;
-        position: absolute;
-        color: var(--ion-color-primary);
-        z-index: 2;
-        right: 15px;
-        top: 12px;
+
+.stake-by {
+    transition: 0.3s ease;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    background: #04172c;
+    padding: 12px;
+    cursor: pointer;
+    justify-content: space-evenly;
+    border: 1px solid transparent;
+    &.selectedStakePath {
+        border: 1px solid var(--ion-color-primary);
+    }
+    .select-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        ion-checkbox {
+            --size: 14px;
+        }
     }
 }
 
 #exchange-rate{
-    display: flex;
-    align-items: center;
+    width: 100%;
 }

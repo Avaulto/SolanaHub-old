@@ -10,7 +10,6 @@ export class SelectDappComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log('select dapp loaded')
   }
 
 }

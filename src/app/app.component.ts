@@ -25,8 +25,8 @@ export class AppComponent {
   async ngOnInit(): Promise<void> {
     // this.userService.populate();
 
-    this._connectionStore.setEndpoint(clusterApiUrl('devnet')) ;
-    // this._connectionStore.setEndpoint(clusterApiUrl('mainnet-beta'));
+    // this._connectionStore.setEndpoint(clusterApiUrl('devnet')) ;
+    this._connectionStore.setEndpoint(clusterApiUrl('mainnet-beta'));
 
     this._walletStore.setAdapters([
       new PhantomWalletAdapter(),

@@ -8,7 +8,7 @@
   <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
     <p *ngSwitchCase="'stake'">
       
-        <app-stake [avgApy]="avgApy" [wallet]="wallet" [validatorData]="validatorData"></app-stake>
+        <app-stake [avgApy]="avgApy"  [wallet]="wallet"></app-stake>
 
     </p>
     <p *ngSwitchCase="'accounts'">

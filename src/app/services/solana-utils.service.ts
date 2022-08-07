@@ -15,7 +15,8 @@ import { UtilsService } from './utils.service';
 })
 export class SolanaUtilsService {
   public connection: Connection;
-  public validatorsData: BehaviorSubject<ValidatorData[]> = new BehaviorSubject([] as ValidatorData[]);
+  private validatorsData: BehaviorSubject<ValidatorData[]> = new BehaviorSubject([] as ValidatorData[]);
+  public currentValidatorData = this.validatorsData.asObservable();
   constructor(
     private apiService: ApiService,
     private toasterService: ToasterService,
@@ -68,9 +69,11 @@ export class SolanaUtilsService {
       catchError(this._formatErrors)
     );
   }
-  public async getStakeAccountsByOwner(publicKey: PublicKey) {
-
-    const sortedStakeAccounts: StakeAccountExtended[] = []
+  public async getStakeAccountsByOwner(publicKey: PublicKey): Promise<Array<{
+    pubkey: PublicKey;
+    account: AccountInfo<Buffer | ParsedAccountData | any>;
+  }> | any> {
+    try {
 
     // get stake account
     const stakeAccounts: Array<{
@@ -89,30 +92,49 @@ export class SolanaUtilsService {
     })
 
     // loop every stake account to fetch the state
-    stakeAccounts.map(async account => {
-      const pk = account.pubkey;
-      const addr = pk.toBase58()
-      const stake = account.account.data.parsed.info.stake.delegation.stake
-      const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
-      const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
+    // let stakeAccountExtended = stakeAccounts.map(async account => {
+    //     const pk = account.pubkey;
+    //     const addr = pk.toBase58()
+    //     const stake = account.account.data.parsed.info.stake.delegation.stake
+    //     const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
+    //     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
+  
+    //     const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey )[0]
+    //     const stakeAccountInfo: StakeAccountExtended = {
+    //       addr,
+    //       shortAddr: this.utilService.addrUtil(addr).addrShort,
+    //       balance: Number((stake / LAMPORTS_PER_SOL).toFixed(3)),
+    //       state,
+    //       // validatorVoteKey,
+    //       validatorData
+    //     }
+    //     return stakeAccountInfo
+    //   })
+    
 
-      const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey )[0]
-      console.log(active,state)
-      // console.log(validator)
-      const stakeAccountInfo: StakeAccountExtended = {
-        addr,
-        shortAddr: this.utilService.addrUtil(addr).addrShort,
-        balance: Number((stake / LAMPORTS_PER_SOL).toFixed(3)),
-        state,
-        // validatorVoteKey,
-        validatorData
-      }
-      // console.log(stakeAccountInfo, stake)
-      sortedStakeAccounts.push(stakeAccountInfo)
-    })
-    // console.log(sortedStakeAccounts, stakeAccounts)
+    return stakeAccounts;
+  } catch (error) {
+      return new Error(error)
+  }
+    // return [];
+  }
 
-    return sortedStakeAccounts;
+  public async  extendStakeAccount(account: {pubkey: PublicKey;account: AccountInfo<Buffer | ParsedAccountData | any>}): Promise<any>{
+    const pk = account.pubkey;
+    const addr = pk.toBase58()
+    const stake = account.account.data.parsed.info.stake.delegation.stake
+    const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
+    const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
+
+    const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey )[0]
+    const stakeAccountInfo: StakeAccountExtended = {
+      addr,
+      shortAddr: this.utilService.addrUtil(addr).addrShort,
+      balance: Number((stake / LAMPORTS_PER_SOL).toFixed(3)),
+      state,
+      validatorData
+    }
+    return stakeAccountInfo
   }
   // public getStakeAccountsByOwner(publicKey: PublicKey): Observable<[]> {
   //   var raw = {

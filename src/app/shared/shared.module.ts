@@ -16,7 +16,9 @@ import {
   WalletConnectComponent,
   WalletAdapterOptionsComponent,
   WalletConnectedDropdownComponent,
-  LoaderComponent
+  LoaderComponent,
+  SelectBoxComponent,
+  SelectItemComponent
 } from "./components";
 
 // // import directives
@@ -44,7 +46,9 @@ import {
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
     WalletConnectedDropdownComponent,
-    LoaderComponent
+    LoaderComponent,
+    SelectBoxComponent,
+    SelectItemComponent
   ],
   imports: [
     CommonModule,
@@ -78,7 +82,9 @@ import {
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
     WalletConnectedDropdownComponent,
-    LoaderComponent
+    LoaderComponent,
+    SelectBoxComponent,
+    SelectItemComponent
   ]
 })
 export class SharedModule {}

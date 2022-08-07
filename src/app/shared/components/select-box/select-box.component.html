@@ -1,0 +1,20 @@
+<div id="select-box-options">
+  <div class="nodes" id="search-box">
+    <ion-input (ionChange)="onSearch($event.target)" type="search" placeholder="search"></ion-input>
+    <ion-icon name="search-outline"></ion-icon>
+  </div>
+
+  <ion-content id="list-of-items">
+    <app-loader *ngIf="(dataset | async) == null"></app-loader>
+    <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm"
+      approxItemHeight="54px">
+      <div *virtualItem="let item">
+        <app-select-item [item]="item" [searchTerm]="searchTerm" (onSelect)="setSelectedItem($event)"
+          [showDropDownIcon]="false">
+
+        </app-select-item>
+      </div>
+    </ion-virtual-scroll>
+  </ion-content>
+
+</div>

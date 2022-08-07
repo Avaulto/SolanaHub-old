@@ -1,5 +1,5 @@
 <ion-grid>
-<app-loader *ngIf="loaderService.isLoading | async"></app-loader>
+<app-loader *ngIf="(stakeAccounts | async) == null"></app-loader>
   <!-- <ion-row id="available-balance " class="stake-balance ion-align-items-center  ion-justify-content-between">
     <ion-col size="7" class="flex-item-center">
 
@@ -43,7 +43,7 @@
   </ion-row> -->
   <!-- <div class="heading-4 ion-margin-bottom ion-text-uppercase">Accounts</div> -->
   <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
-    *ngFor="let account of stakeAccounts">
+    *ngFor="let account of stakeAccounts | async">
     <ion-col class="flex-item-center">
       <div class="table-icon">
         <ion-img [src]="account.validatorData?.image"></ion-img>

@@ -30,7 +30,7 @@ async presentToastWithOptions(message: string,icon: string, segmentClass: string
   const toast = await this.toastController.create({
     cssClass: `toastStyle ${segmentClass}`,
     // color:'primary',
-    duration: 3000,
+    duration: 5000,
     animated: true,
     message,
     buttons: [

@@ -1,0 +1,37 @@
+<ion-grid class="ion-text-transform">
+  <h1 class="heading-2 ion-text-uppercase">deposit by stake account</h1>
+  <ion-row style="margin-bottom:8px" class="heading-6">
+    Choose stake account
+  </ion-row>
+  <ion-row class="ion-margin-bottom">
+    <div id="stake-account-selection">
+      <app-select-item [item]="selectedStakeAccount" (click)="showAccountList = !showAccountList"
+        [isDropDownOpen]="showAccountList" [showDropDownIcon]="true">
+
+      </app-select-item>
+      <app-select-box *ngIf="showAccountList" (onSelectItem)="setSelectedStakeAccount($event)" [dataset]="stakeAccounts"
+        [filterBy]="'name'"></app-select-box>
+      <div id="deposit-account-info" *ngIf="selectedStakeAccount && !showAccountList">
+        <h3 class="heading-6">
+          note
+        </h3>
+        <p>
+          
+          For deposit this stake account you will start gain staking
+          reward from marinade program
+          and will receive
+          <b>{{(selectedStakeAccount.extraData.balance * marinadeInfo.msolRatio).toFixed(3)}} mSOL </b> 
+        </p>
+      </div>
+
+    </div>
+  </ion-row>
+  <ion-row class="ion-margin-bottom ion-justify-content-center">
+    <ion-button (click)="delegateStakeAccount()" [disabled]="!selectedStakeAccount" class="ion-text-capitalize">
+      Deposit account
+    </ion-button>
+  </ion-row>
+  <p class="ion-text-capitalize">
+    for more info about deposit stake account please visit <a href="https://docs.marinade.finance/faq/faq#can-i-deposit-my-stake-account-directly" target="_blank">Marinade docs</a>
+  </p>
+</ion-grid>

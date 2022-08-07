@@ -12,7 +12,8 @@
 
     <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
       <div id="">Amount</div>
-      <div id="balance">Available balance: {{wallet?.balance}}</div>
+      <div id="balance">Available balance: {{wallet?.balance}} <ion-icon tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.
+        " placement="top" name="alert-circle-outline"></ion-icon> </div>
     </ion-row>
 
     <ion-row id="send-amount" style="margin-bottom:8px;">
