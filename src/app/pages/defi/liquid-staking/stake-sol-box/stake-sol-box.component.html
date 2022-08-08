@@ -11,7 +11,7 @@
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
               <div id="">SOL Amount</div>
               <div id="balance">
-                  Available balance: {{solBalance}}
+                  Balance: {{solBalance}}
                   <ion-icon
                       tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."
                       placement="top" name="alert-circle-outline"></ion-icon>
@@ -40,7 +40,7 @@
       <p *ngSwitchCase="'unstake'">
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
               <div id="">MSOL Amount</div>
-              <div id="balance">Available balance: {{mSOLBalance}}</div>
+              <div id="balance">Balance: {{mSOLBalance}}</div>
           </ion-row>
 
           <ion-row id="stake-amount" style="margin-bottom:8px;">

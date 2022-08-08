@@ -1,95 +1,112 @@
 <ion-grid class="ion-padding">
   <ion-row id="token-swap-header" class="ion-align-items-center ion-margin-bottom">
-      <div class="ion-margin-end">
-          <span class="heading-1">Token swap POWER BY</span>
-      </div>
-      <div id="jup-logo">
-          <ion-img src="/assets/images/icons/jupiter-logo.svg"></ion-img>
-          <span class="heading-1 bg-gradient-text">Jupiter</span>
-      </div>
+    <div class="ion-margin-end">
+      <span class="heading-1">Token swap POWER BY</span>
+    </div>
+    <div id="jup-logo">
+      <ion-img src="/assets/images/icons/jupiter-logo.svg"></ion-img>
+      <span class="heading-1 bg-gradient-text">Jupiter</span>
+    </div>
   </ion-row>
 
   <ion-row id="swap-content">
     <ion-col size="12" id="swap-wrapper" class="data-box ion-padding">
-      <div id="swap-head" class="ion-margin-bottom">
-        <div id="swap-title" class="heading-2 ion-text-capitalize">swap</div>
-        <div id="swap-setting">
-          <div id="swap-reload">
-            <ion-icon name="reload-circle"></ion-icon>
-          </div>
-          <div id="slipage">
-            <ion-segment mode="ios" class="ion-align-items-center" value="0.1" (ionChange)="segmentChanged($event)">
-              <ion-segment-button value="0.1">
-                <ion-label>0.1%</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="0.5">
-                <ion-label>0.5%</ion-label>
-              </ion-segment-button>
-              <ion-segment-button value="1">
-                <ion-label>1%</ion-label>
-              </ion-segment-button>
-              <!-- <ion-segment-button [value]="customSlipage.value"> -->
+      <form [formGroup]="swapForm">
+
+        <div id="swap-head" class="ion-margin-bottom">
+          <div id="swap-title" class="heading-2 ion-text-capitalize">swap</div>
+          <div id="swap-setting">
+            <button id="swap-reload" [disabled]="(calcLoader | async) || !swapForm.value.inputAmount" (click)="calcRoutes()">
+              <ion-icon name="reload-circle"></ion-icon>
+            </button>
+            <div id="slippage">
+              <ion-segment mode="ios" class="ion-align-items-center" formControlName="slippage">
+                <ion-segment-button value="0.1">
+                  <ion-label>0.1%</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="0.5">
+                  <ion-label>0.5%</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="1">
+                  <ion-label>1%</ion-label>
+                </ion-segment-button>
+                <!-- <ion-segment-button [value]="customSlipage.value"> -->
                 <!-- <ion-input [value]="customSlipage.value" #customSlipage></ion-input> -->
-              <!-- </ion-segment-button> -->
-            </ion-segment>
+                <!-- </ion-segment-button> -->
+              </ion-segment>
+            </div>
           </div>
         </div>
-      </div>
-      <div id="swap-pair-one" >
-        <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-          <div id="">from</div>
-          <div id="balance">
-              Available balance: 123
-          </div>
-      </ion-row>
+        <div id="swap-pair-one">
+          <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+            <div id="">from</div>
+            <div id="balance">
+              Balance: 123
+            </div>
+          </ion-row>
 
-        <ion-row class="ion-margin-bottom swap-box">
-          <div class="pair-selection">
-            <app-select-item style="flex: 1;" [item]="swapPair.pairOne" (click)="showCoinsListOne = !showCoinsListOne"
-              [isDropDownOpen]="showCoinsListOne" [showDropDownIcon]="true">
-      
-            </app-select-item>
-            <ion-input placeholder="0.0"></ion-input>
-            <app-select-box 
-            style="width: 100%;"
-            *ngIf="showCoinsListOne" 
-            (onSelectItem)="setSelectedFirstPair($event)"
-               [filterBy]="'symbol'"
-                [dataset]="tokensList"></app-select-box>
-  
-      
-          </div>
-        </ion-row>
-      </div>
-      <div id="swap-pair-two">
-        <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-          <div id="">to</div>
-          <div id="balance">
-              Available balance: 123
-          </div>
-      </ion-row>
+          <ion-row class="ion-margin-bottom swap-box">
+            <div class="pair-selection">
+              <div class="pair-setup">
 
-        <ion-row class="ion-margin-bottom swap-box">
-          <div class="pair-selection">
-            <app-select-item  style="flex: 1;" [item]="swapPair.pairTwo" (click)="showCoinsListTwo = !showCoinsListTwo"
-              [isDropDownOpen]="showCoinsListTwo" [showDropDownIcon]="true">
-            </app-select-item>
-            <ion-input placeholder="0.0"></ion-input>
-            <app-select-box 
-            style="width: 100%;"
-            *ngIf="showCoinsListTwo" 
-            (onSelectItem)="setSelectedSecondPair($event)"
-               [filterBy]="'symbol'"
-                [dataset]="tokensList"></app-select-box>
-  
-      
-          </div>
+                <app-select-item style="flex: 1;" [item]="swapForm.value.inputToken"
+                  (click)="showCoinsListOne = !showCoinsListOne" [isDropDownOpen]="showCoinsListOne"
+                  [showDropDownIcon]="true">
+
+                </app-select-item>
+                <ion-input 
+                  placeholder="0.0"
+                  id="inputAmountEl"
+                  debounce="500" 
+                  name="input amount"
+                  #inAmount
+                  formControlName="inputAmount" 
+                  ></ion-input>
+              </div>
+              <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
+                (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
+              </app-select-box>
+
+
+            </div>
+          </ion-row>
+        </div>
+        <ion-row class="ion-margin-vertical ion-justify-content-center" id="flip-swap-pair">
+          <ion-icon (click)="flipPairs()" name="swap-vertical-outline"></ion-icon>
         </ion-row>
-      </div>
-      <ion-row class="ion-justify-content-center" id="swap-btn">
-        <ion-button id="swap-btn">Swap</ion-button>
+        <div id="swap-pair-two">
+          <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+            <div id="">to</div>
+            <div id="balance">
+              Balance: 123
+            </div>
+          </ion-row>
+
+          <ion-row class="ion-margin-bottom swap-box">
+            <div class="pair-selection">
+              <div class="pair-setup">
+                <app-select-item style="flex: 1;" [item]="swapForm.value.outputToken"
+                  (click)="showCoinsListTwo = !showCoinsListTwo" [isDropDownOpen]="showCoinsListTwo"
+                  [showDropDownIcon]="true">
+                </app-select-item>
+                <ion-input  [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
+                <app-loader *ngIf="calcLoader | async"></app-loader>
+              </div>
+              <app-select-box style="width: 100%;" *ngIf="showCoinsListTwo"
+                (onSelectItem)="setSelectedPair($event,'outputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
+              </app-select-box>
+
+
+            </div>
+          </ion-row>
+        </div>
+        <ion-row class="ion-justify-content-center" id="swap-btn">
+          <ion-button id="swap-btn">Swap</ion-button>
+        </ion-row>
+      </form>
+      <ion-row id="swap-info">
+
       </ion-row>
-      <ion-row id="swap-info"></ion-row>
     </ion-col>
   </ion-row>
-  </ion-grid>
+</ion-grid>

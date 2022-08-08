@@ -5,8 +5,8 @@
         <app-side-menu></app-side-menu>
       </ion-col>
       <ion-col size="10">
-        <ion-router-outlet></ion-router-outlet>
         <ng-container *ngIf="isReady$ | async; else notConnected">
+          <ion-router-outlet></ion-router-outlet>
         </ng-container>
         <ng-template #notConnected>
           <app-wallet-not-connected-state></app-wallet-not-connected-state>

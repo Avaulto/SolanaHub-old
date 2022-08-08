@@ -38,7 +38,7 @@
     #swap-reload {
         width: 30px;
         height: 30px;
-        
+        background: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -51,7 +51,7 @@
             }
         }
     }
-    #slipage {
+    #slippage {
         // width: 210px;
         margin-left: 13px;
 
@@ -76,14 +76,18 @@
     }
 }
 .swap-box{
-        background: #04172c;
         width: 100%;
 }
 .pair-selection {
     width: 100%;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
+
+    .pair-setup{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        background: #04172c;
+    }
     ion-input{
         text-align: right;
         --padding-bottom: 0;
@@ -95,11 +99,23 @@
         --padding-end: 8px;
         --padding-start: 10px;
         z-index: 222;
-        --background: red !important;
+    }
+    #inputAmountEl{
         background: #ffffff0a !important;
     }
 }
-
+#flip-swap-pair{
+    ion-icon{
+        font-size: 20px;
+        cursor: pointer;
+    }
+}
 #swap-btn{
     --background: linear-gradient(96.8deg, #fcc00a 4.71%, #4ebae9 87.84%);
+}
+
+app-loader {
+    right: 29px;
+    z-index: 222;
+    position: relative;
 }
