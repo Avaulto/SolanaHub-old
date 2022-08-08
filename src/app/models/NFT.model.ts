@@ -16,3 +16,19 @@ export interface NFTGroup {
     websiteURL?: string;
     explorerURL?: string;
   }
+
+  export interface ParsedNftData{
+    parsed?: {
+      info?: {
+        lamports?: number,
+        newAccount?: string
+      }
+    }
+  }
+
+  export interface SolanaPriceData{
+    data?: {
+      price?: number
+    }
+    
+  }

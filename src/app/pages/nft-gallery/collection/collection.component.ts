@@ -1,5 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { NftGalleryPage } from '../nft-gallery.page';
+
 
 @Component({
   selector: 'app-collection',
@@ -9,7 +11,13 @@ import { NavController } from '@ionic/angular';
 export class CollectionComponent implements OnChanges {
   @Input() collection;
   hideSkelaton: boolean = false;
-  constructor(private navCtrl: NavController) { }
+  priceSum=this._nftGalleryPage.priceSum
+  
+  constructor(
+    private navCtrl: NavController,
+    private _nftGalleryPage: NftGalleryPage
+    ) { }
+
 
   ngOnChanges(){
     console.log(this.collection)

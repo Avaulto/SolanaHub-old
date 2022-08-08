@@ -23,9 +23,10 @@ import { AngularFireModule } from '@angular/fire/compat';
 
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { CustomInterceptor } from './services/http.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { WalletNotConnectedStateComponent } from './wallet-not-connected-state/wallet-not-connected-state.component';
+import { NftPriceService } from './services/nft-price.service';
 
 @NgModule({
     declarations: [AppComponent, SideMenuPage, WalletNotConnectedStateComponent],
@@ -37,6 +38,7 @@ import { WalletNotConnectedStateComponent } from './wallet-not-connected-state/w
         FontAwesomeModule,
         HdWalletAdapterModule.forRoot({ autoConnect: true }),
         AngularFireModule.initializeApp(environment.firebase),
+        HttpClientModule,
         provideFirebaseApp(() => initializeApp(environment.firebase)),
         provideAnalytics(() => getAnalytics()),
         provideAuth(() => getAuth()),
@@ -51,7 +53,9 @@ import { WalletNotConnectedStateComponent } from './wallet-not-connected-state/w
         { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
         { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
         { provide: USE_DEVICE_LANGUAGE, useValue: true },
-        ScreenTrackingService, UserTrackingService
+        ScreenTrackingService, 
+        UserTrackingService,
+        NftPriceService
     ],
     bootstrap: [AppComponent]
 })
