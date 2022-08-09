@@ -23,15 +23,6 @@ import { DATABASE_PROVIDER_NAME } from '@angular/fire/database/database';
   }
 }
 
-/*
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Access-Control-Allow-Origin': '*'
-  })
-};
-*/
-
-
 
 @Component({
   selector: 'app-nft-gallery',
@@ -69,12 +60,7 @@ export class NftGalleryPage implements OnInit {
       if (wallet) {
         this.wallet.publicKey = wallet.publicKey;
       } 
-    })
-
-
-
-    console.log('gallery loaded');
-    
+    });
     
     
     // this.askSecretNft();
@@ -85,11 +71,6 @@ export class NftGalleryPage implements OnInit {
         NFTdata: []
         
       }
-      // connection
-      // const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
-
-      //const owner = new PublicKey("JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD");
-      // let response = await connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID });
 
       /*
       const publicAddress = await resolveToWalletAddress({
@@ -105,13 +86,15 @@ export class NftGalleryPage implements OnInit {
 
       for (let item of nftArray){
 
-        let nftValue=await this._nftPriceService.getLastPurchasePrice(item.mint)
+        let lastPrice=await this._nftPriceService.getLastPurchasePrice(item.mint)
+        let collectionStats=await this._nftPriceService.getCollectionStats(item.data.symbol)
+        let nftValue=(collectionStats.floorPrice>lastPrice)? collectionStats.floorPrice : lastPrice;
+        
         priceArray.push(nftValue)
 
         this.apiService.get(item.data.uri).subscribe(r => {
 
             const nft: NFTdata = { collectionName: 'Solana NFTs', collectionImage: 'https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image', name: item.data.name, image: r.image, description: r.description, mintAddr: item.mint, value: nftValue, attr: r.attributes, explorerURL: 'https://solscan.io/token/'+item.mint,websiteURL: r.external_url  }
-            console.log(nft)
             solanaNFTs.NFTdata.push(nft)
 
         })
@@ -137,16 +120,12 @@ export class NftGalleryPage implements OnInit {
       })
       */
       this.nftCollections.push(solanaNFTs)
-      console.log(solanaNFTs.NFTdata)
-      console.log(solanaNFTs.NFTdata.map(x=>x.name))
-      
       this.priceSum = priceArray.reduce((a, b) => a + b, 0).toFixed(2)
-      console.log(this.priceSum)
       
     })();
 
+    console.log('gallery loaded');
 
-    // this.getAssosiateAccounts();
   }
   setSort(ev) {
 

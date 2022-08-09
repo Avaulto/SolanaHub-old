@@ -32,3 +32,10 @@ export interface NFTGroup {
     }
     
   }
+
+  export interface MECollectionStats{
+    symbol: string,
+    floorPrice: number,
+    listedCount: number,
+    volumeAll: number
+  }
