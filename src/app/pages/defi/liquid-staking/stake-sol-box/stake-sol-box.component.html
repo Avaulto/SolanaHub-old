@@ -7,7 +7,7 @@
   <div [ngSwitch]="segmentUtilTab" id="liquid-stake-form" class="ion-padding-vertical">
       <p *ngSwitchCase="'stake'">
 
-
+<!-- 
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
               <div id="">SOL Amount</div>
               <div id="balance">
@@ -16,8 +16,10 @@
                       tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."
                       placement="top" name="alert-circle-outline"></ion-icon>
               </div>
-          </ion-row>
+          </ion-row> -->
+          <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance, toolTip:'A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.'}">
 
+          </app-label-layout>
           <ion-row id="stake-amount" style="margin-bottom:8px;">
               <ion-input class="button-text" [(ngModel)]="stakeAmount" placeholder="Amount"></ion-input>
               <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
@@ -38,10 +40,9 @@
           </ion-row>
       </p>
       <p *ngSwitchCase="'unstake'">
-          <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-              <div id="">MSOL Amount</div>
-              <div id="balance">Balance: {{mSOLBalance}}</div>
-          </ion-row>
+
+        <app-label-layout [layoutConfig]="{title: 'MSOL Amount', balance:mSOLBalance}"></app-label-layout>
+
 
           <ion-row id="stake-amount" style="margin-bottom:8px;">
               <ion-input class="button-text" [(ngModel)]="unStakeAmount" placeholder="Amount"></ion-input>

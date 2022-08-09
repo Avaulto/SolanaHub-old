@@ -119,3 +119,13 @@ app-loader {
     z-index: 222;
     position: relative;
 }
+
+::ng-deep{
+    .bg-gradient-text {
+        background-image: linear-gradient(96.8deg, #fcc00a 4.71%, #4ebae9 87.84%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+    }
+    
+}

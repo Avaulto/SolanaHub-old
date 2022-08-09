@@ -18,7 +18,8 @@ import {
   WalletConnectedDropdownComponent,
   LoaderComponent,
   SelectBoxComponent,
-  SelectItemComponent
+  SelectItemComponent,
+  LabelLayoutComponent
 } from "./components";
 
 // // import directives
@@ -48,7 +49,8 @@ import {
     WalletConnectedDropdownComponent,
     LoaderComponent,
     SelectBoxComponent,
-    SelectItemComponent
+    SelectItemComponent,
+    LabelLayoutComponent
   ],
   imports: [
     CommonModule,
@@ -84,7 +86,8 @@ import {
     WalletConnectedDropdownComponent,
     LoaderComponent,
     SelectBoxComponent,
-    SelectItemComponent
+    SelectItemComponent,
+    LabelLayoutComponent
   ]
 })
 export class SharedModule {}

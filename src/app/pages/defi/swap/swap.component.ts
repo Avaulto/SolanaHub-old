@@ -9,7 +9,8 @@ import JSBI from 'jsbi';
 import { BehaviorSubject, map, Subject } from 'rxjs';
 import { UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-
+import { AccountLayout, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { SwapDetail } from 'src/app/shared/models/swapDetails.model';
 export interface Token {
   chainId: number; // 101,
   address: string; // 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
@@ -32,14 +33,16 @@ export class SwapComponent implements OnInit {
   public usdc = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   public wallet;
   private jupiter: Jupiter;
-  public bestRoute;
-  public calcLoader = new Subject()
+  private bestRoute: RouteInfo;
+  public calcLoader:Subject<boolean> = new Subject()
   public outputAmount;
+  public swapDetail: SwapDetail;
   constructor(
     private solanaUtilService: SolanaUtilsService,
     private _walletStore: WalletStore,
     private util: UtilsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private utilsService:UtilsService
   ) { }
   public swapForm: FormGroup;
   ngOnInit() {
@@ -81,9 +84,10 @@ export class SwapComponent implements OnInit {
 
     this.tokensList.next(tokensListPrep);
     this.setDefualtSwapPairs(tokensListPrep)
+    this.getTokenBalance(tokens);
 
   }
-  private setDefualtSwapPairs(tokensList){
+  private setDefualtSwapPairs(tokensList) {
     const filterSolToken = tokensList.filter(token => token.address == this.wSOL)[0];
     const filterUsdcToken = tokensList.filter(token => token.address == this.usdc)[0];
     this.swapForm.controls.inputToken.setValue(filterSolToken);
@@ -91,8 +95,8 @@ export class SwapComponent implements OnInit {
 
     this.swapForm.valueChanges.subscribe(val => {
       console.log(val)
-      setTimeout(() => { 
-        if(val.inputAmount){
+      setTimeout(() => {
+        if (val.inputAmount) {
           this.calcRoutes()
         }
       });
@@ -109,9 +113,8 @@ export class SwapComponent implements OnInit {
     name = name == 'Wrapped SOL' ? 'Solana' : name;
     return { ...token, name, selectable: true, symbol, image: logoURI, extraData: { symbol } }
   }
-  public swapPair: any = {
 
-  }
+
   public showCoinsListOne: boolean = false;
   public showCoinsListTwo: boolean = false;
   async setSelectedPair(pair, type: 'outputToken' | 'inputToken') {
@@ -134,6 +137,42 @@ export class SwapComponent implements OnInit {
     // console.log(possiblePairsTokenInfo)
   }
 
+
+  private async getTokenBalance(tokens: Token[]) {
+    // const tokenAccounts = await this.solanaUtilService.connection.getTokenAccountsByOwner(
+    //   this.wallet.publicKey,
+    //   {
+    //     programId: TOKEN_PROGRAM_ID,
+    //   }
+    // );
+
+    // console.log("Token                                         Balance");
+    // console.log("------------------------------------------------------------");
+    // tokenAccounts.value.forEach(async (tokenAccount) => {
+    //   const accountData = AccountLayout.decode(tokenAccount.account.data);
+    //   console.log(`${new PublicKey(accountData.mint)}  AMOUNT  ${accountData.amount}`);
+    //   let tokenAmount = await this.solanaUtilService.connection.getTokenAccountBalance(new PublicKey(accountData.mint));
+    //   console.log(tokenAmount)
+    // })
+    // let tokenAmount = await this.solanaUtilService.connection.getTokenAccountBalance(new PublicKey(accountData.mint));
+
+    // const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
+    // splAccounts.filter(async spl =>{
+    //    const tokenAddress = spl.account.data['parsed'].info.mint
+    //    let tokenAmount = await this.solanaUtilService.connection.getTokenAccountBalance(new PublicKey(tokenAddress));
+    //   console.log(tokenAmount)
+    //   });
+    // const ownedTokens = tokens.map((token, index) => {
+    //   return splAccounts.filter(spl => spl.account.data['parsed'].info.mint == token.address);
+    //   // console.log(owned)
+    // })
+    // console.log(ownedTokens)
+    // tokens.find(token => token.address == )
+    // this.solBalance = this.utilsService.fixedNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
+    // const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
+    // this.mSOLBalance = splAccounts.filter(account => account.account.data['parsed'].info.mint == marinadeSPL)[0].account.data['parsed'].info.tokenAmount.amount / LAMPORTS_PER_SOL
+
+  }
   public getPossiblePairsTokenInfo = ({
     tokens,
     routeMap,
@@ -171,7 +210,7 @@ export class SwapComponent implements OnInit {
     this.outputAmount = null
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
-    
+
     const amount = inputAmount * (10 ** inputToken.decimals)
     const routes = await this.jupiter.computeRoutes({
       inputMint: new PublicKey(inputToken.address),
@@ -183,10 +222,11 @@ export class SwapComponent implements OnInit {
       // feeBps
     });
     this.bestRoute = routes.routesInfos[0]
+    this.prepSwapInfo(this.bestRoute, outputToken.decimals);
     console.log(this.bestRoute)
     this.calcLoader.next(false)
 
-     this.outputAmount = routes.routesInfos[0].outAmount[0] / (10 ** outputToken.decimals)
+    this.outputAmount = (routes.routesInfos[0].outAmount[0] / (10 ** outputToken.decimals)).toFixed(3)
     const { transactions } = await this.jupiter.exchange({
       routeInfo: this.bestRoute
     });
@@ -203,5 +243,26 @@ export class SwapComponent implements OnInit {
     //   console.log(`inputAmount=${swapResult.inputAmount} outputAmount=${swapResult.outputAmount}`);
     // }
   }
+  private async prepSwapInfo(routeInfo: RouteInfo, multiplier: number){
+    const {marketInfos} = routeInfo
+    const txFees = await routeInfo.getDepositAndFee();
+    const feesByToken: Token = this.tokensList.value.filter(token => token.address == marketInfos[0].lpFee.mint)[0] || null;
 
+    // console.log(marketInfos,txFees)
+    // Number(marketInfos[0].outputMint) * this.swapForm.value.slippage
+    const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) *-1;
+    const minimumRecived =  (Number(marketInfos[0].outAmount[0] / (10 ** multiplier)) * slippagePercentage).toFixed(3)//  / (10 ** outputToken.decimals)
+    const priceImpact =  marketInfos[0].priceImpactPct
+    console.log(priceImpact)
+    let priceImpactScore = priceImpact < 0.001 ? 'excelent' : 'bad';
+    const swapDetail: SwapDetail = {
+      priceImpact: priceImpactScore,
+      minimumRecived, 
+      transactionFee:  txFees.signatureFee / LAMPORTS_PER_SOL + ' ' + 'SOL',
+      AMMfees: (marketInfos[0].lpFee.pct).toFixed(6) + ' ' + feesByToken.symbol,
+      platformFees: marketInfos[0].platformFee.pct
+    }
+
+    this.swapDetail = swapDetail
+  }
 }

@@ -1,0 +1,11 @@
+#swap-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+    text-transform: capitalize;
+    }
+}

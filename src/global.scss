@@ -122,6 +122,9 @@ text-align: left;
     --ion-color-base: #092F4E !important;
 }
 
+form ion-button{
+    width: 100%;
+}
 ion-button{
     font-weight: 500;
     height: 32px;

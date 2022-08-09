@@ -16,7 +16,8 @@
         <div id="swap-head" class="ion-margin-bottom">
           <div id="swap-title" class="heading-2 ion-text-capitalize">swap</div>
           <div id="swap-setting">
-            <button id="swap-reload" [disabled]="(calcLoader | async) || !swapForm.value.inputAmount" (click)="calcRoutes()">
+            <button id="swap-reload" [disabled]="(calcLoader | async) || !swapForm.value.inputAmount"
+              (click)="calcRoutes()">
               <ion-icon name="reload-circle"></ion-icon>
             </button>
             <div id="slippage">
@@ -39,9 +40,9 @@
         </div>
         <div id="swap-pair-one">
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-            <div id="">from</div>
+            <div id="">Send</div>
             <div id="balance">
-              Balance: 123
+              Balance: 21
             </div>
           </ion-row>
 
@@ -54,14 +55,8 @@
                   [showDropDownIcon]="true">
 
                 </app-select-item>
-                <ion-input 
-                  placeholder="0.0"
-                  id="inputAmountEl"
-                  debounce="500" 
-                  name="input amount"
-                  #inAmount
-                  formControlName="inputAmount" 
-                  ></ion-input>
+                <ion-input placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount" #inAmount
+                  formControlName="inputAmount"></ion-input>
               </div>
               <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
                 (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
@@ -76,9 +71,9 @@
         </ion-row>
         <div id="swap-pair-two">
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-            <div id="">to</div>
+            <div id="">Receive</div>
             <div id="balance">
-              Balance: 123
+              Balance: 300
             </div>
           </ion-row>
 
@@ -89,7 +84,7 @@
                   (click)="showCoinsListTwo = !showCoinsListTwo" [isDropDownOpen]="showCoinsListTwo"
                   [showDropDownIcon]="true">
                 </app-select-item>
-                <ion-input  [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
+                <ion-input [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
                 <app-loader *ngIf="calcLoader | async"></app-loader>
               </div>
               <app-select-box style="width: 100%;" *ngIf="showCoinsListTwo"
@@ -101,12 +96,10 @@
           </ion-row>
         </div>
         <ion-row class="ion-justify-content-center" id="swap-btn">
-          <ion-button id="swap-btn">Swap</ion-button>
+          <ion-button id="swap-btn" [disabled]="(calcLoader | async) || swapForm.invalid">Swap</ion-button>
         </ion-row>
       </form>
-      <ion-row id="swap-info">
-
-      </ion-row>
+      <app-swap-info *ngIf="swapDetail" [swapDetail]="swapDetail"></app-swap-info>
     </ion-col>
   </ion-row>
 </ion-grid>

@@ -1,0 +1,23 @@
+<ion-row id="swap-info">
+  <div id="min-receive">
+    <span>minimum receive</span>
+    <span>{{(swapDetail?.minimumRecived)}}</span>
+  </div>
+  <div id="price-impact">
+    <span>price impact</span>
+    <span class="bg-gradient-text">{{swapDetail?.priceImpact}}</span>
+  </div>
+  <div id="amm-fee">
+    <span>market maker fees</span>
+    <span>{{swapDetail?.AMMfees}}</span>
+  </div>
+  <div id="tx-fee">
+    <span>transaction fee</span>
+    <span>{{swapDetail?.transactionFee}}</span>
+  </div>
+  <div id="platform-fee">
+    <span>platform fees</span>
+    <span>{{swapDetail?.platformFees}}</span>
+  </div>
+
+</ion-row>
