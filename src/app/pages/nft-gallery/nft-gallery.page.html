@@ -3,7 +3,8 @@
   <ion-row class="data-box ion-padding ion-align-items-center">
     <ion-col size="9">
       <div class="heading-4 ion-text-uppercase">total value</div>
-      <span class="heading-2">${{priceSum}}</span>
+      <span class="heading-2" *ngIf="!priceSum">$ Loading NFTs & price values...</span>
+      <span class="heading-2" *ngIf="priceSum">${{priceSum}}</span>
     </ion-col >
     <ion-col size="3">
       <ion-radio-group (ionFocus)="setSort($event)"  value="newest">
@@ -13,7 +14,6 @@
      
           <ion-radio value="oldest"></ion-radio> oldest
         
-
       </ion-radio-group>
     </ion-col>
   </ion-row>
@@ -21,6 +21,7 @@
     <ion-row>
       <ion-col size="12">
         <div class="heading-4">NFTs</div>
+        <app-loader *ngIf="!priceSum"></app-loader>
       </ion-col>
     </ion-row>
     <ion-content scroll-y style="--background:transparent;">

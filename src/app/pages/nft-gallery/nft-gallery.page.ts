@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 import {
   resolveToWalletAddress,
   getParsedNftAccountsByOwner,
 } from "@nfteyez/sol-rayz";
 
 import { ApiService, UtilsService } from 'src/app/services';
-
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import {  PublicKey } from "@solana/web3.js";
 import { NFTdata, NFTGroup, Asset} from 'src/app/models';
-import { AssetsBalanceComponent } from 'src/app/shared/components';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
 import { NftPriceService } from 'src/app/services/nft-price.service';
 import { DATABASE_PROVIDER_NAME } from '@angular/fire/database/database';
 
@@ -22,7 +18,6 @@ import { DATABASE_PROVIDER_NAME } from '@angular/fire/database/database';
       keplr: any;
   }
 }
-
 
 @Component({
   selector: 'app-nft-gallery',
@@ -127,6 +122,8 @@ export class NftGalleryPage implements OnInit {
     console.log('gallery loaded');
 
   }
+
+  /*
   setSort(ev) {
 
   }
@@ -167,14 +164,14 @@ export class NftGalleryPage implements OnInit {
         //   `Amount: ${account.account.data["parsed"]["info"]["tokenAmount"]["uiAmount"]}`
         // );
       });
-      /*
+      
         // Output
     
         Found 1 token account(s) for wallet FriELggez2Dy3phZeHHAdpcoEXkKQVkv6tx3zDtCVP8T: 
         -- Token Account Address 1: Et3bNDxe2wP1yE5ao6mMvUByQUHg8nZTndpJNvfKLdCb --
         Mint: BUGuuhPsHpk8YZrL2GctsCtXGneL1gmT5zYb7eMHZDWf
         Amount: 3
-      */
+      
     })();
-  }
+  } */
 }
