@@ -1,0 +1,55 @@
+
+<!-- <app-data-box title="Trading Volume">
+  <ion-col  size="12">
+    <h2 class="heading-2">
+      24H data history
+    </h2>
+   </ion-col>
+</app-data-box> -->
+
+<ion-row class="ion-justify-content-between ion-text-capitalize">
+  <ion-col  size="12">
+   <h2 class="heading-2">
+     24H data history
+   </h2>
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+        Trading Volume
+      </div>
+      <app-loader *ngIf="showLoader"></app-loader>
+      <div class="heading-2">
+          {{jupInfo.lastXVolumeInUSD}}
+      </div>
+      <!-- <div class="heading-5">=  ${{(jupInfo?.).toLocaleString()}}</div> -->
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+        Routings Used
+      </div>
+      <app-loader *ngIf="showLoader"></app-loader>
+            <div class="heading-2">
+          {{jupInfo.lastXRoutingsCount}}
+      </div>
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+        Total Transactions
+      </div> 
+      <app-loader *ngIf="showLoader"></app-loader>    
+        <div class="heading-2">
+        {{jupInfo.lastXTransactionsCount}}
+      </div>
+      <!-- <div class="heading-4">validators</div> -->
+  </ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+      <div class="heading-3">
+        Unique Wallets
+      </div> 
+      <app-loader *ngIf="showLoader"></app-loader>
+      <div class="heading-2">
+        {{jupInfo.lastXAddressesCount}}
+      </div>
+  </ion-col>
+
+</ion-row>

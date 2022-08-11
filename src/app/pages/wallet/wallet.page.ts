@@ -77,7 +77,7 @@ export class WalletPage implements OnInit {
         this.setWallet(wallet)
         
           const balanace = await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey);
-          this.wallet.balance = this.utils.fixedNum((balanace / LAMPORTS_PER_SOL));
+          this.wallet.balance = this.utils.shortenNum((balanace / LAMPORTS_PER_SOL));
         
 
         const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey)

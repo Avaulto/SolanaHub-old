@@ -1,0 +1,54 @@
+#slippage {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    overflow: hidden;
+
+    #slippage-placeholder {
+        cursor: pointer;
+        background: #04172c;
+        padding: 3px;
+        border-radius: 4px;
+        z-index: 1;
+        justify-content: space-between;
+        display: flex;
+
+        ion-label {
+            margin-inline-start: 6px;
+        }
+    }
+
+    #slippage-options {
+        //  width: 117px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    ion-label {
+        cursor: pointer;
+    }
+
+    ion-segment {
+        height: 25.5px;
+    }
+
+
+    ion-segment-button {
+
+        --background: transparent;
+        --indicator-color: transparent;
+        // height: 35px;
+        // --padding-top: 15px;
+        --transition: 0.3s ease;
+        // --border-width: 1px;
+        // --border-radius: 1px;
+
+        &:hover {
+            ion-label {
+                transition: 0.3 ease;
+                color: var(--ion-color-primary);
+            }
+        }
+
+    }
+}

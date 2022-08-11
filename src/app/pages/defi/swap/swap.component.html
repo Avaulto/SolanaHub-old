@@ -8,36 +8,22 @@
       <span class="heading-1 bg-gradient-text">Jupiter</span>
     </div>
   </ion-row>
-
+  <app-jup-info-box></app-jup-info-box>
   <ion-row id="swap-content">
     <ion-col size="12" id="swap-wrapper" class="data-box ion-padding">
       <form [formGroup]="swapForm">
 
-        <div id="swap-head" class="ion-margin-bottom">
-          <div id="swap-title" class="heading-2 ion-text-capitalize">swap</div>
-          <div id="swap-setting">
+        
+          <!-- <div id="swap-title" class="heading-2 ion-text-capitalize">swap</div> -->
+          <div id="swap-setting" class="ion-margin-bottom">
             <button id="swap-reload" [disabled]="(calcLoader | async) || !swapForm.value.inputAmount"
-              (click)="calcRoutes()">
-              <ion-icon name="reload-circle"></ion-icon>
-            </button>
-            <div id="slippage">
-              <ion-segment mode="ios" class="ion-align-items-center" formControlName="slippage">
-                <ion-segment-button value="0.1">
-                  <ion-label>0.1%</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="0.5">
-                  <ion-label>0.5%</ion-label>
-                </ion-segment-button>
-                <ion-segment-button value="1">
-                  <ion-label>1%</ion-label>
-                </ion-segment-button>
-                <!-- <ion-segment-button [value]="customSlipage.value"> -->
-                <!-- <ion-input [value]="customSlipage.value" #customSlipage></ion-input> -->
-                <!-- </ion-segment-button> -->
-              </ion-segment>
-            </div>
+            (click)="calcRoutes()">
+            <ion-icon name="reload-circle"></ion-icon>
+          </button>
+          
+          <app-slippage [form]="swapForm"></app-slippage>
           </div>
-        </div>
+       
         <div id="swap-pair-one">
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
             <div id="">Send</div>
@@ -55,7 +41,7 @@
                   [showDropDownIcon]="true">
 
                 </app-select-item>
-                <ion-input placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount" #inAmount
+                <ion-input type="number" placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount" #inAmount
                   formControlName="inputAmount"></ion-input>
               </div>
               <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
@@ -96,10 +82,10 @@
           </ion-row>
         </div>
         <ion-row class="ion-justify-content-center" id="swap-btn">
-          <ion-button id="swap-btn" [disabled]="(calcLoader | async) || swapForm.invalid">Swap</ion-button>
+          <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid">Swap</ion-button>
         </ion-row>
       </form>
-      <app-swap-info *ngIf="swapDetail" [swapDetail]="swapDetail"></app-swap-info>
+      <app-swap-info *ngIf="(swapDetailObs$ | async) != null" [swapDetail]="swapDetailObs$"></app-swap-info>
     </ion-col>
   </ion-row>
 </ion-grid>

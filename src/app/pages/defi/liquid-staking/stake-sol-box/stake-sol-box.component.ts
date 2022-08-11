@@ -36,7 +36,7 @@ export class StakeSolBoxComponent implements OnInit {
       if (wallet) {
         this.wallet = wallet;
         const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
-        this.solBalance = this.utilsService.fixedNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
+        this.solBalance = this.utilsService.shortenNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
         const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
         this.mSOLBalance = splAccounts.filter(account => account.account.data['parsed'].info.mint == marinadeSPL)[0].account.data['parsed'].info.tokenAmount.amount / LAMPORTS_PER_SOL
         this.mSOLBalance = this.mSOLBalance < 0.01 ? 0 : this.mSOLBalance;

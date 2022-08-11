@@ -1,5 +1,5 @@
 export interface SwapDetail {
-    priceImpact: string;
+    priceImpact: number;
     minimumRecived: string;
     transactionFee: string;
     AMMfees: string;

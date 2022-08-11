@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { ApiService } from 'src/app/services';
-interface MarinadeInfo {
+interface MarinadeStats{
   msolRatio: number,
   apy: number,
   supply: any,
@@ -15,7 +15,7 @@ interface MarinadeInfo {
 })
 export class MarinadeInfoBoxComponent implements OnInit {
   @Output() onMarinadeInfo = new EventEmitter()
-  public marinadeInfo: MarinadeInfo = {
+  public marinadeInfo: MarinadeStats = {
     msolRatio: null,
     apy: null,
     supply: null,

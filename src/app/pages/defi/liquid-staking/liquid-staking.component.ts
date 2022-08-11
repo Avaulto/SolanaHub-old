@@ -39,7 +39,7 @@ export class LiquidStakingComponent implements OnInit {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
       if (wallet) {
         this.wallet = wallet;
-        this.solBalance = this.utilsService.fixedNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
+        this.solBalance = this.utilsService.shortenNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
         this.initMarinade();
         //const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
       }

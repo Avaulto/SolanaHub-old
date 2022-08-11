@@ -136,7 +136,6 @@ export class TxInterceptService {
       // this._walletStore.signTransaction(transaction);
       this._walletStore.signTransaction(transaction).subscribe({
         next: async (res: Transaction) => {
-
           if (extraSigners) transaction.partialSign(...extraSigners);
 
           //LMT: check null signatures
@@ -148,32 +147,19 @@ export class TxInterceptService {
 
           const rawTransaction = transaction.serialize({ requireAllSignatures: false });
           const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
-          console.log('https://solscan.io/tx/' + signature)
-          const txSend: toastData = {
-            message: 'transaction subbmitted',
-            icon: 'information-circle-outline',
-            segmentClass: "toastInfo"
-          }
-          this.toasterService.msg.next(txSend)
+   
           const config: BlockheightBasedTransactionConfirmationStrategy = {
             signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
           }
           await this.solanaUtilsService.connection.confirmTransaction(config) //.confirmTransaction(txid, 'confirmed');
-          const txCompleted: toastData = {
-            message: 'transaction completed',
-            icon: 'information-circle-outline',
-            segmentClass: "toastInfo"
-          }
-          this.toasterService.msg.next(txCompleted)
+
         },
         error: (err) => {
           this._formatErrors(err)
         },
       })
-
     } catch (error) {
-      console.log(error)
-      // onMsg('transaction failed', 'error')
+      console.error(error)
     }
   }
 }

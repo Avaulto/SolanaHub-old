@@ -6,7 +6,21 @@ declare global {
   interface Date {
     addDays(): Function;
   }
+  interface Number {
+    toFixedNoRounding: Function;
+  }
 }
+Number.prototype.toFixedNoRounding = function(n) {
+  const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + n + "})?", "g")
+  const a = this.toString().match(reg)[0];
+  const dot = a.indexOf(".");
+  if (dot === -1) { // integer, insert decimal dot and pad up zeros
+      return a + "." + "0".repeat(n);
+  }
+  const b = n - (a.length - dot) + 1;
+  return b > 0 ? (a + "0".repeat(b)) : a;
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -25,9 +39,10 @@ export class UtilsService {
   public getBlockchainAssets(addr: string){
     let assets = {};
   }
-  public fixedNum(number): number{
-    return Number(number.toFixed(3))
+  public shortenNum(number): number{
+    return number // Number(number).toFixedNoRounding(3)
   }
+  
   isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
   // generateUUID() {
   //   return uuidv4();

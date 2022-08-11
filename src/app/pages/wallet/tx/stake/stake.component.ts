@@ -57,7 +57,7 @@ export class StakeComponent implements OnInit {
 
   }
   setMaxAmount() {
-    const fixedAmount = this.utils.fixedNum(this.wallet.balance - 0.0001)
+    const fixedAmount = this.utils.shortenNum(this.wallet.balance - 0.0001)
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
 

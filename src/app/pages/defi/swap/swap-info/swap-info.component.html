@@ -1,23 +1,29 @@
 <ion-row id="swap-info">
   <div id="min-receive">
     <span>minimum receive</span>
-    <span>{{(swapDetail?.minimumRecived)}}</span>
+    <span>{{((swapDetail | async)?.minimumRecived)}}</span>
   </div>
   <div id="price-impact">
     <span>price impact</span>
-    <span class="bg-gradient-text">{{swapDetail?.priceImpact}}</span>
+    <span [ngClass]="{
+      'excelent-price-impact': (swapDetail | async)?.priceImpact < 0.001,
+      'ok-price-impact': (swapDetail | async)?.priceImpact <  0.01,
+      'severe-price-impact': (swapDetail | async)?.priceImpact > 0.05
+      }">
+      {{this.priceImpactScore}}
+    </span>
   </div>
   <div id="amm-fee">
     <span>market maker fees</span>
-    <span>{{swapDetail?.AMMfees}}</span>
+    <span>{{(swapDetail | async)?.AMMfees}}</span>
   </div>
   <div id="tx-fee">
     <span>transaction fee</span>
-    <span>{{swapDetail?.transactionFee}}</span>
+    <span>{{(swapDetail | async)?.transactionFee}}</span>
   </div>
   <div id="platform-fee">
     <span>platform fees</span>
-    <span>{{swapDetail?.platformFees}}</span>
+    <span>{{(swapDetail | async)?.platformFees}}</span>
   </div>
 
 </ion-row>

@@ -15,6 +15,8 @@ import { MarinadeInfoBoxComponent } from './liquid-staking/marinade-info-box/mar
 import { StakeAccountBoxComponent } from './liquid-staking/stake-account-box/stake-account-box.component';
 import { StakeSolBoxComponent } from './liquid-staking/stake-sol-box/stake-sol-box.component';
 import { SwapInfoComponent } from './swap/swap-info/swap-info.component';
+import { SlippageComponent } from './swap/slippage/slippage.component';
+import { JupInfoBoxComponent } from './swap/jup-info-box/jup-info-box.component';
 
 @NgModule({
   imports: [
@@ -28,7 +30,11 @@ import { SwapInfoComponent } from './swap/swap-info/swap-info.component';
     LiquidStakingComponent,
     MarinadeInfoBoxComponent,
     StakeSolBoxComponent,
-    StakeAccountBoxComponent,SwapInfoComponent
+    StakeAccountBoxComponent,
+    // jup
+    SwapInfoComponent,
+    SlippageComponent,
+    JupInfoBoxComponent
   ]
 })
 export class DefiPageModule {}
