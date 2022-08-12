@@ -46,12 +46,12 @@ export class SideMenuPage implements OnInit {
     },
     {
       title: "swap",
-      url: "/defi/swap",
+      url: "token-swap",
       icon: faArrowRightArrowLeft,
     },
     {
       title: "liquid staking",
-      url: "/defi/liquid-staking",
+      url: "liquid-stake",
       icon: faHandHoldingDroplet,
     },
     {
@@ -61,7 +61,7 @@ export class SideMenuPage implements OnInit {
     },
     {
       title: "support-us",
-      url: "/defi/pools",
+      url: "support-us",
       icon: faShieldHeart,
     },
     // {

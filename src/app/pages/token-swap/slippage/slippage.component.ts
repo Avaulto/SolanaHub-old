@@ -17,10 +17,10 @@ import {
       state('in', style({ transform: 'translateX(55%)' })),
       transition('void => *', [
         style({ transform: 'translateX(100%)' }),
-        animate(500)
+        animate(300)
       ]),
       transition('* => void', [
-        animate(500, style({ transform: 'translateX(100%)' }))
+        animate(300, style({ transform: 'translateX(100%)' }))
       ])
     ])
   ]

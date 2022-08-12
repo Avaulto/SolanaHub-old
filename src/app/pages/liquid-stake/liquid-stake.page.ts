@@ -9,12 +9,14 @@ import { UtilsService } from 'src/app/services';
 import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
 import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
 
+
 @Component({
-  selector: 'app-liquid-staking',
-  templateUrl: './liquid-staking.component.html',
-  styleUrls: ['./liquid-staking.component.scss'],
+  selector: 'app-liquid-stake',
+  templateUrl: './liquid-stake.page.html',
+  styleUrls: ['./liquid-stake.page.scss'],
 })
-export class LiquidStakingComponent implements OnInit {
+export class LiquidStakePage implements OnInit {
+
   public marinade: Marinade;
   public marinadeInfo;  
   public wallet;
@@ -62,4 +64,5 @@ export class LiquidStakingComponent implements OnInit {
   public selectStakePath(option: 'sol' | 'stakeAcc'): void{
     this.stakePate = option
   }
+
 }

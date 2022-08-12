@@ -25,11 +25,11 @@ export interface Token {
 }
 
 @Component({
-  selector: 'app-swap',
-  templateUrl: './swap.component.html',
-  styleUrls: ['./swap.component.scss'],
+  selector: 'app-token-swap',
+  templateUrl: './token-swap.page.html',
+  styleUrls: ['./token-swap.page.scss'],
 })
-export class SwapComponent implements OnInit {
+export class TokenSwapPage implements OnInit {
 
   public arrowUpIcon = faArrowUpLong;
   public wSOL = "So11111111111111111111111111111111111111112";
@@ -244,7 +244,8 @@ export class SwapComponent implements OnInit {
     } catch (error) {
       console.error(error)
     }
-    this.prepSwapInfo(this.bestRoute, this.outputAmount);
+    const swapDetails = await this.prepSwapDetails(this.bestRoute, this.outputAmount);
+    this.swapDetail$.next(swapDetails);
   }
   public async submitSwap(): Promise<void> {
     const { transactions } = await this.jupiter.exchange({
@@ -262,7 +263,7 @@ export class SwapComponent implements OnInit {
     }
      this.txInterceptService.sendTx(arrayOfTx, this.wallet.publicKey)
   }
-  private async prepSwapInfo(routeInfo: RouteInfo, outputAmount: number) {
+  private async prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
     const { marketInfos } = routeInfo
     try {
       const txFees = await routeInfo.getDepositAndFee();
@@ -281,13 +282,10 @@ export class SwapComponent implements OnInit {
         AMMfees: (marketInfos[0].lpFee.pct).toFixed(6) + ' ' + feesByToken.symbol,
         platformFees: marketInfos[0].platformFee.pct
       }
-
-      if(this.swapForm.valid){
-        this.swapDetail$.next(swapDetail)
-      }
+      return swapDetail;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      return error
     }
   }
-
 }

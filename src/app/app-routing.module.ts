@@ -8,10 +8,6 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  // {
-  //   path: 'login',
-  //   loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
-  // },
   {
     path: "home",
     loadChildren: () =>
@@ -22,13 +18,25 @@ const routes: Routes = [
     loadChildren: () => import('./pages/wallet/wallet.module').then( m => m.WalletPageModule)
   },
   {
-    path: 'defi',
-    loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
-  },
-  {
     path: 'nft-gallery',
     loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
     // canActivate:[AuthGuard]
+  },
+  {
+    path: 'support-us',
+    loadChildren: () => import('./pages/support-us/support-us.module').then( m => m.SupportUsPageModule)
+  },
+  {
+    path: 'liquid-stake',
+    loadChildren: () => import('./pages/liquid-stake/liquid-stake.module').then( m => m.LiquidStakePageModule)
+  },
+  {
+    path: 'lending',
+    loadChildren: () => import('./pages/lending/lending.module').then( m => m.LendingPageModule)
+  },
+  {
+    path: 'token-swap',
+    loadChildren: () => import('./pages/token-swap/token-swap.module').then( m => m.TokenSwapPageModule)
   },
 ];
 

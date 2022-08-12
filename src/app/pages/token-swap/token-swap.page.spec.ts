@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SwapComponent } from './swap.component';
+import { TokenSwapPage } from './token-swap.page';
 
-describe('SwapComponent', () => {
-  let component: SwapComponent;
-  let fixture: ComponentFixture<SwapComponent>;
+describe('TokenSwapPage', () => {
+  let component: TokenSwapPage;
+  let fixture: ComponentFixture<TokenSwapPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SwapComponent ],
+      declarations: [ TokenSwapPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SwapComponent);
+    fixture = TestBed.createComponent(TokenSwapPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
