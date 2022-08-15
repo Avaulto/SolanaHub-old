@@ -1,5 +1,6 @@
 import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
+import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
 
 @Component({
   selector: 'app-chart',
@@ -10,12 +11,22 @@ export class ChartComponent implements AfterViewInit {
   @ViewChild('lineChart') lineChart
   lines: any;
   colorArray: any;
-  constructor() { }
+  constructor(private dataAggregator: DataAggregatorService) { }
 
   ngAfterViewInit(): void {
-    this.createLineChart();
+    this.dataAggregator.getCoinChartHistory('solana','usd',30).subscribe(chartHistory =>{
+      console.log(chartHistory)
+      this.createLineChart(chartHistory[0], chartHistory[1]);
+    })
   }
-  createLineChart() {
+  onChangeDate(event){
+    this.lines.destroy()
+    this.dataAggregator.getCoinChartHistory('solana','usd',event.detail.value).subscribe(chartHistory =>{
+      console.log(chartHistory)
+      this.createLineChart(chartHistory[0], chartHistory[1]);
+    })
+  }
+  createLineChart(labels, data) {
     this.lines = new Chart(this.lineChart.nativeElement, {
       type: 'line',
       options:{
@@ -27,13 +38,13 @@ export class ChartComponent implements AfterViewInit {
       },
       data: {
         
-        labels: ['01/01/21', '04/01/21', '06/01/21', '07/01/21', '08/01/21', '23/01/21', '25/01/21', '28/01/21'],
+        labels,
         datasets: [{
           pointBackgroundColor:'white',
           pointRadius:0,
           // label: 'Viewers in millions',
           fill:true,
-          data: [5000, 3000, 5341, 6139, 6009, 7115, 4233, 5000, 3426],
+          data,
           backgroundColor: 'rgb(12 218 196 / 20%)', // array should have same number of elements as number of dataset
           borderColor: 'rgb(0, 0, 0)',// array should have same number of elements as number of dataset
           borderWidth: 1

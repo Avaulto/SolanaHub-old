@@ -39,6 +39,17 @@ export class DataAggregatorService {
       catchError((error) => this._formatErrors(error))
     );
   }
+  public getCoinChartHistory(coinName: string, currency: string,days: number){
+    return this.apiService.get(`${this._coinGecoAPI}/coins/${coinName}/market_chart?vs_currency=${currency}&days=${days}`).pipe(
+      map((data) => {
+        const dateList= data.prices.map(item => new Date(item[0]).toLocaleString().split(',')[0]);
+        const priceList= data.prices.map(item => item[1]);
+
+        return [dateList, priceList];
+      }),
+      catchError((error) => this._formatErrors(error))
+    );
+  }
 
   private _sonarAPI = 'https://api-beta.sonar.watch/dashboards';
   public getSolWalletData(address: string): Observable<any> {
