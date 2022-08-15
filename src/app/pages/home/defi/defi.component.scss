@@ -1,12 +1,18 @@
 #defi-icon{
     background-color: white;
-    width: 42px;
-    height: 42px;
+    min-width: 42px;
+    min-height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 4px;
+    margin-inline-end: 12px;
     ion-img{
         width: 28px;
+        overflow: hidden;
+        border-radius: 50%;
     }
+}
+#defi-desc {
+    margin-inline-end: 12px;
 }

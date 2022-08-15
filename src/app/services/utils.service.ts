@@ -39,10 +39,15 @@ export class UtilsService {
   public getBlockchainAssets(addr: string){
     let assets = {};
   }
-  public shortenNum(number): number{
-    return Number(number).toFixedNoRounding(3)
+  public shortenNum(number,aftetDot = 3): number{
+    return Number(number).toFixedNoRounding(aftetDot)
   }
-  
+  public numFormater(number: number): any{
+    return Intl.NumberFormat('en-US', {
+      notation: "compact",
+      maximumFractionDigits: 1
+    }).format(number)
+  }
   isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
   // generateUUID() {
   //   return uuidv4();

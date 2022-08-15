@@ -1,22 +1,38 @@
-<ion-grid class="ion-padding">
+<ion-content scroll-y style="--background:transparent;">
+    <ion-grid class="ion-padding">
         <ion-row class="ion-justify-content-between ">
-            <ion-col sizeSm="12" sizeLg="3.7" class="data-box ion-padding">
-                <app-balance></app-balance>
+
+            <ion-col sizeSm="12" sizeLg="2.8" class="data-box ion-padding">
+                <app-data-box [title]="'Circulating Supply'" [loading]="(clusterInfo | async) == null" [desc]="(clusterInfo | async)?.supply?.circulating">
+                </app-data-box>
+
             </ion-col>
-            <ion-col sizeSm="12" sizeLg="3.7" class="data-box ion-padding">
-                <app-rewards></app-rewards>
+            <ion-col sizeSm="12" sizeLg="2.8" class="data-box ion-padding">
+                <app-data-box [title]="'Active Stake'" [loading]="(clusterInfo | async) == null" [desc]="(clusterInfo | async)?.stakeInfo.activeStake">
+                </app-data-box>
             </ion-col>
-            <ion-col sizeSm="12" sizeLg="3.7" class="data-box ion-padding "> 
-                <app-nfts></app-nfts>
+            <ion-col sizeSm="12" sizeLg="2.8" class="data-box ion-padding ">
+                <app-data-box [title]="'TPS'" [loading]="(clusterInfo | async) == null" [desc]="(clusterInfo | async)?.TPS">
+                </app-data-box>
+
             </ion-col>
+            <ion-col sizeSm="12" sizeLg="2.8" class="data-box ion-padding ">
+                <app-data-box [title]="'Epoch'" [loading]="(clusterInfo | async) == null">
+                        <span class="heading-2 ion-margin-bottom">#{{(clusterInfo | async)?.epochInfo?.epoch}}</span>
+                        <ion-progress-bar [buffer]="(clusterInfo | async)?.epochInfo?.timepassInPercentgae"></ion-progress-bar>
+                        <span class="sub">{{(clusterInfo | async)?.epochInfo?.ETA}}</span>
+                </app-data-box>
+            </ion-col>
+
         </ion-row>
         <ion-row class="ion-justify-content-between">
             <ion-col sizeSm="12" sizeLg="7.7" class="data-box ion-padding">
                 <app-chart></app-chart>
             </ion-col>
             <ion-col sizeSm="12" sizeLg="4" class="data-box ion-padding">
-                <app-assets-balance title="wallets"></app-assets-balance>
+                <app-defi></app-defi>
             </ion-col>
         </ion-row>
 
-</ion-grid>
+    </ion-grid>
+</ion-content>

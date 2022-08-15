@@ -148,21 +148,21 @@ export class TokenSwapPage implements OnInit {
     // let data = AccountLayout.decode(accountInfo.data);
     // console.log(accountInfo,data)
 
-    const tokenAccounts = await this.solanaUtilService.connection.getTokenAccountsByOwner(
-      this.wallet.publicKey,
-      {
-        programId: TOKEN_PROGRAM_ID,
-      }
-    );
-    // const ata = this.solanaUtilService.connection.account
-    // let data = AccountLayout.decode(tokenAccounts.value[0].account.data);
-    // console.log(tokenAccounts.value[0].pubkey.toBase58)
-    const getTokensBalance = tokenAccounts.value.map(async account =>{
-      const accountData = AccountLayout.decode(account.account.data);
-      console.log(accountData.amount);
-      const balance = await this.solanaUtilService.connection.getTokenAccountBalance(account.pubkey)
-      return balance;
-    }) 
+    // const tokenAccounts = await this.solanaUtilService.connection.getTokenAccountsByOwner(
+    //   this.wallet.publicKey,
+    //   {
+    //     programId: TOKEN_PROGRAM_ID,
+    //   }
+    // );
+    // // const ata = this.solanaUtilService.connection.account
+    // // let data = AccountLayout.decode(tokenAccounts.value[0].account.data);
+    // // console.log(tokenAccounts.value[0].pubkey.toBase58)
+    // const getTokensBalance = tokenAccounts.value.map(async account =>{
+    //   const accountData = AccountLayout.decode(account.account.data);
+    //   console.log(`${new PublicKey(accountData.mint)}  AMOUNT  ${accountData.amount}`);
+    //   const balance = await this.solanaUtilService.connection.getTokenAccountBalance(account.pubkey)
+    //   return balance;
+    // }) 
     // const tokensBalancePromise = Promise.all(getTokensBalance)
     // console.log(tokensBalancePromise)
     // let accountInfo = await this.solanaUtilService.connection.getAccountInfo(this.wallet.publicKey);

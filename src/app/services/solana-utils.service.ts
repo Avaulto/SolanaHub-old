@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConnectionStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, Connection, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
-import { catchError, map, take } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { StakeAccountExtended } from '../shared/models/stakeAccountData.model';
 import { ApiService } from './api.service';
 import { ToasterService } from './toaster.service';
@@ -10,6 +10,19 @@ import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { ValidatorData } from '../shared/models/validatorData.model';
 import { UtilsService } from './utils.service';
 
+
+interface StakeWizEpochInfo {
+  epoch: number,
+  start_slot: number,
+  start_time: Date,
+  slot_height: number,
+  duration_seconds: number,
+  elapsed_seconds: number,
+  remaining_seconds: number,
+  epochs_per_year: number,
+  timepassInPercentgae?: number,
+  ETA?: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -91,25 +104,6 @@ export class SolanaUtilsService {
       ]
     })
 
-    // loop every stake account to fetch the state
-    // let stakeAccountExtended = stakeAccounts.map(async account => {
-    //     const pk = account.pubkey;
-    //     const addr = pk.toBase58()
-    //     const stake = account.account.data.parsed.info.stake.delegation.stake
-    //     const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
-    //     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
-  
-    //     const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey )[0]
-    //     const stakeAccountInfo: StakeAccountExtended = {
-    //       addr,
-    //       shortAddr: this.utilService.addrUtil(addr).addrShort,
-    //       balance: Number((stake / LAMPORTS_PER_SOL).toFixed(3)),
-    //       state,
-    //       // validatorVoteKey,
-    //       validatorData
-    //     }
-    //     return stakeAccountInfo
-    //   })
     
 
     return stakeAccounts;
@@ -136,35 +130,7 @@ export class SolanaUtilsService {
     }
     return stakeAccountInfo
   }
-  // public getStakeAccountsByOwner(publicKey: PublicKey): Observable<[]> {
-  //   var raw = {
-  //     "jsonrpc": "2.0",
-  //     "id": 1,
-  //     "method": "getProgramAccounts",
-  //     "params": [
-  //       "Stake11111111111111111111111111111111111111",
 
-  //       {
-  //         "encoding": "jsonParsed",
-  //         "filters": [
-  //           {
-  //             "memcmp": {
-  //               "offset": 12,
-  //               "bytes": publicKey.toBase58()
-  //             }
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  //   return this.apiService.post(this._solanaAPI, raw).pipe(
-  //     map((data) => {
-  //       console.log('api call', data)
-  //       return data.result;
-  //     }),
-  //     catchError((error) => this.formatErrors(error))
-  //   );
-  // }
 
   public async getTokensAccountbyOwner(publicKey: PublicKey) {
     const accounts = await this.connection.getParsedProgramAccounts(
@@ -184,4 +150,42 @@ export class SolanaUtilsService {
       })
     return accounts;
   }
+  public async getSupply():Promise<{circulating: any, noneCirculating:any}>{
+    const supply =  await this.connection.getSupply({excludeNonCirculatingAccountsList: true, commitment: "finalized"});
+    const circulating = this.utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)
+    const noneCirculating = this.utilService.numFormater(supply.value.nonCirculating / LAMPORTS_PER_SOL)
+
+    return {circulating, noneCirculating}
+   }
+   public async getStake(): Promise<{activeStake, delinquentStake}> {
+    const stakeInfo = await this.connection.getVoteAccounts()
+    const activeStake  = this.utilService.numFormater(stakeInfo.current.reduce(
+      (previousValue, currentValue) => previousValue + currentValue.activatedStake,
+      0
+    ) / LAMPORTS_PER_SOL)
+    const delinquentStake  = this.utilService.numFormater(stakeInfo.delinquent.reduce(
+(previousValue, currentValue) => previousValue + currentValue.activatedStake,
+      0
+    ) / LAMPORTS_PER_SOL)
+    return {activeStake, delinquentStake}
+   }
+   public async getTPS(): Promise<any>{
+    const performaceRes =( await this.connection.getRecentPerformanceSamples())[0];
+    const tps = (performaceRes.numTransactions / performaceRes.samplePeriodSecs).toPrecision()
+
+    return tps
+   }
+   public getEpochInfo(): Observable<StakeWizEpochInfo>{
+    return this.apiService.get(`https://api.stakewiz.com/epoch_info`).pipe(
+      map((data: StakeWizEpochInfo) => {
+        const {remaining_seconds, elapsed_seconds, duration_seconds} = data
+        const days = Math.floor(remaining_seconds / 86400);
+        const hours = Math.floor(remaining_seconds / 3600) - (days  * 24);
+        data.ETA = `ETA ${days} Days and ${hours}`
+        data.timepassInPercentgae = elapsed_seconds / duration_seconds
+        return data
+      }),
+      catchError(this._formatErrors)
+    );
+   }
 }

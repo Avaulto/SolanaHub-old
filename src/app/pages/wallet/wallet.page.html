@@ -1,5 +1,5 @@
 <ion-grid class="ion-padding">
-  <ng-container *ngIf="isReady$ | async; else elseTemplate">
+
     <ion-content scroll-y style="--background:transparent;">
       <ion-row class="ion-justify-content-between ion-align-items-center data-box ">
         <ion-col size="9" class="ion-padding">
@@ -52,7 +52,7 @@
             <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>
           </div>
           <div class="data-box ion-padding">
-            <app-defi></app-defi>
+            <!-- <app-defi></app-defi> -->
           </div>
           <div class="data-box ion-padding" id="coin-data">
             <ion-row class="ion-align-items-center ion-margin-bottom">
@@ -77,8 +77,6 @@
 
       </ion-row>
     </ion-content>
-    </ng-container>
-    <ng-template #elseTemplate>
-      wallet not connected
-    </ng-template>
+
+
 </ion-grid>

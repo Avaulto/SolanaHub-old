@@ -1,0 +1,15 @@
+<div class="heading-4 ion-margin-bottom ion-text-uppercase">defi</div>
+<ion-grid>
+  <ion-row *ngFor="let defi of defiApps" class="ion-margin-bottom ion-align-items-center ion-nowrap">
+    <div id="defi-icon">
+      <ion-img [src]="defi.img" alt="app logo"></ion-img>
+    </div>
+    <ion-row style="width: 100%;" class="ion-justify-content-between ion-align-items-center ion-nowrap">
+      <div id="defi-desc" >
+        <div class="heading-6">{{defi.name}}</div>
+        <span class="sub">{{defi.desc}}</span>
+      </div>
+      <ion-button routerDirection="forward" [routerLink]="defi.link">view</ion-button>
+    </ion-row>
+  </ion-row>
+</ion-grid>
