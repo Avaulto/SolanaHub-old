@@ -10,6 +10,7 @@ import { BehaviorSubject, distinctUntilChanged, filter, interval, map, of, pipe,
 import { ApiService, UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import { AccountLayout, AccountInfo, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+
 import { SwapDetail } from 'src/app/shared/models/swapDetails.model';
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import Decimal from "decimal.js";
@@ -142,14 +143,28 @@ export class TokenSwapPage implements OnInit {
 
 
   private async getTokenBalance(tokens: Token[]) {
+    // const account  = new PublicKey(tokens[0].address)
+    // let accountInfo = await this.solanaUtilService.connection.getAccountInfo(account);
+    // let data = AccountLayout.decode(accountInfo.data);
+    // console.log(accountInfo,data)
 
-
-    // const tokenAccounts = await this.solanaUtilService.connection.getTokenAccountsByOwner(
-    //   this.wallet.publicKey,
-    //   {
-    //     programId: TOKEN_PROGRAM_ID,
-    //   }
-    // );
+    const tokenAccounts = await this.solanaUtilService.connection.getTokenAccountsByOwner(
+      this.wallet.publicKey,
+      {
+        programId: TOKEN_PROGRAM_ID,
+      }
+    );
+    // const ata = this.solanaUtilService.connection.account
+    // let data = AccountLayout.decode(tokenAccounts.value[0].account.data);
+    // console.log(tokenAccounts.value[0].pubkey.toBase58)
+    const getTokensBalance = tokenAccounts.value.map(async account =>{
+      const accountData = AccountLayout.decode(account.account.data);
+      console.log(accountData.amount);
+      const balance = await this.solanaUtilService.connection.getTokenAccountBalance(account.pubkey)
+      return balance;
+    }) 
+    // const tokensBalancePromise = Promise.all(getTokensBalance)
+    // console.log(tokensBalancePromise)
     // let accountInfo = await this.solanaUtilService.connection.getAccountInfo(this.wallet.publicKey);
     // let data = AccountLayout.decode(accountInfo.data);
     // console.log(data)

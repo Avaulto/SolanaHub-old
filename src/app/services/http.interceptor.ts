@@ -23,7 +23,7 @@ export class CustomInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const headersConfig = {
-      Accept: "application/json"
+      Accept: "*/*"
     };
 
 

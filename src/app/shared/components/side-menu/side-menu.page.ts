@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faKickstarterK } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRightArrowLeft, faBox, faBoxOpen, faDroplet, faHandHoldingDroplet, faHome, faImage, faPalette, faPlus, faScrewdriverWrench, faSeedling, faShieldHeart, faSwimmingPool, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightArrowLeft, faBox, faBoxOpen, faCoins, faDroplet, faHandHoldingDroplet, faHome, faImage, faPalette, faPlus, faScrewdriverWrench, faSeedling, faShieldHeart, faSwimmingPool, faWallet } from '@fortawesome/free-solid-svg-icons';
 import { MenuController } from '@ionic/angular';
 
 
@@ -54,13 +54,18 @@ export class SideMenuPage implements OnInit {
       url: "liquid-stake",
       icon: faHandHoldingDroplet,
     },
+    // {
+    //   title: "pools",
+    //   url: "/defi/pools",
+    //   icon: faSwimmingPool,
+    // },
     {
-      title: "pools",
-      url: "/defi/pools",
-      icon: faSwimmingPool,
+      title: "lending",
+      url: "lending",
+      icon: faCoins,
     },
     {
-      title: "support-us",
+      title: "support us",
       url: "support-us",
       icon: faShieldHeart,
     },

@@ -15,6 +15,7 @@ export class SelectBoxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.dataset.subscribe(val=>console.log(val))
     console.log(this.filterBy)
 
   }

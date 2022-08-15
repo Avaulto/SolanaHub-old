@@ -24,6 +24,7 @@ export class StakeComponent implements OnInit {
         vote_identity: validator.vote_identity,
          image: validator.image,
          selectable:true,
+         apy_estimate: validator.apy_estimate,
           extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%'}}
     })
     return validatorsExtended
@@ -62,7 +63,8 @@ export class StakeComponent implements OnInit {
   }
 
   setSelectedValidator(validator:ValidatorData) {
-    this.rewardInfo.apy = validator.apy_estimate;
+    console.log(validator)
+    this.rewardInfo.apy = validator.apy_estimate
     
     this.selectedValidator = validator;
     this.showValidatorList = !this.showValidatorList

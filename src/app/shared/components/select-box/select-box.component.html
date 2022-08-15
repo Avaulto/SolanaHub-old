@@ -6,6 +6,9 @@
 
   <ion-content id="list-of-items">
     <app-loader *ngIf="(dataset | async) == null"></app-loader>
+    <div style="text-align: center;" *ngIf="(dataset | async)?.length == 0">
+      No results
+    </div>
     <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm"
       approxItemHeight="54px">
       <div *virtualItem="let item">

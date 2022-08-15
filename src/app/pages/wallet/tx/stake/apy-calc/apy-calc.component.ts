@@ -10,7 +10,8 @@ export class ApyCalcComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
-  public calcCoinROI (  days: number) {
+  public calcCoinROI (days: number) {
+    console.log(this.rewardInfo)
     return ((this.rewardInfo.apy / 100) * this.rewardInfo.amount / days).toLocaleString();
   }
 }

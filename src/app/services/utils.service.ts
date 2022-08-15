@@ -40,7 +40,7 @@ export class UtilsService {
     let assets = {};
   }
   public shortenNum(number): number{
-    return number // Number(number).toFixedNoRounding(3)
+    return Number(number).toFixedNoRounding(3)
   }
   
   isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
