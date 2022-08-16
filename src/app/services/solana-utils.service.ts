@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ConnectionStore } from '@heavy-duty/wallet-adapter';
-import { AccountInfo, clusterApiUrl, Connection, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
+import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { StakeAccountExtended } from '../shared/models/stakeAccountData.model';
@@ -72,10 +72,10 @@ export class SolanaUtilsService {
       catchError(this._formatErrors)
     );
   }
-  public getAvgApy(){
+  public getAvgApy() {
     return this.apiService.get(`https://api.stakewiz.com/cluster_stats`).pipe(
       map((clusterInfo) => {
-        const {avg_apy} = clusterInfo;
+        const { avg_apy } = clusterInfo;
 
         return avg_apy
       }),
@@ -88,39 +88,39 @@ export class SolanaUtilsService {
   }> | any> {
     try {
 
-    // get stake account
-    const stakeAccounts: Array<{
-      pubkey: PublicKey;
-      account: AccountInfo<Buffer | ParsedAccountData | any>;
-    }> = await this.connection.getParsedProgramAccounts(new PublicKey("Stake11111111111111111111111111111111111111"), {
+      // get stake account
+      const stakeAccounts: Array<{
+        pubkey: PublicKey;
+        account: AccountInfo<Buffer | ParsedAccountData | any>;
+      }> = await this.connection.getParsedProgramAccounts(new PublicKey("Stake11111111111111111111111111111111111111"), {
 
-      "filters": [
-        {
-          "memcmp": {
-            "offset": 12,
-            "bytes": publicKey.toBase58()
+        "filters": [
+          {
+            "memcmp": {
+              "offset": 12,
+              "bytes": publicKey.toBase58()
+            }
           }
-        }
-      ]
-    })
+        ]
+      })
 
-    
 
-    return stakeAccounts;
-  } catch (error) {
+
+      return stakeAccounts;
+    } catch (error) {
       return new Error(error)
-  }
+    }
     // return [];
   }
 
-  public async  extendStakeAccount(account: {pubkey: PublicKey;account: AccountInfo<Buffer | ParsedAccountData | any>}): Promise<any>{
+  public async extendStakeAccount(account: { pubkey: PublicKey; account: AccountInfo<Buffer | ParsedAccountData | any> }): Promise<any> {
     const pk = account.pubkey;
     const addr = pk.toBase58()
     const stake = account.account.data.parsed.info.stake.delegation.stake
     const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
 
-    const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey )[0]
+    const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey)[0]
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this.utilService.addrUtil(addr).addrShort,
@@ -150,42 +150,100 @@ export class SolanaUtilsService {
       })
     return accounts;
   }
-  public async getSupply():Promise<{circulating: any, noneCirculating:any}>{
-    const supply =  await this.connection.getSupply({excludeNonCirculatingAccountsList: true, commitment: "finalized"});
+  public async getSupply(): Promise<{ circulating: any, noneCirculating: any }> {
+    const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true, commitment: "finalized" });
     const circulating = this.utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)
     const noneCirculating = this.utilService.numFormater(supply.value.nonCirculating / LAMPORTS_PER_SOL)
 
-    return {circulating, noneCirculating}
-   }
-   public async getStake(): Promise<{activeStake, delinquentStake}> {
+    return { circulating, noneCirculating }
+  }
+  public async getStake(): Promise<{ activeStake, delinquentStake }> {
     const stakeInfo = await this.connection.getVoteAccounts()
-    const activeStake  = this.utilService.numFormater(stakeInfo.current.reduce(
+    const activeStake = this.utilService.numFormater(stakeInfo.current.reduce(
       (previousValue, currentValue) => previousValue + currentValue.activatedStake,
       0
     ) / LAMPORTS_PER_SOL)
-    const delinquentStake  = this.utilService.numFormater(stakeInfo.delinquent.reduce(
-(previousValue, currentValue) => previousValue + currentValue.activatedStake,
+    const delinquentStake = this.utilService.numFormater(stakeInfo.delinquent.reduce(
+      (previousValue, currentValue) => previousValue + currentValue.activatedStake,
       0
     ) / LAMPORTS_PER_SOL)
-    return {activeStake, delinquentStake}
-   }
-   public async getTPS(): Promise<any>{
-    const performaceRes =( await this.connection.getRecentPerformanceSamples())[0];
+    return { activeStake, delinquentStake }
+  }
+  public async getTPS(): Promise<any> {
+    const performaceRes = (await this.connection.getRecentPerformanceSamples())[0];
     const tps = (performaceRes.numTransactions / performaceRes.samplePeriodSecs).toPrecision()
 
     return tps
-   }
-   public getEpochInfo(): Observable<StakeWizEpochInfo>{
+  }
+  public getEpochInfo(): Observable<StakeWizEpochInfo> {
     return this.apiService.get(`https://api.stakewiz.com/epoch_info`).pipe(
       map((data: StakeWizEpochInfo) => {
-        const {remaining_seconds, elapsed_seconds, duration_seconds} = data
+        const { remaining_seconds, elapsed_seconds, duration_seconds } = data
         const days = Math.floor(remaining_seconds / 86400);
-        const hours = Math.floor(remaining_seconds / 3600) - (days  * 24);
-        data.ETA = `ETA ${days} Days and ${hours}`
+        const hours = Math.floor(remaining_seconds / 3600) - (days * 24);
+        data.ETA = `ETA ${days} Days and ${hours} Hours`
         data.timepassInPercentgae = elapsed_seconds / duration_seconds
         return data
       }),
       catchError(this._formatErrors)
     );
-   }
+  }
+  async getWalletHistory(walletPubKey: PublicKey) {
+    try {
+      const signatures: ConfirmedSignatureInfo[] = await this.connection.getConfirmedSignaturesForAddress2(walletPubKey);
+      let records: any[] = [];
+      let walletHistory = []
+      console.log(signatures)
+      signatures.forEach(async signature => {
+        const txInfo = await this.connection.getTransaction(signature.signature);
+        console.log(txInfo)
+        records.push(txInfo);
+      });
+      records.forEach((record, i) => {
+        const from = record?.transaction?.instructions[0]?.keys[0]?.pubkey.toBase58() || null;
+        const to = record.transaction?.instructions[0]?.keys[1]?.pubkey.toBase58() || null;;
+        const amount = (record.meta?.postBalances[1] - record.meta?.preBalances[1]) / LAMPORTS_PER_SOL || null;
+        walletHistory.push({ signature: signatures[i].signature, block: record.slot, amount, from, to } || null)
+      });
+      return walletHistory;
+    } catch (error) {
+      console.error(error)
+      this.toasterService.msg.next({ message: 'failed to retrieve transaction history', icon: '', segmentClass: 'toastError' })
+    }
+  }
+
+  public async getTokenAccounts(wallet: string) {
+    const filters: GetProgramAccountsFilter[] = [
+      {
+        dataSize: 165,    //size of account (bytes)
+      },
+      {
+        memcmp: {
+          offset: 32,     //location of our query in the account (bytes)
+          bytes: wallet,  //our search criteria, a base58 encoded string
+        }
+      }
+    ];
+    const accounts = await this.connection.getParsedProgramAccounts(
+      TOKEN_PROGRAM_ID,   //SPL Token Program, new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
+      { filters: filters }
+    );
+    console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
+    accounts.forEach((account, i) => {
+      //Parse the account data
+      const parsedAccountInfo:any = account.account.data;
+      const mintAddress:string = parsedAccountInfo["parsed"]["info"]["mint"];
+      const tokenBalance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
+      //Log results
+      console.log(`Token Account No. ${i + 1}: ${account.pubkey.toString()}`);
+      console.log(`--Token Mint: ${mintAddress}`);
+      console.log(`--Token Balance: ${tokenBalance}`);
+  });
+  //   const data = {
+  //     pubkey: PublicKey,      //Token Account Public Key
+  //     account: AccountInfo    //Object including information about our token account
+  // }[]
+
+  }
+
 }

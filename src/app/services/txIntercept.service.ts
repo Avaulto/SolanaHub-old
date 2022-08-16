@@ -63,7 +63,7 @@ export class TxInterceptService {
       authorizedPubkey: walletOwnerPk,
     });
     console.log(deactivateTx)
-      this.sendTx([deactivateTx], walletOwnerPk)
+     await this.sendTx([deactivateTx], walletOwnerPk)
     
 
   }
@@ -134,7 +134,7 @@ export class TxInterceptService {
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);
       // this._walletStore.signTransaction(transaction);
-      this._walletStore.signTransaction(transaction).subscribe({
+      return this._walletStore.signTransaction(transaction).subscribe({
         next: async (res: Transaction) => {
 
           if (extraSigners) transaction.partialSign(...extraSigners);

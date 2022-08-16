@@ -9,7 +9,14 @@
         <div class="heading-6">{{defi.name}}</div>
         <span class="sub">{{defi.desc}}</span>
       </div>
-      <ion-button routerDirection="forward" [routerLink]="defi.link">view</ion-button>
+      <ion-button [disabled]="defi.link =='#'" routerDirection="forward" [routerLink]="defi.link">
+        <ng-container *ngIf="defi.link =='#'; else elseTemplate">
+          soon
+        </ng-container>
+        <ng-template #elseTemplate>
+          view
+        </ng-template>
+      </ion-button>
     </ion-row>
   </ion-row>
 </ion-grid>

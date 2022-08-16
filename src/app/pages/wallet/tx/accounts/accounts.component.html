@@ -1,7 +1,7 @@
 <ion-grid>
 <app-loader *ngIf="(stakeAccounts | async) == null"></app-loader>
   <!-- <ion-row id="available-balance " class="stake-balance ion-align-items-center  ion-justify-content-between">
-    <ion-col size="7" class="flex-item-center">
+    <div size="7" class="flex-item-center">
 
       <div class="table-icon">
         <ion-icon name="wallet-outline"></ion-icon>
@@ -9,11 +9,11 @@
       <div class="heading-6">
         Available balance
       </div>
-    </ion-col>
-    <ion-col size="2.5" class="sub ion-text-left" >
+    </div>
+    <div size="2.5" class="sub ion-text-left" >
       24 SOL
-    </ion-col>
-    <ion-col style="text-align:right"  size="2.5">
+    </div>
+    <div style="text-align:right"  size="2.5">
     <ion-button  (click)="showStake = !showStake"  class="ion-text-capitalize">
       <span *ngIf="!showStake">
         new stake
@@ -22,13 +22,13 @@
         hide stake box
       </span> 
     </ion-button>
-    </ion-col>
+    </div>
   </ion-row> -->
   <!-- <ion-row class="ion-margin-top ion-justify-content-center">
     <app-stake></app-stake>
   </ion-row>
   <ion-row id="frozen-balance" class="stake-balance ion-align-items-center  ion-justify-content-between">
-    <ion-col size="10" class="flex-item-center">
+    <div size="10" class="flex-item-center">
 
       <div class="table-icon">
         <ion-icon name="lock-closed-outline"></ion-icon>
@@ -36,15 +36,15 @@
       <div class="heading-6">
         Frozen balance
       </div>
-    </ion-col>
-    <ion-col class="ion-text-right " size="2">
+    </div>
+    <div class="ion-text-right " size="2">
       544 SOL
-    </ion-col>
+    </div>
   </ion-row> -->
   <!-- <div class="heading-4 ion-margin-bottom ion-text-uppercase">Accounts</div> -->
   <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
     *ngFor="let account of stakeAccounts | async">
-    <ion-col class="flex-item-center">
+    <div class="flex-item-center">
       <div class="table-icon">
         <ion-img [src]="account.validatorData?.image"></ion-img>
       </div>
@@ -54,15 +54,15 @@
           fee: {{account.validatorData?.commission}}% uptime: {{account.validatorData?.uptime}}%
         </span>
       </div>
-    </ion-col>
+    </div>
 
-    <ion-col size="2" class="sub">
+    <div class="sub">
       {{account.shortAddr}}
-    </ion-col>
-    <ion-col size="1.5" class="sub">
+    </div>
+    <div  class="sub">
       {{account.balance}}
-    </ion-col>
-    <ion-col size="1">
+    </div>
+    <div>
       <span [ngSwitch]="account.state">
         <p *ngSwitchCase="'activating'">
           <ion-icon [tooltip]="'activating'" name="hourglass-outline"></ion-icon>
@@ -80,15 +80,15 @@
           <ion-icon name="close-outline"></ion-icon>
         </p>
       </span>
-    </ion-col>
+    </div>
 
-    <ion-col size="2.5" style="text-align:right" [ngSwitch]="account.state">
+    <div style="text-align:right" [ngSwitch]="account.state">
       <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" >unstake</ion-button>
-      <ion-button fill="outline" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
+      <ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
       <ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">unstake</ion-button>
       <ion-button fill="outline" color="secondary" *ngSwitchDefault>withraw stake</ion-button>
 
-    </ion-col>
+    </div>
   </ion-row>
 
 </ion-grid>

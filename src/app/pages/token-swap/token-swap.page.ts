@@ -143,57 +143,9 @@ export class TokenSwapPage implements OnInit {
 
 
   private async getTokenBalance(tokens: Token[]) {
-    // const account  = new PublicKey(tokens[0].address)
-    // let accountInfo = await this.solanaUtilService.connection.getAccountInfo(account);
-    // let data = AccountLayout.decode(accountInfo.data);
-    // console.log(accountInfo,data)
 
-    // const tokenAccounts = await this.solanaUtilService.connection.getTokenAccountsByOwner(
-    //   this.wallet.publicKey,
-    //   {
-    //     programId: TOKEN_PROGRAM_ID,
-    //   }
-    // );
-    // // const ata = this.solanaUtilService.connection.account
-    // // let data = AccountLayout.decode(tokenAccounts.value[0].account.data);
-    // // console.log(tokenAccounts.value[0].pubkey.toBase58)
-    // const getTokensBalance = tokenAccounts.value.map(async account =>{
-    //   const accountData = AccountLayout.decode(account.account.data);
-    //   console.log(`${new PublicKey(accountData.mint)}  AMOUNT  ${accountData.amount}`);
-    //   const balance = await this.solanaUtilService.connection.getTokenAccountBalance(account.pubkey)
-    //   return balance;
-    // }) 
-    // const tokensBalancePromise = Promise.all(getTokensBalance)
-    // console.log(tokensBalancePromise)
-    // let accountInfo = await this.solanaUtilService.connection.getAccountInfo(this.wallet.publicKey);
-    // let data = AccountLayout.decode(accountInfo.data);
-    // console.log(data)
-    // console.log("Token                                         Balance");
-    // console.log("------------------------------------------------------------");
-    // tokenAccounts.value.forEach(async (tokenAccount) => {
-    //   const accountData = AccountLayout.decode(tokenAccount.account.data);
-    //   console.log(`${new PublicKey(accountData.mint)}  AMOUNT  ${accountData.amount}`);
-    //   let tokenAmount = await this.solanaUtilService.connection.getTokenAccountBalance(new PublicKey(accountData.mint));
-    //   console.log(tokenAmount)
-    // })
-    // let tokenAmount = await this.solanaUtilService.connection.getTokenAccountBalance(new PublicKey(accountData.mint));
-
-    // const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
-    // splAccounts.filter(async spl =>{
-    //    const tokenAddress = spl.account.data['parsed'].info.mint
-    //    let tokenAmount = await this.solanaUtilService.connection.getTokenAccountBalance(new PublicKey(tokenAddress));
-    //   console.log(tokenAmount)
-    //   });
-    // const ownedTokens = tokens.map((token, index) => {
-    //   return splAccounts.filter(spl => spl.account.data['parsed'].info.mint == token.address);
-    //   // console.log(owned)
-    // })
-    // console.log(ownedTokens)
-    // tokens.find(token => token.address == )
-    // this.solBalance = this.utilsService.fixedNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-    // const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
-    // this.mSOLBalance = splAccounts.filter(account => account.account.data['parsed'].info.mint == marinadeSPL)[0].account.data['parsed'].info.tokenAmount.amount / LAMPORTS_PER_SOL
-
+    this.solanaUtilService.getTokenAccounts(this.wallet.publicKey.toBase58())
+   
   }
   public getPossiblePairsTokenInfo = ({
     tokens,

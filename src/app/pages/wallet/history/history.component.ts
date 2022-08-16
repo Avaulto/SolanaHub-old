@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
+import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 
 interface TxHistory{
   type: "sent" | "recevied";
@@ -37,8 +39,18 @@ export class HistoryComponent implements OnInit {
     amount: 61115.43
   }
 ]
-  constructor() { }
+  constructor(
+    private solanaUtilsService: SolanaUtilsService,
+    private _walletStore: WalletStore
+    ) { }
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    this.getWalletHistory();
+  }
+  getWalletHistory(){
+    this._walletStore.anchorWallet$.subscribe(async wallet=>{
+      const history = await this.solanaUtilsService.getWalletHistory(wallet.publicKey);
+      console.log(history)
+    })
+  }
 }

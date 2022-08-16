@@ -26,8 +26,8 @@ export class AppComponent {
     // this.userService.populate();
     // mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d
     // 'https://dawn-chaotic-butterfly.solana-mainnet.discover.quiknode.pro/e3aa076aff3f4a6b638c3599348ab5f56fde2a12/'
-    // this._connectionStore.setEndpoint(clusterApiUrl('devnet')) ;
-    this._connectionStore.setEndpoint('https://dawn-chaotic-butterfly.solana-mainnet.discover.quiknode.pro/e3aa076aff3f4a6b638c3599348ab5f56fde2a12');
+    this._connectionStore.setEndpoint(clusterApiUrl('devnet')) ;
+    // this._connectionStore.setEndpoint('https://dawn-chaotic-butterfly.solana-mainnet.discover.quiknode.pro/e3aa076aff3f4a6b638c3599348ab5f56fde2a12');
     this._connectionStore.state$.subscribe(val=>console.log(val.endpoint))
     this._walletStore.setAdapters([
       new PhantomWalletAdapter(),

@@ -41,25 +41,23 @@ export class AccountsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._walletStore.anchorWallet$.subscribe(async wallet => {
-      console.log(wallet)
-    })
-    // this.loaderService.isLoading.subscribe(val => console.log(val))
-    // console.log(this.loaderService.isLoading)
-
     this._walletStore.anchorWallet$
     .pipe(this.utils.isNotNull)
     .subscribe(async wallet => {
-      const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey)
-      const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-        return await this.solanaUtilsService.extendStakeAccount(acc)
-      })
-      const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-      this.stakeAccounts.next(extendStakeAccountRes);
+      this.getStakeAccount(wallet.publicKey)
+      this.solanaUtilsService.connection.onAccountChange(wallet.publicKey,(res) => {console.log(res); this.getStakeAccount(wallet.publicKey)});
     })
   }
 
-  deactiveStake(stakeAccount: string) {
-    this.txInterceptService.deactivateStakeAccount(stakeAccount, this.wallet.publicKey)
+  async deactiveStake(stakeAccount: string) {
+   await this.txInterceptService.deactivateStakeAccount(stakeAccount, this.wallet.publicKey);
+  }
+  private async getStakeAccount(publicKey){
+    const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(publicKey)
+    const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+      return await this.solanaUtilsService.extendStakeAccount(acc)
+    })
+    const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+    this.stakeAccounts.next(extendStakeAccountRes);
   }
 }
