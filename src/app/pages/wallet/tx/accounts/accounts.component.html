@@ -46,10 +46,10 @@
     *ngFor="let account of stakeAccounts | async">
     <div class="flex-item-center">
       <div class="table-icon">
-        <ion-img [src]="account.validatorData?.image"></ion-img>
+        <ion-img [src]="account.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
       </div>
       <div class="validator-info heading-6">
-        {{account.validatorData?.name}} <br>
+        {{account.validatorData?.name || 'name not found'}} <br>
         <span class="sub">
           fee: {{account.validatorData?.commission}}% uptime: {{account.validatorData?.uptime}}%
         </span>
@@ -83,10 +83,10 @@
     </div>
 
     <div style="text-align:right" [ngSwitch]="account.state">
-      <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" >unstake</ion-button>
+      <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">unstake</ion-button>
       <ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
       <ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">unstake</ion-button>
-      <ion-button fill="outline" color="secondary" *ngSwitchDefault>withraw stake</ion-button>
+      <ion-button fill="outline" color="danger" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">withdraw stake</ion-button>
 
     </div>
   </ion-row>

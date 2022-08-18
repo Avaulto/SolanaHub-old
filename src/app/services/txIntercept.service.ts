@@ -57,26 +57,42 @@ export class TxInterceptService {
     }
   }
 
-  public async deactivateStakeAccount(stakeAccount: string, walletOwnerPk:PublicKey){
+  public async deactivateStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey) {
     const deactivateTx: Transaction = StakeProgram.deactivate({
       stakePubkey: new PublicKey(stakeAccount),
       authorizedPubkey: walletOwnerPk,
     });
     console.log(deactivateTx)
-     await this.sendTx([deactivateTx], walletOwnerPk)
-    
+    await this.sendTx([deactivateTx], walletOwnerPk)
 
+
+  }
+  public async withdrawStake(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number):Promise<void> {
+    const withdrawTx = StakeProgram.withdraw({
+      stakePubkey: new PublicKey(stakeAccount),
+      authorizedPubkey: walletOwnerPk,
+      toPubkey: walletOwnerPk,
+      lamports, // Withdraw the full balance at the time of the transaction
+    });
+    try {
+      const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
+      if (validTx) {
+        this.sendTx([withdrawTx], walletOwnerPk)
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
       StakeProgram.space,
     );
-    if(lamportsToDelegate < minimumAmount){
-      return this._formatErrors({message:`minimum size for stake account creation is: ${minimumAmount / LAMPORTS_PER_SOL} sol`})
+    if (lamportsToDelegate < minimumAmount) {
+      return this._formatErrors({ message: `minimum size for stake account creation is: ${minimumAmount / LAMPORTS_PER_SOL} sol` })
     }
 
     const createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey) => {
-  
+
       const fromPubkey = stakeAccountOwner;
       const newStakeAccount = new Keypair();
       const authorizedPubkey = stakeAccountOwner;
@@ -105,7 +121,7 @@ export class TxInterceptService {
       const delegateTX: Transaction = StakeProgram.delegate(instruction);
 
       const stake: Transaction[] = [stakeAccIns, delegateTX]
-      const validTx = await this.prepTx(lamportsToDelegate,delegateTX, walletOwnerPk)
+      const validTx = await this.prepTx(lamportsToDelegate, delegateTX, walletOwnerPk)
 
 
       if (validTx) {

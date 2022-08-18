@@ -8,9 +8,9 @@ import { StakeComponent } from './tx/stake/stake.component';
 import { SendComponent } from './send/send.component';
 import { HistoryComponent } from './history/history.component';
 import { TxComponent } from './tx/tx.component';
-import { SpotStakeComponent } from './tx/spot-stake/spot-stake.component';
 import { AccountsComponent } from './tx/accounts/accounts.component';
 import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
+
 
 @NgModule({
   imports: [
@@ -22,7 +22,6 @@ import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
     AccountsComponent,
     TxComponent,
     StakeComponent,
-    SpotStakeComponent,
     SendComponent,
     HistoryComponent,
     ApyCalcComponent

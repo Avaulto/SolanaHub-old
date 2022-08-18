@@ -125,7 +125,7 @@ export class SolanaUtilsService {
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this.utilService.addrUtil(addr).addrShort,
-      balance: Number((stake / LAMPORTS_PER_SOL).toFixed(3)),
+      balance: this.utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)),3),
       state,
       validatorData
     }
