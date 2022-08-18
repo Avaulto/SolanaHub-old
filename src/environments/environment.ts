@@ -14,7 +14,8 @@ export const environment = {
     messagingSenderId: '486710240868',
     measurementId: 'G-8GLJQE2K70',
   },
-  production: false
+  production: false,
+  solanaCluster:'https://api.devnet.solana.com'
 };
 
 /*

@@ -6,24 +6,24 @@
           <ion-row class="ion-align-items-center">
             <ion-col size="1.5" class="ion-margin-end">
               <div class="walletQR">
-                <qrcode [qrdata]="wallet?.addr" [allowEmptyString]="true" [width]="78" [errorCorrectionLevel]="'M'"></qrcode>
+                <qrcode [qrdata]="asset?.address" [allowEmptyString]="true" [width]="78" [errorCorrectionLevel]="'M'"></qrcode>
                 <!-- <ion-img src="/assets/images/icons/" alt="qr wallet"></ion-img> -->
               </div>
             </ion-col>
             <ion-col size="10">
               <ion-row class=" ion-align-items-center">
 
-                <div class="heading-4 ion-margin-end">{{wallet.addrShort}}</div>
+                <div class="heading-4 ion-margin-end">{{asset?.addrShort}}</div>
                 <ion-icon name="copy-outline" class="ion-margin-end"></ion-icon>
-                <a [href]="'https://solana.fm/address/'+ this.wallet.addr" target="_blank">
+                <a [href]="'https://solana.fm/address/'+ this.asset?.address" target="_blank">
                   <ion-icon name="link-outline"></ion-icon>
                 </a>
               </ion-row>
               <ion-row>
-                <div class="heading-2">{{wallet.balance}}</div>
+                <div class="heading-2">{{asset?.balance}}</div>
               </ion-row>
               <ion-row>
-                <div class="heading-6">${{(wallet.balance * wallet.coinData?.price?.usd ).toFixed(2)}}</div>
+                <div class="heading-6">${{asset?.totalUsdValue}}</div>
               </ion-row>
             </ion-col>
           </ion-row>
@@ -34,9 +34,9 @@
 
       
       <ion-row  class="ion-justify-content-between ion-align-items-start">
-        <ion-col size="6.7">
+        <ion-col size="12" sizeLg="7.5">
           <div class="data-box ion-padding">
-            <app-tx [wallet]="wallet"></app-tx>
+            <app-tx [wallet]="asset"></app-tx>
           </div>
           <!-- <div class="data-box ion-padding">
             <ion-row>
@@ -49,9 +49,9 @@
 
         </ion-col>
 
-        <ion-col sizeSm="12" sizeLg="5">
+        <ion-col size="12" sizeLg="4">
           <div class="data-box ion-padding">
-            <app-assets-balance title="tokens" [assets]="wallet.tokens"></app-assets-balance>
+            <app-assets-balance title="tokens" [assets]="asset.tokens"></app-assets-balance>
           </div>
           <!-- <div class="data-box ion-padding" id="coin-data">
             <ion-row class="ion-align-items-center ion-margin-bottom">

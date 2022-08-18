@@ -41,7 +41,7 @@ export class SendComponent implements OnInit {
   async submitSendSol(){
     this.formSubmitted = true;
     const {amount, targetAddress} = this.sendSolForm.value;
-    const walletOwnerPublicKey = new PublicKey(this.wallet.addr)
+    const walletOwnerPublicKey = new PublicKey(this.wallet.address)
     const res = await this.txInterceptService.sendSol(amount * LAMPORTS_PER_SOL , targetAddress ,walletOwnerPublicKey)
     this.formSubmitted = false;
   }

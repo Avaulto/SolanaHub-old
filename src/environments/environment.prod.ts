@@ -10,5 +10,6 @@ export const environment = {
     messagingSenderId: '486710240868',
     measurementId: 'G-8GLJQE2K70',
   },
-  production: true
+  production: true,
+  solanaCluster:'https://dawn-chaotic-butterfly.solana-mainnet.discover.quiknode.pro/e3aa076aff3f4a6b638c3599348ab5f56fde2a12'
 };

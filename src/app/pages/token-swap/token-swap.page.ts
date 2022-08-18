@@ -144,7 +144,7 @@ export class TokenSwapPage implements OnInit {
 
   private async getTokenBalance(tokens: Token[]) {
 
-    this.solanaUtilService.getTokenAccounts(this.wallet.publicKey.toBase58())
+    this.solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58())
    
   }
   public getPossiblePairsTokenInfo = ({

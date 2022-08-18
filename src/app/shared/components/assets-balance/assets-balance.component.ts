@@ -16,7 +16,7 @@ export class AssetsBalanceComponent implements OnInit {
   constructor(private utils: UtilsService, private navCtrl: NavController) { }
 
   ngOnInit() {}
-  goToWalletpage(address: string, asset: Asset){
-    this.navCtrl.navigateForward('/side-menu/wallet/'+address,{state: asset})
+  send(asset: Asset){
+    // this.navCtrl.navigateForward('/side-menu/wallet/'+address,{state: asset})
   }
 }

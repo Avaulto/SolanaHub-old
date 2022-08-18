@@ -1,30 +1,30 @@
 <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{title}}</div>
 <div id="assets-list">
-  <div class="wallet ion-align-items-center" *ngFor="let asset of assets" (click)="goToWalletpage(asset.addr, asset)">
+  <div class="asset ion-align-items-center" *ngFor="let asset of assets" (click)="send(asset)">
     <div id="balace-number">
-     
-      
-        <div ><ion-img [src]="asset.icon"></ion-img></div>
-        <div>
-          <div class="short-wallet-addr"> 
-            {{asset.name}}
-          </div>
-          <div class="button-text">
-            <span class="global-selected-pair">
-              $1201
-            </span>
-            <span class="sub">{{asset.balance}}</span>
-          </div>
+      <div id="icon-wrapper">
+        <ion-img [src]="asset.icon"></ion-img>
+      </div>
+      <div>
+        <div class="short-wallet-name ion-text-uppercase">
+          {{asset.name}}
         </div>
-     
+        <div class="button-text">
+          <span class="global-selected-pair">
+            {{asset.totalUsdValue | currency}}
+          </span>
+          <span class="sub">{{asset.balance}}</span>
+        </div>
+      </div>
+
     </div>
     <div id="balance-base">
-      
-        <div>{{asset.baseOfPortfolio}}</div>
-        <div>
-          <div class="bar" [style]="'width:' + asset.baseOfPortfolio"></div>
-        </div>
-     
+
+      <div>{{asset.baseOfPortfolio}}%</div>
+
+      <span class="bar" [style]="'width:' + asset.baseOfPortfolio + '%'"></span>
+
+
     </div>
   </div>
 </div>

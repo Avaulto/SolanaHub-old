@@ -9,6 +9,7 @@ import { ToasterService } from './toaster.service';
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { ValidatorData } from '../shared/models/validatorData.model';
 import { UtilsService } from './utils.service';
+import { TokenBalance } from '../shared/models/tokenBalance.model';
 
 
 interface StakeWizEpochInfo {
@@ -212,7 +213,7 @@ export class SolanaUtilsService {
     }
   }
 
-  public async getTokenAccounts(wallet: string) {
+  public async getTokenAccountsBalance(wallet: string): Promise<TokenBalance[]> {
     const filters: GetProgramAccountsFilter[] = [
       {
         dataSize: 165,    //size of account (bytes)
@@ -228,21 +229,19 @@ export class SolanaUtilsService {
       TOKEN_PROGRAM_ID,   //SPL Token Program, new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
       { filters: filters }
     );
-    console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
-    accounts.forEach((account, i) => {
+    // console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
+    const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
       //Parse the account data
-      const parsedAccountInfo:any = account.account.data;
-      const mintAddress:string = parsedAccountInfo["parsed"]["info"]["mint"];
-      const tokenBalance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
-      //Log results
-      console.log(`Token Account No. ${i + 1}: ${account.pubkey.toString()}`);
-      console.log(`--Token Mint: ${mintAddress}`);
-      console.log(`--Token Balance: ${tokenBalance}`);
-  });
-  //   const data = {
-  //     pubkey: PublicKey,      //Token Account Public Key
-  //     account: AccountInfo    //Object including information about our token account
-  // }[]
+      const parsedAccountInfo: any = account.account.data;
+      const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];
+      const balance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
+      return { tokenPubkey: account.pubkey.toString(), mintAddress, balance }
+    }).filter(token => token.balance > 0.00001);
+    return tokensBalance;
+    //   const data = {
+    //     pubkey: PublicKey,      //Token Account Public Key
+    //     account: AccountInfo    //Object including information about our token account
+    // }[]
 
   }
 

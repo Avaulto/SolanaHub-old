@@ -3,20 +3,25 @@ import { PublicKey } from "@solana/web3.js";
 export interface Asset {
     name:string;
     publicKey?: PublicKey
-    addr: any;
-    addrShort: string;
-    balance: number;
-    baseOfPortfolio:string;
-    icon: string;
+    address?: string;
+    addrShort?: string;
+    mintAddress?: string;
+    balance?: number;
+    totalUsdValue?: number;
+    baseOfPortfolio?:number;
+    icon?: string;
     coinData?: CoinData | any;
     tokens?: Asset[]
   }
 
   export interface CoinData {
-    name: string,
+    name?: string,
+    symbol?: string;
     price: {btc: number, usd:number},
     price_change_percentage_24h_in_currency: {btc: number,usd:number},
-    desc: string,
+    desc?: string,
     image: {thumb,small, large},
     website: string,
+    contract_address?: string
+    mintAddress?: string;
   };

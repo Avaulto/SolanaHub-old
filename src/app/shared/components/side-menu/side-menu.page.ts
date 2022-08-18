@@ -59,11 +59,11 @@ export class SideMenuPage implements OnInit {
     //   url: "/defi/pools",
     //   icon: faSwimmingPool,
     // },
-    {
-      title: "lending",
-      url: "lending",
-      icon: faCoins,
-    },
+    // {
+    //   title: "lending",
+    //   url: "lending",
+    //   icon: faCoins,
+    // },
     {
       title: "support us",
       url: "support-us",
