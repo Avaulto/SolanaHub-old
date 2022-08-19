@@ -3,6 +3,7 @@
   <ion-row style="margin-bottom:8px" class="heading-6">
     Choose stake account
   </ion-row>
+  <form>
   <ion-row class="ion-margin-bottom">
     <div id="stake-account-selection">
       <app-select-item [item]="selectedStakeAccount" (click)="showAccountList = !showAccountList"
@@ -34,4 +35,6 @@
   <p class="ion-text-capitalize">
     for more info about deposit stake account please visit <a href="https://docs.marinade.finance/faq/faq#can-i-deposit-my-stake-account-directly" target="_blank">Marinade docs</a>
   </p>
+</form>
+
 </ion-grid>

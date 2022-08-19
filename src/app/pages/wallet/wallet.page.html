@@ -44,6 +44,8 @@
         <ion-col size="12" sizeLg="4">
           <div class="data-box ion-padding">
             <app-assets-balance title="tokens" [assets]="asset.tokens"></app-assets-balance>
+            {{asset.tokens}}
+            <app-loader *ngIf="asset.tokens.length == 0"></app-loader>
           </div>
         </ion-col>
 
