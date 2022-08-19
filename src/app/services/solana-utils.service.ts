@@ -172,7 +172,7 @@ export class SolanaUtilsService {
   }
   public async getTPS(): Promise<any> {
     const performaceRes = (await this.connection.getRecentPerformanceSamples())[0];
-    const tps = (performaceRes.numTransactions / performaceRes.samplePeriodSecs).toPrecision()
+    const tps = performaceRes.numTransactions / performaceRes.samplePeriodSecs
 
     return tps
   }

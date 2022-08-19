@@ -57,7 +57,7 @@ export class DataAggregatorService {
       return coinData
 
     } catch (error) {
-      console.error(error)
+      //console.error(error)
     }
   }
   public getCoinChartHistory(coinName: string, currency: string, days: number) {

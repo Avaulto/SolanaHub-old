@@ -20,10 +20,9 @@ import { TokenBalance } from 'src/app/shared/models/tokenBalance.model';
 export class WalletPage implements OnInit {
   public asset: Asset = {
     name: 'solana',
-    coinData: {},
-    tokens: []
-    // todo - GET owner tokens from the blockchain
+    tokens: [],
   }
+  public walletTotalValue = {usdValue:0, solValue: 0}
   constructor(private utils: UtilsService,
     private apiService: ApiService,
     private dataAggregator: DataAggregatorService,
@@ -36,7 +35,7 @@ export class WalletPage implements OnInit {
     // this.dataAggregator.getSolWalletData('JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD').subscribe(val =>console.log(val))
     this.dataAggregator.getCoinData(this.asset.name).subscribe(coinData => this.asset.coinData = coinData);
 
-    this._walletStore.anchorWallet$.subscribe(async wallet => {
+    this._walletStore.anchorWallet$.pipe(this.utils.isNotNull).subscribe(async wallet => {
       // fetch tokens by owner
       const tokensByOwner = await this.solanaUtilsService.getTokenAccountsBalance(wallet.publicKey.toBase58())
       console.log(tokensByOwner)
@@ -53,16 +52,22 @@ export class WalletPage implements OnInit {
         this.asset.tokens.push(asset);
       })
 
-      this._calcBaseOfPortfolio();
 
-      // console.log(wallet)
-      if (wallet) {
+
         this.setWallet(wallet)
-
         const balanace = (await this.solanaUtilsService.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL;
         this.asset.balance = this.utils.shortenNum((balanace));
         this.asset.totalUsdValue = this.utils.shortenNum(balanace * this.asset.coinData?.price?.usd)
-      }
+        
+        const { balance, totalUsdValue} = this.asset;
+        const {small} =this.asset.coinData.image
+        const solanaToken = {
+          name:'sol', balance,icon:small, totalUsdValue: Number(totalUsdValue)
+        }
+        this.asset.tokens.push(solanaToken)
+
+        this._evalutePortfolio();
+        console.log( this.walletTotalValue)
     })
 
   }
@@ -75,13 +80,14 @@ export class WalletPage implements OnInit {
       totalUsdValue: token.balance * coinData.price.usd
     }
   }
-  private _calcBaseOfPortfolio() {
-    const portfolioTotalValue = this.asset.tokens.reduce(
+  private _evalutePortfolio() {
+    this.walletTotalValue.usdValue = this.asset.tokens.reduce(
       (previousValue, currentValue: Asset) => previousValue + currentValue.totalUsdValue,
       0
     );
+    this.walletTotalValue.solValue = this.utils.shortenNum(this.walletTotalValue.usdValue / this.asset.coinData.price.usd);
     this.asset.tokens.map(token => {
-      token.baseOfPortfolio = this.utils.shortenNum(token.totalUsdValue / portfolioTotalValue * 100, 1)
+      token.baseOfPortfolio = this.utils.shortenNum(token.totalUsdValue / this.walletTotalValue.usdValue * 100, 1)
     })
 
     this.asset.tokens.sort((a,b) => a.baseOfPortfolio - b.baseOfPortfolio)

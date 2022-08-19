@@ -2,15 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { EpochInfo, LAMPORTS_PER_SOL, RpcResponseAndContext, Supply, VoteAccountStatus } from '@solana/web3.js';
 import { forkJoin, map, Observable } from 'rxjs';
+import { CoinData } from 'src/app/models';
 import { ApiService, LoaderService, UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 
 interface ClusterInfo {
-  TPS: any,
+  TPS: string,
   supply: { circulating: any, noneCirculating: any },
   stakeInfo: { activeStake: any, delinquentStake: any },
-  solData: any;
+  solData: CoinData;
   epochInfo;
 }
 @Component({

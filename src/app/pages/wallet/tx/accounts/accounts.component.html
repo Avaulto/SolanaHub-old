@@ -1,47 +1,8 @@
 <ion-grid>
 <app-loader *ngIf="(stakeAccounts | async) == null"></app-loader>
-  <!-- <ion-row id="available-balance " class="stake-balance ion-align-items-center  ion-justify-content-between">
-    <div size="7" class="flex-item-center">
-
-      <div class="table-icon">
-        <ion-icon name="wallet-outline"></ion-icon>
-      </div>
-      <div class="heading-6">
-        Available balance
-      </div>
-    </div>
-    <div size="2.5" class="sub ion-text-left" >
-      24 SOL
-    </div>
-    <div style="text-align:right"  size="2.5">
-    <ion-button  (click)="showStake = !showStake"  class="ion-text-capitalize">
-      <span *ngIf="!showStake">
-        new stake
-      </span> 
-      <span *ngIf="showStake">
-        hide stake box
-      </span> 
-    </ion-button>
-    </div>
-  </ion-row> -->
-  <!-- <ion-row class="ion-margin-top ion-justify-content-center">
-    <app-stake></app-stake>
-  </ion-row>
-  <ion-row id="frozen-balance" class="stake-balance ion-align-items-center  ion-justify-content-between">
-    <div size="10" class="flex-item-center">
-
-      <div class="table-icon">
-        <ion-icon name="lock-closed-outline"></ion-icon>
-      </div>
-      <div class="heading-6">
-        Frozen balance
-      </div>
-    </div>
-    <div class="ion-text-right " size="2">
-      544 SOL
-    </div>
-  </ion-row> -->
-  <!-- <div class="heading-4 ion-margin-bottom ion-text-uppercase">Accounts</div> -->
+<ion-row *ngIf="(stakeAccounts | async).length == 0" class="ion-text-capitalize ion-align-items-center ion-justify-content-between">
+  no stake account
+</ion-row>
   <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
     *ngFor="let account of stakeAccounts | async">
     <div class="flex-item-center">

@@ -20,10 +20,10 @@
                 </a>
               </ion-row>
               <ion-row>
-                <div class="heading-2">{{asset?.balance}}</div>
+                <div class="heading-2">{{walletTotalValue.solValue}} ◎</div>
               </ion-row>
               <ion-row>
-                <div class="heading-6">${{asset?.totalUsdValue}}</div>
+                <div class="heading-6">${{walletTotalValue.usdValue | currency}}</div>
               </ion-row>
             </ion-col>
           </ion-row>
@@ -38,14 +38,6 @@
           <div class="data-box ion-padding">
             <app-tx [wallet]="asset"></app-tx>
           </div>
-          <!-- <div class="data-box ion-padding">
-            <ion-row>
-              <ion-col size="12">
-                <app-accounts></app-accounts>
-              </ion-col>
-            </ion-row>
-          </div>
-   -->
 
         </ion-col>
 
@@ -53,25 +45,6 @@
           <div class="data-box ion-padding">
             <app-assets-balance title="tokens" [assets]="asset.tokens"></app-assets-balance>
           </div>
-          <!-- <div class="data-box ion-padding" id="coin-data">
-            <ion-row class="ion-align-items-center ion-margin-bottom">
-              <ion-img class="ion-margin-end" [src]="wallet.coinData?.image?.small"></ion-img>
-              <span>{{wallet.name}}</span>
-            </ion-row>
-            <ion-row class="ion-align-items-center ion-margin-bottom"><span class="ion-margin-end"
-                id="coin-price">${{wallet.coinData?.price?.usd}} </span> <span class="price-bg"
-                id="coin-price-change">{{wallet?.coinData?.price_change_percentage_24h_in_currency?.usd}}%</span>
-            </ion-row>
-            <ion-row class="ion-margin-bottom">
-              <p>{{wallet.coinData?.desc}}</p>
-            </ion-row>
-            <ion-row class="ion-margin-bottom ion-text-capitalize">
-              <a class="button-text ion-align-items-center" [href]="wallet.coinData.website" target="_blank">
-                <ion-icon name="link-outline"></ion-icon> website
-              </a>
-            </ion-row>
-
-          </div> -->
         </ion-col>
 
       </ion-row>

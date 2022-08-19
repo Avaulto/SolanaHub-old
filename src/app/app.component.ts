@@ -11,6 +11,8 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import { environment } from 'src/environments/environment.prod';
+import { Router } from '@angular/router';
+import { of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -19,7 +21,7 @@ import { environment } from 'src/environments/environment.prod';
 export class AppComponent {
   readonly isReady$ = this._walletStore.connected$
   constructor(
-    private userService: UserService,
+    public router:Router,
     private _connectionStore: ConnectionStore,
     private _walletStore: WalletStore
   ) { }

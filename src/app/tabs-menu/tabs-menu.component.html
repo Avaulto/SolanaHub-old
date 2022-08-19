@@ -1,0 +1,13 @@
+
+  <ion-tab-bar slot="bottom">
+    <div id="tabs-warpper">
+
+      <ion-tab-button *ngFor="let p of pages" routerLinkActive="active-tab" routerDirection="forward" [routerLink]="p.url"
+        [tab]="p.url">
+        <ion-icon [name]="p.icon" ></ion-icon>
+        <!-- <ion-label>{{ p.title }}</ion-label> -->
+      </ion-tab-button>
+
+    </div>
+    <app-wallet-connect></app-wallet-connect>
+  </ion-tab-bar>

@@ -7,7 +7,7 @@
       <div id="routes-wrapper">
         <div *ngFor="let p of pages">
           <ion-item class="menu-item" (click)="p.open = !p.open" button [routerLink]="p.url" routerLinkActive="active">
-            <fa-icon [icon]="p.icon" ></fa-icon>
+            <ion-icon [name]="p.icon" ></ion-icon>
             <!-- <fa-icon [icon]="boxOpen" *ngIf="p.open"></fa-icon> -->
             <ion-label>
               {{ p.title }}
@@ -18,7 +18,7 @@
               routerLinkActive="active">
               <div class="menu-icon">
                 
-                <fa-icon [icon]="sub.icon" size="sm"></fa-icon>
+                <ion-icon [name]="sub.icon" ></ion-icon>
               </div>
               <div class="wallet-info">
                 <ion-label>

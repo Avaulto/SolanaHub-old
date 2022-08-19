@@ -1,11 +1,12 @@
 <ion-app>
   <ion-grid>
     <ion-row style="height:100%">
-      <ion-col size="2">
+      <ion-col sizeLg="2" size="0">
         <app-side-menu></app-side-menu>
       </ion-col>
-      <ion-col size="10">
-        <ng-container *ngIf="isReady$ | async; else notConnected">
+
+      <ion-col sizeLg="10" size="12">
+        <ng-container *ngIf="(isReady$ | async) || this.router.url.indexOf('home') > -1; else notConnected">
           <ion-router-outlet></ion-router-outlet>
         </ng-container>
         <ng-template #notConnected>
@@ -13,5 +14,10 @@
         </ng-template>
       </ion-col>
     </ion-row>
+    <!-- <ion-col sizeLg="0" size="12"> -->
+      <app-tabs-menu class="ion-hide-lg-up"></app-tabs-menu>
+    <!-- </ion-col> -->
   </ion-grid>
+
+
 </ion-app>

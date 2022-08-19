@@ -10,7 +10,7 @@ export interface Asset {
     totalUsdValue?: number;
     baseOfPortfolio?:number;
     icon?: string;
-    coinData?: CoinData | any;
+    coinData?: CoinData;
     tokens?: Asset[]
   }
 

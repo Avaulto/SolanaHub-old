@@ -39,6 +39,16 @@
 // ion-grid{
 //     overflow: scroll;
 // }
+// ::-webkit-scrollbar {
+//     -webkit-appearance: none;
+//     width: 2px;
+//   }
+  
+//   ::-webkit-scrollbar-thumb {
+//     background-color: var(--ion-color-primary);
+//     box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+//   }
+
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none;

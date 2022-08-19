@@ -1,0 +1,32 @@
+:host{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+ion-tab-bar {
+    --background: transparent;
+    background-image: url(/assets/images/home-bg.png);
+    padding: 5px 10px;
+}
+
+ion-tab-button {
+    min-width: 56px !important;
+}
+
+#tabs-warpper {
+    height: 50px;
+    display: flex;
+    overflow-x: scroll;
+}
+
+app-wallet-connect {
+    width: 60%;
+}
+
+ion-icon {
+    font-size: 16px;
+}
+.active-tab {
+    border-bottom: 3px solid var(--ion-color-primary);
+    border-radius: 2px;
+}

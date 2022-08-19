@@ -28,7 +28,7 @@ ion-img {
     display: flex;
     align-items: center;
     width: 50%;
-    div{
+    div:first-child{
         margin-inline-end: 18px;
     }
 }
@@ -39,9 +39,15 @@ ion-img {
     font-weight: 600;
     font-size: 11px;
 }
-
+#bar-wrapper{
+    background: #04172c;
+    width: 100%;
+    height: 8px;
+    border-radius: 8px;
+}
 .bar {
     height: 8px;
+    display: block;
     background: #FD49AD;
     border-radius: 8px;
 }
