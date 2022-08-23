@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NftStoreService } from 'src/app/services/nft-store.service';
 import { Observable, switchMap } from 'rxjs';
-import { NFTGroup } from 'src/app/models';
+import { NFTGroup } from '../../models';
 
 
 
