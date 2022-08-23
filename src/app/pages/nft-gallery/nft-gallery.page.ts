@@ -1,17 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PublicKey, Keypair } from "@solana/web3.js";
-
-
-
-import { ApiService, UtilsService } from 'src/app/services';
-
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { clusterApiUrl, Connection } from "@solana/web3.js";
-
-import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NftStoreService } from 'src/app/services/nft-store.service';
-import { NFTGroup } from 'src/app/models';
-import { Observable, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 
 
 
