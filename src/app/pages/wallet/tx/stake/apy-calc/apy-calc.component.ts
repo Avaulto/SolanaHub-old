@@ -7,10 +7,11 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ApyCalcComponent implements OnInit {
   @Input() rewardInfo: {apy: number, amount: number} = {apy: 0, amount: 0};
+  
   constructor() { }
 
   ngOnInit() {}
-  public calcCoinROI (days: number) {
+  public calcCoinROI = (days: number) => {
     console.log(this.rewardInfo)
     return ((this.rewardInfo.apy / 100) * this.rewardInfo.amount / days).toLocaleString();
   }

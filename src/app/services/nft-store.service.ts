@@ -7,7 +7,7 @@ import {
   getParsedNftAccountsByOwner,
   createConnectionConfig
 } from "@nfteyez/sol-rayz";
-import { Nft, NFTGroup, NFTmetaData } from 'src/app/models';
+import { Nft, NFTGroup, NFTmetaData } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { map, Observable } from 'rxjs';
