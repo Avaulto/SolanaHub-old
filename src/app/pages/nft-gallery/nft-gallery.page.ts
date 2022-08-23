@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NftStoreService } from 'src/app/services/nft-store.service';
-import { switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
+import { NFTGroup } from 'src/app/models';
 
 
 
@@ -11,7 +12,7 @@ import { switchMap } from 'rxjs';
   styleUrls: ['./nft-gallery.page.scss'],
 })
 export class NftGalleryPage implements OnInit {
-  public nftCollections = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getNftz2(wallet.publicKey.toBase58()))).subscribe()
+  public nftCollections: Observable<NFTGroup[]> = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getNftz(wallet.publicKey.toBase58())))
 
   constructor(
     private _walletStore: WalletStore,

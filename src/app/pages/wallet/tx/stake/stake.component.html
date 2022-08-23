@@ -7,8 +7,9 @@
     </ion-row>
     <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
       <div id="">stake</div>
-      <div id="balance">Balance: {{wallet?.balance}} <ion-icon tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.
-        " placement="top" name="alert-circle-outline"></ion-icon> </div>
+      <div class="aligned">Balance: {{wallet?.balance}} <ion-icon tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.
+        " placement="top" name="alert-circle-outline"></ion-icon>
+      </div>
     </ion-row>
     <ion-row id="stake-amount">
       <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
@@ -22,26 +23,36 @@
 
       <div id="node-selection">
 
-        <app-select-item 
-        [item]="selectedValidator"
-        (click)="showValidatorList = !showValidatorList" 
-        [isDropDownOpen]="showValidatorList"
-         [showDropDownIcon]="true"
-         >
+        <app-select-item [item]="selectedValidator" (click)="showValidatorList = !showValidatorList"
+          [isDropDownOpen]="showValidatorList" [showDropDownIcon]="true">
         </app-select-item>
         <!-- <app-validator (click)="showValidatorList = !showValidatorList" [showValidatorList]="showValidatorList"
           [validatorData]="selectedValidator" [showDropDownIcon]="true">
         </app-validator> -->
 
-        <app-select-box *ngIf="showValidatorList"  [dataset]="validatorsData" [filterBy]="'name'" (onSelectItem)="setSelectedValidator($event)">
-          
+        <app-select-box *ngIf="showValidatorList" [dataset]="validatorsData" [filterBy]="'name'"
+          (onSelectItem)="setSelectedValidator($event)">
+
         </app-select-box>
 
       </div>
     </ion-row>
+    <ion-row class="heading-6 ion-justify-content-between">
+      <div class="aligned">commitment <ion-icon
+          tooltip="feeling bulish? lock your stake account and commit to your validator(and yourself)" placement="top"
+          name="alert-circle-outline"></ion-icon>
+      </div>
+      <div>
+        months: {{stakeForm.value.monthLockuptime}}
+      </div>
+    </ion-row>
+    <ion-row id="commitment-amount">
+      <ion-range formControlName="monthLockuptime" [min]="0" [max]="32"  [pin]="true" [ticks]="true" [snaps]="true"></ion-range>
+    </ion-row>
     <ion-row class="ion-justify-content-center">
-      <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button" class="ion-text-capitalize">stake</ion-button>
+      <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"
+        class="ion-text-capitalize">stake</ion-button>
     </ion-row>
   </form>
-<app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc>
+  <app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc>
 </ion-grid>

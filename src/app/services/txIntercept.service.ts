@@ -83,7 +83,7 @@ export class TxInterceptService {
       console.error(error)
     }
   }
-  public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string) {
+  public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string,lockuptime: number) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
       StakeProgram.space,
     );
@@ -97,7 +97,7 @@ export class TxInterceptService {
       const newStakeAccount = new Keypair();
       const authorizedPubkey = stakeAccountOwner;
       const authorized = new Authorized(authorizedPubkey, authorizedPubkey);
-      const lockup = new Lockup(0, 0, fromPubkey);
+      const lockup = new Lockup(lockuptime, 0, fromPubkey);
       const lamports = lamportToSend;
       const stakeAccountIns: CreateStakeAccountParams = {
         fromPubkey,
