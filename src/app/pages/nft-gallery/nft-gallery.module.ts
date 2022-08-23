@@ -9,12 +9,13 @@ import { NftGalleryPageRoutingModule } from './nft-gallery-routing.module';
 import { NftGalleryPage } from './nft-gallery.page';
 import { CollectionComponent } from './collection/collection.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { NftItemComponent } from './collection/nft-item/nft-item.component';
 
 @NgModule({
   imports: [
 SharedModule,
     NftGalleryPageRoutingModule
   ],
-  declarations: [NftGalleryPage,CollectionComponent]
+  declarations: [NftGalleryPage,CollectionComponent,NftItemComponent]
 })
 export class NftGalleryPageModule {}

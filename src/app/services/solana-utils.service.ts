@@ -229,6 +229,7 @@ export class SolanaUtilsService {
       TOKEN_PROGRAM_ID,   //SPL Token Program, new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
       { filters: filters }
     );
+    console.log(accounts)
     // console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
     const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
       //Parse the account data

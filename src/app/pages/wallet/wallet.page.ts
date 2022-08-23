@@ -5,7 +5,7 @@ import { NavController } from '@ionic/angular';
 import { getParsedNftAccountsByOwner, resolveToWalletAddress } from '@nfteyez/sol-rayz';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { first } from 'rxjs';
-import { Asset, CoinData, NFTdata, NFTGroup } from 'src/app/models';
+import { Asset, CoinData, NFTGroup } from 'src/app/models';
 import { ApiService, UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
@@ -98,38 +98,38 @@ export class WalletPage implements OnInit {
     this.asset.address = walletAddrs.addr
     this.asset.addrShort = walletAddrs.addrShort
   }
-  private _getNfts(pk: PublicKey) {
-    (async () => {
-      let solanaNFTs: NFTGroup = {
-        collectionName: 'Marinade Chefs',
-        collectionImage: 'https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image',
-        NFTdata: []
-      }
-      // connection
-      // const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
+  // private _getNfts(pk: PublicKey) {
+  //   (async () => {
+  //     let solanaNFTs: NFTGroup = {
+  //       collectionName: 'Marinade Chefs',
+  //       collectionImage: 'https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image',
+  //       NFTdata: []
+  //     }
+  //     // connection
+  //     // const connection = new Connection(clusterApiUrl("mainnet-beta"), "confirmed");
 
-      const owner = new PublicKey("JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD");
-      // let response = await connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID });
+  //     const owner = new PublicKey("JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD");
+  //     // let response = await connection.getParsedTokenAccountsByOwner(owner, { programId: TOKEN_PROGRAM_ID });
 
 
-      const publicAddress = await resolveToWalletAddress({
-        text: 'JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD'
-      });
+  //     const publicAddress = await resolveToWalletAddress({
+  //       text: 'JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD'
+  //     });
 
-      const nftArray = await getParsedNftAccountsByOwner({
-        publicAddress,
-      });
-      nftArray.forEach((item, index) => {
-        if (index != 0) {
+  //     const nftArray = await getParsedNftAccountsByOwner({
+  //       publicAddress,
+  //     });
+  //     nftArray.forEach((item, index) => {
+  //       if (index != 0) {
 
-          // console.log('parent:', item)
-          this.apiService.get(item.data.uri).subscribe(r => {
-            const nft: NFTdata = { collectionName: 'Marinade Chefs', collectionImage: 'https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image', name: item.data.name, image: r.image, description: r.description, mintAddr: item.mint, value: 0, attr: r.attributes, explorerURL: 'https://solscan.io/token/' + item.mint, websiteURL: r.external_url }
-            solanaNFTs.NFTdata.push(nft)
-          })
-        }
-      })
-      // this.nftCollections.push(solanaNFTs)
-    })();
-  }
+  //         // console.log('parent:', item)
+  //         this.apiService.get(item.data.uri).subscribe(r => {
+  //           const nft: NFTdata = { collectionName: 'Marinade Chefs', collectionImage: 'https://mnde-nft-api.mainnet-beta.marinade.finance/collection/image', name: item.data.name, image: r.image, description: r.description, mintAddr: item.mint, value: 0, attr: r.attributes, explorerURL: 'https://solscan.io/token/' + item.mint, websiteURL: r.external_url }
+  //           solanaNFTs.NFTdata.push(nft)
+  //         })
+  //       }
+  //     })
+  //     // this.nftCollections.push(solanaNFTs)
+  //   })();
+  // }
 }

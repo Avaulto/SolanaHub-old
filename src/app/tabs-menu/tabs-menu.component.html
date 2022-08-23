@@ -1,10 +1,10 @@
 
   <ion-tab-bar slot="bottom">
-    <div id="tabs-warpper">
+    <div id="tabs-warpper" #tabWarpper>
 
-      <ion-tab-button *ngFor="let p of pages" routerLinkActive="active-tab" routerDirection="forward" [routerLink]="p.url"
+      <ion-tab-button #tabBtn (click)="scroll(tabBtn)" [id]="'tab-' +p.url" *ngFor="let p of pages" routerLinkActive="active-tab" routerDirection="forward" [routerLink]="p.url"
         [tab]="p.url">
-        <ion-icon [name]="p.icon" ></ion-icon>
+        <ion-icon  [name]="p.icon" ></ion-icon>
         <!-- <ion-label>{{ p.title }}</ion-label> -->
       </ion-tab-button>
 

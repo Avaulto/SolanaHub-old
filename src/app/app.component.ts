@@ -12,7 +12,6 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
-import { of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

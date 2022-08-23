@@ -8,6 +8,7 @@ module.exports = (config) => {
 		util: false,
 		assert: false,
 		stream: false,
+		zlib: false,
 	};
 
 	return config;
