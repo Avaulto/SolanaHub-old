@@ -13,7 +13,7 @@ import { NftItemComponent } from './collection/nft-item/nft-item.component';
 
 @NgModule({
   imports: [
-SharedModule,
+    SharedModule,
     NftGalleryPageRoutingModule
   ],
   declarations: [NftGalleryPage,CollectionComponent,NftItemComponent]
