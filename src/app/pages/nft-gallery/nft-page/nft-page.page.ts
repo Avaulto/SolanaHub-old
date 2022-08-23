@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { NFTdata } from 'src/app/models';
+import { Nft } from '../../../models';
 
 @Component({
   selector: 'app-nft-page',
@@ -9,8 +9,7 @@ import { NFTdata } from 'src/app/models';
   styleUrls: ['./nft-page.page.scss'],
 })
 export class NftPagePage implements OnInit {
-  // @Input() NFTData
-  public NFT: NFTdata | any;
+  public NFT: Nft | any;
   constructor(private router:Router) { }
 
   ngOnInit() {

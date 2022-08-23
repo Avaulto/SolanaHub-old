@@ -1,10 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { distinctUntilChanged, first, map, Observable, Subscription, take, takeLast, takeUntil } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Asset } from 'src/app/models';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
-import { ValidatorData } from 'src/app/shared/models/validatorData.model';
 
 @Component({
   selector: 'app-tx',
