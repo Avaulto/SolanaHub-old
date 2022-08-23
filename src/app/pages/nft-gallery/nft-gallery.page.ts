@@ -19,9 +19,6 @@ export class NftGalleryPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    // console.log('gallery loaded');
-    // this._nftStore.getNftz()
-    // // this.getAssosiateAccounts();
   }
   setSort(ev) {
 
