@@ -48,6 +48,7 @@ export class NftStoreService {
     await Promise.all(nftArray.map(async metaPlexItem => {
       try {
         const metaData: NFTmetaData = await this.getMetaData(metaPlexItem.data.uri);
+        console.log(metaPlexItem)
         const nft: Nft = {
           name: metaPlexItem.data.name,
           image: metaData.image,

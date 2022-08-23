@@ -11,11 +11,11 @@ export const pages: any = [
       url: "wallet",
       icon: 'wallet'
     },
-    {
-      title: "NFT",
-      url: "nft-gallery",
-      icon: 'color-palette'
-    },
+    // {
+    //   title: "NFT",
+    //   url: "nft-gallery",
+    //   icon: 'color-palette'
+    // },
     {
       title: "swap",
       url: "token-swap",
