@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Nft } from 'src/app/models';
+import { Nft } from '../../../../models';
 
 @Component({
   selector: 'app-nft-item',
