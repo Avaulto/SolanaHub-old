@@ -4,7 +4,6 @@
       <ion-col sizeLg="2" size="0">
         <app-side-menu></app-side-menu>
       </ion-col>
-
       <ion-col sizeLg="10" size="12">
         <ng-container *ngIf="(isReady$ | async) || this.router.url.indexOf('home') > -1; else notConnected">
           <ion-router-outlet></ion-router-outlet>
