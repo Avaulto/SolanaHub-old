@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SwapDetail } from 'src/app/shared/models/swapDetails.model';
+import { SwapDetail } from 'src/app/models/swapDetails.model';
 
 
 @Component({

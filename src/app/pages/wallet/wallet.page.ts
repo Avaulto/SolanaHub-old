@@ -5,12 +5,8 @@ import { NavController } from '@ionic/angular';
 import { getParsedNftAccountsByOwner, resolveToWalletAddress } from '@nfteyez/sol-rayz';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { first } from 'rxjs';
-import { Asset, CoinData, NFTGroup } from 'src/app/models';
-import { ApiService, UtilsService } from 'src/app/services';
-import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import { TokenBalance } from 'src/app/shared/models/tokenBalance.model';
-
+import { Asset, CoinData, NFTGroup, TokenBalance } from 'src/app/models';
+import { ApiService, UtilsService, DataAggregatorService,SolanaUtilsService } from 'src/app/services';
 
 @Component({
   selector: 'app-wallet',

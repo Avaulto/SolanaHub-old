@@ -15,7 +15,8 @@ export const environment = {
     measurementId: 'G-8GLJQE2K70',
   },
   production: false,
-  solanaCluster:'https://api.devnet.solana.com'
+  solanaCluster:'https://api.devnet.solana.com',
+  solanaEnv: 'dev'
 };
 
 /*

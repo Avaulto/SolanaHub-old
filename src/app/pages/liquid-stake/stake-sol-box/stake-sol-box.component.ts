@@ -2,12 +2,8 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
+import { SolanaUtilsService ,TxInterceptService, UtilsService} from 'src/app/services';
 import bn from 'bn.js'
-import { TxInterceptService } from 'src/app/services/txIntercept.service';
-import { UtilsService } from 'src/app/services';
-import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
-import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-stake-sol-box',
@@ -35,10 +31,10 @@ export class StakeSolBoxComponent implements OnInit {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
       if (wallet) {
         this.wallet = wallet;
-        const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
+        const splAccounts = await this.solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey);
         this.solBalance = this.utilsService.shortenNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
         const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
-        this.mSOLBalance = splAccounts.filter(account => account.account.data['parsed'].info.mint == marinadeSPL)[0].account.data['parsed'].info.tokenAmount.amount / LAMPORTS_PER_SOL
+        this.mSOLBalance = splAccounts.filter(account => account.mintAddress == marinadeSPL)[0].balance / LAMPORTS_PER_SOL
         this.mSOLBalance = this.mSOLBalance < 0.01 ? 0 : this.mSOLBalance;
       }
     })

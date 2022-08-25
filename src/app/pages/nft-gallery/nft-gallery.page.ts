@@ -12,7 +12,7 @@ import { NFTGroup } from '../../models';
   styleUrls: ['./nft-gallery.page.scss'],
 })
 export class NftGalleryPage implements OnInit {
-  public nftCollections: Observable<NFTGroup[]> = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getNftz2(wallet.publicKey.toBase58())))
+  public nftCollections: Observable<NFTGroup[]> = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getNftList(wallet.publicKey.toBase58())))
 
   constructor(
     private _walletStore: WalletStore,
@@ -24,7 +24,5 @@ export class NftGalleryPage implements OnInit {
   setSort(ev) {
 
   }
-
-
 
 }

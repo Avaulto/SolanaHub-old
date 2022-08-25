@@ -3,13 +3,9 @@ import { ConnectionStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { StakeAccountExtended } from '../shared/models/stakeAccountData.model';
-import { ApiService } from './api.service';
-import { ToasterService } from './toaster.service';
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { ValidatorData } from '../shared/models/validatorData.model';
-import { UtilsService } from './utils.service';
-import { TokenBalance } from '../shared/models/tokenBalance.model';
+import { ApiService, UtilsService, ToasterService} from './';
+import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
 
 
 interface StakeWizEpochInfo {
@@ -132,25 +128,6 @@ export class SolanaUtilsService {
     return stakeAccountInfo
   }
 
-
-  public async getTokensAccountbyOwner(publicKey: PublicKey) {
-    const accounts = await this.connection.getParsedProgramAccounts(
-      TOKEN_PROGRAM_ID, // new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
-      {
-        filters: [
-          {
-            dataSize: 165, // number of bytes
-          },
-          {
-            memcmp: {
-              offset: 32, // number of bytes
-              bytes: publicKey.toBase58(), // base58 encoded string
-            },
-          },
-        ],
-      })
-    return accounts;
-  }
   public async getSupply(): Promise<{ circulating: any, noneCirculating: any }> {
     const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true, commitment: "finalized" });
     const circulating = this.utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)

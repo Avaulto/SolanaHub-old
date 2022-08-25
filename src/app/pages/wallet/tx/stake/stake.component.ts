@@ -2,11 +2,9 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { map, observable, Observable, Subscriber, switchMap } from 'rxjs';
-import { Asset } from 'src/app/models';
-import { LoaderService, UtilsService } from 'src/app/services';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import { TxInterceptService } from 'src/app/services/txIntercept.service';
-import { ValidatorData } from 'src/app/shared/models/validatorData.model';
+import { Asset,ValidatorData } from 'src/app/models';
+import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
+
 
 @Component({
   selector: 'app-stake',

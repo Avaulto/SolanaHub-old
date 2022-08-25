@@ -1,15 +1,12 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
-import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
-import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import bn from 'bn.js'
-import { TxInterceptService } from 'src/app/services/txIntercept.service';
-import { ToasterService, UtilsService } from 'src/app/services';
-import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
-import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
+import { Marinade, MarinadeConfig, Provider} from '@marinade.finance/marinade-ts-sdk'
 import { MarinadeResult } from '@marinade.finance/marinade-ts-sdk/dist/src/marinade.types';
-import { toastData } from 'src/app/models';
+import { PublicKey, Transaction } from '@solana/web3.js';
+import bn from 'bn.js'
+import { SolanaUtilsService,TxInterceptService , ToasterService, UtilsService } from 'src/app/services';
+import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
+import { toastData,StakeAccountExtended } from 'src/app/models';
 @Component({
   selector: 'app-stake-account-box',
   templateUrl: './stake-account-box.component.html',

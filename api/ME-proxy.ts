@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 export default async function MEproxy(request, response) {
-    const { env, endpoint, httpMethod, queryParam, body } = request.query;
+    const { env, endpoint, httpMethod, queryParam = '', body } = request.query;
     const url = `https://api-${env}.magiceden.dev/v2/${endpoint}/${queryParam}`
     const settings = {
         method: httpMethod,

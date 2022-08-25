@@ -4,10 +4,9 @@ import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-t
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import bn from 'bn.js'
-import { TxInterceptService } from 'src/app/services/txIntercept.service';
-import { UtilsService } from 'src/app/services';
-import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
+import { UtilsService, TxInterceptService } from 'src/app/services';
 import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
+import { StakeAccountExtended } from 'src/app/models';
 
 
 @Component({

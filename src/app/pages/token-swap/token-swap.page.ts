@@ -11,7 +11,7 @@ import { ApiService, UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import { AccountLayout, AccountInfo, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
-import { SwapDetail } from 'src/app/shared/models/swapDetails.model';
+import { SwapDetail } from 'src/app/models/swapDetails.model';
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import Decimal from "decimal.js";
 export interface Token {

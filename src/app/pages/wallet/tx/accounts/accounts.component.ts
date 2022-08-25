@@ -2,11 +2,8 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { distinctUntilChanged, filter, first, map, mergeMap, Observable, of, Subject, switchMap, takeLast, tap } from 'rxjs';
-import { Asset } from 'src/app/models';
-import { LoaderService, UtilsService } from 'src/app/services';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import { TxInterceptService } from 'src/app/services/txIntercept.service';
-import { StakeAccountExtended } from 'src/app/shared/models/stakeAccountData.model';
+import { Asset,StakeAccountExtended } from 'src/app/models';
+import { LoaderService, UtilsService,SolanaUtilsService ,TxInterceptService} from 'src/app/services';
 
 @Component({
   selector: 'app-accounts',
