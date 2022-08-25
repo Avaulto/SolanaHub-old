@@ -9,7 +9,7 @@ export default async function MEproxy(request, response) {
     if (httpMethod == 'body') {
         body
     }
-    const res = await fetch('url', settings);
+    const res = await fetch(url, settings);
     const data = await res.json();
     return response.status(200).json({ data });
 }
