@@ -18,7 +18,7 @@ import { map, Observable } from 'rxjs';
 })
 export class NftStoreService {
   protected magicEdenApi = 'https://api-devnet.magiceden.dev/v2';
-  protected magicEdenApiProxy =  `https://dev.compact-defi.avaulto.com/api/me-proxy`
+  protected magicEdenApiProxy =  `https://dev.compact-defi.avaulto.com/api/ME-proxy`
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
@@ -26,7 +26,7 @@ export class NftStoreService {
     private _walletStore: WalletStore
   ) { }
   public async getNftList(publicAddress: string): Promise<NFTGroup[]> {
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=wallets/CdoFMmSgkhKGKwunc7TusgsMZjxML6kpsvEmqpVYPjyP/tokens&httpMethod=get`
+    const uri = `${this.magicEdenApiProxy}?env=mainnet&httpMethod=get&endpoint=wallets/CdoFMmSgkhKGKwunc7TusgsMZjxML6kpsvEmqpVYPjyP/tokens&queryParam=`
       const getNFTsReq = await fetch(uri)
       // const nfts = await getNFTsReq.json();
       console.log(getNFTsReq)
