@@ -1,10 +1,10 @@
 export interface NFTGroup {
   collectionName?: string,
   collectionImage?: string,
+  description: string;
   mint: string;
   symbol: string;
   floorPrice?: number,
-  NFTs?: Nft[]
 }
 
 export interface Nft {

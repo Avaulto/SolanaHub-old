@@ -1,21 +1,22 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-import { IonicModule } from '@ionic/angular';
-
 import { NftGalleryPageRoutingModule } from './nft-gallery-routing.module';
 
 import { NftGalleryPage } from './nft-gallery.page';
 import { CollectionComponent } from './collection/collection.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { NftItemComponent } from './collection/nft-item/nft-item.component';
+import { NftPreviewComponent } from './nft-preview/nft-preview.component';
+import { NftPagePage } from './nft-page/nft-page.page';
 
 @NgModule({
   imports: [
     SharedModule,
     NftGalleryPageRoutingModule
   ],
-  declarations: [NftGalleryPage,CollectionComponent,NftItemComponent]
+  declarations: [
+    NftGalleryPage,
+    CollectionComponent,
+    NftPreviewComponent,
+    NftPagePage
+  ]
 })
 export class NftGalleryPageModule {}

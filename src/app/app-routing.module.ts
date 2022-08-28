@@ -21,6 +21,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
     // canActivate:[AuthGuard]
   },
+
   {
     path: 'support-us',
     loadChildren: () => import('./pages/support-us/support-us.module').then( m => m.SupportUsPageModule)

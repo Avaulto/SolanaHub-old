@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
   selector: 'app-label-layout',
   template: `  <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
                 <div id="">{{layoutConfig.title}}</div>
-                <div id="balance">
+                <div id="balance" *ngIf="layoutConfig.balance">
                     Balance: {{layoutConfig.balance}}
                     <ion-icon
                         *ngIf="layoutConfig.toolTip"
@@ -16,7 +16,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./label-layout.component.scss'],
 })
 export class LabelLayoutComponent implements OnInit {
-  @Input() layoutConfig: { title, balance, toolTip? };
+  @Input() layoutConfig: { title, balance?, toolTip? };
   constructor() { }
 
   ngOnInit() { }

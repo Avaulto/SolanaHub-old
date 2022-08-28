@@ -1,6 +1,7 @@
 <ion-grid class="ion-padding">
+  <ion-content scroll-y style="--background:transparent;">
   <!-- <app-go-back-btn></app-go-back-btn> -->
-  <ion-row *ngIf="false" class="data-box ion-padding ion-align-items-center">
+  <ion-row class="data-box ion-padding ion-align-items-center">
     <ion-col  size="9">
       <div class="heading-4 ion-text-uppercase">total value</div>
       <span class="heading-2">$10.00</span>
@@ -17,20 +18,18 @@
       </ion-radio-group>
     </ion-col>
   </ion-row>
-  <ion-row class="data-box ion-padding"   style="flex-direction: column;height: 84%;">
-    <ion-row>
+  <ion-row class="data-box ion-padding">
       <ion-col size="12">
         <div class="heading-4">NFTs</div>
       </ion-col>
-    </ion-row>
-    <ion-content scroll-y style="--background:transparent;">
-    <ion-row>
+  
+        <ion-row class="ion-justify-content-between ion-align-items-center">
+            <ion-col size="2.9" *ngFor="let nft of nfts | async">
+              <app-nft-preview  [nft]="nft"></app-nft-preview>
+            </ion-col>
+        </ion-row>
+        </ion-row>
 
-        <ion-col size="12">  
-          <app-collection *ngFor="let collection of nftCollections | async" [collection]="collection"></app-collection>
-        </ion-col>
-
-      </ion-row>
     </ion-content>
-  </ion-row>
+
 </ion-grid>

@@ -17,21 +17,24 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class NftStoreService {
-  protected magicEdenApi = 'https://api-devnet.magiceden.dev/v2';
-  protected magicEdenApiProxy =  `https://dev.compact-defi.avaulto.com/api/ME-proxy`
+  protected magicEdenApiProxy = `https://dev.compact-defi.avaulto.com/api/ME-proxy`
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
-    private _utilsService: UtilsService,
-    private _walletStore: WalletStore
   ) { }
-  public async getNftList(publicAddress: string): Promise<NFTGroup[]> {
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&httpMethod=get&endpoint=wallets/CdoFMmSgkhKGKwunc7TusgsMZjxML6kpsvEmqpVYPjyP/tokens&queryParam=`
-      const getNFTsReq = await fetch(uri)
-      // const nfts = await getNFTsReq.json();
-      console.log(getNFTsReq)
-    return []
+  public async getNftList(publicAddress: string): Promise<Nft[]> {
+    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=wallets/${publicAddress}/tokens`
+    const getNFTsReq = await fetch(uri)
+    const nfts: Nft[] = await getNFTsReq.json();
+    return nfts
   }
+  public async getSingleNft(mintAddress): Promise<Nft> {
+    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=tokens/${mintAddress}`;
+    const getNFTsReq = await fetch(uri)
+    const nft: Nft = await getNFTsReq.json();
+    return nft
+  }
+
   // public async getNftz(publicAddress: string): Promise<NFTGroup[]> {
   //   const nftArray = await getParsedNftAccountsByOwner({
   //     publicAddress,
@@ -88,19 +91,21 @@ export class NftStoreService {
   //   }
   //   return metaData
   // }
-  // private async getCollectionData(groupIdentifierMintAddress: string): Promise<NFTGroup> {
-  //   let collectionInfo: NFTGroup = { collectionImage: null, collectionName: null, symbol: null, mint: null, floorPrice: 0 }
-  //   const mintAddress = new PublicKey(groupIdentifierMintAddress);
-  //   // check if the NFT is part of a collection
-  //   const validateNftCollectionTask = this._metaplex.nfts().findByMint({ mintAddress });
-  //   const { collection } = await validateNftCollectionTask.run();
-  //   if (collection) {
-  //     const collectionDataTask = this._metaplex.nfts().findByMint({ mintAddress: collection.address });
-  //     const { mint, json } = await collectionDataTask.run()
-  //     collectionInfo = { collectionImage: json.image, collectionName: json.name, symbol: json.symbol, mint: mint.address.toBase58() }
-  //   }
-  //   return collectionInfo
-  // }
+  public async getCollectionData(groupIdentifierMintAddress: string): Promise<NFTGroup> {
+    let collectionInfo: NFTGroup = { collectionImage: null,description: null, collectionName: null, symbol: null, mint: null, floorPrice: 0 }
+    const mintAddress = new PublicKey(groupIdentifierMintAddress);
+    // check if the NFT is part of a collection
+    const validateNftCollectionTask = this._metaplex.nfts().findByMint({ mintAddress });
+
+    const { collection, json } = await validateNftCollectionTask.run();
+    collectionInfo.description = json.description;
+    if (collection) {
+      const collectionDataTask = this._metaplex.nfts().findByMint({ mintAddress: collection.address });
+      const { mint, json } = await collectionDataTask.run();
+      collectionInfo = { collectionImage: json.image, collectionName: json.name,description: collectionInfo.description, symbol: json.symbol, mint: mint.address.toBase58() }
+    }
+    return collectionInfo
+  }
   private getFloorPrice(nft: Nft): number {
     return 0
   }

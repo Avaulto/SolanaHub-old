@@ -1,50 +1,69 @@
 <ion-grid class="ion-padding">
     <app-go-back-btn></app-go-back-btn>
-        <ion-row class="data-box ion-padding ion-justify-content-start">
+    <ion-row class="data-box ion-padding ion-justify-content-start">
         <ion-col size="6" class="ion-padding">
             <ion-row class="ion-margin-bottom">
-                <div class="col-group">
-                    <ion-img [src]="NFT.collectionImage"></ion-img>
-                    <span class="ion-margin-start heading-4" >{{NFT.collectionName}}</span>
+                <div class="col-group" *ngIf="collectionInfo?.collectionName">
+                    <ion-img [src]="collectionInfo?.collectionImage"></ion-img>
+                    <span class="ion-margin-start heading-4">{{collectionInfo?.symbol}}</span>
                 </div>
-                <!-- <ion-col size="2">
-                    <ion-img [src]="NFT.collectionImage"></ion-img>
-                </ion-col>
-                <ion-col size="9">
-                    {{NFT.collectionName}}
-                </ion-col> -->
             </ion-row>
-            <ion-row class="heading-1 ion-margin-bottom">{{NFT.name}}</ion-row>
+            <ion-row class="heading-1 ion-margin-bottom">{{NFT?.name}}</ion-row>
             <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">description</ion-row>
-            <ion-row class="ion-margin-bottom">{{NFT.description}}</ion-row>
-            <ion-row class="ion-margin-bottom ion-align-items-center"> 
+            <ion-row class="ion-margin-bottom">{{collectionInfo?.description}}</ion-row>
+            <ion-row class="ion-margin-bottom ion-align-items-center">
 
-                    <div id="art-icon"  class="ion-margin-end">
-                        <ion-icon name="color-palette-outline"></ion-icon>
-                    </div>
-             
-                <div class="ion-text-capitalize" >
+                <div id="art-icon" class="ion-margin-end">
+                    <ion-icon name="color-palette-outline"></ion-icon>
+                </div>
+
+                <div class="ion-text-capitalize">
                     token address: <br>
-                    <ion-col size="12" class="sub">{{NFT.mintAddr}}</ion-col>
+                    <ion-col size="12" class="sub">{{NFT?.mintAddress}}</ion-col>
                 </div>
 
             </ion-row>
             <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">Attributes</ion-row>
             <ion-row>
-                <div class="nft-attr ion-margin-bottom ion-margin-end" *ngFor="let attr of NFT.attr">
+                <div class="nft-attr ion-margin-bottom ion-margin-end" *ngFor="let attr of NFT?.attributes">
                     <div class="sub-strong">{{attr.trait_type}}</div>
                     <span class="sub">{{attr.value}}</span>
                 </div>
             </ion-row>
-            <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT.external_url">
-                <a class="button-text ion-align-items-center" [href]="NFT.external_url" target="_blank"><ion-icon name="link-outline"></ion-icon> website</a>
+            <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT?.externalUrl">
+                <a class="button-text ion-align-items-center" [href]="NFT?.externalUrl" target="_blank">
+                    <ion-icon name="link-outline"></ion-icon> External Url
+                </a>
             </ion-row>
-            <ion-row class="ion-align-items-center ion-text-capitalize">
-                <a class="button-text ion-align-items-center" [href]="NFT.explorerURL" target="_blank"><ion-icon name="list-outline"></ion-icon> view on explorer</a>
+            <ion-row class="ion-margin-bottom ion-text-capitalize">
+                <a class="button-text ion-align-items-center" [href]="'https://solscan.io/token/'+NFT?.mintAddress"
+                    target="_blank">
+                    <ion-icon name="list-outline"></ion-icon> view on explorer
+                </a>
             </ion-row>
+
+            <div *ngIf="NFT?.listStatus == 'unlisted'">
+                <form id="list-on-magic-eden-form">
+                    <ion-accordion-group expand="inset">
+                        <ion-accordion value="first">
+                            <ion-item slot="header" color="light">
+                                <ion-label>list on magic eden</ion-label>
+                            </ion-item>
+                            <div class="ion-padding" slot="content">
+                                <app-label-layout [layoutConfig]="{title:'Amount'}"></app-label-layout>
+                                <ion-input class="button-text" type="number" placeholder="price"></ion-input>
+                                <ion-button>List now</ion-button>
+                            </div>
+                        </ion-accordion>
+                    </ion-accordion-group>
+                </form>
+            </div>
         </ion-col>
         <ion-col size="6" style="display: flex;" class="ion-align-items-center">
-            <ion-img [src]="NFT.image" alt="NFT img"></ion-img>
+            <!-- <ion-img [src]="NFT?.image" alt="NFT img"></ion-img> -->
+            <ion-skeleton-text style="background-color: white;width: 100%;height: 100%;" *ngIf="hideSkelaton == false"
+                animated></ion-skeleton-text>
+            <ion-img (ionImgDidLoad)="hideSkelaton = true" [src]="NFT?.image"></ion-img>
         </ion-col>
     </ion-row>
 </ion-grid>
