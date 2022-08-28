@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { NftGalleryPageRoutingModule } from './nft-gallery-routing.module';
 
 import { NftGalleryPage } from './nft-gallery.page';
-import { CollectionComponent } from './collection/collection.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NftPreviewComponent } from './nft-preview/nft-preview.component';
 import { NftPagePage } from './nft-page/nft-page.page';
+import { NftListingComponent } from './nft-page/nft-listing/nft-listing.component';
 
 @NgModule({
   imports: [
@@ -14,9 +14,9 @@ import { NftPagePage } from './nft-page/nft-page.page';
   ],
   declarations: [
     NftGalleryPage,
-    CollectionComponent,
     NftPreviewComponent,
-    NftPagePage
+    NftPagePage, 
+    NftListingComponent
   ]
 })
 export class NftGalleryPageModule {}

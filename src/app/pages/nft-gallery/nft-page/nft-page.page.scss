@@ -37,18 +37,3 @@ a{
 }
 
 
-// list style
-#list-on-magic-eden-form{
-    ion-button{
-        --background:#e42575;
-    }
-    ion-accordion {
-        background: #120d18;
-    }
-    ion-item{
-        text-transform: capitalize;
-        --ion-color-base: #e42575 !important;
-        --ion-color-contrast: white !important;
-    }
-}
-

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { NftStoreService } from 'src/app/services/nft-store.service';
@@ -16,12 +17,13 @@ export class NftPagePage implements OnInit {
     constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private _nftStoreService: NftStoreService
+    private _nftStoreService: NftStoreService,
   ) {
 
   }
 
   ngOnInit() {
+
     this.activatedRoute.params.subscribe(async (params) => {
       console.log(params)
       const mintAddress = params["mintAddress"];
@@ -39,5 +41,8 @@ export class NftPagePage implements OnInit {
   }
   private async getCollectionData(mintAddress: string) {
     return await this._nftStoreService.getCollectionData(mintAddress);
+  }
+  public async listOnME(){
+    // return await this._nftStoreService.listNft()
   }
 }

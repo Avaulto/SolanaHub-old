@@ -1,3 +1,4 @@
+<ion-content scroll-y style="--background:transparent;">
 <ion-grid class="ion-padding">
     <app-go-back-btn></app-go-back-btn>
     <ion-row class="data-box ion-padding ion-justify-content-start">
@@ -42,22 +43,9 @@
                 </a>
             </ion-row>
 
-            <div *ngIf="NFT?.listStatus == 'unlisted'">
-                <form id="list-on-magic-eden-form">
-                    <ion-accordion-group expand="inset">
-                        <ion-accordion value="first">
-                            <ion-item slot="header" color="light">
-                                <ion-label>list on magic eden</ion-label>
-                            </ion-item>
-                            <div class="ion-padding" slot="content">
-                                <app-label-layout [layoutConfig]="{title:'Amount'}"></app-label-layout>
-                                <ion-input class="button-text" type="number" placeholder="price"></ion-input>
-                                <ion-button>List now</ion-button>
-                            </div>
-                        </ion-accordion>
-                    </ion-accordion-group>
-                </form>
-            </div>
+            <!-- <div *ngIf="NFT?.listStatus == 'unlisted'"> -->
+              <app-nft-listing></app-nft-listing>
+            <!-- </div> -->
         </ion-col>
         <ion-col size="6" style="display: flex;" class="ion-align-items-center">
             <!-- <ion-img [src]="NFT?.image" alt="NFT img"></ion-img> -->
@@ -67,3 +55,4 @@
         </ion-col>
     </ion-row>
 </ion-grid>
+</ion-content>

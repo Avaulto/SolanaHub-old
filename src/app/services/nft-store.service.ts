@@ -35,6 +35,13 @@ export class NftStoreService {
     return nft
   }
 
+  public listNft({seller, auctionHouseAddress, tokenMint, tokenAccount, expiry }){
+    const uri = `instructions/sell?seller=CdoFMmSgkhKGKwunc7TusgsMZjxML6kpsvEmqpVYPjyP&
+    auctionHouseAddress=E8cU1WiRWjanGxmn96ewBgk9vPTcL6AEZ1t6F6fkgUWe&
+    tokenMint=88Wqy9cEGCcT7tQEYu18xbuR5vrsL13d5TwYBzJUR251&tokenAccount=GEPATQ2jn8CzDxhxgEowWT47pXs9AaSPbdjNjWdN1Rzf`
+    
+    // const uri2 = `${this.magicEdenApiProxy}?env=mainnet&endpoint=instructions/sell&queryParams=${mintAddress}`;
+  }
   // public async getNftz(publicAddress: string): Promise<NFTGroup[]> {
   //   const nftArray = await getParsedNftAccountsByOwner({
   //     publicAddress,

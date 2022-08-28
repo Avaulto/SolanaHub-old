@@ -1,0 +1,37 @@
+<form id="list-on-magic-eden-form" [formGroup]="listNftForm">
+  <ion-accordion-group expand="inset">
+    <ion-accordion value="first">
+      <ion-item slot="header" color="light">
+        <ion-label>list on <ion-img src="assets/images/icons/magic-eden-full-logo.svg"></ion-img></ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <app-label-layout [layoutConfig]="{title:'Set price'}"></app-label-layout>
+        <ion-input class="button-text" type="number" formControlName="price" placeholder="price">
+          <span id="sol-icon">◎</span>
+        </ion-input>
+        <app-label-layout [layoutConfig]="{title:'Expiry'}"></app-label-layout>
+        <ion-input class="button-text" readonly [placeholder]="expiryPlaceholder" (click)="showDates = !showDates">
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
+        </ion-input>
+        <ion-datetime
+        [showDefaultButtons]="true"  
+        size="cover"
+        class="ion-margin-bottom" 
+        *ngIf="showDates"
+        [min]="minimumExpiry"
+        presentation="date"
+        display-format="DD/MM/YYYY" 
+        formControlName="expiry"
+        #datetime>
+        <ion-buttons slot="buttons">
+          <ion-button color="danger" (click)="this.listNftForm.controls.expiry.setValue('');">Reset</ion-button>
+          <ion-button color="primary" (click)="datetime.confirm();">All Set</ion-button>
+        </ion-buttons>
+      </ion-datetime>  
+
+        <ion-button (click)="listNft()" [disabled]="formSubmitted || listNftForm.invalid">List now</ion-button>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+</form>

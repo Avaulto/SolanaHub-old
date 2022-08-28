@@ -1,0 +1,40 @@
+// list style
+#list-on-magic-eden-form{
+    ion-label {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+    }
+    ion-img {
+        width: 130px;
+        margin-inline-start: 4px;
+    }
+    ion-icon,#sol-icon{
+        position: absolute;
+        right: 10px;
+    }
+    
+    ion-button{
+        --background:#e42575;
+    }
+    ion-accordion {
+        background: #120d18;
+    }
+    ion-item{
+        text-transform: capitalize;
+        --ion-color-base: #e42575 !important;
+        --ion-color-contrast: white !important;
+    }
+    ion-datetime {
+        --background: #04172c;
+        border-radius: 4px;
+        box-shadow: rgba(var(--ion-color-rose-rgb), 0.3) 0px 10px 15px -3px;
+         ion-item ion-label {
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+      }
+
+}
+
