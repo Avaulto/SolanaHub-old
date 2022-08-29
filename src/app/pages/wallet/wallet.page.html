@@ -1,56 +1,72 @@
 <ion-grid class="ion-padding">
 
-    <ion-content scroll-y style="--background:transparent;">
-      <ion-row class="ion-justify-content-between ion-align-items-center data-box ">
-        <ion-col size="9" class="ion-padding">
-          <ion-row class="ion-align-items-center">
-            <ion-col size="1.5" class="ion-margin-end">
-              <div class="walletQR">
-                <qrcode [qrdata]="asset?.address" [allowEmptyString]="true" [width]="78" [errorCorrectionLevel]="'M'"></qrcode>
-                <!-- <ion-img src="/assets/images/icons/" alt="qr wallet"></ion-img> -->
-              </div>
-            </ion-col>
-            <ion-col size="10">
-              <ion-row class=" ion-align-items-center">
+  <ion-content scroll-y style="--background:transparent;">
+    <ion-row class="ion-justify-content-between ion-align-items-center data-box ">
+      <ion-col size="9" class="ion-padding">
+        <ion-row class="ion-align-items-center">
+          <ion-col size="1.5" class="ion-margin-end">
+            <div class="walletQR">
+              <qrcode [qrdata]="asset?.address" [allowEmptyString]="true" [width]="78" [errorCorrectionLevel]="'M'">
+              </qrcode>
+              <!-- <ion-img src="/assets/images/icons/" alt="qr wallet"></ion-img> -->
+            </div>
+          </ion-col>
+          <ion-col size="10">
+            <ion-row class=" ion-align-items-center">
 
-                <div class="heading-4 ion-margin-end">{{asset?.addrShort}}</div>
-                <ion-icon name="copy-outline" class="ion-margin-end"></ion-icon>
-                <a [href]="'https://solana.fm/address/'+ this.asset?.address" target="_blank">
-                  <ion-icon name="link-outline"></ion-icon>
-                </a>
-              </ion-row>
-              <ion-row>
-                <div class="heading-2">{{walletTotalValue.solValue}} ◎</div>
-              </ion-row>
-              <ion-row>
-                <div class="heading-6">{{walletTotalValue.usdValue | currency}}</div>
-              </ion-row>
-            </ion-col>
-          </ion-row>
-        </ion-col>
+              <div class="heading-4 ion-margin-end">{{asset?.addrShort}}</div>
+              <ion-icon name="copy-outline" class="ion-margin-end"></ion-icon>
+              <a [href]="'https://solana.fm/address/'+ this.asset?.address" target="_blank">
+                <ion-icon name="link-outline"></ion-icon>
+              </a>
+            </ion-row>
+            <ion-row>
+              <div class="heading-2">{{walletTotalValue.solValue}} ◎</div>
+            </ion-row>
+            <ion-row>
+              <div class="heading-6">{{walletTotalValue.usdValue | currency}}</div>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-col>
 
-      </ion-row>
+    </ion-row>
 
 
-      
-      <ion-row  class="ion-justify-content-between ion-align-items-start">
-        <ion-col size="12" sizeLg="7.5">
-          <div class="data-box ion-padding">
-            <app-tx [wallet]="asset"></app-tx>
-          </div>
 
-        </ion-col>
+    <ion-row class="ion-justify-content-between ion-align-items-start">
+      <ion-col size="12" sizeLg="7.5">
+        <div class="data-box ion-padding">
+          <app-tx [wallet]="asset"></app-tx>
+        </div>
 
-        <ion-col size="12" sizeLg="4">
-          <div class="data-box ion-padding">
-            <app-assets-balance title="tokens" [assets]="asset.tokens"></app-assets-balance>
-            {{asset.tokens}}
-            <app-loader *ngIf="asset.tokens.length == 0"></app-loader>
-          </div>
-        </ion-col>
+      </ion-col>
 
-      </ion-row>
-    </ion-content>
+
+      <ion-col size="12" sizeLg="4">
+        <div class="data-box ion-padding">
+          <app-assets-balance title="tokens" [assets]="asset.tokens"></app-assets-balance>
+          {{asset.tokens}}
+          <app-loader *ngIf="asset.tokens.length == 0"></app-loader>
+        </div>
+      </ion-col>
+
+    </ion-row>
+    <ion-row class="ion-justify-content-between ion-align-items-start">
+      <ion-col size="12" sizeLg="7.5" class=" data-box ion-padding">
+        <div id="nft-header-preview" class="ion-margin-bottom">
+          <div class="heading-4 ion-text-uppercase">NFTs</div>
+          <ion-button routerLink="/nft-gallery" routerDirection="forward" fill="outline">view all</ion-button>
+        </div>
+        <ion-row class="ion-justify-content-between ion-align-items-center" id="nft-gallery-preview">
+          <ion-col size="5.8" sizeLg="3.7" *ngFor="let nft of nfts | async">
+            <app-nft-preview  [nft]="nft"></app-nft-preview>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+</ion-row>
+
+  </ion-content>
 
 
 </ion-grid>

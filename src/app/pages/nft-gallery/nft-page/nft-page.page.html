@@ -43,9 +43,9 @@
                 </a>
             </ion-row>
 
-            <!-- <div *ngIf="NFT?.listStatus == 'unlisted'"> -->
-              <app-nft-listing></app-nft-listing>
-            <!-- </div> -->
+            <div *ngIf="NFT?.listStatus == 'unlisted'">
+              <app-nft-listing [nft]="NFT"></app-nft-listing>
+            </div>
         </ion-col>
         <ion-col size="6" style="display: flex;" class="ion-align-items-center">
             <!-- <ion-img [src]="NFT?.image" alt="NFT img"></ion-img> -->

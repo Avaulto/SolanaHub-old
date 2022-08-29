@@ -3,7 +3,7 @@
     <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
     <span (click)="setUtil('accounts')" [class.active]="segmentUtilTab == 'accounts'">accounts</span>
     <span (click)="setUtil('send')" [class.active]="segmentUtilTab == 'send'">send</span>
-    <span (click)="setUtil('history')" [class.active]="segmentUtilTab == 'history'">history</span>
+    <!-- <span (click)="setUtil('history')" [class.active]="segmentUtilTab == 'history'">history</span> -->
   </div>
   <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
     <p *ngSwitchCase="'stake'">

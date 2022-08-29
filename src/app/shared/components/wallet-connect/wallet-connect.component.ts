@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { MenuController, PopoverController } from '@ionic/angular';
 import { WalletName } from '@solana/wallet-adapter-base';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { map } from 'rxjs';
 import { ToasterService, UtilsService } from 'src/app/services';
 import { WalletAdapterOptionsComponent } from '../wallet-adapter-options/wallet-adapter-options.component';
@@ -24,12 +25,14 @@ export class WalletConnectComponent implements OnInit {
     private utilsService: UtilsService,
     private _walletStore: WalletStore,
     private toasterService: ToasterService,
-    public popoverController: PopoverController
+    public popoverController: PopoverController,
+    private gaService: GoogleAnalyticsService
   ) { }
   ngOnInit() {
     let ready = false;
     this.isReady$.subscribe(isReady => {
       if (isReady) {
+        this.gaService.event('wallet_event', 'user_connect_wallet', 'wallet_connected');
         ready = isReady
         this.toasterService.msg.next({
           message: 'Wallet connected',

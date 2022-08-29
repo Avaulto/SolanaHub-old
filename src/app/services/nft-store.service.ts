@@ -1,18 +1,20 @@
 import { Injectable } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { SolanaUtilsService } from './solana-utils.service';
-import { UtilsService } from './utils.service';
-import {
-  resolveToWalletAddress,
-  getParsedNftAccountsByOwner,
-  createConnectionConfig
-} from "@nfteyez/sol-rayz";
+
 import { Nft, NFTGroup, NFTmetaData } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { map, Observable } from 'rxjs';
 
-
+interface ListInstuction {
+  sellerAddress: string,
+  auctionHouseAddress: string,
+  tokenMint: string,
+  tokenAccount: string,
+  sol: string,
+  expiry: string
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +24,8 @@ export class NftStoreService {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
   ) { }
-  public async getNftList(publicAddress: string): Promise<Nft[]> {
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=wallets/${publicAddress}/tokens`
+  public async getNftList(walletOwnerAddress: string): Promise<Nft[]> {
+    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=wallets/${walletOwnerAddress}/tokens`
     const getNFTsReq = await fetch(uri)
     const nfts: Nft[] = await getNFTsReq.json();
     return nfts
@@ -35,12 +37,11 @@ export class NftStoreService {
     return nft
   }
 
-  public listNft({seller, auctionHouseAddress, tokenMint, tokenAccount, expiry }){
-    const uri = `instructions/sell?seller=CdoFMmSgkhKGKwunc7TusgsMZjxML6kpsvEmqpVYPjyP&
-    auctionHouseAddress=E8cU1WiRWjanGxmn96ewBgk9vPTcL6AEZ1t6F6fkgUWe&
-    tokenMint=88Wqy9cEGCcT7tQEYu18xbuR5vrsL13d5TwYBzJUR251&tokenAccount=GEPATQ2jn8CzDxhxgEowWT47pXs9AaSPbdjNjWdN1Rzf`
-    
-    // const uri2 = `${this.magicEdenApiProxy}?env=mainnet&endpoint=instructions/sell&queryParams=${mintAddress}`;
+  public listNft({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
+    const uri = `${this.magicEdenApiProxy}?env=mainnet
+    &endpoint=instructions/sell
+    &queryParam=price=${sol}&seller=${sellerAddress}&auctionHouseAddress=${auctionHouseAddress}&tokenMint=${tokenMint}&tokenAccount=${tokenAccount}&expiry=${expiry}`;
+    console.log(uri)
   }
   // public async getNftz(publicAddress: string): Promise<NFTGroup[]> {
   //   const nftArray = await getParsedNftAccountsByOwner({
@@ -99,7 +100,7 @@ export class NftStoreService {
   //   return metaData
   // }
   public async getCollectionData(groupIdentifierMintAddress: string): Promise<NFTGroup> {
-    let collectionInfo: NFTGroup = { collectionImage: null,description: null, collectionName: null, symbol: null, mint: null, floorPrice: 0 }
+    let collectionInfo: NFTGroup = { collectionImage: null, description: null, collectionName: null, symbol: null, mint: null, floorPrice: 0 }
     const mintAddress = new PublicKey(groupIdentifierMintAddress);
     // check if the NFT is part of a collection
     const validateNftCollectionTask = this._metaplex.nfts().findByMint({ mintAddress });
@@ -109,9 +110,16 @@ export class NftStoreService {
     if (collection) {
       const collectionDataTask = this._metaplex.nfts().findByMint({ mintAddress: collection.address });
       const { mint, json } = await collectionDataTask.run();
-      collectionInfo = { collectionImage: json.image, collectionName: json.name,description: collectionInfo.description, symbol: json.symbol, mint: mint.address.toBase58() }
+      collectionInfo = { collectionImage: json.image, collectionName: json.name, description: collectionInfo.description, symbol: json.symbol, mint: mint.address.toBase58() }
     }
     return collectionInfo
+  }
+  public async getCollectionMarketplaceData(symbol: string){
+    // /collections/:symbol/listings?limit=1
+    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=/collections/${symbol}/listings&queryParam=limit=1`;
+    const getCollectionMarketplace = await fetch(uri)
+    const marketplacedata: any = await getCollectionMarketplace.json();
+    return marketplacedata
   }
   private getFloorPrice(nft: Nft): number {
     return 0

@@ -1,4 +1,3 @@
-import { from } from 'rxjs'
 
 export * from './logo/logo.component'
 export * from './data-box/data-box.component'
@@ -11,3 +10,4 @@ export * from './loader/loader.component'
 export * from './select-box/select-box.component'
 export * from './select-box/select-item/select-item.component'
 export * from './label-layout/label-layout.component'
+export * from './nft-preview/nft-preview.component'

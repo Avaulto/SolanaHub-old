@@ -3,6 +3,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NftStoreService } from 'src/app/services/nft-store.service';
 import { Observable, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
+import { LoaderService } from 'src/app/services';
 
 
 
@@ -17,6 +18,7 @@ export class NftGalleryPage implements OnInit {
   constructor(
     private _walletStore: WalletStore,
     private _nftStore: NftStoreService,
+    public loaderService:LoaderService
   ) { }
 
   ngOnInit() {

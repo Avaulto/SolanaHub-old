@@ -4,9 +4,9 @@ import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter
 import { NavController } from '@ionic/angular';
 import { getParsedNftAccountsByOwner, resolveToWalletAddress } from '@nfteyez/sol-rayz';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { first } from 'rxjs';
-import { Asset, CoinData, NFTGroup, TokenBalance } from 'src/app/models';
-import { ApiService, UtilsService, DataAggregatorService,SolanaUtilsService } from 'src/app/services';
+import { first, Observable, switchMap } from 'rxjs';
+import { Asset, CoinData, NFTGroup,Nft, TokenBalance } from 'src/app/models';
+import { ApiService, UtilsService, DataAggregatorService,SolanaUtilsService , NftStoreService} from 'src/app/services';
 
 @Component({
   selector: 'app-wallet',
@@ -14,12 +14,19 @@ import { ApiService, UtilsService, DataAggregatorService,SolanaUtilsService } fr
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit {
+  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+    switchMap(async wallet => {
+     return (await this._nftStore.getNftList(wallet.publicKey.toBase58())).splice(0,3)
+    }))
+
   public asset: Asset = {
     name: 'solana',
     tokens: [],
   }
   public walletTotalValue = {usdValue:0, solValue: 0}
-  constructor(private utils: UtilsService,
+  constructor(
+    private utils: UtilsService,
+    private _nftStore: NftStoreService,
     private apiService: ApiService,
     private dataAggregator: DataAggregatorService,
     private solanaUtilsService: SolanaUtilsService,

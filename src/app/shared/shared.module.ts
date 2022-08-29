@@ -21,7 +21,8 @@ import {
   LoaderComponent,
   SelectBoxComponent,
   SelectItemComponent,
-  LabelLayoutComponent
+  LabelLayoutComponent,
+  NftPreviewComponent
 } from "./components";
 
 // // import directives
@@ -52,7 +53,8 @@ import {
     LoaderComponent,
     SelectBoxComponent,
     SelectItemComponent,
-    LabelLayoutComponent
+    LabelLayoutComponent,
+    NftPreviewComponent
   ],
   imports: [
     CommonModule,
@@ -88,7 +90,8 @@ import {
     LoaderComponent,
     SelectBoxComponent,
     SelectItemComponent,
-    LabelLayoutComponent
+    LabelLayoutComponent,
+    NftPreviewComponent
   ]
 })
 export class SharedModule {}

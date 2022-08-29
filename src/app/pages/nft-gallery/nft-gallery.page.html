@@ -20,11 +20,15 @@
   </ion-row>
   <ion-row class="data-box ion-padding">
       <ion-col size="12">
-        <div class="heading-4">NFTs</div>
+        <div class="heading-4 ion-margin-bottom">NFTS</div>
       </ion-col>
-  
+      <ion-col *ngIf="(nfts | async) == null" size="12">
+
+        <app-loader></app-loader>
+      </ion-col>
         <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-col size="2.9" *ngFor="let nft of nfts | async">
+           
+            <ion-col size="5.8" sizeLg="2.9" *ngFor="let nft of nfts | async">
               <app-nft-preview  [nft]="nft"></app-nft-preview>
             </ion-col>
         </ion-row>
