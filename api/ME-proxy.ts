@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 export default async function MEproxy(request, response) {
-    const { env, endpoint, queryParam = '' } = request.query;
-    const url = `https://api-${env}.magiceden.dev/v2/${endpoint}?${queryParam}`;
-    console.log(url)
+    const { env, endpoint, queryParam } = request.query;
+    const queryParamDecode = decodeURIComponent(queryParam);
+    const url = `https://api-${env}.magiceden.dev/v2/${endpoint}?${queryParamDecode}`;
     const settings = {
         headers: { 
             'Content-Type': 'application/json',
