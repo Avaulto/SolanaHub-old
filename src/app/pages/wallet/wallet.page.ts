@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
-import { NavController } from '@ionic/angular';
-import { getParsedNftAccountsByOwner, resolveToWalletAddress } from '@nfteyez/sol-rayz';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { first, Observable, switchMap } from 'rxjs';
 import { Asset, CoinData, NFTGroup,Nft, TokenBalance } from 'src/app/models';

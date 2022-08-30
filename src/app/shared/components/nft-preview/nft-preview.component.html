@@ -1,4 +1,4 @@
 <div class="nft-item ion-margin-bottom" (click)="goToNFTpage(nft)">
-    <ion-skeleton-text style="background-color: white;" *ngIf="hideSkelaton == false" animated></ion-skeleton-text>
+    <ion-skeleton-text style="background-color: white;height: 258px" *ngIf="hideSkelaton == false" animated></ion-skeleton-text>
   <ion-img (ionImgDidLoad)="hideSkelaton = true" [src]="nft.image"></ion-img>
 </div>

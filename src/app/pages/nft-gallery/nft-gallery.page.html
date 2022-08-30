@@ -26,7 +26,7 @@
 
         <app-loader></app-loader>
       </ion-col>
-        <ion-row class="ion-justify-content-between ion-align-items-center">
+        <ion-row style="width:100%;" class="ion-justify-content-between ion-align-items-center">
            
             <ion-col size="5.8" sizeLg="2.9" *ngFor="let nft of nfts | async">
               <app-nft-preview  [nft]="nft"></app-nft-preview>
