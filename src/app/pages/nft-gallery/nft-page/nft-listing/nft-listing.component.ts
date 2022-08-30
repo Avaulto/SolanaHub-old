@@ -3,10 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey, Signer, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
 import { Nft } from 'src/app/models';
-import { UtilsService } from 'src/app/services';
+import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { NftStoreService } from 'src/app/services/nft-store.service';
 
 @Component({
@@ -25,6 +25,7 @@ export class NftListingComponent implements OnInit {
   constructor(
     private _walletStore: WalletStore,
     private _nftStoreService: NftStoreService,
+    private txInterceptService: TxInterceptService,
     private utilService:UtilsService,
     private fb: FormBuilder
   ) { 
@@ -79,9 +80,23 @@ export class NftListingComponent implements OnInit {
     this.listNftForm.controls.auctionHouseAddress.setValue(auctionHouseAddress)
 
   }
-  public listNft(): void{
+  public async listNft(): Promise<void>{
     const listInfo = this.listNftForm.value;
-    console.log(listInfo);
-    this._nftStoreService.listNft(listInfo)
+    console.log(listInfo)
+    const txIns: {tx: any, txSigned:any} = await this._nftStoreService.listNft(listInfo)
+    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+    const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
+    // const txn2 = Transaction.from(Buffer.from(txIns.tx))
+    console.log(txn,txIns)
+    this.txInterceptService.sendTx([txn],walletOwner)
+  }
+  public async cancelNftListing(): Promise<void>{
+    const listInfo = this.listNftForm.value;
+    const txIns: {tx: any, txSigned:any} = await this._nftStoreService.cancelNftListing(listInfo)
+    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+    const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
+    // const txn2 = Transaction.from(Buffer.from(txIns.tx))
+    console.log(txn,txIns)
+    this.txInterceptService.sendTx([txn],walletOwner)
   }
 }

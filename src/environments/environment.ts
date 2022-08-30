@@ -6,7 +6,7 @@ export const environment = {
   ga:'G-SDPQV59FL6',
   production: false,
   solanaCluster:'https://api.devnet.solana.com',
-  solanaEnv: 'dev'
+  magicEdenEnv: 'devnet'
 };
 
 /*

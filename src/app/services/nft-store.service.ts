@@ -6,6 +6,7 @@ import { Nft, NFTGroup, NFTmetaData } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { map, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -19,19 +20,20 @@ interface ListInstuction {
   providedIn: 'root'
 })
 export class NftStoreService {
-  protected magicEdenApiProxy = `https://dev.compact-defi.avaulto.com/api/ME-proxy`
+  private env = environment.magicEdenEnv
+  protected magicEdenApiProxy = `https://dev.compact-defi.avaulto.com/api/ME-proxy?env=${this.env}`
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
   ) { }
   public async getNftList(walletOwnerAddress: string): Promise<Nft[]> {
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=wallets/${walletOwnerAddress}/tokens`
+    const uri = `${this.magicEdenApiProxy}&endpoint=wallets/${walletOwnerAddress}/tokens`
     const getNFTsReq = await fetch(uri)
     const nfts: Nft[] = await getNFTsReq.json();
     return nfts
   }
   public async getSingleNft(mintAddress): Promise<Nft> {
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=tokens/${mintAddress}`;
+    const uri = `${this.magicEdenApiProxy}&endpoint=tokens/${mintAddress}`;
     const getNFTsReq = await fetch(uri)
     const nft: Nft = await getNFTsReq.json();
     return nft
@@ -39,11 +41,16 @@ export class NftStoreService {
 
   public async listNft({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
     const queryParam = encodeURIComponent(`price=${sol}&seller=${sellerAddress}&auctionHouseAddress=${auctionHouseAddress}&tokenMint=${tokenMint}&tokenAccount=${tokenAccount}&expiry=${expiry}`)
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=instructions/sell&queryParam=${queryParam}`;
-    console.log(uri)
+    const uri = `${this.magicEdenApiProxy}&endpoint=instructions/sell&queryParam=${queryParam}`;
     const getSellNftInstructionReq = await fetch(uri)
     const sellNftInstructionReq = await getSellNftInstructionReq.json();
-    console.log(sellNftInstructionReq)
+    return sellNftInstructionReq
+  }
+  public async cancelNftListing({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
+    const queryParam = encodeURIComponent(`price=${sol}&seller=${sellerAddress}&auctionHouseAddress=${auctionHouseAddress}&tokenMint=${tokenMint}&tokenAccount=${tokenAccount}&expiry=${expiry}`)
+    const uri = `${this.magicEdenApiProxy}&endpoint=instructions/sell_cancel&queryParam=${queryParam}`;
+    const getSellNftInstructionReq = await fetch(uri)
+    const sellNftInstructionReq = await getSellNftInstructionReq.json();
     return sellNftInstructionReq
   }
   // public async getNftz(publicAddress: string): Promise<NFTGroup[]> {
@@ -119,7 +126,7 @@ export class NftStoreService {
   }
   public async getCollectionMarketplaceData(symbol: string){
     const queryParam = encodeURIComponent('limit=1')
-    const uri = `${this.magicEdenApiProxy}?env=mainnet&endpoint=/collections/${symbol}/listings&queryParam=${queryParam}`;
+    const uri = `${this.magicEdenApiProxy}&endpoint=/collections/${symbol}/listings&queryParam=${queryParam}`;
     const getCollectionMarketplace = await fetch(uri)
     const marketplacedata: any = await getCollectionMarketplace.json();
     return marketplacedata[0]

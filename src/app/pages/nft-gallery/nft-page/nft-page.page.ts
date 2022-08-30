@@ -35,7 +35,6 @@ export class NftPagePage implements OnInit {
       } else {
         this.NFT = await this._getNftData(mintAddress)
       }
-      console.log(this.NFT)
       this.collectionInfo = await this.getCollectionData(this.NFT.mintAddress);
     });
   }
