@@ -4,7 +4,7 @@ import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProg
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { ApiService, UtilsService, ToasterService} from './';
+import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
 
 
@@ -109,7 +109,22 @@ export class SolanaUtilsService {
     }
     // return [];
   }
-
+  public async findAssociatedTokenAddress(
+    walletAddress: PublicKey,
+    tokenMintAddress: PublicKey
+  ): Promise<PublicKey> {
+    const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID: PublicKey = new PublicKey(
+      'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+    );
+    return (await PublicKey.findProgramAddress(
+      [
+        walletAddress.toBuffer(),
+        TOKEN_PROGRAM_ID.toBuffer(),
+        tokenMintAddress.toBuffer(),
+      ],
+      SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID
+    ))[0];
+  }
   public async extendStakeAccount(account: { pubkey: PublicKey; account: AccountInfo<Buffer | ParsedAccountData | any> }): Promise<any> {
     const pk = account.pubkey;
     const addr = pk.toBase58()
@@ -121,7 +136,7 @@ export class SolanaUtilsService {
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this.utilService.addrUtil(addr).addrShort,
-      balance: this.utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)),3),
+      balance: this.utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
       state,
       validatorData
     }

@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { SharedModule } from './shared/shared.module';
-import { SETTINGS as AUTH_SETTINGS, USE_DEVICE_LANGUAGE } from '@angular/fire/compat/auth';
 
 
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
@@ -37,9 +36,7 @@ import { environment } from 'src/environments/environment';
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-        { provide: AUTH_SETTINGS, useValue: { appVerificationDisabledForTesting: true } },
         { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
-        { provide: USE_DEVICE_LANGUAGE, useValue: true },
     ],
     bootstrap: [AppComponent]
 })

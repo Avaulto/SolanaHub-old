@@ -1,61 +1,76 @@
 <ion-content scroll-y style="--background:transparent;">
-<ion-grid class="ion-padding">
-    <app-go-back-btn></app-go-back-btn>
-    <ion-row class="data-box ion-padding ion-justify-content-start">
-        <ion-col size="6" class="ion-padding">
-            <ion-row class="ion-margin-bottom">
-                <div class="col-group" *ngIf="collectionInfo?.collectionName">
-                    <ion-img [src]="collectionInfo?.collectionImage"></ion-img>
-                    <span class="ion-margin-start heading-4">{{collectionInfo?.symbol}}</span>
-                </div>
-            </ion-row>
-            <ion-row class="heading-1 ion-margin-bottom">{{NFT?.name}}</ion-row>
-            <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">description</ion-row>
-            <ion-row class="ion-margin-bottom">{{collectionInfo?.description}}</ion-row>
-            <ion-row class="ion-margin-bottom ion-align-items-center">
+    <ion-grid class="ion-padding">
+        <app-go-back-btn></app-go-back-btn>
+        <ion-row class="data-box ion-padding ion-justify-content-start">
+            <ion-col size="12" sizeLg="6" class="ion-padding">
+                <ion-row class="ion-margin-bottom">
+                    <div class="col-group" *ngIf="collectionInfo?.collectionName">
+                        <ion-img [src]="collectionInfo?.collectionImage"></ion-img>
+                        <span class="ion-margin-start heading-4">{{collectionInfo?.symbol}}</span>
+                    </div>
+                </ion-row>
+                <ion-row class="heading-1 ion-margin-bottom">{{NFT?.name}}</ion-row>
+                <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">description</ion-row>
+                <ion-row class="ion-margin-bottom">{{collectionInfo?.description}}</ion-row>
+                <ion-row class="ion-margin-bottom ion-align-items-center">
 
-                <div id="art-icon" class="ion-margin-end">
-                    <ion-icon name="color-palette-outline"></ion-icon>
-                </div>
+                    <div id="art-icon" class="ion-margin-end">
+                        <ion-icon name="color-palette-outline"></ion-icon>
+                    </div>
 
-                <div class="ion-text-capitalize">
-                    token address: <br>
-                    <ion-col size="12" class="sub">{{NFT?.mintAddress}}</ion-col>
-                </div>
+                    <div class="ion-text-capitalize">
+                        token address: <br>
+                        <ion-col size="12" class="sub">{{NFT?.mintAddress}}</ion-col>
+                    </div>
 
-            </ion-row>
-            <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">Attributes</ion-row>
-            <ion-row>
-                <div class="nft-attr ion-margin-bottom ion-margin-end" *ngFor="let attr of NFT?.attributes">
-                    <div class="sub-strong">{{attr.trait_type}}</div>
-                    <span class="sub">{{attr.value}}</span>
-                </div>
-            </ion-row>
-            <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT?.externalUrl">
-                <a class="button-text ion-align-items-center" [href]="NFT?.externalUrl" target="_blank">
-                    <ion-icon name="link-outline"></ion-icon> External Url
-                </a>
-            </ion-row>
-            <ion-row class="ion-margin-bottom ion-text-capitalize">
-                <a class="button-text ion-align-items-center" [href]="'https://solscan.io/token/'+NFT?.mintAddress"
-                    target="_blank">
-                    <ion-icon name="list-outline"></ion-icon> view on explorer
-                </a>
-            </ion-row>
+                </ion-row>
+                <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">Attributes</ion-row>
+                <ion-row>
+                    <div class="nft-attr ion-margin-bottom ion-margin-end" *ngFor="let attr of NFT?.attributes">
+                        <div class="sub-strong">{{attr.trait_type}}</div>
+                        <span class="sub">{{attr.value}}</span>
+                    </div>
+                </ion-row>
+                <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT?.externalUrl">
+                    <a class="button-text ion-align-items-center" [href]="NFT?.externalUrl" target="_blank">
+                        <ion-icon name="link-outline"></ion-icon> External Url
+                    </a>
+                </ion-row>
+                <ion-row class="ion-margin-bottom ion-text-capitalize">
+                    <a class="button-text ion-align-items-center" [href]="'https://solscan.io/token/'+NFT?.mintAddress"
+                        target="_blank">
+                        <ion-icon name="list-outline"></ion-icon> view on explorer
+                    </a>
+                </ion-row>
 
-            <div *ngIf="NFT?.listStatus == 'unlisted'">
-              <app-nft-listing [nft]="NFT"></app-nft-listing>
-            </div>
 
-           
-        </ion-col>
-        <ion-col size="6" style="display: flex;" class="ion-align-items-center">
-            <app-nft-burn></app-nft-burn>
-            <!-- <ion-img [src]="NFT?.image" alt="NFT img"></ion-img> -->
-            <ion-skeleton-text style="background-color: white;width: 100%;height: 100%;" *ngIf="hideSkelaton == false"
-                animated></ion-skeleton-text>
-            <ion-img (ionImgDidLoad)="hideSkelaton = true" [src]="NFT?.image"></ion-img>
-        </ion-col>
-    </ion-row>
-</ion-grid>
+
+
+            </ion-col>
+            <ion-col size="12" sizeLg="6" style="display: flex;" class="ion-align-items-center">
+
+                <ion-row class="ion-align-items-center ion-justify-content">
+                    <ion-col size="12" class=" ion-margin-bottom">
+                        <ion-skeleton-text style="background-color: white;width: 100%;height: 100%;"
+                            *ngIf="hideSkelaton == false" animated></ion-skeleton-text>
+                        <ion-img *ngIf="NFT?.image" (ionImgWillLoad)="hideSkelaton = true" [src]="NFT?.image"></ion-img>
+                    </ion-col>
+                    <ion-row style="width: 100%;" class="ion-align-items-center ion-justify-content-between ion-margin-bottom">
+
+                        <ion-col size="5.9">
+                            <app-nft-burn [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK" [tokenAccountPubkey]="tokenAccountPubkey" ></app-nft-burn>
+                        </ion-col>
+                        <ion-col size="5.9">
+                            <ion-button style="display: block;">send</ion-button>
+                        </ion-col>
+                    </ion-row>
+                    <ion-col size="12">
+                        <!-- <div *ngIf="NFT?.listStatus == 'unlisted'"> -->
+                            <app-nft-listing [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK" [tokenAccountPubkey]="tokenAccountPubkey"  [nft]="NFT"></app-nft-listing>
+                        <!-- </div> -->
+                    </ion-col>
+                </ion-row>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

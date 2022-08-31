@@ -15,15 +15,17 @@
     }
     
     ion-button{
-        --background:#e42575;
+ 
     }
     ion-accordion {
-        background: #120d18;
+        background: transparent;
+        border: 1px solid var(--ion-color-primary);
     }
     ion-item{
         text-transform: capitalize;
-        --ion-color-base: #e42575 !important;
+        --ion-color-base: transparent !important;
         --ion-color-contrast: white !important;
+        background: transparent !important;
     }
     ion-datetime {
         --background: #04172c;

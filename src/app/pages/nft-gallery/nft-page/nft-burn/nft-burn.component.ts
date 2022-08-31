@@ -1,14 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
+import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import {
 
+  
+  createBurnInstruction,
+  createCloseAccountInstruction,
+
+} from "../../../../../../node_modules/@solana/spl-token";
 @Component({
   selector: 'app-nft-burn',
   templateUrl: './nft-burn.component.html',
   styleUrls: ['./nft-burn.component.scss'],
 })
 export class NftBurnComponent implements OnInit {
+  @Input() walletOwner: PublicKey;
+  @Input() tokenAccountPubkey: PublicKey;
+  @Input() mintAddressPK: PublicKey;
+  constructor(
+    private solanaUtilsService: SolanaUtilsService,
+    private txInterceptService: TxInterceptService) { }
 
-  constructor() { }
-
-  ngOnInit() {}
-
+  ngOnInit() { }
+  async burnNft() {
+    const tokenAccountPubkey = this.tokenAccountPubkey;
+    const walletOwner = this.walletOwner;
+    const mintAdress = this.mintAddressPK;
+    const b = await this.solanaUtilsService.getTokenAccountsBalance(walletOwner.toBase58());
+    const c = b.filter(item => item.mintAddress == mintAdress.toBase58())[0]
+    console.log(this.mintAddressPK.toBase58(),c )
+    let burnInstructions = createBurnInstruction(
+      tokenAccountPubkey, // token account
+      mintAdress, // mint
+      walletOwner, // owner of token account
+      1, // amount, if your deciamls is 8, 10^8 for 1 token
+    )
+    let closeAccountIns = createCloseAccountInstruction(
+      tokenAccountPubkey, // token account which you want to close
+      walletOwner, // destination
+      walletOwner // owner of token account
+    )
+    const burnNft: TransactionInstruction[] = [burnInstructions, closeAccountIns]
+    this.txInterceptService.sendTx(burnNft, this.walletOwner);
+  }
 }
