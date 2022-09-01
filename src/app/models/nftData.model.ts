@@ -11,6 +11,7 @@ export interface Nft {
   mintAddress: string,
   owner: string,
   supply: number,
+  description: string,
   collection: string,
   collectionName: string,
   name: string,

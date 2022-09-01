@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NftStoreService } from 'src/app/services/nft-store.service';
-import { Observable, switchMap } from 'rxjs';
+import { firstValueFrom, Observable, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
 import { LoaderService } from 'src/app/services';
+import { Metaplex } from '@metaplex-foundation/js';
+import { WalletAdapter } from '@solana/wallet-adapter-base';
 
 
 
@@ -21,7 +23,9 @@ export class NftGalleryPage implements OnInit {
     public loaderService:LoaderService
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
+    this._nftStore.getNftz(wallet);
   }
   setSort(ev) {
 

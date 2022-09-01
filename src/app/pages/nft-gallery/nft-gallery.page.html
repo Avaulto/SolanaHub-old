@@ -18,7 +18,7 @@
       </ion-radio-group>
     </ion-col>
   </ion-row> -->
-  <ion-row class="data-box ion-padding">
+  <ion-row id="gallery-wrapper" class="data-box ion-padding">
       <ion-col size="12">
         <div class="heading-4 ion-margin-bottom">NFTS</div>
       </ion-col>
@@ -26,8 +26,7 @@
 
         <app-loader></app-loader>
       </ion-col>
-        <ion-row style="width:100%;" class="ion-justify-content-between ion-align-items-center">
-           
+        <ion-row class="ion-justify-content-between ion-align-items-center">
             <ion-col size="5.8" sizeLg="2.9" *ngFor="let nft of nfts | async">
               <app-nft-preview  [nft]="nft"></app-nft-preview>
             </ion-col>

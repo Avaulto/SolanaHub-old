@@ -1,8 +1,8 @@
-<ion-content scroll-y style="--background:transparent;">
-    <ion-grid class="ion-padding">
+<ion-grid class="ion-padding">
+    <ion-content scroll-y style="--background:transparent;">
         <app-go-back-btn></app-go-back-btn>
-        <ion-row class="data-box ion-padding ion-justify-content-start">
-            <ion-col size="12" sizeLg="6" class="ion-padding">
+        <ion-row id="nft-data-wrapper" class="data-box ion-padding ion-justify-content-start">
+            <ion-col size="12" sizeLg="6">
                 <ion-row class="ion-margin-bottom">
                     <div class="col-group" *ngIf="collectionInfo?.collectionName">
                         <ion-img [src]="collectionInfo?.collectionImage"></ion-img>
@@ -47,30 +47,59 @@
 
 
             </ion-col>
-            <ion-col size="12" sizeLg="6" style="display: flex;" class="ion-align-items-center">
+            <ion-col size="12" sizeLg="6" class="ion-align-items-center">
 
-                <ion-row class="ion-align-items-center ion-justify-content">
-                    <ion-col size="12" class=" ion-margin-bottom">
+                <ion-row class=" ion-margin-bottom">
+                    <ion-col size="12">
                         <ion-skeleton-text style="background-color: white;width: 100%;height: 100%;"
                             *ngIf="hideSkelaton == false" animated></ion-skeleton-text>
                         <ion-img *ngIf="NFT?.image" (ionImgWillLoad)="hideSkelaton = true" [src]="NFT?.image"></ion-img>
                     </ion-col>
-                    <ion-row style="width: 100%;" class="ion-align-items-center ion-justify-content-between ion-margin-bottom">
+                </ion-row>
+                <ion-row id="nft-button-control"
+                    class="ion-align-items-center ion-justify-content-between ion-margin-bottom">
+                    <ion-col size="3.5" *ngIf="NFT?.listStatus == 'unlisted'">
+                        <ion-button (click)="setUtil('list')" [fill]="segmentUtilTab == 'list' ? 'solid' : 'outline'">list</ion-button>
+                    </ion-col>
+                    <ion-col size="3.5">
+                        <ion-button (click)="setUtil('send')" [fill]="segmentUtilTab == 'send' ? 'solid' : 'outline'" id="show-send-form">send</ion-button>
 
-                        <ion-col size="5.9">
-                            <app-nft-burn [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK" [tokenAccountPubkey]="tokenAccountPubkey" ></app-nft-burn>
-                        </ion-col>
-                        <ion-col size="5.9">
-                            <ion-button style="display: block;">send</ion-button>
-                        </ion-col>
-                    </ion-row>
-                    <ion-col size="12">
-                        <!-- <div *ngIf="NFT?.listStatus == 'unlisted'"> -->
-                            <app-nft-listing [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK" [tokenAccountPubkey]="tokenAccountPubkey"  [nft]="NFT"></app-nft-listing>
-                        <!-- </div> -->
+                    </ion-col>
+                    <ion-col size="3.5">
+                        <app-nft-burn [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK"
+                            [tokenAccountPubkey]="tokenAccountPubkey"></app-nft-burn>
+
+                    </ion-col>
+
+
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <span [ngSwitch]="segmentUtilTab">
+
+                            <app-nft-listing *ngSwitchCase="'list'" [walletOwner]="walletOwner"
+                                [mintAddressPK]="mintAddressPK" [tokenAccountPubkey]="tokenAccountPubkey" [nft]="NFT">
+                            </app-nft-listing>
+
+
+                            <form *ngSwitchCase="'send'" [formGroup]="sendNftForm"  class="ion-padding">
+
+                                <ion-row style="margin-bottom:8px" class="heading-6  ion-justify-content-between">
+                                    <div id="">to</div>
+                                </ion-row>
+                                <ion-row>
+                                    <ion-input formControlName="targetAddress"  class="button-text" placeholder="wallet address"></ion-input>
+                                    <span class="heading-6"></span>
+                                </ion-row>
+                                <ion-button (click)="sendNft()" class="ion-text-capitalize">
+                                    submit
+                                </ion-button>
+                            </form>
+
+                        </span>
                     </ion-col>
                 </ion-row>
             </ion-col>
         </ion-row>
-    </ion-grid>
-</ion-content>
+    </ion-content>
+</ion-grid>

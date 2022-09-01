@@ -1,10 +1,35 @@
 import { Injectable } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { Authorized, BlockheightBasedTransactionConfirmationStrategy, CreateStakeAccountParams, DelegateStakeParams, Keypair, LAMPORTS_PER_SOL, Lockup, PublicKey, sendAndConfirmTransaction, StakeProgram, SystemProgram, Transaction, TransactionBlockhashCtor, TransactionInstruction } from '@solana/web3.js';
+import {
+  getMinimumBalanceForRentExemptAccount,
+  ACCOUNT_SIZE,
+  TOKEN_PROGRAM_ID,
+  createTransferCheckedInstruction,
+  createTransferInstruction,
+  getOrCreateAssociatedTokenAccount,
+  mintTo,
+  getAssociatedTokenAddress,
+  createAssociatedTokenAccountInstruction
+} from '../../../node_modules/@solana/spl-token';;
+import {
+  Authorized,
+  BlockheightBasedTransactionConfirmationStrategy,
+  Connection,
+  CreateStakeAccountParams,
+  DelegateStakeParams,
+  Keypair,
+  LAMPORTS_PER_SOL,
+  Lockup,
+  PublicKey,
+  StakeProgram,
+  SystemProgram,
+  Transaction,
+  TransactionBlockhashCtor,
+  TransactionInstruction
+} from '@solana/web3.js';
 import { throwError } from 'rxjs';
 import { toastData } from '../models';
-import { SolanaUtilsService } from './solana-utils.service';
-import { ToasterService } from './toaster.service';
+import { ToasterService, SolanaUtilsService } from './';
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +92,7 @@ export class TxInterceptService {
 
 
   }
-  public async withdrawStake(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number):Promise<void> {
+  public async withdrawStake(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {
     const withdrawTx = StakeProgram.withdraw({
       stakePubkey: new PublicKey(stakeAccount),
       authorizedPubkey: walletOwnerPk,
@@ -83,7 +108,38 @@ export class TxInterceptService {
       console.error(error)
     }
   }
-  public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string,lockuptime: number) {
+  async getOrCreateTokenAccountInstruction(mint: PublicKey, user: PublicKey, payer: PublicKey | null = null): Promise<TransactionInstruction | null> {
+    const userTokenAccountAddress = await getAssociatedTokenAddress(mint, user, false);
+    const userTokenAccount = await this.solanaUtilsService.connection.getParsedAccountInfo(userTokenAccountAddress);
+    if (userTokenAccount.value === null) {
+      return createAssociatedTokenAccountInstruction(payer ? payer : user, userTokenAccountAddress, user, mint);
+    } else {
+      return null;
+    }
+  }
+  public async sendSplOrNft(mintAddressPK: PublicKey, walletOwner: PublicKey, toWallet: PublicKey, amount: number) {
+    const ownerAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, walletOwner, walletOwner);
+    const targetAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, toWallet, walletOwner);
+    const tokenAccountSourcePubkey = await getAssociatedTokenAddress(mintAddressPK, walletOwner);
+    const tokenAccountTargetPubkey = await getAssociatedTokenAddress(mintAddressPK, toWallet);
+    
+    const decimals = await (await this.solanaUtilsService.connection.getParsedAccountInfo(mintAddressPK)).value.data['parsed'].info.decimals;
+
+    const transferSplOrNft = createTransferCheckedInstruction(
+      tokenAccountSourcePubkey,
+      mintAddressPK,
+      tokenAccountTargetPubkey,
+      walletOwner,
+      amount,
+      decimals,
+      [],
+      TOKEN_PROGRAM_ID
+    )
+    const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
+    console.log(instructions)
+    this.sendTx(instructions, walletOwner)
+  }
+  public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime: number) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
       StakeProgram.space,
     );

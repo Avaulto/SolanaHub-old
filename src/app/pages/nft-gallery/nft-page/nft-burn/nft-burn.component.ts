@@ -26,9 +26,9 @@ export class NftBurnComponent implements OnInit {
     const tokenAccountPubkey = this.tokenAccountPubkey;
     const walletOwner = this.walletOwner;
     const mintAdress = this.mintAddressPK;
-    const b = await this.solanaUtilsService.getTokenAccountsBalance(walletOwner.toBase58());
-    const c = b.filter(item => item.mintAddress == mintAdress.toBase58())[0]
-    console.log(this.mintAddressPK.toBase58(),c )
+    // const accountBalance = await this.solanaUtilsService.getTokenAccountsBalance(walletOwner.toBase58());
+    // const amount = accountBalance.filter(item => item.mintAddress == mintAdress.toBase58())[0].balance
+    // console.log(this.mintAddressPK.toBase58(),c )
     let burnInstructions = createBurnInstruction(
       tokenAccountPubkey, // token account
       mintAdress, // mint

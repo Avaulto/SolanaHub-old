@@ -1,15 +1,15 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { faArrowUpLong, faSliders } from '@fortawesome/free-solid-svg-icons';
+import { FormBuilder,FormGroup,  Validators } from '@angular/forms';
+import { faArrowUpLong } from '@fortawesome/free-solid-svg-icons';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { Jupiter, RouteInfo, TOKEN_LIST_URL } from '@jup-ag/core'
-import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
+import {  LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import JSBI from 'jsbi';
 import { BehaviorSubject, distinctUntilChanged, filter, interval, map, of, pipe, ReplaySubject, Subject, switchMap, tap } from 'rxjs';
 import { ApiService, UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import { AccountLayout, AccountInfo, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+
 
 import { SwapDetail } from 'src/app/models/swapDetails.model';
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
