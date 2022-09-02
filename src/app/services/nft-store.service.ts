@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { SolanaUtilsService } from './solana-utils.service';
 
-import { Nft, NFTGroup, NFTmetaData } from '../models';
-import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
+import { Nft, NFTGroup } from '../models';
+import { FindNftsByOwnerOutput, Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, map, Observable, takeLast } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { WalletAdapter } from '@solana/wallet-adapter-base';
+import { environment } from 'src/environments/environment.prod';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -57,6 +56,7 @@ export class NftStoreService {
   }
 
   public async listNft({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
+
     const queryParam = encodeURIComponent(`price=${sol}&seller=${sellerAddress}&auctionHouseAddress=${auctionHouseAddress}&tokenMint=${tokenMint}&tokenAccount=${tokenAccount}&expiry=${expiry}`)
     const uri = `${this.magicEdenApiProxy}&endpoint=instructions/sell&queryParam=${queryParam}`;
     const getSellNftInstructionReq = await fetch(uri)
@@ -70,7 +70,7 @@ export class NftStoreService {
     const sellNftInstructionReq = await getSellNftInstructionReq.json();
     return sellNftInstructionReq
   }
-  public async getNftz(wallet): Promise<any> {
+  public async getNftz(wallet): Promise<Nft[]> {
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
     this._metaplex.use(walletAdapterIdentity(wallet));
     const myNfts = await this._metaplex
@@ -78,35 +78,36 @@ export class NftStoreService {
     .findAllByOwner({ owner: this._metaplex.identity().publicKey })
     .run();
 
-    const nftMapper = {}
-    const collections: NFTGroup[] = []
     console.log(myNfts)
-    await Promise.all(myNfts.map(async metaPlexItem => {
+    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaPlexItem:any) => {
       try {
-        const metaData: NFTmetaData = await this.getMetaData(metaPlexItem.uri);
+        const metaData = await this.getMetaData(metaPlexItem.uri);
         console.log(metaData)
-        // const nft: Nft = {
-        //   name: metaPlexItem.name,
-        //   image: metaData.image,
-        //   description: metaData.description,
-        //   // address: metaPlexItem.address,
-        //   // price: 0,
-        //   attr: metaData.attributes,
-        //   explorerURL: 'https://solscan.io/token/' + metaPlexItem.address,
-        //   websiteURL: metaData.external_url,
-        //   symbol: metaPlexItem.symbol
-        // }
+        const nft: Nft = {
+          name: metaPlexItem.name,
+          image: metaData.image,
+          description: metaData.description,
+          mintAddress: metaPlexItem?.mintAddress,
+          collectionName: metaPlexItem.collection?.name,
+          // price: 0,
+          attributes: metaData.attributes,
+          explorerURL: 'https://solscan.io/token/' + metaPlexItem.address,
+          websiteURL: metaData.external_url,
+          symbol: metaPlexItem.symbol
+        }
         // if (nftMapper[nft.symbol]) {
         //   nftMapper[nft.symbol].push(nft);
         // } else {
         //   nftMapper[nft.symbol] = [];
         //   nftMapper[nft.symbol].push(nft);
         // }
-        // return nft
+        return nft
       } catch (error) {
         console.warn(error)
       }
     }))
+    console.log(myNftsExtended)
+    return myNftsExtended;
     // for (const iterator in nftMapper) {
     //   const nftGroup: Nft[] = nftMapper[iterator];
     //   const collection = await this.getCollectionData(nftGroup[0].mint)
@@ -118,8 +119,8 @@ export class NftStoreService {
 
   }
 
-  private async getMetaData(uri: string): Promise<NFTmetaData> {
-    let metaData: NFTmetaData = {}
+  private async getMetaData(uri: string): Promise<any> {
+    let metaData: any = {}
     try {
       metaData = await (await fetch(uri)).json();
       // metaDataRes = await metaDataReq.json();

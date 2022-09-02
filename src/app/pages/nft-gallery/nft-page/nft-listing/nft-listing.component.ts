@@ -59,8 +59,8 @@ export class NftListingComponent implements OnInit {
 
   private async initFormSetup(){
     console.log(this.walletOwner,this.tokenAccountPubkey,this.mintAddressPK)
-    const auctionHouseAddress =( await this._nftStoreService.getCollectionMarketplaceData(this.nft.collection)).auctionHouse;
-  
+    const auctionHouseAddress = 'E8cU1WiRWjanGxmn96ewBgk9vPTcL6AEZ1t6F6fkgUWe';
+    
     this.listNftForm.controls.sellerAddress.setValue(this.walletOwner.toBase58())
     this.listNftForm.controls.tokenMint.setValue(this.mintAddressPK.toBase58())
     this.listNftForm.controls.tokenAccount.setValue(this.tokenAccountPubkey.toBase58())

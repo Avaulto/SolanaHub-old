@@ -8,42 +8,19 @@ export interface NFTGroup {
 }
 
 export interface Nft {
+  collectionName?:string,
   mintAddress: string,
-  owner: string,
-  supply: number,
   description: string,
-  collection: string,
-  collectionName: string,
   name: string,
-  updateAuthority: string,
-  primarySaleHappened: boolean,
-  sellerFeeBasisPoints: number,
   image: string,
-  externalUrl: string,
+  websiteURL: string,
+  explorerURL: string,
   attributes: [
-    {
-      trait_type: string,
-      value: number
-    },
-    
-  ],
-  properties?: any,
-  listStatus: string
-}
-
-export interface NFTmetaData {
-  name?: string,
-  symbol?: string,
-  description?: string,
-  seller_fee_basis_points?: number,
-  image?: string,
-  external_url?: string,
-  attributes?: [
     {
       trait_type: string,
       value: string
     },
-
+    
   ],
-  properties?
+  symbol: string
 }
