@@ -3,10 +3,10 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { SolanaUtilsService } from './solana-utils.service';
 
 import { Nft, NFTGroup } from '../models';
-import { FindNftsByOwnerOutput, Metadata, Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
+import {  Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
-import { firstValueFrom, map, Observable, takeLast } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { firstValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -42,20 +42,15 @@ export class NftStoreService {
     .run();
     console.log(nft);
   }
-  public async getNftList(walletOwnerAddress: string): Promise<Nft[]> {
+  public async getMagicEdenOwnerNFTS(walletOwnerAddress: string): Promise<any[]> {
     const uri = `${this.magicEdenApiProxy}&endpoint=wallets/${walletOwnerAddress}/tokens`
     const getNFTsReq = await fetch(uri)
     const nfts: Nft[] = await getNFTsReq.json();
     return nfts
   }
-  public async getSingleNft(mintAddress): Promise<Nft> {
-    const uri = `${this.magicEdenApiProxy}&endpoint=tokens/${mintAddress}`;
-    const getNFTsReq = await fetch(uri)
-    const nft: Nft = await getNFTsReq.json();
-    return nft
-  }
 
-  public async listNft({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
+
+  public async nftListing({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
 
     const queryParam = encodeURIComponent(`price=${sol}&seller=${sellerAddress}&auctionHouseAddress=${auctionHouseAddress}&tokenMint=${tokenMint}&tokenAccount=${tokenAccount}&expiry=${expiry}`)
     const uri = `${this.magicEdenApiProxy}&endpoint=instructions/sell&queryParam=${queryParam}`;
@@ -70,7 +65,19 @@ export class NftStoreService {
     const sellNftInstructionReq = await getSellNftInstructionReq.json();
     return sellNftInstructionReq
   }
-  public async getNftz(wallet): Promise<Nft[]> {
+  public async listStatus(walletAddress: string, mintAddress: string): Promise<string>{
+    const nftList = await this.getMagicEdenOwnerNFTS(walletAddress);
+    const isListed = nftList.filter(nft => nft.mintAddress == mintAddress)[0].listStatus;
+    return isListed
+  }
+  public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft>{
+    this._metaplex.use(walletAdapterIdentity(wallet));
+    const metaplexItem = await this._metaplex.nfts().findByMint({ mintAddress:mintAddressPK }).run();
+    const metaData = await this.getMetaData(metaplexItem.uri);
+    const nft: Nft = this._nftDataPrep(metaData,metaplexItem)
+    return nft
+  }
+  public async getAllOnwerNfts(wallet): Promise<Nft[]> {
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
     this._metaplex.use(walletAdapterIdentity(wallet));
     const myNfts = await this._metaplex
@@ -78,40 +85,39 @@ export class NftStoreService {
     .findAllByOwner({ owner: this._metaplex.identity().publicKey })
     .run();
 
-    console.log(myNfts)
-    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem:any) => {
+    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem) => {
       try {
         const metaData = await this.getMetaData(metaplexItem.uri);
-        console.log(metaData)
-        const nft: Nft = {
-          image: metaData.image,
-          description: metaData.description,
-          attributes: metaData.attributes,
-          websiteURL: metaData.external_url,
-          name: metaplexItem.name,
-          mintAddress: metaplexItem?.mintAddress,
-          collectionName: metaplexItem.collection?.name,
-          explorerURL: 'https://solscan.io/token/' + metaplexItem.address,
-          symbol: metaplexItem.symbol
-        }
+        const nft: Nft = this._nftDataPrep(metaData,metaplexItem)
         return nft
       } catch (error) {
         console.warn(error)
       }
     }))
-    console.log(myNftsExtended)
     return myNftsExtended;
-    // for (const iterator in nftMapper) {
-    //   const nftGroup: Nft[] = nftMapper[iterator];
-    //   const collection = await this.getCollectionData(nftGroup[0].mint)
-    //   collection.NFTs = nftGroup;
-    //   collections.push(collection)
-    // }
-    // return collections
 
 
   }
 
+  private _nftDataPrep(metaData,metaplexItem): Nft{
+    console.log(metaData,metaplexItem)
+    try {
+      const nft: Nft = {
+        image: metaData.image,
+        description: metaData.description,
+        attributes: metaData.attributes,
+        websiteURL: metaData.external_url,
+        name: metaplexItem.name,
+        mintAddress: metaplexItem?.address,
+        collectionName: metaplexItem.collection?.name,
+        explorerURL: 'https://solscan.io/token/' + metaplexItem.address,
+        symbol: metaplexItem.symbol
+      }
+      return nft
+    } catch (error) {
+      console.warn(error)
+    }
+  }
   private async getMetaData(uri: string): Promise<any> {
     let metaData: any = {} 
     try {

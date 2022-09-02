@@ -21,7 +21,7 @@ export class NftListingComponent implements OnInit {
   @Input() nft: Nft;
   public listNftForm: FormGroup = {} as FormGroup;
   public formSubmitted: boolean = false;
-  public showDates:boolean = false;
+  public showDates: boolean = false;
   public expiryPlaceholder: string = 'no expiry';
   public minimumExpiry = new Date().toISOString()
 
@@ -29,38 +29,37 @@ export class NftListingComponent implements OnInit {
     private _walletStore: WalletStore,
     private _nftStoreService: NftStoreService,
     private txInterceptService: TxInterceptService,
-    private solanaUtilsService:SolanaUtilsService,
     private fb: FormBuilder
-  ) { 
+  ) {
     // console.log(walletOwner,auctionHouseAddress,associatedTokenAddress)
     this.listNftForm = this.fb.group({
       sellerAddress: [],
-      tokenMint:[],
-      tokenAccount:[],
+      tokenMint: [],
+      tokenAccount: [],
       auctionHouseAddress: [],
       sol: ['', [Validators.required]],
       expiry: ['']
     })
   }
 
-  
+
   async ngOnInit() {
-    
+
     this.initFormSetup();
-    this.listNftForm.controls.expiry.valueChanges.subscribe(val =>{
-      if(val == ''){
-        this.expiryPlaceholder ='no expiry'; 
-      }else{
+    this.listNftForm.controls.expiry.valueChanges.subscribe(val => {
+      if (val == '') {
+        this.expiryPlaceholder = 'no expiry';
+      } else {
         this.expiryPlaceholder = val.split('T')[0];
       }
       this.showDates = false;
     })
   }
 
-  private async initFormSetup(){
-    console.log(this.walletOwner,this.tokenAccountPubkey,this.mintAddressPK)
+  private async initFormSetup() {
+    console.log(this.walletOwner, this.tokenAccountPubkey, this.mintAddressPK)
     const auctionHouseAddress = 'E8cU1WiRWjanGxmn96ewBgk9vPTcL6AEZ1t6F6fkgUWe';
-    
+
     this.listNftForm.controls.sellerAddress.setValue(this.walletOwner.toBase58())
     this.listNftForm.controls.tokenMint.setValue(this.mintAddressPK.toBase58())
     this.listNftForm.controls.tokenAccount.setValue(this.tokenAccountPubkey.toBase58())
@@ -73,19 +72,20 @@ export class NftListingComponent implements OnInit {
     // assign form values
     const listInfo = this.listNftForm.value;
     // get transaction instructions buffer
-    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.listNft(listInfo)
+    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftListing(listInfo)
     // transform from buffer to transaction instructions object
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data));
+    txn.instructions[0].keys[0].isSigner= false
     // submit transaction using wallet adapter
     this.txInterceptService.sendTx([txn], walletOwner)
   }
-  public async cancelNftListing(): Promise<void>{
+  public async cancelNftListing(): Promise<void> {
     const listInfo = this.listNftForm.value;
-    const txIns: {tx: any, txSigned:any} = await this._nftStoreService.cancelNftListing(listInfo)
+    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.cancelNftListing(listInfo)
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
     // const txn2 = Transaction.from(Buffer.from(txIns.tx))
-    console.log(txn,txIns)
-    this.txInterceptService.sendTx([txn],walletOwner)
+    console.log(txn, txIns)
+    this.txInterceptService.sendTx([txn], walletOwner)
   }
 }

@@ -11,7 +11,7 @@
                 </ion-row>
                 <ion-row class="heading-1 ion-margin-bottom">{{NFT?.name}}</ion-row>
                 <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">description</ion-row>
-                <ion-row class="ion-margin-bottom">{{collectionInfo?.description}}</ion-row>
+                <ion-row class="ion-margin-bottom">{{NFT?.description}}</ion-row>
                 <ion-row class="ion-margin-bottom ion-align-items-center">
 
                     <div id="art-icon" class="ion-margin-end">
@@ -31,13 +31,13 @@
                         <span class="sub">{{attr.value}}</span>
                     </div>
                 </ion-row>
-                <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT?.websiteUrl">
-                    <a class="button-text ion-align-items-center" [href]="NFT?.websiteUrl" target="_blank">
+                <ion-row class="ion-margin-bottom ion-text-capitalize" *ngIf="NFT?.websiteURL">
+                    <a class="button-text ion-align-items-center" [href]="NFT?.websiteURL" target="_blank">
                         <ion-icon name="link-outline"></ion-icon> External Url
                     </a>
                 </ion-row>
                 <ion-row class="ion-margin-bottom ion-text-capitalize">
-                    <a class="button-text ion-align-items-center" [href]="'https://solscan.io/token/'+NFT?.mintAddress"
+                    <a class="button-text ion-align-items-center" [href]="NFT?.explorerURL"
                         target="_blank">
                         <ion-icon name="list-outline"></ion-icon> view on explorer
                     </a>
@@ -58,12 +58,13 @@
                 </ion-row>
                 <ion-row id="nft-button-control"
                     class="ion-align-items-center ion-justify-content-between ion-margin-bottom">
-                    <ion-col size="3.5" *ngIf="NFT?.listStatus == 'unlisted'">
-                        <ion-button (click)="setUtil('list')" [fill]="segmentUtilTab == 'list' ? 'solid' : 'outline'">list</ion-button>
-                    </ion-col>
+                  
                     <ion-col size="3.5">
                         <ion-button (click)="setUtil('send')" [fill]="segmentUtilTab == 'send' ? 'solid' : 'outline'" id="show-send-form">send</ion-button>
 
+                    </ion-col>
+                      <ion-col size="3.5" *ngIf="listStatus == 'unlisted'">
+                        <ion-button (click)="setUtil('list')" [fill]="segmentUtilTab == 'list' ? 'solid' : 'outline'">list</ion-button>
                     </ion-col>
                     <ion-col size="3.5">
                         <app-nft-burn [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK"

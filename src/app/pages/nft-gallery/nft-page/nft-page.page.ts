@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { ACCOUNT_SIZE, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getMinimumBalanceForRentExemptAccount } from  "../../../../../node_modules/@solana/spl-token";
+import { ACCOUNT_SIZE, createAssociatedTokenAccountInstruction, createTransferCheckedInstruction, getMinimumBalanceForRentExemptAccount } from "../../../../../node_modules/@solana/spl-token";
 import { Keypair, PublicKey, SystemProgram, TransactionInstruction } from '@solana/web3.js';
 
 import { firstValueFrom } from 'rxjs';
@@ -22,28 +22,26 @@ export class NftPagePage implements OnInit {
   public collectionInfo: NFTGroup
   public hideSkelaton: boolean = false;
   public segmentUtilTab: string = ''
-  setUtil(util: string){
-    this.segmentUtilTab = util;
-  }
-    constructor(
+  public walletOwner: PublicKey;
+  public mintAddressPK: PublicKey;
+  public tokenAccountPubkey: PublicKey;
+  public sendNftForm: FormGroup;
+  public formSubmitted: boolean = false;
+  public listStatus: string;
+
+  constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private _nftStoreService: NftStoreService,
-    private txInterceptService:TxInterceptService,
+    private txInterceptService: TxInterceptService,
     private _walletStore: WalletStore,
-    private fb:FormBuilder,
+    private fb: FormBuilder,
     private solanaUtilsService: SolanaUtilsService,
   ) {
 
   }
-  public walletOwner: PublicKey;
-  public mintAddressPK: PublicKey;
-  public tokenAccountPubkey: PublicKey;
 
-  public sendNftForm: FormGroup;
-  public formSubmitted: boolean = false;
   async ngOnInit() {
-    console.log(this.NFT)
     this.sendNftForm = this.fb.group({
       targetAddress: ['', [Validators.required]],
     })
@@ -53,27 +51,26 @@ export class NftPagePage implements OnInit {
       if (dataSet) {
         this.NFT = dataSet
       } else {
-        this.NFT = await this._getNftData(mintAddress)
+        const mintAddressPK = new PublicKey(mintAddress);
+        this.NFT = await this._nftStoreService.getSingleNft(this.walletOwner, mintAddressPK)
       }
-      this.collectionInfo = await this.getCollectionData(this.NFT.mintAddress);
       this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+      console.log(this.NFT)
       this.mintAddressPK = new PublicKey(this.NFT.mintAddress);
-      this.tokenAccountPubkey = await (await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner,this.mintAddressPK))
+      this.tokenAccountPubkey = await (await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK));
+      this.listStatus = await this._nftStoreService.listStatus(this.walletOwner.toBase58(),this.mintAddressPK.toBase58());
+      console.log(this.listStatus )
     });
   }
-  private async _getNftData(mintAddress: string): Promise<Nft> {
-    const walletOwnerAddress = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey.toBase58()
-    const nftList = await this._nftStoreService.getNftList(walletOwnerAddress)
-    const myNft = nftList.filter(nft => nft.mintAddress == mintAddress)[0];
-    return myNft
-  }
-  private async getCollectionData(mintAddress: string) {
-    return await this._nftStoreService.getCollectionData(mintAddress);
-  }
-  public async sendNft(){
+
+  public async sendNft() {
     const targetAdress = this.sendNftForm.value.targetAddress
     console.log(this.sendNftForm.value.targetAddress);
     const targetPublicKey = new PublicKey(targetAdress)
-    this.txInterceptService.sendSplOrNft(this.mintAddressPK,this.walletOwner,targetPublicKey,1)
+    this.txInterceptService.sendSplOrNft(this.mintAddressPK, this.walletOwner, targetPublicKey, 1)
+  }
+
+  public setUtil(util: string): void {
+    this.segmentUtilTab = util;
   }
 }

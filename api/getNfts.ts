@@ -2,7 +2,7 @@ import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from "@solana/web3.js";
 import { Nft } from "src/app/models";
 
-export default async function getNftz(wallet): Promise<Nft[]> {
+export default async function getAllOnwerNfts(wallet): Promise<Nft[]> {
     const _metaplex = new Metaplex(this._solanaUtilsService.connection)
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
     // _metaplex.use(walletAdapterIdentity(wallet));
@@ -20,7 +20,7 @@ export default async function getNftz(wallet): Promise<Nft[]> {
           name: metaPlexItem.name,
           image: metaData.image,
           description: metaData.description,
-          mintAddress: metaPlexItem?.mintAddress,
+          mintAddress: metaPlexItem.address,
           collectionName: metaPlexItem.collection?.name,
           // price: 0,
           attributes: metaData.attributes,
@@ -28,12 +28,6 @@ export default async function getNftz(wallet): Promise<Nft[]> {
           websiteURL: metaData.external_url,
           symbol: metaPlexItem.symbol
         }
-        // if (nftMapper[nft.symbol]) {
-        //   nftMapper[nft.symbol].push(nft);
-        // } else {
-        //   nftMapper[nft.symbol] = [];
-        //   nftMapper[nft.symbol].push(nft);
-        // }
         return nft
       } catch (error) {
         console.warn(error)
@@ -41,13 +35,4 @@ export default async function getNftz(wallet): Promise<Nft[]> {
     }))
     console.log(myNftsExtended)
     return myNftsExtended;
-    // for (const iterator in nftMapper) {
-    //   const nftGroup: Nft[] = nftMapper[iterator];
-    //   const collection = await this.getCollectionData(nftGroup[0].mint)
-    //   collection.NFTs = nftGroup;
-    //   collections.push(collection)
-    // }
-    // return collections
-
-
   }
