@@ -3,7 +3,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { SolanaUtilsService } from './solana-utils.service';
 
 import { Nft, NFTGroup } from '../models';
-import { FindNftsByOwnerOutput, Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
+import { FindNftsByOwnerOutput, Metadata, Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, map, Observable, takeLast } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
@@ -79,28 +79,21 @@ export class NftStoreService {
     .run();
 
     console.log(myNfts)
-    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaPlexItem:any) => {
+    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem:any) => {
       try {
-        const metaData = await this.getMetaData(metaPlexItem.uri);
+        const metaData = await this.getMetaData(metaplexItem.uri);
         console.log(metaData)
         const nft: Nft = {
-          name: metaPlexItem.name,
           image: metaData.image,
           description: metaData.description,
-          mintAddress: metaPlexItem?.mintAddress,
-          collectionName: metaPlexItem.collection?.name,
-          // price: 0,
           attributes: metaData.attributes,
-          explorerURL: 'https://solscan.io/token/' + metaPlexItem.address,
           websiteURL: metaData.external_url,
-          symbol: metaPlexItem.symbol
+          name: metaplexItem.name,
+          mintAddress: metaplexItem?.mintAddress,
+          collectionName: metaplexItem.collection?.name,
+          explorerURL: 'https://solscan.io/token/' + metaplexItem.address,
+          symbol: metaplexItem.symbol
         }
-        // if (nftMapper[nft.symbol]) {
-        //   nftMapper[nft.symbol].push(nft);
-        // } else {
-        //   nftMapper[nft.symbol] = [];
-        //   nftMapper[nft.symbol].push(nft);
-        // }
         return nft
       } catch (error) {
         console.warn(error)
@@ -120,7 +113,7 @@ export class NftStoreService {
   }
 
   private async getMetaData(uri: string): Promise<any> {
-    let metaData: any = {}
+    let metaData: any = {} 
     try {
       metaData = await (await fetch(uri)).json();
       // metaDataRes = await metaDataReq.json();

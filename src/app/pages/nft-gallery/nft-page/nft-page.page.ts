@@ -43,6 +43,7 @@ export class NftPagePage implements OnInit {
   public sendNftForm: FormGroup;
   public formSubmitted: boolean = false;
   async ngOnInit() {
+    console.log(this.NFT)
     this.sendNftForm = this.fb.group({
       targetAddress: ['', [Validators.required]],
     })

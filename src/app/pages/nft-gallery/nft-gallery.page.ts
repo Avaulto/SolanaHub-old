@@ -15,7 +15,7 @@ import { WalletAdapter } from '@solana/wallet-adapter-base';
   styleUrls: ['./nft-gallery.page.scss'],
 })
 export class NftGalleryPage implements OnInit {
-  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getNftList(wallet.publicKey.toBase58())))
+  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getNftz(wallet)))
 
   constructor(
     private _walletStore: WalletStore,
@@ -24,8 +24,8 @@ export class NftGalleryPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
-    this._nftStore.getNftz(wallet);
+    // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
+    // this._nftStore.getNftz(wallet);
   }
   setSort(ev) {
 
