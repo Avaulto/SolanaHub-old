@@ -18,8 +18,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { WalletNotConnectedStateComponent } from './wallet-not-connected-state/wallet-not-connected-state.component';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
-import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
-import { environment } from 'src/environments/environment';
+
+
 
 import Plausible from 'plausible-tracker'
 @NgModule({
