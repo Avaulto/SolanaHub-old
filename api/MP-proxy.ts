@@ -25,20 +25,19 @@ export default async function GETAllOnwerNfts(request, response): Promise<Nft[]>
     .findAllByOwner({ owner: new PublicKey(walletAdress) })
     .run();
 
-  const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaPlexItem: any) => {
+  const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem: any) => {
     try {
-      const metaData = await getMetaData(metaPlexItem.uri);
+      const metaData = await getMetaData(metaplexItem.uri);
       const nft: Nft = {
-        name: metaPlexItem.name,
         image: metaData.image,
         description: metaData.description,
-        mintAddress: metaPlexItem.address,
-        collectionName: metaPlexItem.collection?.name,
-        // price: 0,
         attributes: metaData.attributes,
-        explorerURL: 'https://solscan.io/token/' + metaPlexItem.address,
         websiteURL: metaData.external_url,
-        symbol: metaPlexItem.symbol
+        name: metaplexItem.name,
+        mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
+        collectionName: metaplexItem.collection?.name,
+        explorerURL: metaplexItem.address,
+        symbol: metaplexItem.symbol
       }
       return nft
     } catch (error) {
