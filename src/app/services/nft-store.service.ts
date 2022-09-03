@@ -76,24 +76,28 @@ export class NftStoreService {
     const nft: Nft = this._nftDataPrep(metaData,metaplexItem)
     return nft
   }
-  public async getAllOnwerNfts(wallet): Promise<Nft[]> {
+  public async getAllOnwerNfts(walletOwnerAddress): Promise<Nft[]> {
+    const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
+    const getNFTsReq = await fetch(uri)
+    const nfts: Nft[] = await getNFTsReq.json();
+    return nfts
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
-    this._metaplex.use(walletAdapterIdentity(wallet));
-    const myNfts = await this._metaplex
-    .nfts()
-    .findAllByOwner({ owner: this._metaplex.identity().publicKey })
-    .run();
+    // this._metaplex.use(walletAdapterIdentity(wallet));
+    // const myNfts = await this._metaplex
+    // .nfts()
+    // .findAllByOwner({ owner: this._metaplex.identity().publicKey })
+    // .run();
 
-    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem) => {
-      try {
-        const metaData = await this.getMetaData(metaplexItem.uri);
-        const nft: Nft = this._nftDataPrep(metaData,metaplexItem)
-        return nft
-      } catch (error) {
-        console.warn(error)
-      }
-    }))
-    return myNftsExtended;
+    // const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem) => {
+    //   try {
+    //     const metaData = await this.getMetaData(metaplexItem.uri);
+    //     const nft: Nft = this._nftDataPrep(metaData,metaplexItem)
+    //     return nft
+    //   } catch (error) {
+    //     console.warn(error)
+    //   }
+    // }))
+    // return myNftsExtended;
 
 
   }
