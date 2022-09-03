@@ -2,7 +2,7 @@ import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from "@solana/web3.js";
 import { Nft } from "src/app/models";
 
-export default async function getAllOnwerNfts(request, response): Promise<Nft[]> {
+export default async function GETAllOnwerNfts(request, response): Promise<Nft[]> {
   const { walletAdress } = request.query;
     const _metaplex = new Metaplex(this._solanaUtilsService.connection)
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
