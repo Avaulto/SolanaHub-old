@@ -50,7 +50,6 @@ export class HistoryComponent implements OnInit {
   getWalletHistory(){
     this._walletStore.anchorWallet$.subscribe(async wallet=>{
       const history = await this.solanaUtilsService.getWalletHistory(wallet.publicKey);
-      console.log(history)
     })
   }
 }

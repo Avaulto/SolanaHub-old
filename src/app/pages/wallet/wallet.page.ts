@@ -12,8 +12,9 @@ import { ApiService, UtilsService, DataAggregatorService,SolanaUtilsService , Nf
 })
 export class WalletPage implements OnInit {
   public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+    this.utils.isNotNull,
     switchMap(async wallet => {
-     return (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0,3)
+     return (await this._nftStore.getAllOnwerNfts(wallet)).splice(0,3)
     }))
 
   public asset: Asset = {
@@ -38,7 +39,6 @@ export class WalletPage implements OnInit {
     this._walletStore.anchorWallet$.pipe(this.utils.isNotNull).subscribe(async wallet => {
       // fetch tokens by owner
       const tokensByOwner = await this.solanaUtilsService.getTokenAccountsBalance(wallet.publicKey.toBase58())
-      console.log(tokensByOwner)
       // fetch token info from coingeko
       const coinDataReq = tokensByOwner.map(async token => await this.dataAggregator.getCoinDataByContract(token.mintAddress))
       // wait for all tokens
@@ -67,7 +67,6 @@ export class WalletPage implements OnInit {
         this.asset.tokens.push(solanaToken)
 
         this._evalutePortfolio();
-        console.log( this.walletTotalValue)
     })
 
   }

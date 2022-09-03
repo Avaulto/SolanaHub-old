@@ -38,7 +38,7 @@ export class NftListingComponent implements OnInit {
       tokenAccount: [],
       auctionHouseAddress: [],
       sol: ['', [Validators.required]],
-      expiry: ['']
+      expiry: ['-1']
     })
   }
 
@@ -71,6 +71,7 @@ export class NftListingComponent implements OnInit {
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     // assign form values
     const listInfo = this.listNftForm.value;
+    console.log(listInfo)
     // get transaction instructions buffer
     const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftListing(listInfo)
     // transform from buffer to transaction instructions object

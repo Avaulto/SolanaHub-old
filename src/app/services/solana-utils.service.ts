@@ -186,10 +186,8 @@ export class SolanaUtilsService {
       const signatures: ConfirmedSignatureInfo[] = await this.connection.getConfirmedSignaturesForAddress2(walletPubKey);
       let records: any[] = [];
       let walletHistory = []
-      console.log(signatures)
       signatures.forEach(async signature => {
         const txInfo = await this.connection.getTransaction(signature.signature);
-        console.log(txInfo)
         records.push(txInfo);
       });
       records.forEach((record, i) => {

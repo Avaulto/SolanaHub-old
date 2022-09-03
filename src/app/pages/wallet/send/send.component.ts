@@ -33,7 +33,6 @@ export class SendComponent implements OnInit {
   }
   setMaxAmount() {
     const fixedAmount = this.utils.shortenNum(this.wallet.balance - 0.0001)
-    console.log(fixedAmount, this.wallet.balance)
     this.sendSolForm.controls.amount.setValue(fixedAmount);
   }
 

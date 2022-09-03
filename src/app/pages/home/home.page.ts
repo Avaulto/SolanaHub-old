@@ -39,7 +39,6 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.clusterInfo.subscribe(val => console.log(val))
   }
   ngOnDestroy(): void {
   }

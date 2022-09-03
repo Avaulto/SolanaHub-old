@@ -15,14 +15,12 @@ export class ChartComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.dataAggregator.getCoinChartHistory('solana','usd',30).subscribe(chartHistory =>{
-      console.log(chartHistory)
       this.createLineChart(chartHistory[0], chartHistory[1]);
     })
   }
   onChangeDate(event){
     this.lines.destroy()
     this.dataAggregator.getCoinChartHistory('solana','usd',event.detail.value).subscribe(chartHistory =>{
-      console.log(chartHistory)
       this.createLineChart(chartHistory[0], chartHistory[1]);
     })
   }

@@ -4,9 +4,11 @@
 
 export const environment = {
   ga:'G-SDPQV59FL6',
+  plausibleId: '',
   production: false,
   solanaCluster:'https://api.devnet.solana.com',
-  magicEdenEnv: 'devnet'
+  magicEdenProxyAPI: 'https://dev.compact-defi.avaulto.com/api/ME-proxy?env=devnet',
+  metaplexProxyAPI: 'https://dev.compact-defi.avaulto.com/api/MP-proxy'
 };
 
 /*

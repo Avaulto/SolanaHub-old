@@ -15,7 +15,6 @@ export class StakeComponent implements OnInit {
   @Input() wallet: Asset;
   public validatorsData: Observable<ValidatorData[] | any> = this.solanaUtilsService.currentValidatorData
     .pipe(map((validators) => {
-      console.log(validators)
       const validatorsExtended = validators.map((validator: ValidatorData) => {
         return {
           name: validator.name,
@@ -63,7 +62,6 @@ export class StakeComponent implements OnInit {
   }
 
   setSelectedValidator(validator: ValidatorData) {
-    console.log(validator)
     this.rewardInfo.apy = validator.apy_estimate
 
     this.selectedValidator = validator;

@@ -58,7 +58,6 @@ export class TokenSwapPage implements OnInit {
     private txInterceptService: TxInterceptService,
   ) { }
   ngOnInit() {
-    this.swapDetailObs$.subscribe(val =>console.log(val))
     this.swapForm = this.fb.group({
       inputToken: ['', [Validators.required]],
       outputToken: ['', [Validators.required]],
@@ -158,7 +157,6 @@ export class TokenSwapPage implements OnInit {
   }) => {
     try {
       const possiblePairs = routeMap.get(inputToken.address)
-      console.log(possiblePairs)
       const possiblePairsTokenInfo: { [key: string]: Token | undefined } = {};
       possiblePairs.forEach((address) => {
         possiblePairsTokenInfo[address] = tokens.find((t) => {

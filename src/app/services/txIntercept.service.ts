@@ -87,7 +87,6 @@ export class TxInterceptService {
       stakePubkey: new PublicKey(stakeAccount),
       authorizedPubkey: walletOwnerPk,
     });
-    console.log(deactivateTx)
     await this.sendTx([deactivateTx], walletOwnerPk)
 
 
@@ -136,7 +135,6 @@ export class TxInterceptService {
       TOKEN_PROGRAM_ID
     )
     const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
-    console.log(instructions)
     this.sendTx(instructions, walletOwner)
   }
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime: number) {

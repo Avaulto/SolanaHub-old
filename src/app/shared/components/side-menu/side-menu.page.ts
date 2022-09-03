@@ -36,7 +36,6 @@ export class SideMenuPage implements OnInit {
   ngOnInit() {
   }
   selectCurrency(ev) {
-    // console.log(ev)
   }
 
 }

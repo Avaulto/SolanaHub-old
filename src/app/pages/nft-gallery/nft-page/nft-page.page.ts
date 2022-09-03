@@ -55,11 +55,9 @@ export class NftPagePage implements OnInit {
         this.NFT = await this._nftStoreService.getSingleNft(this.walletOwner, mintAddressPK)
       }
       this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-      console.log(this.NFT)
       this.mintAddressPK = new PublicKey(this.NFT.mintAddress);
       this.tokenAccountPubkey = await (await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK));
       this.listStatus = await this._nftStoreService.listStatus(this.walletOwner.toBase58(),this.mintAddressPK.toBase58());
-      console.log(this.listStatus )
     });
   }
 

@@ -20,8 +20,8 @@ interface ListInstuction {
   providedIn: 'root'
 })
 export class NftStoreService {
-  private env = environment.magicEdenEnv
-  protected magicEdenApiProxy = `https://dev.compact-defi.avaulto.com/api/ME-proxy?env=${this.env}`
+  protected magicEdenApiProxy = environment.magicEdenProxyAPI;
+  protected metaplexApiProxy = environment.metaplexProxyAPI;
   private _metaplex = new Metaplex(this._solanaUtilsService.connection)
   constructor(
     private _walletStore:WalletStore,
@@ -40,7 +40,6 @@ export class NftStoreService {
         sellerFeeBasisPoints: 500, // Represents 5.00%.
     })
     .run();
-    console.log(nft);
   }
   public async getMagicEdenOwnerNFTS(walletOwnerAddress: string): Promise<any[]> {
     const uri = `${this.magicEdenApiProxy}&endpoint=wallets/${walletOwnerAddress}/tokens`
@@ -67,7 +66,7 @@ export class NftStoreService {
   }
   public async listStatus(walletAddress: string, mintAddress: string): Promise<string>{
     const nftList = await this.getMagicEdenOwnerNFTS(walletAddress);
-    const isListed = nftList.filter(nft => nft.mintAddress == mintAddress)[0].listStatus;
+    const isListed = nftList.find(nft => nft.mintAddress == mintAddress).listStatus;
     return isListed
   }
   public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft>{
@@ -100,7 +99,6 @@ export class NftStoreService {
   }
 
   private _nftDataPrep(metaData,metaplexItem): Nft{
-    console.log(metaData,metaplexItem)
     try {
       const nft: Nft = {
         image: metaData.image,
@@ -108,7 +106,7 @@ export class NftStoreService {
         attributes: metaData.attributes,
         websiteURL: metaData.external_url,
         name: metaplexItem.name,
-        mintAddress: metaplexItem?.address,
+        mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
         collectionName: metaplexItem.collection?.name,
         explorerURL: 'https://solscan.io/token/' + metaplexItem.address,
         symbol: metaplexItem.symbol
