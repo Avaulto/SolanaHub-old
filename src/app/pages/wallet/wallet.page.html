@@ -59,7 +59,7 @@
           <ion-button routerLink="/nft-gallery" routerDirection="forward" fill="outline">view all</ion-button>
         </div>
         <ion-row class="ion-justify-content-between ion-align-items-center" id="nft-gallery-preview">
-          <ion-col size="5.8" sizeLg="3.7" *ngFor="let nft of nfts | async">
+          <ion-col size="5.8" sizeLg="3.7" [hidden]="!nft.image" *ngFor="let nft of nfts | async">
             <app-nft-preview  [nft]="nft"></app-nft-preview>
           </ion-col>
           <p *ngIf="(nfts | async)?.length == 0">you dont owe any NFT</p>
