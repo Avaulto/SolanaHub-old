@@ -8,6 +8,8 @@ import { ToasterService, UtilsService } from 'src/app/services';
 import { WalletAdapterOptionsComponent } from '../wallet-adapter-options/wallet-adapter-options.component';
 import { WalletConnectedDropdownComponent } from '../wallet-connected-dropdown/wallet-connected-dropdown.component';
 
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible()
 @Component({
   selector: 'app-wallet-connect',
   templateUrl: './wallet-connect.component.html',
@@ -32,7 +34,7 @@ export class WalletConnectComponent implements OnInit {
     let ready = false;
     this.isReady$.subscribe(isReady => {
       if (isReady) {
-        this.gaService.event('wallet_event', 'user_connect_wallet', 'wallet_connected');
+        trackEvent('Wallet connected')
         ready = isReady
         this.toasterService.msg.next({
           message: 'Wallet connected',
