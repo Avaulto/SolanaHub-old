@@ -22,7 +22,8 @@ import {
   SelectBoxComponent,
   SelectItemComponent,
   LabelLayoutComponent,
-  NftPreviewComponent
+  NftPreviewComponent,
+  TransactionReviewComponent
 } from "./components";
 
 // // import directives
@@ -54,7 +55,8 @@ import {
     SelectBoxComponent,
     SelectItemComponent,
     LabelLayoutComponent,
-    NftPreviewComponent
+    NftPreviewComponent,
+    TransactionReviewComponent
   ],
   imports: [
     CommonModule,
@@ -91,7 +93,8 @@ import {
     SelectBoxComponent,
     SelectItemComponent,
     LabelLayoutComponent,
-    NftPreviewComponent
+    NftPreviewComponent,
+    TransactionReviewComponent
   ]
 })
 export class SharedModule {}
