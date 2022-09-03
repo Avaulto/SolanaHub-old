@@ -6,7 +6,18 @@ import { Connection, clusterApiUrl } from '@solana/web3.js';
 export default async function GETAllOnwerNfts(request, response): Promise<Nft[]> {
   const { env, walletAdress } = request.query;
   const connection = new Connection(clusterApiUrl(env))
-  const _metaplex = new Metaplex(connection)
+  const _metaplex = new Metaplex(connection);
+  async function getMetaData(uri: string): Promise<any> {
+    let metaData: any = {}
+    try {
+      metaData = await (await fetch(uri)).json();
+      // metaDataRes = await metaDataReq.json();
+    } catch (error) {
+      // console.error(error)
+      return metaData
+    }
+    return metaData
+  }
   // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
   // _metaplex.use(walletAdapterIdentity(wallet));
   const myNfts = await _metaplex
@@ -16,7 +27,7 @@ export default async function GETAllOnwerNfts(request, response): Promise<Nft[]>
 
   const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaPlexItem: any) => {
     try {
-      const metaData = await this.getMetaData(metaPlexItem.uri);
+      const metaData = await getMetaData(metaPlexItem.uri);
       const nft: Nft = {
         name: metaPlexItem.name,
         image: metaData.image,
