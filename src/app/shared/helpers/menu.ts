@@ -36,11 +36,16 @@ export const pages: any = [
     //   url: "lending",
     //   icon: faCoins,
     // },
-    {
-      title: "support us",
-      url: "support-us",
-      icon: 'heart-circle',
+       {
+      title: "the lab",
+      url: "laboratory",
+      icon: 'flask',
     },
+    // {
+    //   title: "support us",
+    //   url: "support-us",
+    //   icon: 'heart-circle',
+    // },
     // {
     //   title: "Defi",
     //   icon: faBox,

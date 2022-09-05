@@ -38,6 +38,10 @@ const routes: Routes = [
     path: 'token-swap',
     loadChildren: () => import('./pages/token-swap/token-swap.module').then( m => m.TokenSwapPageModule)
   },
+  {
+    path: 'laboratory',
+    loadChildren: () => import('./pages/laboratory/laboratory.module').then( m => m.LaboratoryPageModule)
+  },
 ];
 
 @NgModule({

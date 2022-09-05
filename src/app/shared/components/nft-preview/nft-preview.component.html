@@ -1,4 +1,58 @@
-<div class="nft-item ion-margin-bottom" (click)="goToNFTpage(nft)">
-    <ion-skeleton-text style="background-color: white;height: 258px" *ngIf="hideSkelaton == false" animated></ion-skeleton-text>
-  <ion-img (ionImgDidLoad)="hideSkelaton = true" [src]="nft.image"></ion-img>
-</div>
+<ion-card class="nft-item" style="background: #04172C !important;">
+  <ion-card-header>
+    <app-image-placeholder [imagePath]="nft.image"></app-image-placeholder>
+    <app-nft-burn [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK"
+></app-nft-burn>
+   
+  </ion-card-header>
+
+  <ion-card-content>
+    <h2 class="heading-2">{{nft.name}}</h2>
+    <ion-card-title class="sub">{{nft.symbol}}</ion-card-title>
+    <ion-accordion-group [ngStyle]="{'visibility': !nft?.attributes ? 'hidden' : ''}">
+      <ion-accordion value="first">
+        <ion-item id="attr-header" slot="header">
+          <ion-label>Attributes</ion-label>
+        </ion-item>
+        <div slot="content">
+          <div class="nft-attr ion-margin-bottom" *ngFor="let attr of nft?.attributes">
+            <div class="sub-strong">{{attr.trait_type}}</div>
+            <span class="sub">{{attr.value}}</span>
+          </div>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+    <ion-row class="ion-justify-content-between">
+
+      <ion-col size="12" sizeLg="5.8" class="ion-margin-bottom">
+        <ion-button id="click-trigger">send</ion-button>
+
+        <ion-popover trigger="click-trigger" triggerAction="click">
+          <ng-template>
+            <form [formGroup]="sendNftForm" class="ion-padding">
+
+              <ion-row style="margin-bottom:8px" class="heading-6  ion-justify-content-between">
+                  <div id="">to</div>
+              </ion-row>
+              <ion-row>
+                  <ion-input formControlName="targetAddress" class="button-text"
+                      placeholder="wallet address"></ion-input>
+                  <span class="heading-6"></span>
+              </ion-row>
+              <ion-button (click)="sendNft()" class="ion-text-capitalize">
+                  submit
+              </ion-button>
+          </form>
+          </ng-template>
+        </ion-popover>
+      
+      </ion-col>
+      <ion-col size="12" sizeLg="5.8" >
+        <ion-button [disabled]="listStatus != 'unlisted'" fill="outline"
+        (click)="presentListPopup($event)"
+        >list
+    </ion-button>
+    </ion-col>
+  </ion-row>
+  </ion-card-content>
+</ion-card>

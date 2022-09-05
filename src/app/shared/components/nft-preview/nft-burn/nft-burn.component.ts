@@ -15,7 +15,6 @@ import {
 })
 export class NftBurnComponent implements OnInit {
   @Input() walletOwner: PublicKey;
-  @Input() tokenAccountPubkey: PublicKey;
   @Input() mintAddressPK: PublicKey;
   constructor(
     private solanaUtilsService: SolanaUtilsService,
@@ -23,7 +22,8 @@ export class NftBurnComponent implements OnInit {
 
   ngOnInit() { }
   async burnNft() {
-    const tokenAccountPubkey = this.tokenAccountPubkey;
+    console.log(this.walletOwner,this.mintAddressPK)
+    const tokenAccountPubkey = await (await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK));
     const walletOwner = this.walletOwner;
     const mintAdress = this.mintAddressPK;
     // const accountBalance = await this.solanaUtilsService.getTokenAccountsBalance(walletOwner.toBase58());

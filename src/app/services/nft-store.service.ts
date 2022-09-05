@@ -5,8 +5,8 @@ import { SolanaUtilsService } from './solana-utils.service';
 import { Nft, NFTGroup } from '../models';
 import {  Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
-import { firstValueFrom } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { firstValueFrom, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment.prod';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -22,7 +22,9 @@ interface ListInstuction {
 export class NftStoreService {
   protected magicEdenApiProxy = environment.magicEdenProxyAPI;
   protected metaplexApiProxy = environment.metaplexProxyAPI;
-  private _metaplex = new Metaplex(this._solanaUtilsService.connection)
+  private _metaplex = new Metaplex(this._solanaUtilsService.connection);
+  private myNfts: Subject<Nft[]> = new Subject();
+  public myNft$ = this.myNfts.asObservable();
   constructor(
     private _walletStore:WalletStore,
     private _solanaUtilsService: SolanaUtilsService,
@@ -77,27 +79,29 @@ export class NftStoreService {
     return nft
   }
   public async getAllOnwerNfts(walletOwnerAddress): Promise<Nft[]> {
-    // const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
-    // const getNFTsReq = await fetch(uri)
-    // const nfts: Nft[] = await getNFTsReq.json();
-    // return nfts
+    // debugger
+    const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
+    const getNFTsReq = await fetch(uri)
+    const nfts: Nft[] = await getNFTsReq.json();
+    this.myNfts.next(nfts);
+    return nfts
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
     // this._metaplex.use(walletAdapterIdentity(wallet));
-    const myNfts = await this._metaplex
-    .nfts()
-    .findAllByOwner({ owner: new PublicKey(walletOwnerAddress) })
-    .run();
+    // const myNfts = await this._metaplex
+    // .nfts()
+    // .findAllByOwner({ owner: new PublicKey(walletOwnerAddress) })
+    // .run();
 
-    const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem) => {
-      try {
-        const metaData = await this.getMetaData(metaplexItem.uri);
-        const nft: Nft = this._nftDataPrep(metaData,metaplexItem);
-        return nft
-      } catch (error) {
-        console.warn(error)
-      }
-    }))
-    return myNftsExtended;
+    // const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem) => {
+    //   try {
+    //     const metaData = await this.getMetaData(metaplexItem.uri);
+    //     const nft: Nft = this._nftDataPrep(metaData,metaplexItem);
+    //     return nft
+    //   } catch (error) {
+    //     console.warn(error)
+    //   }
+    // }))
+    // return myNftsExtended;
 
 
   }

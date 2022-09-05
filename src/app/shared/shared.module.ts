@@ -23,7 +23,10 @@ import {
   SelectItemComponent,
   LabelLayoutComponent,
   NftPreviewComponent,
-  TransactionReviewComponent
+  TransactionReviewComponent,
+  ImagePlaceholderComponent,
+  NftBurnComponent,
+  NftListingComponent
 } from "./components";
 
 // // import directives
@@ -56,7 +59,10 @@ import {
     SelectItemComponent,
     LabelLayoutComponent,
     NftPreviewComponent,
-    TransactionReviewComponent
+    TransactionReviewComponent,
+    ImagePlaceholderComponent,
+    NftBurnComponent,
+    NftListingComponent
   ],
   imports: [
     CommonModule,
@@ -94,7 +100,10 @@ import {
     SelectItemComponent,
     LabelLayoutComponent,
     NftPreviewComponent,
-    TransactionReviewComponent
+    TransactionReviewComponent,
+    ImagePlaceholderComponent,
+    NftBurnComponent,
+    NftListingComponent
   ]
 })
 export class SharedModule {}

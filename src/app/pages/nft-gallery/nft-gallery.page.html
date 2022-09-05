@@ -26,9 +26,11 @@
 
         <app-loader></app-loader>
       </ion-col>
-        <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-col size="5.8" sizeLg="2.9" [hidden]="!nft.image" *ngFor="let nft of nfts | async">
-              <app-nft-preview   [nft]="nft"></app-nft-preview>
+        <ion-row class="ion-justify-content-between">
+            <ion-col size="12" class="ion-margin-bottom" sizeLg="2.8" *ngFor="let nft of nfts | async">
+           
+                  <app-nft-preview  [nft]="nft"></app-nft-preview>
+              
             </ion-col>
         </ion-row>
         </ion-row>

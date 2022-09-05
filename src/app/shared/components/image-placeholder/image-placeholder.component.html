@@ -1,0 +1,5 @@
+<ion-icon placement="top" *ngIf="!imagePath" name="alert-circle-outline" tooltip="NFT missing data" ></ion-icon>
+<ion-skeleton-text style="background-color: white;height: 258px" *ngIf="imagePath && hideSkelaton == false" animated>
+</ion-skeleton-text>
+<ion-img (ionImgDidLoad)="hideSkelaton = true" [src]="imagePath || '/assets/images/nft-not-found.svg'"></ion-img>
+<!-- <ion-icon  *ngIf="!imagePath" name="image-outline"></ion-icon> -->

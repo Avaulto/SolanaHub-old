@@ -1,19 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { NftGalleryPage } from './nft-gallery.page';
+import { LaboratoryPage } from './laboratory.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: NftGalleryPage,
-  },
-
-
+    component: LaboratoryPage
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class NftGalleryPageRoutingModule { }
+export class LaboratoryPageRoutingModule {}

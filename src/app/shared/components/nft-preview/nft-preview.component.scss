@@ -1,14 +1,49 @@
-
-.nft-item{
-    width: 100%;
-    height: 100%;
-    
- ion-img,ion-skeleton-text {
-    cursor: pointer;
-    border-radius: 4px;
-    overflow: hidden;
-    width: 258px;
+:host {
 
     max-width: 100%;
+    display: block;
+    cursor: pointer;
 }
+
+.nft-item {
+    width: 100%;
+    height: 100%;
+}
+
+ion-accordion {
+    background: transparent;
+}
+
+#attr-header {
+    text-transform: capitalize;
+    --background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    --inner-padding-start: 0;
+    --inner-padding-end: 0;
+    --ripple-color: transparent;
+    --padding-end: 0;
+    --padding-start: 0;
+    --color-hover: white;
+}
+.nft-attr {
+    display: flex;
+    justify-content: space-between;
+}
+
+ion-button{
+    display: block;
+}
+ion-item{
+    text-transform: capitalize;
+    --ion-color-base: transparent !important;
+    --ion-color-contrast: white !important;
+    background: transparent !important;
+}
+ion-card-content h2{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -12,3 +12,6 @@ export * from './select-box/select-item/select-item.component'
 export * from './label-layout/label-layout.component'
 export * from './nft-preview/nft-preview.component'
 export * from './transaction-review/transaction-review.component'
+export * from './image-placeholder/image-placeholder.component'
+export * from './nft-preview/nft-burn/nft-burn.component';
+export * from './nft-preview/nft-listing/nft-listing.component'

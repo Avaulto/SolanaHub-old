@@ -16,9 +16,8 @@ import { NftStoreService } from 'src/app/services/nft-store.service';
 })
 export class NftListingComponent implements OnInit {
   @Input() walletOwner: PublicKey;
-  @Input() tokenAccountPubkey: PublicKey;
   @Input() mintAddressPK: PublicKey;
-  @Input() nft: Nft;
+
   public listNftForm: FormGroup = {} as FormGroup;
   public formSubmitted: boolean = false;
   public showDates: boolean = false;
@@ -29,9 +28,10 @@ export class NftListingComponent implements OnInit {
     private _walletStore: WalletStore,
     private _nftStoreService: NftStoreService,
     private txInterceptService: TxInterceptService,
+    private solanaUtilsService: SolanaUtilsService,
     private fb: FormBuilder
   ) {
-    // console.log(walletOwner,auctionHouseAddress,associatedTokenAddress)
+
     this.listNftForm = this.fb.group({
       sellerAddress: [],
       tokenMint: [],
@@ -44,7 +44,7 @@ export class NftListingComponent implements OnInit {
 
 
   async ngOnInit() {
-
+    console.log(this.walletOwner,this.mintAddressPK)
     this.initFormSetup();
     this.listNftForm.controls.expiry.valueChanges.subscribe(val => {
       if (val == '') {
@@ -57,12 +57,12 @@ export class NftListingComponent implements OnInit {
   }
 
   private async initFormSetup() {
-    console.log(this.walletOwner, this.tokenAccountPubkey, this.mintAddressPK)
     const auctionHouseAddress = 'E8cU1WiRWjanGxmn96ewBgk9vPTcL6AEZ1t6F6fkgUWe';
+    const tokenAccountPubkey = await (await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK));
 
     this.listNftForm.controls.sellerAddress.setValue(this.walletOwner.toBase58())
     this.listNftForm.controls.tokenMint.setValue(this.mintAddressPK.toBase58())
-    this.listNftForm.controls.tokenAccount.setValue(this.tokenAccountPubkey.toBase58())
+    this.listNftForm.controls.tokenAccount.setValue(tokenAccountPubkey)
     this.listNftForm.controls.auctionHouseAddress.setValue(auctionHouseAddress)
 
   }
