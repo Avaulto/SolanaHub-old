@@ -11,12 +11,12 @@ import { ApiService, UtilsService, DataAggregatorService,SolanaUtilsService , Nf
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit {
-  // public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
-  //   this.utils.isNotNull,
-  //   switchMap(async wallet => {
-  //    return (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0,3)
+  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+    this.utils.isNotNull,
+    switchMap(async wallet => {
+     return (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0,3)
      
-  //   }))
+    }))
 
   public asset: Asset = {
     name: 'solana',
