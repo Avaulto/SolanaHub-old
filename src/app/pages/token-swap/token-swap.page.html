@@ -1,4 +1,5 @@
 <ion-grid class="ion-padding">
+  <ion-content scroll-y style="--background:transparent;">
   <ion-row id="token-swap-header" class="ion-align-items-center ion-margin-bottom">
     <div class="ion-margin-end">
       <span class="heading-1">Token swap POWER BY</span>
@@ -88,4 +89,5 @@
       <app-swap-info *ngIf="(swapDetailObs$ | async) != null" [swapDetail]="swapDetailObs$"></app-swap-info>
     </ion-col>
   </ion-row>
+</ion-content>
 </ion-grid>

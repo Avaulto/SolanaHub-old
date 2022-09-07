@@ -1,0 +1,14 @@
+<form [formGroup]="sendNftForm" class="ion-padding">
+
+  <ion-row style="margin-bottom:8px" class="heading-6  ion-justify-content-between">
+      <div id="">to</div>
+  </ion-row>
+  <ion-row>
+      <ion-input formControlName="targetAddress" class="button-text"
+          placeholder="wallet address"></ion-input>
+      <span class="heading-6"></span>
+  </ion-row>
+  <ion-button (click)="sendNft()" class="ion-text-capitalize">
+      submit
+  </ion-button>
+</form>

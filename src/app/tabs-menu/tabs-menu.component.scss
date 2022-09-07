@@ -9,24 +9,27 @@ ion-tab-bar {
     padding: 5px 10px;
 }
 
-ion-tab-button {
-    min-width: 56px !important;
-}
-
 #tabs-warpper {
-    height: 50px;
     display: flex;
-    overflow-x: scroll;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
 }
 
-app-wallet-connect {
-    width: 60%;
-}
 
 ion-icon {
-    font-size: 16px;
+    font-size: 20px;
 }
-.active-tab {
-    border-bottom: 3px solid var(--ion-color-primary);
-    border-radius: 2px;
+.active-tab ion-icon {
+    color: var(--ion-color-primary);
 }
+
+// :ng-deep app-wallet-connect{
+//     #solana-wallet-connect{
+//         width: 100%;
+//         height: 100%;
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//     }
+// }

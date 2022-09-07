@@ -7,9 +7,9 @@ export const pages: any = [
       icon: 'home',
     },
     {
-      title: "wallet",
-      url: "wallet",
-      icon: 'wallet'
+      title: "dashboard",
+      url: "dashboard",
+      icon: 'grid-outline'
     },
     {
       title: "NFT",

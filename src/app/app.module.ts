@@ -23,7 +23,12 @@ import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 
 import Plausible from 'plausible-tracker';
 @NgModule({
-    declarations: [AppComponent, SideMenuPage, TabsMenuComponent, WalletNotConnectedStateComponent],
+    declarations: [
+        AppComponent, 
+        SideMenuPage,
+        TabsMenuComponent,
+        WalletNotConnectedStateComponent
+        ],
     imports: [
         SharedModule,
         BrowserModule,

@@ -18,7 +18,9 @@ export class WalletAdapterOptionsComponent implements OnInit {
   }
 
   async onSelectWallet(walletName: WalletName | any) {
+    console.log(walletName)
 		this._walletStore.selectWallet(walletName);
+    // this._walletStore.connect().subscribe(val => console.log(val));
     try {
        await this.popoverController.dismiss();
     } catch (error) {

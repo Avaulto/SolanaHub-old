@@ -3,10 +3,10 @@ import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { MenuController, PopoverController } from '@ionic/angular';
 import { WalletName } from '@solana/wallet-adapter-base';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { map } from 'rxjs';
+import { distinctUntilChanged, map, Observable, of, switchMap } from 'rxjs';
 import { ToasterService, UtilsService } from 'src/app/services';
-import { WalletAdapterOptionsComponent } from '../wallet-adapter-options/wallet-adapter-options.component';
-import { WalletConnectedDropdownComponent } from '../wallet-connected-dropdown/wallet-connected-dropdown.component';
+import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-adapter-options.component';
+import { WalletConnectedDropdownComponent } from './wallet-connected-dropdown/wallet-connected-dropdown.component';
 
 import Plausible from 'plausible-tracker'
 const { trackEvent } = Plausible()
@@ -16,58 +16,55 @@ const { trackEvent } = Plausible()
   styleUrls: ['./wallet-connect.component.scss'],
 })
 export class WalletConnectComponent implements OnInit {
-  public isOpenModal: boolean = false;
   readonly wallets$ = this._walletStore.wallets$;
   readonly wallet$ = this._walletStore.wallet$;
-  readonly isReady$ = this._walletStore.connected$
-  public walletPublicKey:string = '';
-
+  readonly isReady$ = this._walletStore.connected$.pipe(map(isReady => {
+    console.log(isReady)
+    if (isReady) {
+      trackEvent('Wallet connected')
+  
+      this.toasterService.msg.next({
+        message: 'Wallet connected',
+        icon: 'information-circle-outline',
+        segmentClass: "toastInfo"
+      })
+    }
+    return isReady;
+  }))
+  public walletPublicKey: Observable<string> = this._walletStore.anchorWallet$.pipe(
+    this.utilsService.isNotNull,
+    distinctUntilChanged(),
+    map(wallet => this.utilsService.addrUtil(wallet.publicKey.toBase58()).addrShort)
+  )
 
   constructor(
     private utilsService: UtilsService,
     private _walletStore: WalletStore,
     private toasterService: ToasterService,
     public popoverController: PopoverController,
-    private gaService: GoogleAnalyticsService
   ) { }
   ngOnInit() {
-    let ready = false;
-    this.isReady$.subscribe(isReady => {
-      if (isReady) {
-        trackEvent('Wallet connected')
-        ready = isReady
-        this.toasterService.msg.next({
-          message: 'Wallet connected',
-          icon: 'information-circle-outline',
-          segmentClass: "toastInfo"
-        })
-      }
-    });
-    this._walletStore.wallet$.subscribe(val => {
-      if (val) {
-        if (val.readyState == 'NotDetected') {
-          this.toasterService.msg.next({
-            message: 'Wallet not detected',
-            icon: 'alert-circle-outline',
-            segmentClass: "toastError"
-          })
-        }
-      }
-    })
-    this._walletStore.anchorWallet$.subscribe(wallet => {
-      if (wallet) {
-        this.walletPublicKey = this.utilsService.addrUtil(wallet.publicKey.toBase58()).addrShort
-      }
-    })
+
+    // this.wallet$.subscribe(val => {
+    //   if (val) {
+    //     if (val.readyState == 'NotDetected') {
+    //       this.toasterService.msg.next({
+    //         message: 'Wallet not detected',
+    //         icon: 'alert-circle-outline',
+    //         segmentClass: "toastError"
+    //       })
+    //     }
+    //   }
+    // })
   }
 
-  onConnect() {
-    this._walletStore.connect().subscribe();
-  }
+  // onConnect() {
+  //   this._walletStore.connect().subscribe();
+  // }
 
-  onDisconnect() {
-    this._walletStore.disconnect().subscribe();
-  }
+  // onDisconnect() {
+  //   this._walletStore.disconnect().subscribe();
+  // }
   async showWalletAdapters() {
     const popover = await this.popoverController.create({
       component: WalletAdapterOptionsComponent,

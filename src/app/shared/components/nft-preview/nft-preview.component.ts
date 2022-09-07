@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { Nft } from 'src/app/models';
 import { NftStoreService, TxInterceptService } from 'src/app/services';
 import { NftListingComponent } from './nft-listing/nft-listing.component';
+import { NftSendComponent } from './nft-send/nft-send.component';
 
 
 @Component({
@@ -19,20 +20,14 @@ export class NftPreviewComponent implements OnInit {
   public walletOwner: PublicKey;
   public mintAddressPK:PublicKey;
   public listStatus: string;
-  public sendNftForm: FormGroup;
-  public formSubmitted: boolean = false;
   constructor(
-    private fb: FormBuilder,
+
     private _walletStore: WalletStore, 
     private _nftStoreService: NftStoreService,
     private popoverController: PopoverController,
-    private txInterceptService: TxInterceptService
     ) { }
   hideSkelaton: boolean = false;
   async ngOnInit() {
-    this.sendNftForm = this.fb.group({
-      targetAddress: ['', [Validators.required]],
-    })
     this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
 
     this.mintAddressPK = new PublicKey(this.nft.mintAddress)
@@ -52,9 +47,16 @@ export class NftPreviewComponent implements OnInit {
     // const { role } = await popover.onDidDismiss();
     // this.roleMsg = `Popover dismissed with role: ${role}`;
   }
-  public async sendNft() {
-    const targetAdress = this.sendNftForm.value.targetAddress
-    const targetPublicKey = new PublicKey(targetAdress)
-    this.txInterceptService.sendSplOrNft(this.mintAddressPK, this.walletOwner, targetPublicKey, 1)
+  async presentSendPopup(e: Event) {
+    const popover = await this.popoverController.create({
+      component: NftSendComponent,
+      componentProps:{mintAddressPK: this.mintAddressPK, walletOwner: this.walletOwner},
+      event:e
+    });
+
+    await popover.present();
+
+    // const { role } = await popover.onDidDismiss();
+    // this.roleMsg = `Popover dismissed with role: ${role}`;
   }
 }

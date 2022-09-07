@@ -25,26 +25,9 @@
     <ion-row class="ion-justify-content-between">
 
       <ion-col size="12" sizeLg="5.8" class="ion-margin-bottom">
-        <ion-button id="click-trigger">send</ion-button>
+        <ion-button id="send-nft" (click)="presentSendPopup($event)">send</ion-button>
 
-        <ion-popover trigger="click-trigger" triggerAction="click">
-          <ng-template>
-            <form [formGroup]="sendNftForm" class="ion-padding">
-
-              <ion-row style="margin-bottom:8px" class="heading-6  ion-justify-content-between">
-                  <div id="">to</div>
-              </ion-row>
-              <ion-row>
-                  <ion-input formControlName="targetAddress" class="button-text"
-                      placeholder="wallet address"></ion-input>
-                  <span class="heading-6"></span>
-              </ion-row>
-              <ion-button (click)="sendNft()" class="ion-text-capitalize">
-                  submit
-              </ion-button>
-          </form>
-          </ng-template>
-        </ion-popover>
+   
       
       </ion-col>
       <ion-col size="12" sizeLg="5.8" >

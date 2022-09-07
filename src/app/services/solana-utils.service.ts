@@ -6,6 +6,8 @@ import { catchError, map } from 'rxjs/operators';
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
+import { PopoverController } from '@ionic/angular';
+import { WalletAdapterOptionsComponent, WalletConnectedDropdownComponent } from '../shared/components';
 
 
 interface StakeWizEpochInfo {
@@ -31,12 +33,33 @@ export class SolanaUtilsService {
     private apiService: ApiService,
     private toasterService: ToasterService,
     private _connectionStore: ConnectionStore,
-    private utilService: UtilsService
+    private utilService: UtilsService,
+    public popoverController: PopoverController,
   ) {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
     // this._connectionStore.connection$.subscribe(con => this.connection$.next(con));
     // console.log(this.connection$.sub)
     // this.connection$
+  }
+
+  async showWalletAdapters() {
+    const popover = await this.popoverController.create({
+      component: WalletAdapterOptionsComponent,
+      cssClass: 'wallet-adapter-options',
+      mode:'md'
+    });
+    await popover.present();
+  }
+  async showConnectWalletActions(e: Event) {
+    const popover = await this.popoverController.create({
+      component: WalletConnectedDropdownComponent,
+      event: e,
+      alignment: 'start',
+      side: 'top',
+      cssClass: 'wallet-connect-dropdown',
+      mode:'md'
+    });
+    await popover.present();
   }
 
   private _formatErrors(error: any) {

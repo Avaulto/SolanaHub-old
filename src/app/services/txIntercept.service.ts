@@ -9,7 +9,8 @@ import {
   getOrCreateAssociatedTokenAccount,
   mintTo,
   getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction
+  createAssociatedTokenAccountInstruction,
+  TokenOwnerOffCurveError
 } from '../../../node_modules/@solana/spl-token';;
 import {
   Authorized,
@@ -108,6 +109,7 @@ export class TxInterceptService {
     }
   }
   async getOrCreateTokenAccountInstruction(mint: PublicKey, user: PublicKey, payer: PublicKey | null = null): Promise<TransactionInstruction | null> {
+   try {
     const userTokenAccountAddress = await getAssociatedTokenAddress(mint, user, false);
     const userTokenAccount = await this.solanaUtilsService.connection.getParsedAccountInfo(userTokenAccountAddress);
     if (userTokenAccount.value === null) {
@@ -115,12 +117,19 @@ export class TxInterceptService {
     } else {
       return null;
     }
+  } catch (error) {
+    console.warn(error)
+    return
+    // this._formatErrors()
   }
-  public async sendSplOrNft(mintAddressPK: PublicKey, walletOwner: PublicKey, toWallet: PublicKey, amount: number) {
+  }
+  public async sendSplOrNft(mintAddressPK: PublicKey, walletOwner: PublicKey, toWallet: string, amount: number) {
+    try {
+    const toWalletPK = new PublicKey(toWallet);
     const ownerAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, walletOwner, walletOwner);
-    const targetAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, toWallet, walletOwner);
+    const targetAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, toWalletPK, walletOwner);
     const tokenAccountSourcePubkey = await getAssociatedTokenAddress(mintAddressPK, walletOwner);
-    const tokenAccountTargetPubkey = await getAssociatedTokenAddress(mintAddressPK, toWallet);
+    const tokenAccountTargetPubkey = await getAssociatedTokenAddress(mintAddressPK, toWalletPK);
     
     const decimals = await (await this.solanaUtilsService.connection.getParsedAccountInfo(mintAddressPK)).value.data['parsed'].info.decimals;
 
@@ -136,6 +145,12 @@ export class TxInterceptService {
     )
     const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
     this.sendTx(instructions, walletOwner)
+  } catch (error) {
+    
+    const res = new TokenOwnerOffCurveError()
+    console.error(error,res)
+    this._formatErrors(error)
+  }
   }
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime: number) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(

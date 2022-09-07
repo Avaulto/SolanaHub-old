@@ -1,13 +1,29 @@
+<ion-tab-bar slot="bottom">
+  <div id="tabs-warpper" #tabWarpper>
 
-  <ion-tab-bar slot="bottom">
-    <div id="tabs-warpper" #tabWarpper>
-
-      <ion-tab-button #tabBtn (click)="scroll(tabBtn)" [id]="'tab-' +p.url" *ngFor="let p of pages" routerLinkActive="active-tab" routerDirection="forward" [routerLink]="p.url"
+    <!-- <ion-tab-button #tabBtn (click)="scroll(tabBtn)" [id]="'tab-' +p.url" *ngFor="let p of pages" routerLinkActive="active-tab" routerDirection="forward" [routerLink]="p.url"
         [tab]="p.url">
         <ion-icon  [name]="p.icon" ></ion-icon>
-        <!-- <ion-label>{{ p.title }}</ion-label> -->
       </ion-tab-button>
-
-    </div>
+       -->
+    <ion-tab-button #tabBtn  routerLinkActive="active-tab"
+      routerDirection="forward" [routerLink]="pages[1].url" >
+      <ion-icon [name]="pages[1].icon"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button #tabBtn routerLinkActive="active-tab"
+      routerDirection="forward" [routerLink]="pages[2].url" [tab]="pages[2].url">
+      <ion-icon [name]="pages[2].icon"></ion-icon>
+    </ion-tab-button>
     <app-wallet-connect></app-wallet-connect>
-  </ion-tab-bar>
+
+
+    <ion-tab-button #tabBtn routerLinkActive="active-tab"
+      routerDirection="forward" [routerLink]="pages[3].url" >
+      <ion-icon [name]="pages[3].icon"></ion-icon>
+    </ion-tab-button>
+    <ion-tab-button #tabBtn routerLinkActive="active-tab"
+      routerDirection="forward" [routerLink]="pages[4].url">
+      <ion-icon [name]="pages[4].icon"></ion-icon>
+    </ion-tab-button>
+  </div>
+</ion-tab-bar>

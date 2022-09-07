@@ -38,7 +38,7 @@ export class NftStoreService {
     .nfts()
     .create({
         uri: "https://yyuf64d3dxl7pzwpyvwb24vqgztrxci5w3rvubbogt5s2d2m3weq.arweave.net/xihfcHsd1_fmz8VsHXKwNmcbiR2241oELjT7LQ9M3Yk",
-        name: "testings",
+        name: "my nft 2",
         sellerFeeBasisPoints: 500, // Represents 5.00%.
     })
     .run();

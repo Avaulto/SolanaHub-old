@@ -26,7 +26,8 @@ import {
   TransactionReviewComponent,
   ImagePlaceholderComponent,
   NftBurnComponent,
-  NftListingComponent
+  NftListingComponent,
+  NftSendComponent
 } from "./components";
 
 // // import directives
@@ -62,7 +63,8 @@ import {
     TransactionReviewComponent,
     ImagePlaceholderComponent,
     NftBurnComponent,
-    NftListingComponent
+    NftListingComponent,
+    NftSendComponent
   ],
   imports: [
     CommonModule,
@@ -74,6 +76,7 @@ import {
     IonicModule,
     QRCodeModule,
     TooltipModule,
+    
   ],
   exports: [
     FontAwesomeModule,
@@ -103,7 +106,8 @@ import {
     TransactionReviewComponent,
     ImagePlaceholderComponent,
     NftBurnComponent,
-    NftListingComponent
+    NftListingComponent,
+    NftSendComponent
   ]
 })
 export class SharedModule {}
