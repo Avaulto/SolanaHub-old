@@ -5,6 +5,10 @@ import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { SolanaUtilsService ,TxInterceptService, UtilsService} from 'src/app/services';
 import bn from 'bn.js'
 
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
+
+
 @Component({
   selector: 'app-stake-sol-box',
   templateUrl: './stake-sol-box.component.html',
@@ -50,7 +54,8 @@ export class StakeSolBoxComponent implements OnInit {
     this.unStakeAmount = this.mSOLBalance;
   }
   async liquidStake() {
-    console.log('init stake')
+    trackEvent('marinade stake')
+
     const amount: number = Number(this.stakeAmount);
     const sol = new bn(amount * LAMPORTS_PER_SOL);
 

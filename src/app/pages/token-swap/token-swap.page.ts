@@ -14,6 +14,13 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import Decimal from "decimal.js";
+
+
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
+
+
+
 export interface Token {
   chainId: number; // 101,
   address: string; // 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
@@ -213,6 +220,8 @@ export class TokenSwapPage implements OnInit {
     this.swapDetail$.next(swapDetails);
   }
   public async submitSwap(): Promise<void> {
+    trackEvent('jupiter swap')
+
     const { transactions } = await this.jupiter.exchange({
       routeInfo: this.bestRoute
     });

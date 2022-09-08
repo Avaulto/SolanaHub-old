@@ -5,8 +5,13 @@ import { MarinadeResult } from '@marinade.finance/marinade-ts-sdk/dist/src/marin
 import { PublicKey, Transaction } from '@solana/web3.js';
 import bn from 'bn.js'
 import { SolanaUtilsService,TxInterceptService , ToasterService, UtilsService } from 'src/app/services';
-import { distinctUntilChanged, filter, map, Observable, switchMap } from 'rxjs';
+import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap } from 'rxjs';
 import { toastData,StakeAccountExtended } from 'src/app/models';
+
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
+
+
 @Component({
   selector: 'app-stake-account-box',
   templateUrl: './stake-account-box.component.html',
@@ -43,13 +48,9 @@ export class StakeAccountBoxComponent implements OnInit {
     private toasterService:ToasterService
   ) { }
 
-  wallet;
+
   ngOnInit() {
-    this._walletStore.anchorWallet$.subscribe(wallet => {
-      if (wallet) {
-        this.wallet = wallet;
-      }
-    })
+
   }
   setSelectedStakeAccount(stakeAccount:StakeAccountExtended) {
     
@@ -58,11 +59,15 @@ export class StakeAccountBoxComponent implements OnInit {
 
   }
   async delegateStakeAccount(){
+    trackEvent('marinade stake')
+    // get walletOwner
+    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+
     const accountPK = new PublicKey(this.selectedStakeAccount.addr)
     try {
       const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(accountPK);
       const txIns: Transaction = depositAccount.transaction
-      const res = await this.txInterceptService.sendTx([txIns], this.wallet.publicKey);
+      const res = await this.txInterceptService.sendTx([txIns], walletOwner);
       
     } catch (error) {
       const toasterMessage: toastData = {

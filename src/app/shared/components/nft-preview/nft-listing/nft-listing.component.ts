@@ -9,6 +9,9 @@ import { Nft } from 'src/app/models';
 import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { NftStoreService } from 'src/app/services/nft-store.service';
 
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
+
 @Component({
   selector: 'app-nft-listing',
   templateUrl: './nft-listing.component.html',
@@ -67,6 +70,8 @@ export class NftListingComponent implements OnInit {
 
   }
   public async listNft(): Promise<void> {
+    trackEvent('list NFT')
+
     // get walletOwner
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     // assign form values
@@ -78,7 +83,7 @@ export class NftListingComponent implements OnInit {
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data));
     txn.instructions[0].keys[0].isSigner= false
     txn.instructions[0].keys[1].isSigner= false
-    console.log(txn)
+    
     // submit transaction using wallet adapter
     this.txInterceptService.sendTx([txn], walletOwner)
   }

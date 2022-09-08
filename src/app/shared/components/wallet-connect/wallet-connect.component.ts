@@ -9,7 +9,7 @@ import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-a
 import { WalletConnectedDropdownComponent } from './wallet-connected-dropdown/wallet-connected-dropdown.component';
 
 import Plausible from 'plausible-tracker'
-const { trackEvent } = Plausible()
+const { trackEvent } = Plausible();
 @Component({
   selector: 'app-wallet-connect',
   templateUrl: './wallet-connect.component.html',
@@ -21,8 +21,10 @@ export class WalletConnectComponent implements OnInit {
   readonly isReady$ = this._walletStore.connected$.pipe(map(isReady => {
     console.log(isReady)
     if (isReady) {
+ 
+
       trackEvent('Wallet connected')
-  
+
       this.toasterService.msg.next({
         message: 'Wallet connected',
         icon: 'information-circle-outline',

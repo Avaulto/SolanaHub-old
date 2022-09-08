@@ -5,6 +5,10 @@ import { map, observable, Observable, Subscriber, switchMap } from 'rxjs';
 import { Asset,ValidatorData } from 'src/app/models';
 import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
+
+
 
 @Component({
   selector: 'app-stake',
@@ -70,6 +74,8 @@ export class StakeComponent implements OnInit {
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
   }
   submitNewStake() {
+    trackEvent('regular stake')
+
     const { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
     const walletOwnerPublicKey = this.wallet.publicKey;
     // const testnetvoteAccount = '87QuuzX6cCuWcKQUFZFm7vP9uJ72ayQD5nr6ycwWYWBG'
