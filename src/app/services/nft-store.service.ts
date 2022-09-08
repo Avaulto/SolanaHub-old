@@ -66,9 +66,9 @@ export class NftStoreService {
     const sellNftInstructionReq = await getSellNftInstructionReq.json();
     return sellNftInstructionReq
   }
-  public async listStatus(walletAddress: string, mintAddress: string): Promise<string>{
+  public async listStatus(walletAddress: string, mintAddress: string): Promise<boolean>{
     const nftList = await this.getMagicEdenOwnerNFTS(walletAddress);
-    const isListed = nftList.find(nft => nft.mintAddress == mintAddress).listStatus;
+    const isListed = nftList.find(nft => nft.mintAddress == mintAddress)?.listStatus == "unlisted" ? false : true ;
     return isListed
   }
   public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft>{

@@ -31,7 +31,7 @@
       
       </ion-col>
       <ion-col size="12" sizeLg="5.8" >
-        <ion-button [disabled]="listStatus != 'unlisted'" fill="outline"
+        <ion-button [disabled]="isListed" fill="outline"
         (click)="presentListPopup($event)"
         >list
     </ion-button>

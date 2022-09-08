@@ -77,6 +77,7 @@ export class NftListingComponent implements OnInit {
     // transform from buffer to transaction instructions object
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data));
     txn.instructions[0].keys[0].isSigner= false
+    txn.instructions[0].keys[1].isSigner= false
     console.log(txn)
     // submit transaction using wallet adapter
     this.txInterceptService.sendTx([txn], walletOwner)

@@ -19,7 +19,7 @@ export class NftPreviewComponent implements OnInit {
   @Input() nft:Nft;
   public walletOwner: PublicKey;
   public mintAddressPK:PublicKey;
-  public listStatus: string;
+  public isListed: boolean;
   constructor(
 
     private _walletStore: WalletStore, 
@@ -31,7 +31,7 @@ export class NftPreviewComponent implements OnInit {
     this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
 
     this.mintAddressPK = new PublicKey(this.nft.mintAddress)
-    this.listStatus = await this._nftStoreService.listStatus(this.walletOwner.toBase58(),this.mintAddressPK.toBase58());
+    this.isListed = await this._nftStoreService.listStatus(this.walletOwner.toBase58(),this.mintAddressPK.toBase58());
 
   }
 
