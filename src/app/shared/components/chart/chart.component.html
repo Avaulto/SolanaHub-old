@@ -1,0 +1,27 @@
+<ng-container *ngIf="hasPairData; else elseTemplate">
+  <ion-row class="ion-justify-content-between">
+    <ion-col size="5" class="heading-4 ion-margin-bottom ion-text-uppercase">
+      <span>{{pairOne +'/'+pairTwo}}</span><br>
+      <span class="sub">{{currentPricePair}}</span>
+    </ion-col>
+    <ion-col size="6">
+      <ion-radio-group style="display: flex;width: 100%;" (ionChange)="onChangeDate($event)"
+        class=" ion-text-capitalize ion-justify-content-between ion-align-items-center" [value]="chartDuration">
+
+        <span><ion-radio class="ion-margin-end" value="1"></ion-radio> 24H</span>
+        <span><ion-radio class="ion-margin-end" value="7"></ion-radio> 7D</span>
+        <span> <ion-radio class="ion-margin-end" value="30"></ion-radio> 30D</span>
+      </ion-radio-group>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <canvas #lineChart></canvas>
+    <span id="power-by-coingeco" class="sub">Powered by <a href="https://www.coingecko.com/" target="_blank">CoinGecko</a></span>
+  </ion-row>
+</ng-container>
+<ng-template #elseTemplate>
+  <div id="chart-unavailable">
+    <ion-icon name="stats-chart-outline"></ion-icon>
+    <p class="sub">Chart Unavailable</p>
+  </div>
+</ng-template>

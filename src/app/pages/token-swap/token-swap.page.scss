@@ -9,7 +9,6 @@
 }
 
 #swap-content {
-    width: 400px;
     max-width: 100%;
     margin: 0 auto;
     margin-bottom: 50px
@@ -100,4 +99,8 @@ app-loader {
     right: 29px;
     z-index: 222;
     position: relative;
+}
+
+#swap-pair-two {
+    margin-bottom: 30px;
 }

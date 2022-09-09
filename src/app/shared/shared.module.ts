@@ -27,7 +27,8 @@ import {
   ImagePlaceholderComponent,
   NftBurnComponent,
   NftListingComponent,
-  NftSendComponent
+  NftSendComponent,
+  ChartComponent
 } from "./components";
 
 // // import directives
@@ -64,7 +65,8 @@ import {
     ImagePlaceholderComponent,
     NftBurnComponent,
     NftListingComponent,
-    NftSendComponent
+    NftSendComponent,
+    ChartComponent
   ],
   imports: [
     CommonModule,
@@ -107,7 +109,8 @@ import {
     ImagePlaceholderComponent,
     NftBurnComponent,
     NftListingComponent,
-    NftSendComponent
+    NftSendComponent,
+    ChartComponent
   ]
 })
 export class SharedModule {}

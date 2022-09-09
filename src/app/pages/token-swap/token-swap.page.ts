@@ -105,6 +105,8 @@ export class TokenSwapPage implements OnInit {
     this.getTokenBalance(tokens);
 
   }
+  public pairOne: string = 'solana';
+  public pairTwo: string = 'usd-coin';
   private setDefualtSwapPairs(tokensList) {
     const filterSolToken = tokensList.filter(token => token.address == this.wSOL)[0];
     const filterUsdcToken = tokensList.filter(token => token.address == this.usdc)[0];
@@ -113,6 +115,8 @@ export class TokenSwapPage implements OnInit {
 
     // this.swapForm
     this.swapForm.valueChanges.subscribe(form => {
+      this.pairOne = form.inputToken?.extensions?.coingeckoId || null;
+      this.pairTwo = form.outputToken?.extensions?.coingeckoId || null;
       if (this.swapForm.valid) {
         this.calcRoutes()
       } else {

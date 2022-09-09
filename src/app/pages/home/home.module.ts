@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
-import { ChartComponent } from './chart/chart.component';
+
 import { SharedModule } from 'src/app/shared/shared.module';
 import { NgChartsModule } from 'ng2-charts';
 import { DefiComponent } from './defi/defi.component';
@@ -13,6 +13,6 @@ import { DefiComponent } from './defi/defi.component';
     SharedModule,
     NgChartsModule
   ],
-  declarations: [HomePage,ChartComponent,DefiComponent]
+  declarations: [HomePage,DefiComponent]
 })
 export class HomePageModule { }

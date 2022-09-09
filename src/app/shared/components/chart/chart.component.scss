@@ -1,0 +1,19 @@
+ion-radio-group span{
+    display: flex;
+    align-items: center;
+}
+#chart-unavailable{
+    display: block;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    ion-icon{
+        font-size: 20px;
+    }
+}
+#power-by-coingeco{
+    text-align: center;
+    width: 100%;
+}

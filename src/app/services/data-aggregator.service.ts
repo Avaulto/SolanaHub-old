@@ -13,12 +13,13 @@ export class DataAggregatorService {
   constructor(private apiService: ApiService, private toasterService: ToasterService) { }
   // catch error
   private _formatErrors(error: any) {
-    this.toasterService.msg.next({
-      message: error.error,
-      icon: 'alert-circle-outline',
-      segmentClass: "toastError",
-    });
-    return throwError(error);
+    console.warn(error)
+    // this.toasterService.msg.next({
+    //   message: error.error,
+    //   icon: 'alert-circle-outline',
+    //   segmentClass: "toastError",
+    // });
+    return throwError((() => error))
   }
 
   protected _coinGecoAPI = 'https://api.coingecko.com/api/v3';
@@ -60,7 +61,7 @@ export class DataAggregatorService {
       //console.error(error)
     }
   }
-  public getCoinChartHistory(coinName: string, currency: string, days: number) {
+  public getCoinChartHistory(coinName: string, currency: string, days: any) {
     return this.apiService.get(`${this._coinGecoAPI}/coins/${coinName}/market_chart?vs_currency=${currency}&days=${days}`).pipe(
       map((data) => {
         const dateList = data.prices.map(item => new Date(item[0]).toLocaleString().split(',')[0]);
@@ -72,16 +73,4 @@ export class DataAggregatorService {
     );
   }
 
-  private _sonarAPI = 'https://api-beta.sonar.watch/dashboards';
-  public getSolWalletData(address: string): Observable<any> {
-    const token = 'AgjaRcv8qYrtHWy6m62Q7Rrv'
-    const headers = { Headers: new HttpHeaders({ Authorization: `Bearer ${token}` }) }
-    return this.apiService.get(`${this._sonarAPI}/${address}`, null, headers).pipe(
-      map((data) => {
-        // console.log(data)
-        return data;
-      }),
-      catchError((error) => this._formatErrors(error))
-    );
-  }
 }

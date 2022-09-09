@@ -16,3 +16,4 @@ export * from './image-placeholder/image-placeholder.component'
 export * from './nft-preview/nft-burn/nft-burn.component';
 export * from './nft-preview/nft-listing/nft-listing.component'
 export * from './nft-preview/nft-send/nft-send.component'
+export * from './chart/chart.component';
