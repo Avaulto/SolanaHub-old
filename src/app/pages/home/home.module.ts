@@ -10,7 +10,6 @@ import { DefiComponent } from './defi/defi.component';
   imports: [
     SharedModule,
     HomePageRoutingModule,
-    SharedModule,
     NgChartsModule
   ],
   declarations: [HomePage,DefiComponent]
