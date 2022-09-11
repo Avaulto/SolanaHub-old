@@ -27,20 +27,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/support-us/support-us.module').then( m => m.SupportUsPageModule)
   },
   {
-    path: 'liquid-stake',
-    loadChildren: () => import('./pages/liquid-stake/liquid-stake.module').then( m => m.LiquidStakePageModule)
-  },
-  {
-    path: 'lending',
-    loadChildren: () => import('./pages/lending/lending.module').then( m => m.LendingPageModule)
-  },
-  {
-    path: 'token-swap',
-    loadChildren: () => import('./pages/token-swap/token-swap.module').then( m => m.TokenSwapPageModule)
-  },
-  {
-    path: 'laboratory',
-    loadChildren: () => import('./pages/laboratory/laboratory.module').then( m => m.LaboratoryPageModule)
+    path: 'defi',
+    loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
   },
 ];
 

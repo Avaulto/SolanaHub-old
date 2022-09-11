@@ -1,0 +1,34 @@
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
+    <ion-row class="ion-justify-content-between ion-align-items-center">
+        <ion-title class="heading-1">solana best dapps</ion-title>
+        <ion-button fill="outline">DeFi tour</ion-button>
+    </ion-row>
+    
+    <!-- <button routerLink="liquid-stake" routerDirection="forward" fill="outline">liquid stake</button>
+    <button routerLink="token-swap" routerDirection="forward" fill="outline">token swap</button>
+    <button routerLink="laboratory" routerDirection="forward" fill="outline">laboratory</button> -->
+    <ion-row>
+      <ion-col size="12" sizeLg="3.8" class="ion-margin-end" *ngFor="let dapp of defiApps">
+        <ion-card class="data-box">
+          <div class="dapp-image-wrapper">
+            <ion-img [src]="dapp.image"></ion-img>
+          </div>
+          <ion-card-header>
+             {{dapp.name}}
+          </ion-card-header>
+
+          <ion-card-content>
+            <span class="sub ion-margin-bottom">
+              {{dapp.description}}
+            </span>
+            <ion-button expand="block" [routerLink]="dapp.deepLink" routerDirection="forward">view</ion-button>
+            <a  class="sub " target="_blank" [href]="dapp.learnMoreLink">learn more</a>
+          </ion-card-content>
+          
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

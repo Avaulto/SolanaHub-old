@@ -13,6 +13,7 @@ export interface Nft {
   description: string,
   name: string,
   image: string,
+  listStatus?:string;
   websiteURL: string,
   explorerURL: string,
   attributes: [

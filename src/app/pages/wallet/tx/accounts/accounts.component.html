@@ -1,27 +1,27 @@
 <ion-grid>
 <app-loader *ngIf="(stakeAccounts | async) == null"></app-loader>
-<ion-row *ngIf="(stakeAccounts | async).length == 0" class="ion-text-capitalize ion-align-items-center ion-justify-content-between">
+<ion-row *ngIf="(stakeAccounts | async)?.length == 0" class="ion-text-capitalize ion-align-items-center ion-justify-content-between">
   no stake account
 </ion-row>
   <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
     *ngFor="let account of stakeAccounts | async">
     <div class="flex-item-center">
       <div class="table-icon">
-        <ion-img [src]="account.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
+        <ion-img [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
       </div>
       <div class="validator-info heading-6">
-        {{account.validatorData?.name || 'name not found'}} <br>
+        {{account?.validatorData?.name || 'name not found'}} <br>
         <span class="sub">
-          fee: {{account.validatorData?.commission}}% uptime: {{account.validatorData?.uptime}}%
+          fee: {{account?.validatorData?.commission}}% uptime: {{account?.validatorData?.uptime}}%
         </span>
       </div>
     </div>
 
     <div class="sub">
-      {{account.shortAddr}}
+      {{account?.shortAddr}}
     </div>
     <div  class="sub">
-      {{account.balance}}
+      {{account?.balance}}
     </div>
     <div>
       <span [ngSwitch]="account.state">

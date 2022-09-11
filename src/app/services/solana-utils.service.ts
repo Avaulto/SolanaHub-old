@@ -41,7 +41,9 @@ export class SolanaUtilsService {
     // console.log(this.connection$.sub)
     // this.connection$
   }
-
+  public onAccountChangeCB(walletOwnerPk: PublicKey, cb: Function): void{
+    this.connection.onAccountChange(walletOwnerPk, cb());
+  }
   async showWalletAdapters() {
     const popover = await this.popoverController.create({
       component: WalletAdapterOptionsComponent,

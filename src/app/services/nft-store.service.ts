@@ -3,10 +3,10 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { SolanaUtilsService } from './solana-utils.service';
 
 import { Nft, NFTGroup } from '../models';
-import {  Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
+import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -26,22 +26,22 @@ export class NftStoreService {
   private myNfts: Subject<Nft[]> = new Subject();
   public myNft$ = this.myNfts.asObservable();
   constructor(
-    private _walletStore:WalletStore,
+    private _walletStore: WalletStore,
     private _solanaUtilsService: SolanaUtilsService,
   ) {
-    
-   }
-  public async createNft(){
-    const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
+
+  }
+  public async createNft() {
+    const wallet = await (await firstValueFrom(this._walletStore.anchorWallet$));
     this._metaplex.use(walletAdapterIdentity(wallet));
     const { nft } = await this._metaplex
-    .nfts()
-    .create({
+      .nfts()
+      .create({
         uri: "https://yyuf64d3dxl7pzwpyvwb24vqgztrxci5w3rvubbogt5s2d2m3weq.arweave.net/xihfcHsd1_fmz8VsHXKwNmcbiR2241oELjT7LQ9M3Yk",
         name: "my nft 2",
         sellerFeeBasisPoints: 500, // Represents 5.00%.
-    })
-    .run();
+      })
+      .run();
   }
   public async getMagicEdenOwnerNFTS(walletOwnerAddress: string): Promise<any[]> {
     const uri = `${this.magicEdenApiProxy}&endpoint=wallets/${walletOwnerAddress}/tokens`
@@ -59,23 +59,27 @@ export class NftStoreService {
     const sellNftInstructionReq = await getSellNftInstructionReq.json();
     return sellNftInstructionReq
   }
-  public async cancelNftListing({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
+  public async nftListingCancel({ sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction) {
+
     const queryParam = encodeURIComponent(`price=${sol}&seller=${sellerAddress}&auctionHouseAddress=${auctionHouseAddress}&tokenMint=${tokenMint}&tokenAccount=${tokenAccount}&expiry=${expiry}`)
     const uri = `${this.magicEdenApiProxy}&endpoint=instructions/sell_cancel&queryParam=${queryParam}`;
     const getSellNftInstructionReq = await fetch(uri)
     const sellNftInstructionReq = await getSellNftInstructionReq.json();
     return sellNftInstructionReq
   }
-  public async listStatus(walletAddress: string, mintAddress: string): Promise<boolean>{
-    const nftList = await this.getMagicEdenOwnerNFTS(walletAddress);
-    const isListed = nftList.find(nft => nft.mintAddress == mintAddress)?.listStatus == "unlisted" ? false : true ;
-    return isListed
+
+  public async listStatus(mintAddress: string): Promise<any> {
+    const uri = `${this.magicEdenApiProxy}&endpoint=tokens/${mintAddress}/listings`
+    const getListreq = await fetch(uri)
+    const listStatus: any = await getListreq.json();
+
+    return listStatus
   }
-  public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft>{
+  public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft> {
     this._metaplex.use(walletAdapterIdentity(wallet));
-    const metaplexItem = await this._metaplex.nfts().findByMint({ mintAddress:mintAddressPK }).run();
+    const metaplexItem = await this._metaplex.nfts().findByMint({ mintAddress: mintAddressPK }).run();
     const metaData = await this.getMetaData(metaplexItem.uri);
-    const nft: Nft = this._nftDataPrep(metaData,metaplexItem)
+    const nft: Nft = this._nftDataPrep(metaData, metaplexItem)
     return nft
   }
   public async getAllOnwerNfts(walletOwnerAddress): Promise<Nft[]> {
@@ -83,6 +87,18 @@ export class NftStoreService {
     const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
     const getNFTsReq = await fetch(uri)
     const nfts: Nft[] = await getNFTsReq.json();
+
+    const magicEdenNfts: Nft[] = await this.getMagicEdenOwnerNFTS(walletOwnerAddress);
+
+    const extendNFTdata = magicEdenNfts.map(nft => {
+      const extendNFT = nfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
+      if(!extendNFT){
+        nfts.push(nft)
+      }
+      const extendedNFT = {...magicEdenNfts, ...nft};
+      return extendedNFT
+    });
+    console.log(extendNFTdata,nfts ,magicEdenNfts)
     this.myNfts.next(nfts);
     return nfts
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
@@ -106,7 +122,7 @@ export class NftStoreService {
 
   }
 
-  private _nftDataPrep(metaData,metaplexItem): Nft{
+  private _nftDataPrep(metaData, metaplexItem): Nft {
     try {
       const nft: Nft = {
         image: metaData.image,
@@ -125,7 +141,7 @@ export class NftStoreService {
     }
   }
   private async getMetaData(uri: string): Promise<any> {
-    let metaData: any = {} 
+    let metaData: any = {}
     try {
       metaData = await (await fetch(uri)).json();
       // metaDataRes = await metaDataReq.json();
@@ -150,7 +166,7 @@ export class NftStoreService {
     }
     return collectionInfo
   }
-  public async getCollectionMarketplaceData(symbol: string){
+  public async getCollectionMarketplaceData(symbol: string) {
     const queryParam = encodeURIComponent('limit=1')
     const uri = `${this.magicEdenApiProxy}&endpoint=/collections/${symbol}/listings&queryParam=${queryParam}`;
     const getCollectionMarketplace = await fetch(uri)

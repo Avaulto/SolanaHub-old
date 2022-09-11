@@ -30,7 +30,12 @@ ion-accordion {
     display: flex;
     justify-content: space-between;
 }
-
+#nft-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
 ion-button{
     display: block;
 }
@@ -40,8 +45,23 @@ ion-item{
     --ion-color-contrast: white !important;
     background: transparent !important;
 }
-ion-card-content h2{
+ion-card-content{
+    min-height: 146px;
+    padding-bottom: 0;
+    h5{
+
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+}
+.listed-mark{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #000000b5;
+    border-radius: 12px;
+    width: 50px;
+    text-transform: capitalize;
+    text-align: center;
 }

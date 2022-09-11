@@ -99,14 +99,14 @@ export class TxInterceptService {
       toPubkey: walletOwnerPk,
       lamports, // Withdraw the full balance at the time of the transaction
     });
-    try {
-      const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
-      if (validTx) {
+    // try {
+    //   const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
+    //   if (validTx) {
         this.sendTx([withdrawTx], walletOwnerPk)
-      }
-    } catch (error) {
-      console.error(error)
-    }
+    //   }
+    // } catch (error) {
+    //   console.error(error)
+    // }
   }
   async getOrCreateTokenAccountInstruction(mint: PublicKey, user: PublicKey, payer: PublicKey | null = null): Promise<TransactionInstruction | null> {
    try {

@@ -12,7 +12,11 @@ import { LoaderService, UtilsService,SolanaUtilsService ,TxInterceptService} fro
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountsComponent implements OnInit {
-  public stakeAccounts: Subject<StakeAccountExtended[]>= new Subject();
+  public stakeAccounts: Observable<StakeAccountExtended[]>=  this._walletStore.anchorWallet$.pipe(
+    this.utils.isNotNull,
+    // tap((wallet) => this.solanaUtilsService.connection.onAccountChange(wallet.publicKey,(res) => this.getStakeAccount(wallet.publicKey) )
+    switchMap(async wallet =>  await this.getStakeAccount(wallet.publicKey)),
+  )
   @Input() wallet: Asset;
   constructor(
     public loaderService: LoaderService,
@@ -23,12 +27,12 @@ export class AccountsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._walletStore.anchorWallet$
-    .pipe(this.utils.isNotNull)
-    .subscribe(async wallet => {
-      this.getStakeAccount(wallet.publicKey)
-      this.solanaUtilsService.connection.onAccountChange(wallet.publicKey,(res) => {console.log(res); this.getStakeAccount(wallet.publicKey)});
-    })
+    // this._walletStore.anchorWallet$
+    // .pipe(this.utils.isNotNull)
+    // .subscribe(async wallet => {
+    //   this.getStakeAccount(wallet.publicKey)
+    //   this.solanaUtilsService.connection.onAccountChange(wallet.publicKey,(res) => {console.log(res); this.getStakeAccount(wallet.publicKey)});
+    // })
   }
 
   async deactiveStake(stakeAccount: string) {
@@ -40,11 +44,13 @@ export class AccountsComponent implements OnInit {
     this.txInterceptService.withdrawStake(stakeAccountAddress,this.wallet.publicKey, stakeBalance)
   }
   private async getStakeAccount(publicKey){
-    const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(publicKey)
+    const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(publicKey);
+    this.solanaUtilsService.onAccountChangeCB(publicKey, (res) => console.log(res));
+    
     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
       return await this.solanaUtilsService.extendStakeAccount(acc)
     })
     const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-    this.stakeAccounts.next(extendStakeAccountRes);
+    return extendStakeAccountRes;
   }
 }

@@ -89,7 +89,7 @@ export class NftListingComponent implements OnInit {
   }
   public async cancelNftListing(): Promise<void> {
     const listInfo = this.listNftForm.value;
-    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.cancelNftListing(listInfo)
+    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftListingCancel(listInfo)
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
     // const txn2 = Transaction.from(Buffer.from(txIns.tx))
