@@ -10,7 +10,7 @@ import {
   SolongWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 @Component({

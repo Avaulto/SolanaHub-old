@@ -6,7 +6,7 @@ import { Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 interface ListInstuction {
   sellerAddress: string,
