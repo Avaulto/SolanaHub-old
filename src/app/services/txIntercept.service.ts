@@ -243,7 +243,7 @@ export class TxInterceptService {
           const config: BlockheightBasedTransactionConfirmationStrategy = {
             signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
           }
-          await this.solanaUtilsService.connection.confirmTransaction(config) //.confirmTransaction(txid, 'confirmed');
+          await this.solanaUtilsService.connection.confirmTransaction(config,'confirmed') //.confirmTransaction(txid, 'confirmed');
           const txCompleted: toastData = {
             message: 'transaction completed',
             icon: 'information-circle-outline',

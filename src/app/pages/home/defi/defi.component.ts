@@ -13,7 +13,7 @@ export class DefiComponent implements OnInit {
   public defiApps = [
     {
       name: 'Jupiter',
-      desc: 'The cheepst & fastes way to swap tokens',
+      desc: 'The cheapest & fastest way to swap tokens',
       img: 'https://jup.ag/svg/jupiter-logo.svg',
       link: '/token-swap'
     },
