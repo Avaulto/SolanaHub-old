@@ -1,3 +1,11 @@
-<p>
-  defi-tour works!
-</p>
+<ion-slides  pager="true" [options]="slideOpts">
+  <ion-slide class="intro-slide" *ngFor="let page of defiTour">
+    <ion-icon name="close-outline" (click)="closePopup()"></ion-icon>
+    <span class="title">{{page.title}}</span>
+      <p>
+        {{page.description}}
+        <ion-button expand="block" class="ion-margin-top" *ngIf="page.button" (click)="closePopup()">{{page.button}}</ion-button>
+      </p>
+      <ion-img class="defi-bg" src="assets/images/defi-tour-popup-bg.svg"></ion-img>
+  </ion-slide>
+</ion-slides>

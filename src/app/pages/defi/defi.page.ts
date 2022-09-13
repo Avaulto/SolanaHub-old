@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
+import { DefiTourComponent } from './defi-tour/defi-tour.component';
 
 interface DefiApps {
   name: string;
@@ -36,9 +38,17 @@ export class DefiPage implements OnInit {
     //   deepLink: 'token-swap'
     // },
   ]
-  constructor() { }
+  constructor(private popoverController: PopoverController) { }
 
   ngOnInit() {
   }
-
+  async showDefiTourSlide(e: Event) {
+    const popover = await this.popoverController.create({
+      component: DefiTourComponent,
+      // event: e,
+      alignment: 'start',
+      cssClass: 'defi-tour-popup',
+    });
+    await popover.present();
+  }
 }

@@ -50,23 +50,23 @@ export const pages: any = [
       title: "DeFi",
       icon: "cube-outline",
       url: "/defi",
-      // children: [
-      //   {
-      //     title: "swap",
-      //     url: "/defi/token-swap",
-      //     icon: 'swap-horizontal',
-      //   },
-      //   {
-      //     title: "liquid staking",
-      //     url: "/defi/liquid-stake",
-      //     icon: 'water',
-      //   },
-      //   {
-      //     title: "the lab",
-      //     url: "/defi/laboratory",
-      //     icon: 'flask',
-      //   },
-      // ]
+      children: [
+        {
+          title: "swap",
+          url: "/defi/token-swap",
+          icon: 'swap-horizontal',
+        },
+        {
+          title: "liquid staking",
+          url: "/defi/liquid-stake",
+          icon: 'water',
+        },
+        {
+          title: "the lab",
+          url: "/defi/laboratory",
+          icon: 'flask',
+        },
+      ]
     },
 
   ];

@@ -6,12 +6,13 @@
       </div>
       <div id="routes-wrapper">
         <div *ngFor="let p of pages">
-          <ion-item class="menu-item" (click)="p.open = !p.open" button [routerLink]="p.url" routerLinkActive="active">
+          <ion-item class="menu-item" button [routerLink]="p.url" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
             <ion-icon [name]="p.icon" ></ion-icon>
             <!-- <fa-icon [icon]="boxOpen" *ngIf="p.open"></fa-icon> -->
             <ion-label>
               {{ p.title }}
             </ion-label>
+            <ion-icon name="chevron-down-outline" *ngIf="p?.children" [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
           </ion-item>
           <ion-list *ngIf="p.open">
             <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
