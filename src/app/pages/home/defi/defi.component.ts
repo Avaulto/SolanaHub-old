@@ -20,7 +20,7 @@ export class DefiComponent implements OnInit {
     {
       name: 'Marinade',
       desc: 'Stake Solana without locking in your funds',
-      img: '/assets/images/icons/marinade-logo-small.png',
+      img: '/assets/images/icons/marinade-logo-small.svg',
       link: '/liquid-stake'
     },
     {
