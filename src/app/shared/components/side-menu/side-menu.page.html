@@ -1,40 +1,41 @@
+<div id="side-menu">
 
-    <div id="side-menu">
+  <div id="logo-wrapper">
+    <app-logo></app-logo>
+  </div>
+  <div id="routes-wrapper">
+    <div *ngFor="let p of pages">
+      <ion-item class="menu-item" button [routerLink]="p.url" [routerLinkActiveOptions]="{exact: true}"
+        routerLinkActive="active">
+        <ion-icon [name]="p.icon"></ion-icon>
+        <!-- <fa-icon [icon]="boxOpen" *ngIf="p.open"></fa-icon> -->
+        <ion-label>
+          {{ p.title }}
+        </ion-label>
+        <ion-icon name="chevron-down-outline" *ngIf="p?.children"
+          [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
+      </ion-item>
+      <ion-list *ngIf="p.open">
+        <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
+          routerLinkActive="active">
+          <div class="menu-icon">
 
-      <div id="logo-wrapper">
-        <app-logo></app-logo>
-      </div>
-      <div id="routes-wrapper">
-        <div *ngFor="let p of pages">
-          <ion-item class="menu-item" button [routerLink]="p.url" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
-            <ion-icon [name]="p.icon" ></ion-icon>
-            <!-- <fa-icon [icon]="boxOpen" *ngIf="p.open"></fa-icon> -->
+            <ion-icon [name]="sub.icon"></ion-icon>
+          </div>
+          <div class="wallet-info">
             <ion-label>
-              {{ p.title }}
+              {{ sub.title }}
             </ion-label>
-            <ion-icon name="chevron-down-outline" *ngIf="p?.children" [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
-          </ion-item>
-          <ion-list *ngIf="p.open">
-            <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
-              routerLinkActive="active">
-              <div class="menu-icon">
-                
-                <ion-icon [name]="sub.icon" ></ion-icon>
-              </div>
-              <div class="wallet-info">
-                <ion-label>
-                  {{ sub.title }}
-                </ion-label>
-                <ion-label class="balance-sub">
-                  {{sub.sub}}
-                </ion-label>
-              </div>
-            </ion-item>
-            
-          </ion-list>
-        </div>
-        <div id="footer-menu">
-          <!-- <ion-item>
+            <ion-label class="balance-sub">
+              {{sub.sub}}
+            </ion-label>
+          </div>
+        </ion-item>
+
+      </ion-list>
+    </div>
+    <!-- <div id="footer-menu"> -->
+    <!-- <ion-item>
             <ion-radio-group (ionFocus)="selectCurrency($event)" class="menu-item" id="currency-switch" value="BTC">
               <span>Currency</span>
              
@@ -45,10 +46,42 @@
 
             </ion-radio-group>
           </ion-item> -->
-          
-            <app-wallet-connect></app-wallet-connect>
-          
-        </div>
-      </div>
 
+
+    <!-- </div> -->
+  </div>
+  <div id="footer-menu">
+    <app-wallet-connect></app-wallet-connect>
+    <div class="divider"></div>
+    <div id="socials">
+
+      <a target="_blank" href="https://discord.gg/7SxUZkqa6Q" style="margin-bottom: 5px;">
+        <ion-button fill="outline">
+          <ion-icon name="logo-discord"></ion-icon> Discord
+        </ion-button>
+      </a>
+      <a target="_blank" href="https://twitter.com/Avaulto">
+        <ion-button fill="outline">
+          <ion-icon name="logo-twitter"></ion-icon> Twitter
+        </ion-button>
+      </a>
     </div>
+    <a id="open-tnc" (click)="presentTncPopover()" style="cursor: pointer; text-align: center;"> Terms & Conditions</a>
+    <ion-popover #popover [isOpen]="isTncOpen" (didDismiss)="isTncOpen = false">
+      <ng-template>
+        <div id="tnc-popover-wrapper" class="ion-padding">
+          <h1>Terms of Use</h1>
+          <p>
+            By using this website you accept these terms.<br>
+            The information found on this webpage is provided on an 'as-is' basis,
+            and may be altered at any time without notice.
+            <br><br><br>
+            You waive any claims of damages or loss that you believe may arise through the use of this website and
+            indemnify Avaulto against all claims by yourself, your employees, employer, associates or other parties as
+            may arise.
+          </p>
+        </div>
+      </ng-template>
+    </ion-popover>
+  </div>
+</div>

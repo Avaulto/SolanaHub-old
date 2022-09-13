@@ -1,4 +1,3 @@
-
 // :host{
 //     height: 100vh;
 //     display: block;
@@ -20,6 +19,7 @@
 // parent item
 .menu-item {
     position: relative;
+
     // padding-left: 6px;
     &::before {
         content: "";
@@ -31,6 +31,7 @@
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
     }
+
     &.active::before {
         background-color: var(--ion-color-primary);
     }
@@ -50,16 +51,18 @@
     font-size: 12px;
 }
 
-div > ion-item {
+div>ion-item {
     border-top: 1px solid rgb(132 141 164 / 20%);
 }
-div > ion-item.menu-item:nth-child(1) {
+
+div>ion-item.menu-item:nth-child(1) {
     border-bottom: 1px solid rgba(132, 141, 164, 0.2);
 }
 
 ion-icon {
     font-size: 16px;
 }
+
 ion-list,
 ion-item {
     cursor: pointer;
@@ -69,20 +72,25 @@ ion-item {
     background: transparent;
     text-transform: capitalize;
     padding: 0;
+
     ion-label {
         margin-left: 18px;
         line-height: 18px;
     }
 }
 
-    ion-radio label{
-        display: none;
-    }
+ion-radio label {
+    display: none;
+}
 
 #footer-menu {
     position: absolute;
     bottom: 0;
     width: 100%;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
     #currency-switch {
         display: flex;
@@ -91,4 +99,28 @@ ion-item {
         width: 100%;
     }
 
+}
+
+#socials {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+app-wallet-connect {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.divider {
+    height: 1px;
+    background: rgba(132, 141, 164, 0.2);
+    width: 90%;
+    margin: 20px auto;
+}
+#tnc-popover-wrapper{
+    background: linear-gradient(141deg, rgba(4, 23, 44, 1) 0%, rgba(20, 47, 102, 1) 55%);
+    width: 400px;
+    // max-width: 98%;
 }

@@ -63,7 +63,7 @@
 
             <app-loader></app-loader>
           </ion-col>
-          <ion-col size="5.8" sizeLg="3.6" class="ion-margin-end"  *ngFor="let nft of nfts | async">
+          <ion-col size="12" sizeLg="3.6" class="ion-margin-end ion-margin-bottom"  *ngFor="let nft of nfts | async">
             <app-nft-preview  [nft]="nft"></app-nft-preview>
           </ion-col>
           <p *ngIf="(nfts | async)?.length == 0">you dont owe any NFT</p>
