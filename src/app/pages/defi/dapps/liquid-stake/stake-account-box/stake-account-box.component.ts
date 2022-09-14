@@ -29,9 +29,10 @@ export class StakeAccountBoxComponent implements OnInit {
         const {shortAddr,addr, balance,state} = await this.solanaUtilsService.extendStakeAccount(acc)
         let selectable: boolean = false;
         // remove account that have less then 2sol - marinade program not support
-        if(balance > 2){
+        if(balance > 1 && state == 'active'){
           selectable = true
         }
+        console.log(selectable)
         return { name: shortAddr, addr, selectable, extraData: {balance, state, selectable} };
       })
       const extendStakeAccountRes = await Promise.all(extendStakeAccount);
