@@ -48,7 +48,6 @@ export class AppModule {
     constructor() {
         const { trackPageview ,enableAutoPageviews } = Plausible({
             hashMode: true,
-            domain: 'beta.compact-defi.avaulto.com'
         })
         trackPageview()
         enableAutoPageviews()
