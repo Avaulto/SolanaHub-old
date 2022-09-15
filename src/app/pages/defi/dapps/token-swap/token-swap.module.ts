@@ -11,12 +11,14 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { JupInfoBoxComponent } from './jup-info-box/jup-info-box.component';
 import { SwapInfoComponent } from './swap-info/swap-info.component';
 import { SlippageComponent } from './slippage/slippage.component';
+import { SwapHistoryComponent } from './swap-history/swap-history.component';
 
 @NgModule({
   imports: [
     SharedModule,
-    TokenSwapPageRoutingModule
+    TokenSwapPageRoutingModule,
+    
   ],
-  declarations: [TokenSwapPage, JupInfoBoxComponent,SwapInfoComponent,SlippageComponent]
+  declarations: [TokenSwapPage, JupInfoBoxComponent,SwapInfoComponent,SlippageComponent,SwapHistoryComponent]
 })
 export class TokenSwapPageModule {}

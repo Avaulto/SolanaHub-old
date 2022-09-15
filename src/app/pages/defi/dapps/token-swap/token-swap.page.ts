@@ -6,11 +6,11 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { Jupiter, RouteInfo, TOKEN_LIST_URL } from '@jup-ag/core'
 import {  LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import JSBI from 'jsbi';
-import { BehaviorSubject, distinctUntilChanged, filter, interval, map, of, pipe, ReplaySubject, Subject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, interval, map, of, pipe, ReplaySubject, Subject, switchMap, tap } from 'rxjs';
 import { ApiService, UtilsService } from 'src/app/services';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 
-
+import {  TokenBalance } from '../../../../models';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
 import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import Decimal from "decimal.js";
@@ -29,7 +29,8 @@ export interface Token {
   decimals: number; // 6,
   logoURI: string; // 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW/logo.png',
   tags: string[]; // [ 'stablecoin' ]
-  token: Token
+  token: Token;
+  balance?: number;
 }
 
 @Component({
@@ -50,10 +51,13 @@ export class TokenSwapPage implements OnInit {
   private swapDetail$: ReplaySubject<SwapDetail> = new ReplaySubject(1);
   public swapDetailObs$ = this.swapDetail$.asObservable()
   public swapForm: FormGroup = {} as FormGroup;
+  public tokensList = new BehaviorSubject([] as Token[]);
+  public currentTokenList = this.tokensList.asObservable()
+
   private reloadCalcRoutes = this.swapDetailObs$.pipe(
     this.utilsService.isNotNull,
     distinctUntilChanged(),
-    switchMap(() => interval(15000)),
+    switchMap(() => interval(10000)),
   ).subscribe(() => this.calcRoutes())
 
   constructor(
@@ -94,15 +98,13 @@ export class TokenSwapPage implements OnInit {
       console.error(error)
     }
   }
-  public tokensList = new BehaviorSubject([] as Token[]);
-  public currentTokenList = this.tokensList.asObservable()
+
   private async fetchTokenList() {
     const tokens: Token[] = await (await fetch(TOKEN_LIST_URL['mainnet-beta'])).json();
-    const tokensListPrep = this.prepTokenList(tokens);
-
+    // const tokensWithOwnerBalance = await this.getTokenBalance(tokens);
+    const tokensListPrep = await this.prepTokenList(tokens);
     this.tokensList.next(tokensListPrep);
     this.setDefualtSwapPairs(tokensListPrep)
-    this.getTokenBalance(tokens);
 
   }
   public pairOne: string = 'solana';
@@ -127,16 +129,31 @@ export class TokenSwapPage implements OnInit {
 
     })
   }
-  private prepTokenList(tokens) {
-    return tokens.map(token => {
-      return this.prepTokenData(token)
+
+  private async getTokenBalance(token: Token): Promise<TokenBalance[]> {
+    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+    const walletBalance = await this.solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
+    const solTokenBalance = {tokenPubkey:walletOwner.toBase58(), mintAddress: this.wSOL, balance: walletBalance}
+    const accountsBalance = await this.solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58());
+    accountsBalance.push(solTokenBalance)
+    return accountsBalance
+  }
+
+  private async prepTokenList(tokens): Promise<Token[]> {
+    const tokensWithOwnerBalance = await this.getTokenBalance(tokens);
+    return tokens.map((token: Token) => {
+      let tokenBalance =  tokensWithOwnerBalance.find(account => account.mintAddress == token.address)?.balance || 0;
+      const tokenExtended = {...token, balance: this.utilsService.shortenNum(tokenBalance) }
+      return this.prepTokenData(tokenExtended)
     })
   }
   private prepTokenData(token) {
 
-    let { name, logoURI, symbol } = token
+    let { name, logoURI, symbol, balance } = token
+
     name = name == 'Wrapped SOL' ? 'Solana' : name;
-    return { ...token, name, selectable: true, symbol, image: logoURI, extraData: { symbol } }
+
+    return { ...token, name, selectable: true, symbol, image: logoURI, extraData: { symbol, balance } }
   }
 
 
@@ -152,11 +169,7 @@ export class TokenSwapPage implements OnInit {
   }
 
 
-  private async getTokenBalance(tokens: Token[]) {
 
-    this.solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58())
-   
-  }
   public getPossiblePairsTokenInfo = ({
     tokens,
     routeMap,

@@ -1,96 +1,100 @@
-<ion-grid class="ion-padding">
-  <ion-content scroll-y style="--background:transparent;">
-  <ion-row id="token-swap-header" class="ion-align-items-center ion-margin-bottom">
-    <div class="ion-margin-end">
-      <span class="heading-1">Token swap POWER BY</span>
-    </div>
-    <div id="jup-logo">
-      <ion-img src="/assets/images/icons/jupiter-logo.svg"></ion-img>
-      <span class="heading-1 bg-gradient-text">Jupiter</span>
-    </div>
-  </ion-row>
-  <app-jup-info-box></app-jup-info-box>
-  <ion-row class="ion-justify-content-between" id="swap-content">
-    <ion-col size="12" sizeLg="5.8" id="swap-wrapper" class="data-box ion-padding">
-      <form [formGroup]="swapForm">
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
+    <ion-row id="token-swap-header" class="ion-align-items-center ion-margin-bottom">
+      <div class="ion-margin-end">
+        <span class="heading-1">Powered by</span>
+      </div>
+      <div id="jup-logo">
+        <ion-img src="/assets/images/icons/jupiter-logo.svg"></ion-img>
+        <span class="heading-1 bg-gradient-text">Jupiter</span>
+      </div>
+    </ion-row>
+    <app-jup-info-box></app-jup-info-box>
+    <ion-row class="ion-justify-content-between" id="swap-content">
+      <ion-col size="12" sizeLg="5.8" id="swap-wrapper" class="data-box ion-padding">
+        <form [formGroup]="swapForm">
 
-        
+
           <!-- <div id="swap-title" class="heading-2 ion-text-capitalize">swap</div> -->
           <div id="swap-setting" class="ion-margin-bottom">
             <button id="swap-reload" [disabled]="(calcLoader | async) || !swapForm.value.inputAmount"
-            (click)="calcRoutes()">
-            <ion-icon name="reload-circle"></ion-icon>
-          </button>
-          
-          <app-slippage [form]="swapForm"></app-slippage>
+              (click)="calcRoutes()">
+              <ion-icon name="reload-circle"></ion-icon>
+            </button>
+
+            <app-slippage [form]="swapForm"></app-slippage>
           </div>
-       
-        <div id="swap-pair-one">
-          <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-            <div id="">Send</div>
-            <div id="balance">
-              <!-- Balance: 21 -->
-            </div>
-          </ion-row>
 
-          <ion-row class="ion-margin-bottom swap-box">
-            <div class="pair-selection">
-              <div class="pair-setup">
-
-                <app-select-item style="flex: 1;" [item]="swapForm.value.inputToken"
-                  (click)="showCoinsListOne = !showCoinsListOne" [isDropDownOpen]="showCoinsListOne"
-                  [showDropDownIcon]="true">
-
-                </app-select-item>
-                <ion-input type="number" placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount" #inAmount
-                  formControlName="inputAmount"></ion-input>
+          <div id="swap-pair-one">
+            <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+              <div id="">Send</div>
+              <div id="balance">
+                <!-- Balance: 21 -->
               </div>
-              <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
-                (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
-              </app-select-box>
+            </ion-row>
+
+            <ion-row class="ion-margin-bottom swap-box">
+              <div class="pair-selection">
+                <div class="pair-setup">
+
+                  <app-select-item style="flex: 1;" [item]="swapForm.value.inputToken"
+                    (click)="showCoinsListOne = !showCoinsListOne" [isDropDownOpen]="showCoinsListOne"
+                    [showDropDownIcon]="true">
+
+                  </app-select-item>
+                  <ion-input type="number" placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount"
+                    #inAmount formControlName="inputAmount"></ion-input>
+                </div>
+                <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
+                  (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
+                </app-select-box>
 
 
-            </div>
-          </ion-row>
-        </div>
-        <ion-row class="ion-margin-vertical ion-justify-content-center" id="flip-swap-pair">
-          <ion-icon (click)="flipPairs()" name="swap-vertical-outline"></ion-icon>
-        </ion-row>
-        <div id="swap-pair-two">
-          <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-            <div id="">Receive</div>
-            <div id="balance">
-              <!-- Balance: 300 -->
-            </div>
-          </ion-row>
-
-          <ion-row class="ion-margin-bottom swap-box">
-            <div class="pair-selection">
-              <div class="pair-setup">
-                <app-select-item style="flex: 1;" [item]="swapForm.value.outputToken"
-                  (click)="showCoinsListTwo = !showCoinsListTwo" [isDropDownOpen]="showCoinsListTwo"
-                  [showDropDownIcon]="true">
-                </app-select-item>
-                <ion-input [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
-                <app-loader *ngIf="calcLoader | async"></app-loader>
               </div>
-              <app-select-box style="width: 100%;" *ngIf="showCoinsListTwo"
-                (onSelectItem)="setSelectedPair($event,'outputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
-              </app-select-box>
-
-
-            </div>
+            </ion-row>
+          </div>
+          <ion-row class="ion-margin-vertical ion-justify-content-center" id="flip-swap-pair">
+            <ion-icon (click)="flipPairs()" name="swap-vertical-outline"></ion-icon>
           </ion-row>
-        </div>
-        <ion-row class="ion-justify-content-center" id="swap-btn">
-          <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid">Swap</ion-button>
-        </ion-row>
-      </form>
-      <app-swap-info *ngIf="(swapDetailObs$ | async) != null" [swapDetail]="swapDetailObs$"></app-swap-info>
-    </ion-col>
-    <ion-col size="12" sizeLg="5.8" id="chart-wrapper" class="data-box ion-padding">
-      <app-chart [pairOne]="pairOne" [pairTwo]="pairTwo" ></app-chart>
-    </ion-col>
-  </ion-row>
+          <div id="swap-pair-two">
+            <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+              <div id="">Receive</div>
+              <div id="balance">
+                <!-- Balance: 300 -->
+              </div>
+            </ion-row>
+
+            <ion-row class="ion-margin-bottom swap-box">
+              <div class="pair-selection">
+                <div class="pair-setup">
+                  <app-select-item style="flex: 1;" [item]="swapForm.value.outputToken"
+                    (click)="showCoinsListTwo = !showCoinsListTwo" [isDropDownOpen]="showCoinsListTwo"
+                    [showDropDownIcon]="true">
+                  </app-select-item>
+                  <ion-input [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
+                  <app-loader *ngIf="calcLoader | async"></app-loader>
+                </div>
+                <app-select-box style="width: 100%;" *ngIf="showCoinsListTwo"
+                  (onSelectItem)="setSelectedPair($event,'outputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
+                </app-select-box>
+
+
+              </div>
+            </ion-row>
+          </div>
+          <ion-row class="ion-justify-content-center" id="swap-btn">
+            <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid">Swap
+            </ion-button>
+          </ion-row>
+        </form>
+        <app-swap-info *ngIf="(swapDetailObs$ | async) != null" [swapDetail]="swapDetailObs$"></app-swap-info>
+      </ion-col>
+      <ion-col size="12" sizeLg="5.8" id="chart-wrapper" class="data-box ion-padding">
+        <app-chart [pairOne]="pairOne" [pairTwo]="pairTwo"></app-chart>
+      </ion-col>
+    </ion-row>
+
+    <!-- <app-swap-history></app-swap-history> -->
+
+  </ion-grid>
 </ion-content>
-</ion-grid>

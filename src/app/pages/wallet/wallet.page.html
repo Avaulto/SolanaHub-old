@@ -1,6 +1,6 @@
-<ion-grid class="ion-padding">
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
 
-  <ion-content scroll-y style="--background:transparent;">
     <ion-row class="ion-justify-content-between ion-align-items-center data-box ">
       <ion-col size="9" class="ion-padding">
         <ion-row class="ion-align-items-center">
@@ -63,15 +63,15 @@
 
             <app-loader></app-loader>
           </ion-col>
-          <ion-col size="12" sizeLg="3.6" class="ion-margin-end ion-margin-bottom"  *ngFor="let nft of nfts | async">
-            <app-nft-preview  [nft]="nft"></app-nft-preview>
+          <ion-col size="12" sizeLg="3.6" class="ion-margin-end ion-margin-bottom" *ngFor="let nft of nfts | async">
+            <app-nft-preview [nft]="nft"></app-nft-preview>
           </ion-col>
           <p *ngIf="(nfts | async)?.length == 0">you dont owe any NFT</p>
         </ion-row>
       </ion-col>
-</ion-row>
-
-  </ion-content>
+    </ion-row>
 
 
-</ion-grid>
+
+  </ion-grid>
+</ion-content>

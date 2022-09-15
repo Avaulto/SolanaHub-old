@@ -35,11 +35,12 @@ export class StakeSolBoxComponent implements OnInit {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
       if (wallet) {
         this.wallet = wallet;
-        const splAccounts = await this.solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey);
         this.solBalance = this.utilsService.shortenNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"
-        this.mSOLBalance = splAccounts.filter(account => account.mintAddress == marinadeSPL)[0].balance / LAMPORTS_PER_SOL
-        this.mSOLBalance = this.mSOLBalance < 0.01 ? 0 : this.mSOLBalance;
+        const splAccounts = await this.solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
+        const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So";
+        const msolAccount = splAccounts.find(account => account.mintAddress == marinadeSPL)
+        this.mSOLBalance = msolAccount.balance < 0.01 ? 0 : msolAccount.balance;
+        console.log(this.mSOLBalance,msolAccount)
       }
     })
   }
@@ -47,7 +48,7 @@ export class StakeSolBoxComponent implements OnInit {
     this.segmentUtilTab = util;
   }
   setMaxAmountSOL() {
-    this.stakeAmount = this.solBalance - 0.0001;
+    this.stakeAmount = this.utilsService.shortenNum(this.solBalance - 0.0001);
     // console.log(this.stakeAmount, this.solBalance)
   }
   setMaxAmountMSOL() {

@@ -244,13 +244,14 @@ export class SolanaUtilsService {
       TOKEN_PROGRAM_ID,   //SPL Token Program, new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
       { filters: filters }
     );
-    console.log(accounts)
+
     // console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
     const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
       //Parse the account data
       const parsedAccountInfo: any = account.account.data;
       const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];
       const balance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
+      // console.log(parsedAccountInfo["parsed"]["info"])
       return { tokenPubkey: account.pubkey.toString(), mintAddress, balance }
     }).filter(token => token.balance > 0.00001);
     return tokensBalance;
@@ -260,5 +261,5 @@ export class SolanaUtilsService {
     // }[]
 
   }
-
+  getSingleTokenBalance(){}
 }
