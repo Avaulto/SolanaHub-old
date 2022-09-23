@@ -13,7 +13,7 @@ export class WalletConnectedDropdownComponent {
 
   constructor(private _walletStore: WalletStore, public popoverController: PopoverController) {}
 
-  onDisconnect() {
+  public onDisconnect() {
     this._walletStore.disconnect().subscribe();
     this.popoverController.dismiss()
   }

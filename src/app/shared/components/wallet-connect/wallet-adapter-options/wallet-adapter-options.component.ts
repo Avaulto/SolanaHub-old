@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { IonModal, PopoverController } from '@ionic/angular';
 import { WalletName } from '@solana/wallet-adapter-base';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 
 @Component({
   selector: 'app-wallet-adapter-options',
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class WalletAdapterOptionsComponent implements OnInit {
   @ViewChild('modal', {static:true}) selectAdapter:IonModal;
-  public walletsOptions$: Observable<Wallet[]> = this._walletStore.wallets$;
+  public walletsOptions$: Observable<Wallet[]> = this._walletStore.wallets$.pipe(shareReplay(1));
   constructor(private _walletStore: WalletStore,public popoverController: PopoverController) { }
 
   ngOnInit() {

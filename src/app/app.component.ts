@@ -25,11 +25,9 @@ export class AppComponent {
     public router:Router,
     private _connectionStore: ConnectionStore,
     private _walletStore: WalletStore,
-    private _platform: Platform
   ) { }
   async ngOnInit(): Promise<void> {
     
-    this.showTabs = this._platform.width() < 992 ? true : false;
     // this.userService.populate();
     // mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d
     // 'https://dawn-chaotic-butterfly.solana-mainnet.discover.quiknode.pro/e3aa076aff3f4a6b638c3599348ab5f56fde2a12/'

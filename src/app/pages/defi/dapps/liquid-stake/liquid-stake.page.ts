@@ -21,7 +21,7 @@ export class LiquidStakePage implements OnInit {
   public wallet;
   public stakeAccountsLength: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
     switchMap(async (wallet) => {
-      const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
+      const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
       return stakeAccounts.length
     }),
     //  filter((res: any[]) => res.length > 0),
@@ -29,10 +29,10 @@ export class LiquidStakePage implements OnInit {
   )
   public solBalance = 0;
   constructor(
-    private solanaUtilsService: SolanaUtilsService,
-    private txInterceptService: TxInterceptService,
+    private _solanaUtilsService: SolanaUtilsService,
+    private _txInterceptService: TxInterceptService,
     private _walletStore: WalletStore,
-    private utilsService: UtilsService
+    private _utilService: UtilsService
   ) { }
 
 
@@ -40,7 +40,7 @@ export class LiquidStakePage implements OnInit {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
       if (wallet) {
         this.wallet = wallet;
-        this.solBalance = this.utilsService.shortenNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
+        this.solBalance = this._utilService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
         this.initMarinade();
         //const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
       }
@@ -50,7 +50,7 @@ export class LiquidStakePage implements OnInit {
 
   async initMarinade(): Promise<void> {
     const config = new MarinadeConfig({
-      connection: this.solanaUtilsService.connection,
+      connection: this._solanaUtilsService.connection,
       publicKey: this.wallet.publicKey
     })
     this.marinade = new Marinade(config)

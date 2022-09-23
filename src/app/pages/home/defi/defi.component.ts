@@ -15,13 +15,13 @@ export class DefiComponent implements OnInit {
       name: 'Jupiter',
       desc: 'The cheapest & fastest way to swap tokens',
       img: 'https://jup.ag/svg/jupiter-logo.svg',
-      link: '/token-swap'
+      link: '/defi/token-swap'
     },
     {
       name: 'Marinade',
       desc: 'Stake Solana without locking in your funds',
       img: '/assets/images/icons/marinade-logo-small.svg',
-      link: '/liquid-stake'
+      link: '/defi/liquid-stake'
     },
     {
       name: 'Orca',

@@ -25,7 +25,7 @@ export class NftGalleryPage implements OnInit {
     private _walletStore: WalletStore,
     private _nftStore: NftStoreService,
     public loaderService:LoaderService,
-    private util:UtilsService
+    private _utilsService:UtilsService
   ) { }
   
   async ngOnInit() {

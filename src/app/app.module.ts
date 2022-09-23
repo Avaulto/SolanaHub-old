@@ -40,7 +40,6 @@ import Plausible from 'plausible-tracker';
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
     ],
     bootstrap: [AppComponent]
 })

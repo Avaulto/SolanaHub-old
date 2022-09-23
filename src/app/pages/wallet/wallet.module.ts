@@ -10,6 +10,7 @@ import { HistoryComponent } from './history/history.component';
 import { TxComponent } from './tx/tx.component';
 import { AccountsComponent } from './tx/accounts/accounts.component';
 import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
+import { AssetsBalanceComponent } from './assets-balance/assets-balance.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { ApyCalcComponent } from './tx/stake/apy-calc/apy-calc.component';
   ],
   declarations: [
     WalletPage,
+    AssetsBalanceComponent,
     AccountsComponent,
     TxComponent,
     StakeComponent,

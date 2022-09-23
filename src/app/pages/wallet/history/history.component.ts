@@ -40,16 +40,16 @@ export class HistoryComponent implements OnInit {
   }
 ]
   constructor(
-    private solanaUtilsService: SolanaUtilsService,
+    private _solanaUtilsService: SolanaUtilsService,
     private _walletStore: WalletStore
     ) { }
 
   ngOnInit() {
-    this.getWalletHistory();
+    this._getWalletHistory();
   }
-  getWalletHistory(){
+  private _getWalletHistory(): void{
     this._walletStore.anchorWallet$.subscribe(async wallet=>{
-      const history = await this.solanaUtilsService.getWalletHistory(wallet.publicKey);
+      const history = await this._solanaUtilsService.getWalletHistory(wallet.publicKey);
     })
   }
 }

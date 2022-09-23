@@ -44,50 +44,49 @@ export class TokenSwapPage implements OnInit {
   public wSOL = "So11111111111111111111111111111111111111112";
   public usdc = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   public wallet;
-  private jupiter: Jupiter;
-  private bestRoute: RouteInfo;
+  private _jupiter: Jupiter;
+  private _bestRoute: RouteInfo;
+  private _swapDetail$: ReplaySubject<SwapDetail> = new ReplaySubject(1);
   public calcLoader: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean)
   public outputAmount;
-  private swapDetail$: ReplaySubject<SwapDetail> = new ReplaySubject(1);
-  public swapDetailObs$ = this.swapDetail$.asObservable()
+  public swapDetailObs$ = this._swapDetail$.asObservable()
   public swapForm: FormGroup = {} as FormGroup;
   public tokensList = new BehaviorSubject([] as Token[]);
   public currentTokenList = this.tokensList.asObservable()
 
-  private reloadCalcRoutes = this.swapDetailObs$.pipe(
-    this.utilsService.isNotNull,
+  private _reloadCalcRoutes = this.swapDetailObs$.pipe(
+    this._utilService.isNotNull,
     distinctUntilChanged(),
-    switchMap(() => interval(10000)),
+    switchMap(() => interval(15000)),
   ).subscribe(() => this.calcRoutes())
 
   constructor(
-    private solanaUtilService: SolanaUtilsService,
+    private _solanaUtilService: SolanaUtilsService,
     private _walletStore: WalletStore,
-    private util: UtilsService,
-    private fb: FormBuilder,
-    private utilsService: UtilsService,
-    private txInterceptService: TxInterceptService,
+    private _utilService: UtilsService,
+    private _fb: FormBuilder,
+    private _txInterceptService: TxInterceptService,
   ) { }
   ngOnInit() {
-    this.swapForm = this.fb.group({
+    this.swapForm = this._fb.group({
       inputToken: ['', [Validators.required]],
       outputToken: ['', [Validators.required]],
       inputAmount: ['', [Validators.required]],
       slippage: [0.5, [Validators.required]],
     })
 
-    this._walletStore.anchorWallet$.pipe(this.util.isNotNull).subscribe(wallet => {
+    this._walletStore.anchorWallet$.pipe(this._utilService.isNotNull).subscribe(wallet => {
       this.wallet = wallet
-      this.initJup()
-      this.fetchTokenList()
+      this._initJup()
+      this._fetchTokenList()
     })
   }
 
-  private async initJup() {
-    const connection = this.solanaUtilService.connection;
+  private async _initJup() {
+    const connection = this._solanaUtilService.connection;
     const pk = this.wallet.publicKey// this._walletStore.anchorWallet$.pipe(switchMap(wallet => wallet.publicKey))
     try {
-      this.jupiter = await Jupiter.load({
+      this._jupiter = await Jupiter.load({
         connection,
         cluster: 'mainnet-beta',
         user: pk, // or public key
@@ -99,17 +98,17 @@ export class TokenSwapPage implements OnInit {
     }
   }
 
-  private async fetchTokenList() {
+  private async _fetchTokenList() {
     const tokens: Token[] = await (await fetch(TOKEN_LIST_URL['mainnet-beta'])).json();
     // const tokensWithOwnerBalance = await this.getTokenBalance(tokens);
-    const tokensListPrep = await this.prepTokenList(tokens);
+    const tokensListPrep = await this._prepTokenList(tokens);
     this.tokensList.next(tokensListPrep);
-    this.setDefualtSwapPairs(tokensListPrep)
+    this._setDefualtSwapPairs(tokensListPrep)
 
   }
   public pairOne: string = 'solana';
   public pairTwo: string = 'usd-coin';
-  private setDefualtSwapPairs(tokensList) {
+  private _setDefualtSwapPairs(tokensList) {
     const filterSolToken = tokensList.filter(token => token.address == this.wSOL)[0];
     const filterUsdcToken = tokensList.filter(token => token.address == this.usdc)[0];
     this.swapForm.controls.inputToken.setValue(filterSolToken);
@@ -122,32 +121,32 @@ export class TokenSwapPage implements OnInit {
       if (this.swapForm.valid) {
         this.calcRoutes()
       } else {
-        this.swapDetail$.next(null);
+        this._swapDetail$.next(null);
         this.calcLoader.next(false);
-        this.reloadCalcRoutes.unsubscribe();
+        this._reloadCalcRoutes.unsubscribe();
       }
 
     })
   }
 
-  private async getTokenBalance(token: Token): Promise<TokenBalance[]> {
+  private async _getTokenBalance(token: Token): Promise<TokenBalance[]> {
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    const walletBalance = await this.solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
+    const walletBalance = await this._solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
     const solTokenBalance = {tokenPubkey:walletOwner.toBase58(), mintAddress: this.wSOL, balance: walletBalance}
-    const accountsBalance = await this.solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58());
+    const accountsBalance = await this._solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58());
     accountsBalance.push(solTokenBalance)
     return accountsBalance
   }
 
-  private async prepTokenList(tokens): Promise<Token[]> {
-    const tokensWithOwnerBalance = await this.getTokenBalance(tokens);
+  private async _prepTokenList(tokens): Promise<Token[]> {
+    const tokensWithOwnerBalance = await this._getTokenBalance(tokens);
     return tokens.map((token: Token) => {
       let tokenBalance =  tokensWithOwnerBalance.find(account => account.mintAddress == token.address)?.balance || 0;
-      const tokenExtended = {...token, balance: this.utilsService.shortenNum(tokenBalance) }
-      return this.prepTokenData(tokenExtended)
+      const tokenExtended = {...token, balance: this._utilService.shortenNum(tokenBalance) }
+      return this._prepTokenData(tokenExtended)
     })
   }
-  private prepTokenData(token) {
+  private _prepTokenData(token) {
 
     let { name, logoURI, symbol, balance } = token
 
@@ -212,7 +211,7 @@ export class TokenSwapPage implements OnInit {
       : 0;
     // console.log(slippage, outputToken, inputToken, inputAmount, amount)
     try {
-      const routes = await this.jupiter.computeRoutes({
+      const routes = await this._jupiter.computeRoutes({
         inputMint: new PublicKey(inputToken.address),
         outputMint: new PublicKey(outputToken.address),
         amount: JSBI.BigInt(inputAmountInSmallestUnits),
@@ -222,7 +221,7 @@ export class TokenSwapPage implements OnInit {
         // feeBps
       });
       //stare best route
-      this.bestRoute = routes.routesInfos[0]
+      this._bestRoute = routes.routesInfos[0]
 
       // hide the loader
       this.calcLoader.next(false)
@@ -233,14 +232,14 @@ export class TokenSwapPage implements OnInit {
     } catch (error) {
       console.error(error)
     }
-    const swapDetails = await this.prepSwapDetails(this.bestRoute, this.outputAmount);
-    this.swapDetail$.next(swapDetails);
+    const swapDetails = await this._prepSwapDetails(this._bestRoute, this.outputAmount);
+    this._swapDetail$.next(swapDetails);
   }
   public async submitSwap(): Promise<void> {
     trackEvent('jupiter swap')
 
-    const { transactions } = await this.jupiter.exchange({
-      routeInfo: this.bestRoute
+    const { transactions } = await this._jupiter.exchange({
+      routeInfo: this._bestRoute
     });
 
     // Execute the transactions
@@ -252,9 +251,9 @@ export class TokenSwapPage implements OnInit {
       }
       arrayOfTx.push(transaction)
     }
-     this.txInterceptService.sendTx(arrayOfTx, this.wallet.publicKey)
+     this._txInterceptService.sendTx(arrayOfTx, this.wallet.publicKey)
   }
-  private async prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
+  private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
     const { marketInfos } = routeInfo
     try {
       const txFees = await routeInfo.getDepositAndFee();
@@ -282,6 +281,6 @@ export class TokenSwapPage implements OnInit {
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
-    this.reloadCalcRoutes.unsubscribe();
+    this._reloadCalcRoutes.unsubscribe();
   }
 }

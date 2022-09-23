@@ -6,21 +6,11 @@
     <!-- <span (click)="setUtil('history')" [class.active]="segmentUtilTab == 'history'">history</span> -->
   </div>
   <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
-    <p *ngSwitchCase="'stake'">
-      
-        <app-stake [avgApy]="avgApy"  [wallet]="wallet"></app-stake>
 
-    </p>
-    <p *ngSwitchCase="'accounts'">
-      
-      <app-accounts [wallet]="wallet" ></app-accounts>
+    <app-stake *ngSwitchCase="'stake'" [avgApy]="avgApy" [wallet]="wallet"></app-stake>
+    <app-accounts *ngSwitchCase="'accounts'" [wallet]="wallet"></app-accounts>
+    <app-send *ngSwitchCase="'send'" [wallet]="wallet"></app-send>
+    <!-- <app-history  *ngSwitchCase="'history'"></app-history> -->
 
-  </p>
-    <p *ngSwitchCase="'send'">
-      <app-send [wallet]="wallet"></app-send>
-    </p>
-    <p *ngSwitchCase="'history'">
-      <app-history></app-history>
-    </p>
   </div>
 </div>

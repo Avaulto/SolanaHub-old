@@ -31,7 +31,7 @@
         </app-validator> -->
 
         <app-select-box *ngIf="showValidatorList" [dataset]="validatorsData" [filterBy]="'name'"
-          (onSelectItem)="setSelectedValidator($event)">
+          (onSelectItem)="setSelectedValidator($event); this.showValidatorList = !this.showValidatorList">
 
         </app-select-box>
 

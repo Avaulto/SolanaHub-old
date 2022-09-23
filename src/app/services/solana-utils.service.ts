@@ -41,8 +41,8 @@ export class SolanaUtilsService {
     // console.log(this.connection$.sub)
     // this.connection$
   }
-  public onAccountChangeCB(walletOwnerPk: PublicKey, cb: Function): void{
-    this.connection.onAccountChange(walletOwnerPk, cb());
+  public onAccountChangeCB(walletOwnerPk: PublicKey, cb: any): void{
+    this.connection.onAccountChange(walletOwnerPk, cb);
   }
   async showWalletAdapters() {
     const popover = await this.popoverController.create({
@@ -73,7 +73,7 @@ export class SolanaUtilsService {
     });
     return throwError(error);
   }
-  public getValidatorData(vote_identity: string = ''): Observable<any> {
+  public getValidatorData(vote_identity: string = ''): Observable<ValidatorData[]> {
     return this.apiService.get(`https://api.stakewiz.com/validators/${vote_identity}`).pipe(
       map((validators) => {
         const filteredValidators: ValidatorData[] = validators.map(validator => {
@@ -153,8 +153,9 @@ export class SolanaUtilsService {
   public async extendStakeAccount(account: { pubkey: PublicKey; account: AccountInfo<Buffer | ParsedAccountData | any> }): Promise<any> {
     const pk = account.pubkey;
     const addr = pk.toBase58()
-    const stake = account.account.data.parsed.info.stake.delegation.stake
-    const validatorVoteKey = account.account.data.parsed.info.stake.delegation.voter
+    const parsedData = account.account.data.parsed.info.stake || null//.delegation.stake
+    const validatorVoteKey = parsedData?.delegation?.voter
+    const stake = parsedData?.delegation?.stake || 0;
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
 
     const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey)[0]

@@ -8,13 +8,13 @@ import { ApiService } from 'src/app/services';
 })
 export class LendingPage implements OnInit {
   protected _solLendApi = 'https://api.solend.fi'
-  constructor(private apiService: ApiService) { }
+  constructor(private _apiService: ApiService) { }
 
   ngOnInit() {
     const headerObj = {
       "Content-Type": "application/json",
     };
-    this.apiService.get(`${this._solLendApi}/healthcheck`,null,headerObj).subscribe(res=>console.log(res));
+    this._apiService.get(`${this._solLendApi}/healthcheck`,null,headerObj).subscribe(res=>console.log(res));
   }
 
 }

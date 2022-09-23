@@ -11,17 +11,17 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 })
 export class TxComponent implements OnInit {
   @Input() wallet:Asset;
-  public validatorsData: Subscription = this.solanaUtilsService.getValidatorData().subscribe();
+  public validatorsData: Subscription = this._solanaUtilsService.getValidatorData().subscribe();
   segmentUtilTab: string = 'stake'
   public hasStake: boolean = false;
   public avgApy:number = 0;
   constructor(
-    private solanaUtilsService: SolanaUtilsService,
+    private _solanaUtilsService: SolanaUtilsService,
     private _walletStore:WalletStore
     ) { }
 
   ngOnInit() {
-    this.solanaUtilsService.getAvgApy().subscribe(avgApy => this.avgApy = avgApy)
+    this._solanaUtilsService.getAvgApy().subscribe(avgApy => this.avgApy = avgApy)
   }
   setUtil(util: string){
     this.segmentUtilTab = util;

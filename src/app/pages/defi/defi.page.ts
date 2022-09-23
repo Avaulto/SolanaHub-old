@@ -38,12 +38,12 @@ export class DefiPage implements OnInit {
     //   deepLink: 'token-swap'
     // },
   ]
-  constructor(private popoverController: PopoverController) { }
+  constructor(private _popoverController: PopoverController) { }
 
   ngOnInit() {
   }
   async showDefiTourSlide(e: Event) {
-    const popover = await this.popoverController.create({
+    const popover = await this._popoverController.create({
       component: DefiTourComponent,
       // event: e,
       alignment: 'start',

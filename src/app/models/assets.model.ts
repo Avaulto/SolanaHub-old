@@ -1,4 +1,5 @@
 import { PublicKey } from "@solana/web3.js";
+import { Nft } from "./nftData.model";
 
 export interface Asset {
     name:string;
@@ -12,6 +13,7 @@ export interface Asset {
     icon?: string;
     coinData?: CoinData;
     tokens?: Asset[]
+    nfts?: Nft[]
   }
 
   export interface CoinData {

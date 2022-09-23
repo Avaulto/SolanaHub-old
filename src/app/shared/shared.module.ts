@@ -2,7 +2,7 @@ import { IonicModule } from "@ionic/angular";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
 
@@ -13,7 +13,6 @@ import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 import {
   DataBoxComponent,
   LogoComponent,
-  AssetsBalanceComponent,
   GoBackBtnComponent,
   WalletConnectComponent,
   WalletAdapterOptionsComponent,
@@ -43,6 +42,7 @@ import {
 
   // toop tip
   import { TooltipModule } from 'ng2-tooltip-directive';
+import { CustomInterceptor } from "../services";
 @NgModule({
   declarations: [
     FilterPipe,
@@ -51,7 +51,6 @@ import {
     ReversePipe,
     DataBoxComponent,
     LogoComponent,
-    AssetsBalanceComponent,
     GoBackBtnComponent,
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
@@ -80,6 +79,9 @@ import {
     TooltipModule,
     
   ],
+  providers:[
+    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
+  ],
   exports: [
     FontAwesomeModule,
     CommonModule,
@@ -94,7 +96,6 @@ import {
     ReversePipe,
     DataBoxComponent,
     LogoComponent,
-    AssetsBalanceComponent,
     GoBackBtnComponent,
     TooltipModule,
     WalletConnectComponent,

@@ -25,18 +25,18 @@ export class StakeSolBoxComponent implements OnInit {
   public solBalance: number = 0;
   public mSOLBalance: number = 0;
   constructor(
-    private solanaUtilsService: SolanaUtilsService,
-    private txInterceptService: TxInterceptService,
+    private _solanaUtilsService: SolanaUtilsService,
+    private _txInterceptService: TxInterceptService,
     private _walletStore: WalletStore,
-    private utilsService: UtilsService
+    private _utilsService: UtilsService
   ) { }
 
   async ngOnInit() {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
       if (wallet) {
         this.wallet = wallet;
-        this.solBalance = this.utilsService.shortenNum(((await this.solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        const splAccounts = await this.solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
+        this.solBalance = this._utilsService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
+        const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
         const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So";
         const msolAccount = splAccounts.find(account => account.mintAddress == marinadeSPL)
         this.mSOLBalance = msolAccount.balance < 0.01 ? 0 : msolAccount.balance;
@@ -48,7 +48,7 @@ export class StakeSolBoxComponent implements OnInit {
     this.segmentUtilTab = util;
   }
   setMaxAmountSOL() {
-    this.stakeAmount = this.utilsService.shortenNum(this.solBalance - 0.0001);
+    this.stakeAmount = this._utilsService.shortenNum(this.solBalance - 0.0001);
     // console.log(this.stakeAmount, this.solBalance)
   }
   setMaxAmountMSOL() {
@@ -64,7 +64,7 @@ export class StakeSolBoxComponent implements OnInit {
       associatedMSolTokenAccountAddress,
       transaction,
     } = await this.marinade.deposit(sol);
-    this.txInterceptService.sendTx([transaction], this.wallet.publicKey)
+    this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     // console.log(signature)
   }
   public async liquidUnstake() {
@@ -74,6 +74,6 @@ export class StakeSolBoxComponent implements OnInit {
       transaction,
     } = await this.marinade.liquidUnstake(sol)
     // sign and send the `transaction`
-    this.txInterceptService.sendTx([transaction], this.wallet.publicKey)
+    this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
   }
 }

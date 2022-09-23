@@ -30,10 +30,10 @@ export class DefiTourComponent implements OnInit {
     slidesPerView: 1,
     speed: 400
   };
-  constructor(private popoverController: PopoverController) { }
+  constructor(private _popoverController: PopoverController) { }
 
   ngOnInit() { }
   public closePopup(): void {
-    this.popoverController.dismiss()
+    this._popoverController.dismiss()
   }
 }

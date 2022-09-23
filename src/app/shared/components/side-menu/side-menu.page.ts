@@ -14,18 +14,18 @@ export class SideMenuPage implements OnInit {
   @ViewChild('popover') popover:IonPopover;
   public profileIcon = faScrewdriverWrench;
   public boxOpen = faBoxOpen
-  constructor(private menu: MenuController,
+  constructor(private _menu: MenuController,
 
     ) {
     this.openFirst()
   }
   openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
+    this._menu.enable(true, 'first');
+    this._menu.open('first');
   }
 
   openEnd() {
-    this.menu.open('end');
+    this._menu.open('end');
   }
 
   pages = pages

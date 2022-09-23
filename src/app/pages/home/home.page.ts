@@ -21,19 +21,19 @@ interface ClusterInfo {
 })
 export class HomePage implements OnInit, OnDestroy {
   public clusterInfo: Observable<ClusterInfo> = forkJoin({
-    solData: this.getSOLprice(),
-    stakeInfo: this.solanaUtilsService.getStake(),
-    supply: this.solanaUtilsService.getSupply(),
-    TPS: this.solanaUtilsService.getTPS(),
-    epochInfo: this.solanaUtilsService.getEpochInfo()
+    solData: this._getSOLprice(),
+    stakeInfo: this._solanaUtilsService.getStake(),
+    supply: this._solanaUtilsService.getSupply(),
+    TPS: this._solanaUtilsService.getTPS(),
+    epochInfo: this._solanaUtilsService.getEpochInfo()
   }).pipe(map((data) => {
     data.TPS = Math.trunc(data?.TPS)
     return data
   }))
 
   constructor(
-    private dataAggregatorService: DataAggregatorService,
-    private solanaUtilsService: SolanaUtilsService,
+    private _dataAggregatorService: DataAggregatorService,
+    private _solanaUtilsService: SolanaUtilsService,
     public loaderService: LoaderService,
   ) {
   }
@@ -43,7 +43,7 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
   }
 
-  private getSOLprice(): Observable<any> {
-    return this.dataAggregatorService.getCoinData('solana')
+  private _getSOLprice(): Observable<any> {
+    return this._dataAggregatorService.getCoinData('solana')
   }
 }

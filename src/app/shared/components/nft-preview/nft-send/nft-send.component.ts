@@ -14,19 +14,19 @@ export class NftSendComponent implements OnInit {
   @Input() walletOwner: PublicKey;
   @Input() mintAddressPK:PublicKey;
   constructor(
-    private txInterceptService: TxInterceptService,
-    private fb: FormBuilder
+    private _txInterceptService: TxInterceptService,
+    private _fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    this.sendNftForm = this.fb.group({
+    this.sendNftForm = this._fb.group({
       targetAddress: ['', [Validators.required]],
     })
   }
-  public async sendNft() {
+  public sendNft(): void {
     
     const targetAdress = this.sendNftForm.value.targetAddress
     // const targetPublicKey = targetAdress
-    this.txInterceptService.sendSplOrNft(this.mintAddressPK, this.walletOwner, targetAdress, 1)
+    this._txInterceptService.sendSplOrNft(this.mintAddressPK, this.walletOwner, targetAdress, 1)
   }
 }

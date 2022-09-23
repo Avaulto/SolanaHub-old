@@ -21,18 +21,18 @@ export class SendComponent implements OnInit {
   searchTerm = '';
   constructor(
     public loaderService:LoaderService,
-    private fb:FormBuilder,
-    private txInterceptService: TxInterceptService,
-    private utils: UtilsService,
+    private _fb:FormBuilder,
+    private _txInterceptService: TxInterceptService,
+    private _utilsService: UtilsService,
     ) { }
   ngOnInit() {
-    this.sendSolForm = this.fb.group({
+    this.sendSolForm = this._fb.group({
       amount: ['', [Validators.required]],
       targetAddress: ['', [Validators.required]],
     })
   }
   setMaxAmount() {
-    const fixedAmount = this.utils.shortenNum(this.wallet.balance - 0.0001)
+    const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
     this.sendSolForm.controls.amount.setValue(fixedAmount);
   }
 
@@ -41,7 +41,7 @@ export class SendComponent implements OnInit {
     this.formSubmitted = true;
     const {amount, targetAddress} = this.sendSolForm.value;
     const walletOwnerPublicKey = new PublicKey(this.wallet.address)
-    const res = await this.txInterceptService.sendSol(amount * LAMPORTS_PER_SOL , targetAddress ,walletOwnerPublicKey)
+    const res = await this._txInterceptService.sendSol(amount * LAMPORTS_PER_SOL , targetAddress ,walletOwnerPublicKey)
     this.formSubmitted = false;
   }
 }

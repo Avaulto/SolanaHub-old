@@ -24,9 +24,9 @@ export class StakeAccountBoxComponent implements OnInit {
   public showAccountList: boolean = false;
   public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
     switchMap(async (wallet) => {
-      const stakeAccounts = await this.solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
+      const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
       const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-        const {shortAddr,addr, balance,state} = await this.solanaUtilsService.extendStakeAccount(acc)
+        const {shortAddr,addr, balance,state} = await this._solanaUtilsService.extendStakeAccount(acc)
         let selectable: boolean = false;
         // remove account that have less then 2sol - marinade program not support
         if(balance > 1 && state == 'active'){
@@ -42,10 +42,9 @@ export class StakeAccountBoxComponent implements OnInit {
     distinctUntilChanged()
   )
   constructor(
-    private solanaUtilsService: SolanaUtilsService,
-    private txInterceptService: TxInterceptService,
+    private _solanaUtilsService: SolanaUtilsService,
+    private _txInterceptService: TxInterceptService,
     private _walletStore: WalletStore,
-    private utilsService: UtilsService,
     private toasterService:ToasterService
   ) { }
 
@@ -68,7 +67,7 @@ export class StakeAccountBoxComponent implements OnInit {
     try {
       const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(accountPK);
       const txIns: Transaction = depositAccount.transaction
-      const res = await this.txInterceptService.sendTx([txIns], walletOwner);
+      const res = await this._txInterceptService.sendTx([txIns], walletOwner);
       
     } catch (error) {
       const toasterMessage: toastData = {

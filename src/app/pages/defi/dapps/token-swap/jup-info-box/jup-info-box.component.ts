@@ -19,12 +19,12 @@ export class JupInfoBoxComponent implements OnInit {
   public jupInfo: JupiterStats = {} as JupiterStats;
   public showLoader = true;
   constructor(
-    private apiService: ApiService,
-    private utils: UtilsService
+    private _apiService: ApiService,
+    private _utilsService: UtilsService
     ) { }
 
   ngOnInit() {
-    this.apiService.get('https://cache.jup.ag/stats/day').pipe(this.utils.isNotNull).subscribe((stats: JupiterStats) => 
+    this._apiService.get('https://cache.jup.ag/stats/day').pipe(this._utilsService.isNotNull).subscribe((stats: JupiterStats) => 
     { 
       this.showLoader = false;
       stats.lastXVolumeInUSD = Number(stats.lastXVolumeInUSD).toLocaleString()

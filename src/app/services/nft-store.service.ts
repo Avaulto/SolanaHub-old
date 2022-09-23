@@ -98,7 +98,7 @@ export class NftStoreService {
       const extendedNFT = {...magicEdenNfts, ...nft};
       return extendedNFT
     });
-    console.log(extendNFTdata,nfts ,magicEdenNfts)
+    console.log(extendNFTdata)
     this.myNfts.next(nfts);
     return nfts
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));

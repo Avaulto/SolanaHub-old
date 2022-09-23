@@ -13,7 +13,7 @@ export class AssetsBalanceComponent implements OnInit {
   @Input() title: string; 
   @Input() assets: Asset[]
 
-  constructor(private utils: UtilsService, private navCtrl: NavController) { }
+  constructor(private _utilsService: UtilsService, private navCtrl: NavController) { }
 
   ngOnInit() {}
   send(asset: Asset){
