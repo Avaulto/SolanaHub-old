@@ -80,7 +80,7 @@ export class StakeComponent implements OnInit {
   private async _preSelectValidator(validatorVoteKey:string){
     const validatorsList = await lastValueFrom(this._solanaUtilsService.getValidatorData());
     const getSelectedValidator = validatorsList.filter(validator => validator.vote_identity == validatorVoteKey)[0];
-   this.selectedValidator  = getSelectedValidator;
+   this.setSelectedValidator(getSelectedValidator);
   }
 
   public setSelectedValidator(validator: ValidatorData):void {

@@ -85,7 +85,8 @@ export class SolanaUtilsService {
             wizScore: validator.wiz_score,
             commission: validator.commission,
             apy_estimate: validator.apy_estimate,
-            uptime: validator.uptime
+            uptime: validator.uptime,
+            extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
           }
         })
         this.validatorsData.next(filteredValidators);
