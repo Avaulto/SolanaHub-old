@@ -22,7 +22,6 @@ export class NftBurnComponent implements OnInit {
 
   ngOnInit() { }
   async burnNft() {
-    console.log(this.walletOwner,this.mintAddressPK)
     const tokenAccountPubkey = await (await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK));
     const walletOwner = this.walletOwner;
     const mintAdress = this.mintAddressPK;

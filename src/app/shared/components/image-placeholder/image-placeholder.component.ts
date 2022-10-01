@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ImagePlaceholderComponent implements OnInit {
   @Input() imagePath: string;
-  public hideSkelaton: boolean;
+  public showSkelaton: boolean = true;
   constructor() { }
 
   ngOnInit() {}

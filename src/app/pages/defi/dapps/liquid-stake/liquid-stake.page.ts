@@ -19,10 +19,26 @@ export class LiquidStakePage implements OnInit {
   public marinade: Marinade;
   public marinadeInfo;  
   public wallet;
-  public stakeAccountsLength: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
+  public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
+    this._utilService.isNotNull,
+    this._utilService.isNotUndefined,
     switchMap(async (wallet) => {
-      const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
-      return stakeAccounts.length
+      if(wallet){
+        const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
+        const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+          const {shortAddr,addr, balance,state} = await this._solanaUtilsService.extendStakeAccount(acc)
+          let selectable: boolean = false;
+          // remove account that have less then 2sol - marinade program not support
+          if(balance > 1 && state == 'active'){
+            selectable = true
+          }
+          return { name: shortAddr, addr, selectable, extraData: {balance, state, selectable} };
+        })
+        const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+        return extendStakeAccountRes;
+      }else{
+        return null
+      }
     }),
     //  filter((res: any[]) => res.length > 0),
     distinctUntilChanged()

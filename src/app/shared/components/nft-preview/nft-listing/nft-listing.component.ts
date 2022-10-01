@@ -47,7 +47,6 @@ export class NftListingComponent implements OnInit {
 
 
   async ngOnInit() {
-    console.log(this.walletOwner,this.mintAddressPK)
     this._initFormSetup();
     this.listNftForm.controls.expiry.valueChanges.subscribe(val => {
       if (val == '') {
@@ -92,8 +91,6 @@ export class NftListingComponent implements OnInit {
     const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftListingCancel(listInfo)
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
-    // const txn2 = Transaction.from(Buffer.from(txIns.tx))
-    console.log(txn, txIns)
     this._txInterceptService.sendTx([txn], walletOwner)
   }
 }

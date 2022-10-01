@@ -1,59 +1,61 @@
 <ion-grid>
-  <!-- {{loaderService.isLoading | async}} -->
-  <app-loader *ngIf="!(stakeAccounts$ | async)"></app-loader>
-  <!-- <ion-row *ngIf="(stakeAccounts | async)?.length == 0" class="ion-text-capitalize ion-align-items-center ion-justify-content-between">
-  no stake account
-</ion-row> -->
-  <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
-    *ngFor="let account of stakeAccounts$ | async">
-    <div class="flex-item-center">
-      <div class="table-icon">
-        <ion-img [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
+  <ng-container *ngIf="wallet; else elseTemplate">
+    <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
+      *ngFor="let account of stakeAccounts$ | async">
+      <div class="flex-item-center">
+        <div class="table-icon">
+          <ion-img [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
+        </div>
+        <div class="validator-info heading-6">
+          {{account?.validatorData?.name || 'name not found'}} <br>
+          <span class="sub">
+            fee: {{account?.validatorData?.commission}}% uptime: {{account?.validatorData?.uptime}}%
+          </span>
+        </div>
       </div>
-      <div class="validator-info heading-6">
-        {{account?.validatorData?.name || 'name not found'}} <br>
-        <span class="sub">
-          fee: {{account?.validatorData?.commission}}% uptime: {{account?.validatorData?.uptime}}%
+
+      <div class="sub">
+        {{account?.shortAddr}}
+      </div>
+      <div class="sub">
+        {{account?.balance}}
+      </div>
+      <div>
+        <span [ngSwitch]="account.state">
+          <p *ngSwitchCase="'activating'">
+            <ion-icon [tooltip]="'activating'" name="hourglass-outline"></ion-icon>
+          </p>
+          <p *ngSwitchCase="'deactivating'">
+            <ion-icon [tooltip]="'deactivating'" name="hourglass-outline"></ion-icon>
+          </p>
+          <p *ngSwitchCase="'active'">
+            <ion-icon [tooltip]="'active'" name="checkmark-done-outline"></ion-icon>
+          </p>
+          <p *ngSwitchCase="'inactive'">
+            <ion-icon [tooltip]="'inactive'" name="alert-circle-outline"></ion-icon>
+          </p>
+          <p *ngSwitchDefault>
+            <ion-icon name="close-outline"></ion-icon>
+          </p>
         </span>
       </div>
-    </div>
 
-    <div class="sub">
-      {{account?.shortAddr}}
-    </div>
-    <div class="sub">
-      {{account?.balance}}
-    </div>
-    <div>
-      <span [ngSwitch]="account.state">
-        <p *ngSwitchCase="'activating'">
-          <ion-icon [tooltip]="'activating'" name="hourglass-outline"></ion-icon>
-        </p>
-        <p *ngSwitchCase="'deactivating'">
-          <ion-icon [tooltip]="'deactivating'" name="hourglass-outline"></ion-icon>
-        </p>
-        <p *ngSwitchCase="'active'">
-          <ion-icon [tooltip]="'active'" name="checkmark-done-outline"></ion-icon>
-        </p>
-        <p *ngSwitchCase="'inactive'">
-          <ion-icon [tooltip]="'inactive'" name="alert-circle-outline"></ion-icon>
-        </p>
-        <p *ngSwitchDefault>
-          <ion-icon name="close-outline"></ion-icon>
-        </p>
-      </span>
-    </div>
+      <div style="text-align:right" [ngSwitch]="account.state">
+        <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">
+          unstake</ion-button>
+        <ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
+        <ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">
+          unstake
+        </ion-button>
+        <ion-button fill="outline" color="danger" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">withdraw
+          stake</ion-button>
 
-    <div style="text-align:right" [ngSwitch]="account.state">
-      <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">
-        unstake</ion-button>
-      <ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
-      <ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">unstake
-      </ion-button>
-      <ion-button fill="outline" color="danger" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">withdraw
-        stake</ion-button>
+      </div>
+    </ion-row>
 
-    </div>
-  </ion-row>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <app-wallet-not-connected-state></app-wallet-not-connected-state>
+  </ng-template>
 
 </ion-grid>

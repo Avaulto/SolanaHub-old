@@ -5,7 +5,7 @@ import { MarinadeResult } from '@marinade.finance/marinade-ts-sdk/dist/src/marin
 import { PublicKey, Transaction } from '@solana/web3.js';
 import bn from 'bn.js'
 import { SolanaUtilsService,TxInterceptService , ToasterService, UtilsService } from 'src/app/services';
-import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap } from 'rxjs';
+import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
 import { toastData,StakeAccountExtended } from 'src/app/models';
 
 import Plausible from 'plausible-tracker'
@@ -20,27 +20,30 @@ const { trackEvent } = Plausible();
 export class StakeAccountBoxComponent implements OnInit {
   @Input() marinadeInfo: {msolRatio};
   @Input() marinade: Marinade;
+  @Input() stakeAccounts: Observable<StakeAccountExtended[]>
   public selectedStakeAccount: StakeAccountExtended;
   public showAccountList: boolean = false;
-  public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
-    switchMap(async (wallet) => {
-      const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
-      const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-        const {shortAddr,addr, balance,state} = await this._solanaUtilsService.extendStakeAccount(acc)
-        let selectable: boolean = false;
-        // remove account that have less then 2sol - marinade program not support
-        if(balance > 1 && state == 'active'){
-          selectable = true
-        }
-        console.log(selectable)
-        return { name: shortAddr, addr, selectable, extraData: {balance, state, selectable} };
-      })
-      const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-      return extendStakeAccountRes;
-    }),
-    // filter((res: any[]) => res.filter(item => item.balance > 2)),
-    distinctUntilChanged()
-  )
+  // public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
+  //   tap(wallet => wallet ? wallet : null),
+  //   switchMap(async (wallet) => {
+      
+  //     const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
+  //     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+  //       const {shortAddr,addr, balance,state} = await this._solanaUtilsService.extendStakeAccount(acc)
+  //       let selectable: boolean = false;
+  //       // remove account that have less then 2sol - marinade program not support
+  //       if(balance > 1 && state == 'active'){
+  //         selectable = true
+  //       }
+  //       console.log(selectable)
+  //       return { name: shortAddr, addr, selectable, extraData: {balance, state, selectable} };
+  //     })
+  //     const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+  //     return extendStakeAccountRes;
+  //   }),
+  //   // filter((res: any[]) => res.filter(item => item.balance > 2)),
+  //   distinctUntilChanged()
+  // )
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,

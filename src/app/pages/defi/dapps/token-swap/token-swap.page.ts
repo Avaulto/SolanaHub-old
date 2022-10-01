@@ -76,9 +76,14 @@ export class TokenSwapPage implements OnInit {
     })
 
     this._walletStore.anchorWallet$.pipe(this._utilService.isNotNull).subscribe(wallet => {
-      this.wallet = wallet
-      this._initJup()
-      this._fetchTokenList()
+      if(wallet){
+
+        this.wallet = wallet
+        this._initJup()
+        this._fetchTokenList()
+      }else{
+        this.wallet = null;
+      }
     })
   }
 
@@ -202,7 +207,6 @@ export class TokenSwapPage implements OnInit {
     this.swapForm.controls.inputToken.setValue(tempOutput);
   }
   async calcRoutes() {
-    console.log('calc routes fn')
     this.outputAmount = null
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;

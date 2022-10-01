@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NftStoreService } from 'src/app/services/nft-store.service';
-import { firstValueFrom, map, mergeMap, Observable, switchMap } from 'rxjs';
+import { filter, firstValueFrom, map, mergeMap, Observable, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
 import { LoaderService, UtilsService } from 'src/app/services';
 
@@ -13,7 +13,14 @@ import { LoaderService, UtilsService } from 'src/app/services';
   styleUrls: ['./nft-gallery.page.scss'],
 })
 export class NftGalleryPage implements OnInit {
-  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(switchMap(async wallet => await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())))
+  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+    switchMap(async wallet => {
+      if (wallet) {
+        return await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())
+      } else {
+        return null;
+      }
+    }))
 
   // public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
   //   this.util.isNotNull,
@@ -24,10 +31,10 @@ export class NftGalleryPage implements OnInit {
   constructor(
     private _walletStore: WalletStore,
     private _nftStore: NftStoreService,
-    public loaderService:LoaderService,
-    private _utilsService:UtilsService
+    public loaderService: LoaderService,
+    private _utilsService: UtilsService
   ) { }
-  
+
   async ngOnInit() {
     // const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     // this._nftStore.createNft()

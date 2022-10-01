@@ -83,8 +83,15 @@
             </ion-row>
           </div>
           <ion-row class="ion-justify-content-center" id="swap-btn">
-            <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid">Swap
-            </ion-button>
+            <ng-container *ngIf="wallet; else elseTemplate">
+              <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid">Swap
+              </ion-button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+            </ng-template>
+
+          
           </ion-row>
         </form>
         <app-swap-info *ngIf="(swapDetailObs$ | async) != null" [swapDetail]="swapDetailObs$"></app-swap-info>

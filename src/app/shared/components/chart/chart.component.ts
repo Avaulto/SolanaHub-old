@@ -21,20 +21,9 @@ export class ChartComponent implements OnChanges {
   constructor(private dataAggregator: DataAggregatorService, private utilsService:UtilsService) { }
   ngOnChanges(changes: SimpleChanges): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    console.log(this.pairOne, this.pairTwo);
-    // this.pairOne = this.pairNameTransform(this.pairOne);
-    // this.pairTwo = this.pairNameTransform(this.pairTwo);
     this.getChartData()
   }
 
-  private pairNameTransform(pairName: string): string{
-    if(pairName.indexOf('usd') > -1){
-      return 'usd';
-    }else{
-      return pairName;
-    }
-  }
   public onChangeDate(event) {
     this.chartDuration = event.detail.value
     this.getChartData();
@@ -43,10 +32,10 @@ export class ChartComponent implements OnChanges {
     this.lines ? this.lines.destroy() : null
     try {
       let chartDataOne, chartDataTwo;
-
-        // get chart data & remove nulls
-         chartDataOne = await firstValueFrom(this.dataAggregator.getCoinChartHistory(this.pairOne, 'usd', this.chartDuration))
-         chartDataTwo = await firstValueFrom(this.dataAggregator.getCoinChartHistory(this.pairTwo, 'usd', this.chartDuration))
+      
+      // get chart data & remove nulls
+      chartDataOne = await firstValueFrom(this.dataAggregator.getCoinChartHistory(this.pairOne, 'usd', this.chartDuration))
+      chartDataTwo = await firstValueFrom(this.dataAggregator.getCoinChartHistory(this.pairTwo, 'usd', this.chartDuration))
 
          const sortedPriceChart = chartDataOne[1].filter(n => n);
          const sortedChartDataTwo = chartDataTwo[1].filter(n => n);
@@ -55,7 +44,6 @@ export class ChartComponent implements OnChanges {
          this.currentPricePair =  this.utilsService.shortenNum(ratio[ratio.length - 1])
          this.createLineChart(chartDataOne[0],ratio);
     } catch (error) {
-      this.hasPairData = false;
       console.warn(error)
     }
     // .subscribe({
@@ -82,7 +70,6 @@ export class ChartComponent implements OnChanges {
     // })
   }
   private createLineChart(labels, data) {
-
     this.lines = new Chart(this.lineChart.nativeElement, {
       type: 'line',
       options: {

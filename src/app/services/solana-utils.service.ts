@@ -30,10 +30,10 @@ export class SolanaUtilsService {
   private validatorsData: BehaviorSubject<ValidatorData[]> = new BehaviorSubject([] as ValidatorData[]);
   public currentValidatorData = this.validatorsData.asObservable();
   constructor(
-    private apiService: ApiService,
-    private toasterService: ToasterService,
+    private _apiService: ApiService,
+    private _toasterService: ToasterService,
     private _connectionStore: ConnectionStore,
-    private utilService: UtilsService,
+    private _utilService: UtilsService,
     public popoverController: PopoverController,
   ) {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
@@ -66,7 +66,7 @@ export class SolanaUtilsService {
 
   private _formatErrors(error: any) {
     console.log('my err', error)
-    this.toasterService.msg.next({
+    this._toasterService.msg.next({
       message: error.message,
       icon: 'alert-circle-outline',
       segmentClass: "toastError",
@@ -74,7 +74,7 @@ export class SolanaUtilsService {
     return throwError(error);
   }
   public getValidatorData(vote_identity: string = ''): Observable<ValidatorData[]> {
-    return this.apiService.get(`https://api.stakewiz.com/validators/${vote_identity}`).pipe(
+    return this._apiService.get(`https://api.stakewiz.com/validators/${vote_identity}`).pipe(
       map((validators) => {
         const filteredValidators: ValidatorData[] = validators.map(validator => {
           return {
@@ -96,7 +96,7 @@ export class SolanaUtilsService {
     );
   }
   public getAvgApy() {
-    return this.apiService.get(`https://api.stakewiz.com/cluster_stats`).pipe(
+    return this._apiService.get(`https://api.stakewiz.com/cluster_stats`).pipe(
       map((clusterInfo) => {
         const { avg_apy } = clusterInfo;
 
@@ -162,8 +162,8 @@ export class SolanaUtilsService {
     const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey)[0]
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
-      shortAddr: this.utilService.addrUtil(addr).addrShort,
-      balance: this.utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
+      shortAddr: this._utilService.addrUtil(addr).addrShort,
+      balance: this._utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
       state,
       validatorData
     }
@@ -172,18 +172,18 @@ export class SolanaUtilsService {
 
   public async getSupply(): Promise<{ circulating: any, noneCirculating: any }> {
     const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true, commitment: "finalized" });
-    const circulating = this.utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)
-    const noneCirculating = this.utilService.numFormater(supply.value.nonCirculating / LAMPORTS_PER_SOL)
+    const circulating = this._utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)
+    const noneCirculating = this._utilService.numFormater(supply.value.nonCirculating / LAMPORTS_PER_SOL)
 
     return { circulating, noneCirculating }
   }
   public async getStake(): Promise<{ activeStake, delinquentStake }> {
     const stakeInfo = await this.connection.getVoteAccounts()
-    const activeStake = this.utilService.numFormater(stakeInfo.current.reduce(
+    const activeStake = this._utilService.numFormater(stakeInfo.current.reduce(
       (previousValue, currentValue) => previousValue + currentValue.activatedStake,
       0
     ) / LAMPORTS_PER_SOL)
-    const delinquentStake = this.utilService.numFormater(stakeInfo.delinquent.reduce(
+    const delinquentStake = this._utilService.numFormater(stakeInfo.delinquent.reduce(
       (previousValue, currentValue) => previousValue + currentValue.activatedStake,
       0
     ) / LAMPORTS_PER_SOL)
@@ -196,7 +196,7 @@ export class SolanaUtilsService {
     return tps
   }
   public getEpochInfo(): Observable<StakeWizEpochInfo> {
-    return this.apiService.get(`https://api.stakewiz.com/epoch_info`).pipe(
+    return this._apiService.get(`https://api.stakewiz.com/epoch_info`).pipe(
       map((data: StakeWizEpochInfo) => {
         const { remaining_seconds, elapsed_seconds, duration_seconds } = data
         const days = Math.floor(remaining_seconds / 86400);
@@ -226,7 +226,7 @@ export class SolanaUtilsService {
       return walletHistory;
     } catch (error) {
       console.error(error)
-      this.toasterService.msg.next({ message: 'failed to retrieve transaction history', icon: '', segmentClass: 'toastError' })
+      this._toasterService.msg.next({ message: 'failed to retrieve transaction history', icon: '', segmentClass: 'toastError' })
     }
   }
 

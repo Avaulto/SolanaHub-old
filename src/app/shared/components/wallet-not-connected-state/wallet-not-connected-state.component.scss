@@ -1,10 +1,12 @@
-
+:host{
+    width: 100%;
+}
 ion-row{
     height: 100%;
     flex-direction: column;
 }
 p{
-    font-size: 18px;
+    font-size: 14px;
     text-transform: capitalize;
 }
 app-wallet-connect{

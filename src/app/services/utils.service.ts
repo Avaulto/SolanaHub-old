@@ -49,6 +49,7 @@ export class UtilsService {
     }).format(number)
   }
   isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
+  isNotUndefined = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== undefined));
   // generateUUID() {
   //   return uuidv4();
   // }

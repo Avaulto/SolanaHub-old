@@ -13,6 +13,7 @@ import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 import {
   DataBoxComponent,
   LogoComponent,
+  WalletNotConnectedStateComponent,
   GoBackBtnComponent,
   WalletConnectComponent,
   WalletAdapterOptionsComponent,
@@ -65,7 +66,8 @@ import { CustomInterceptor } from "../services";
     NftBurnComponent,
     NftListingComponent,
     NftSendComponent,
-    ChartComponent
+    ChartComponent,
+    WalletNotConnectedStateComponent
   ],
   imports: [
     CommonModule,
@@ -111,7 +113,8 @@ import { CustomInterceptor } from "../services";
     NftBurnComponent,
     NftListingComponent,
     NftSendComponent,
-    ChartComponent
+    ChartComponent,
+    WalletNotConnectedStateComponent
   ]
 })
 export class SharedModule {}

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { ApiService, UtilsService } from 'src/app/services';
 
 interface JupiterStats {
   lastXVolumeInUSD: string;
   lastXTransactionsCount: string;
   lastXAddressesCount: string;
-  lastXRoutingsCount: string;
-  volumeInUSD: [],
+  x: string;
+  lastXTopBuy?:any;
+  totalVolumeInUSD: string
 
 }
 @Component({
@@ -16,23 +17,26 @@ interface JupiterStats {
   styleUrls: ['./jup-info-box.component.scss'],
 })
 export class JupInfoBoxComponent implements OnInit {
-  public jupInfo: JupiterStats = {} as JupiterStats;
-  public showLoader = true;
+  public jupInfo: Observable<JupiterStats> = this._apiService.get('https://cache.jup.ag/stats/day').pipe(shareReplay(1),this._utilsService.isNotNull)
+
+  // public jupInfo: JupiterStats = {} as JupiterStats;
   constructor(
     private _apiService: ApiService,
     private _utilsService: UtilsService
     ) { }
 
   ngOnInit() {
-    this._apiService.get('https://cache.jup.ag/stats/day').pipe(this._utilsService.isNotNull).subscribe((stats: JupiterStats) => 
-    { 
-      this.showLoader = false;
-      stats.lastXVolumeInUSD = Number(stats.lastXVolumeInUSD).toLocaleString()
-      stats.lastXTransactionsCount = stats.lastXTransactionsCount.toLocaleString();
-      stats.lastXAddressesCount = stats.lastXAddressesCount.toLocaleString();
-      stats.lastXRoutingsCount = stats.lastXRoutingsCount.toLocaleString();
-      this.jupInfo = stats
-    })
+    //this._apiService.get('https://cache.jup.ag/stats/day').pipe(this._utilsService.isNotNull)
+    // .subscribe((stats: JupiterStats) => 
+    // { 
+    //   this.showLoader = false;
+    //   console.log( typeof stats.totalVolumeInUSD);
+    //   stats.totalVolumeInUSD = stats.totalVolumeInUSD.toLocaleString();
+    //   stats.lastXTransactionsCount = stats.lastXTransactionsCount.toLocaleString();
+    //   stats.lastXAddressesCount = stats.lastXAddressesCount.toLocaleString();
+      
+    //   this.jupInfo = stats
+    // })
   }
 
 }

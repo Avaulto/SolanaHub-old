@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { faPlugCircleBolt } from '@fortawesome/free-solid-svg-icons';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 
 @Component({
   selector: 'app-wallet-not-connected-state',
@@ -7,8 +8,10 @@ import { faPlugCircleBolt } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./wallet-not-connected-state.component.scss'],
 })
 export class WalletNotConnectedStateComponent implements OnInit {
-  public plugWalletIcon = faPlugCircleBolt
-  constructor() { }
+  @Input() showBtn: boolean = false;
+  public plugWalletIcon = faPlugCircleBolt;
+  readonly isReady$ = this._walletStore.connected$;
+  constructor(private _walletStore:WalletStore) { }
 
   ngOnInit() {}
 

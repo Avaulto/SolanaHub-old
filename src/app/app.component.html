@@ -5,12 +5,12 @@
         <app-side-menu></app-side-menu>
       </ion-col>
       <ion-col sizeLg="10" size="12">
-        <ng-container *ngIf="(isReady$ | async) || this.router.url.indexOf('home') > -1; else notConnected">
-          <ion-router-outlet></ion-router-outlet>
+        <ion-router-outlet></ion-router-outlet>
+        <!-- <ng-container *ngIf="(isReady$ | async) || this.router.url.indexOf('home') > -1; else notConnected">
         </ng-container>
         <ng-template #notConnected>
           <app-wallet-not-connected-state></app-wallet-not-connected-state>
-        </ng-template>
+        </ng-template> -->
       </ion-col>
     </ion-row>
     <!-- <ion-col sizeLg="0" size="12"> -->

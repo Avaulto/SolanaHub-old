@@ -57,9 +57,7 @@ export class NftPreviewComponent implements OnInit {
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data));
     txn.instructions[0].keys[0].isSigner= false
     txn.instructions[0].keys[1].isSigner= false
-    console.log(txn)
     this.txInterceptService.sendTx([txn], this.walletOwner)
-    console.log(cancelSellIns)
   }
   async presentSendPopup(e: Event) {
     const popover = await this.popoverController.create({

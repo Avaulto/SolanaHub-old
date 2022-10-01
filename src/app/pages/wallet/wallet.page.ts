@@ -13,31 +13,35 @@ import { ApiService, UtilsService, DataAggregatorService, SolanaUtilsService, Nf
 })
 export class WalletPage implements OnInit, OnDestroy {
   public walletExtended: Observable<Asset> = this._walletStore.anchorWallet$.pipe(
-    filter(wallet => wallet != undefined),
     this._utilsService.isNotNull,
     shareReplay(1),
     mergeMap(async wallet => {
-      let asset: Asset = {
-        name: 'solana',
-        tokens: [],
-        nfts: []
-      };
-      // get solPrice
-      asset.coinData = await firstValueFrom(this._dataAggregator.getCoinData(asset.name));
-      asset.tokens =  await this._getTokens(wallet.publicKey);
-      asset.nfts = (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3)
+      if (wallet) {
+        let asset: Asset = {
+          name: 'solana',
+          tokens: [],
+          nfts: []
+        };
+        // get solPrice
+        asset.coinData = await firstValueFrom(this._dataAggregator.getCoinData(asset.name));
+        asset.tokens = await this._getTokens(wallet.publicKey);
+        asset.nfts = (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3)
 
 
-      // assign wallet logged
-      asset = await this._setWallet(wallet, asset)
+        // assign wallet logged
+        asset = await this._setWallet(wallet, asset)
 
-      // calc usd & sol value
-      asset = this._evalutePortfolio(asset);
-      return asset;
+        // calc usd & sol value
+        asset = this._evalutePortfolio(asset);
+        return asset;
+      } else {
+        return null
+      }
     },
     ), shareReplay(1))
 
   public walletTotalValue = { usdValue: 0, solValue: 0 }
+  readonly isReady$ = this._walletStore.connected$;
   constructor(
     private _utilsService: UtilsService,
     private _nftStore: NftStoreService,
@@ -45,13 +49,18 @@ export class WalletPage implements OnInit, OnDestroy {
     private _solanaUtilsService: SolanaUtilsService,
     private _walletStore: WalletStore,
 
+
   ) { }
 
   public ngOnInit() {
-
+    this.isReady$.subscribe(val => {
+      if (!val) {
+        // this.walletExtended = null;
+      }
+    })
   }
 
-  
+
   private async _getTokens(publicKey: PublicKey): Promise<Asset[]> {
     const tokens = [];
     // fetch tokens by owner

@@ -23,9 +23,16 @@
 
     <ion-row class="ion-justify-content-center">
       <!-- <app-loader></app-loader> -->
-      <ion-button (click)="submitSendSol()" [disabled]="formSubmitted || sendSolForm.invalid" class="ion-text-capitalize">
-        submit
-      </ion-button>
+      <ng-container *ngIf="wallet; else elseTemplate">
+        <ion-button (click)="submitSendSol()" [disabled]="formSubmitted || sendSolForm.invalid" class="ion-text-capitalize">
+          submit
+        </ion-button>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+      </ng-template>
+     
+
     </ion-row>
   </form>
 </ion-grid>

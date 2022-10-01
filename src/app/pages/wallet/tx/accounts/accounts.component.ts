@@ -35,9 +35,12 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     this._updateStakeAccounts(this.wallet.publicKey)
   }
   public async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    console.log(this.wallet)
-    const latestStakeAccounts = await this._getStakeAccount(this.wallet.publicKey);
-    this.stakeAccounts.next(latestStakeAccounts);
+    try {
+      const latestStakeAccounts = await this._getStakeAccount(this.wallet.publicKey);
+      this.stakeAccounts.next(latestStakeAccounts);
+    } catch (error) {
+      console.warn(error)
+    }
   }
   public async deactiveStake(stakeAccount: string): Promise<void> {
     await this._txInterceptService.deactivateStakeAccount(stakeAccount, this.wallet.publicKey);
@@ -48,10 +51,8 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     this._txInterceptService.withdrawStake(stakeAccountAddress, this.wallet.publicKey, stakeBalance)
   }
   private async _getStakeAccount(publicKey: PublicKey): Promise<StakeAccountExtended[]> {
-    console.log(publicKey)
     const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(publicKey);
 
-    console.log(stakeAccounts)
     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
       return await this._solanaUtilsService.extendStakeAccount(acc)
     })

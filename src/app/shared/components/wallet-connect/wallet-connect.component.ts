@@ -32,6 +32,7 @@ export class WalletConnectComponent implements OnInit {
   }))
   public walletPublicKey: Observable<string> = this._walletStore.anchorWallet$.pipe(
     this._utilsService.isNotNull,
+    this._utilsService.isNotUndefined,
     distinctUntilChanged(),
     map(wallet => this._utilsService.addrUtil(wallet.publicKey.toBase58()).addrShort)
   )

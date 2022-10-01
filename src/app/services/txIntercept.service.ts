@@ -45,7 +45,6 @@ export class TxInterceptService {
   }
   // catch error
   private _formatErrors(error: any) {
-    console.log(error);
     this.toasterService.msg.next({
       message: error.message,
       icon: 'alert-circle-outline',
@@ -197,7 +196,7 @@ export class TxInterceptService {
         this.sendTx(stake, walletOwnerPk, [stakeAcc])
       }
     } catch (error) {
-      console.log(error)
+      console.warn(error)
     }
 
   }
@@ -257,7 +256,7 @@ export class TxInterceptService {
       })
 
     } catch (error) {
-      console.log(error)
+      console.warn(error)
       // onMsg('transaction failed', 'error')
     }
   }

@@ -50,8 +50,15 @@
       <ion-range formControlName="monthLockuptime" [min]="0" [max]="32"  [pin]="true" [ticks]="true" [snaps]="true"></ion-range>
     </ion-row>
     <ion-row class="ion-justify-content-center">
-      <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"
+      <ng-container *ngIf="wallet; else elseTemplate">
+        <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"
         class="ion-text-capitalize">stake</ion-button>
+        <!-- {{wallet.tokens}} -->
+      </ng-container>
+      <ng-template #elseTemplate>
+        <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+      </ng-template>
+     
     </ion-row>
   </form>
   <app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc>

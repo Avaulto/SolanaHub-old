@@ -38,9 +38,12 @@ export class StakeSolBoxComponent implements OnInit {
         this.solBalance = this._utilsService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
         const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
         const marinadeSPL = "mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So";
-        const msolAccount = splAccounts.find(account => account.mintAddress == marinadeSPL)
-        this.mSOLBalance = msolAccount.balance < 0.01 ? 0 : msolAccount.balance;
-        console.log(this.mSOLBalance,msolAccount)
+        const msolAccount = splAccounts.find(account => account.mintAddress == marinadeSPL);
+        if(msolAccount){
+          this.mSOLBalance = msolAccount?.balance < 0.01 ? 0 : msolAccount.balance;
+        }else{
+          this.mSOLBalance = 0;
+        }
       }
     })
   }

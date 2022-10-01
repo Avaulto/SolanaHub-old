@@ -1,44 +1,33 @@
 
-<!-- <app-data-box title="Trading Volume">
-  <ion-col  size="12">
-    <h2 class="heading-2">
-      24H data history
-    </h2>
-   </ion-col>
-</app-data-box> -->
-
 <ion-row class="ion-justify-content-between ion-text-capitalize">
   <ion-col  size="12">
-   <h2 class="heading-2">
-     24H data history
-   </h2>
   </ion-col>
   <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+    <div class="heading-3">
+     History data
+    </div>
+          <div class="heading-2">
+        1 Day
+    </div>
+</ion-col>
+  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
       <div class="heading-3">
-        Trading Volume
+        TOP buy token
       </div>
-      <app-loader *ngIf="showLoader"></app-loader>
+      <app-loader *ngIf="!(jupInfo | async)"></app-loader>
       <div class="heading-2">
-          {{jupInfo.lastXVolumeInUSD}}
+          {{(jupInfo | async)?.lastXTopBuy[0].symbol.toLocaleString()}}
       </div>
       <!-- <div class="heading-5">=  ${{(jupInfo?.).toLocaleString()}}</div> -->
   </ion-col>
-  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
-      <div class="heading-3">
-        Routings Used
-      </div>
-      <app-loader *ngIf="showLoader"></app-loader>
-            <div class="heading-2">
-          {{jupInfo.lastXRoutingsCount}}
-      </div>
-  </ion-col>
+
   <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
       <div class="heading-3">
         Total Transactions
       </div> 
-      <app-loader *ngIf="showLoader"></app-loader>    
-        <div class="heading-2">
-        {{jupInfo.lastXTransactionsCount}}
+      <app-loader *ngIf="!(jupInfo | async)"></app-loader>
+      <div class="heading-2">
+        {{(jupInfo | async)?.lastXTransactionsCount.toLocaleString()}}
       </div>
       <!-- <div class="heading-4">validators</div> -->
   </ion-col>
@@ -46,9 +35,9 @@
       <div class="heading-3">
         Unique Wallets
       </div> 
-      <app-loader *ngIf="showLoader"></app-loader>
+      <app-loader *ngIf="!(jupInfo | async)"></app-loader>
       <div class="heading-2">
-        {{jupInfo.lastXAddressesCount}}
+        {{(jupInfo | async)?.lastXAddressesCount.toLocaleString()}}
       </div>
   </ion-col>
 
