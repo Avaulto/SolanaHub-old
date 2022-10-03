@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { EpochInfo, LAMPORTS_PER_SOL, RpcResponseAndContext, Supply, VoteAccountStatus } from '@solana/web3.js';
-import { forkJoin, map, Observable } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay } from 'rxjs';
 import { CoinData } from 'src/app/models';
 import { ApiService, LoaderService, UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
@@ -26,7 +26,7 @@ export class HomePage implements OnInit, OnDestroy {
     supply: this._solanaUtilsService.getSupply(),
     TPS: this._solanaUtilsService.getTPS(),
     epochInfo: this._solanaUtilsService.getEpochInfo()
-  }).pipe(map((data) => {
+  }).pipe(shareReplay(1), map((data) => {
     data.TPS = Math.trunc(data?.TPS)
     return data
   }))
