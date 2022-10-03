@@ -28,6 +28,7 @@ export class NftPreviewComponent implements OnInit {
   ) { }
   hideSkelaton: boolean = false;
   async ngOnInit() {
+    // console.log(this.nft)
     this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
 
     this.mintAddressPK = new PublicKey(this.nft.mintAddress)
@@ -52,7 +53,7 @@ export class NftPreviewComponent implements OnInit {
     const sellerAddress = this.walletOwner.toBase58()
     const tokenMint = this.mintAddressPK.toBase58()
     const expiry = '-1'
-    const cancelSellIns = { sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry };
+    // const cancelSellIns = { sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry };
     const txIns: { tx: any, txSigned: any } =  await this._nftStoreService.nftListingCancel({sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry})
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data));
     txn.instructions[0].keys[0].isSigner= false

@@ -6,7 +6,7 @@ import { Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -23,8 +23,8 @@ export class NftStoreService {
   protected magicEdenApiProxy = environment.magicEdenProxyAPI;
   protected metaplexApiProxy = environment.metaplexProxyAPI;
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
-  private myNfts: Subject<Nft[]> = new Subject();
-  public myNft$ = this.myNfts.asObservable();
+  // private myNfts: Subject<Nft[]> = new Subject();
+  // public myNft$ = this.myNfts.asObservable();
   constructor(
     private _walletStore: WalletStore,
     private _solanaUtilsService: SolanaUtilsService,
@@ -89,17 +89,19 @@ export class NftStoreService {
     const nfts: Nft[] = await getNFTsReq.json();
 
     const magicEdenNfts: Nft[] = await this.getMagicEdenOwnerNFTS(walletOwnerAddress);
-
+    // merge both data source
     const extendNFTdata = magicEdenNfts.map(nft => {
       const extendNFT = nfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
-      if(!extendNFT){
-        nfts.push(nft)
+      // console.log(extendNFT)
+      if(extendNFT){
+        return {...extendNFT, ...nft};
+      }else{
+        return nft;
       }
-      const extendedNFT = {...magicEdenNfts, ...nft};
-      return extendedNFT
+     
     });
-    this.myNfts.next(nfts);
-    return nfts
+    // this.myNfts.next(nfts);
+    return extendNFTdata
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
     // this._metaplex.use(walletAdapterIdentity(wallet));
     // const myNfts = await this._metaplex

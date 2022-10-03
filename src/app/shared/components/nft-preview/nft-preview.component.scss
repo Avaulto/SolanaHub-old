@@ -66,3 +66,12 @@ ion-card-content{
     text-transform: capitalize;
     text-align: center;
 }
+#ME-btn{
+    border-radius: 4px;
+    background: #e42575;
+    a{
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+    }
+}

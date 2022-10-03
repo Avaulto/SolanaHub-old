@@ -44,6 +44,9 @@
     <!-- <ion-button  fill="outline" *ngIf="nft.listStatus == 'listed'" (click)="nftListingCancel()">
       unlist
     </ion-button> -->
+    <ion-button id="ME-btn" color="pink" *ngIf="nft.listStatus == 'listed'">
+    <a [href]="'https://magiceden.io/item-details/'+ nft.mintAddress" target="_blank">view on ME</a>  
+    </ion-button>
     </ion-col>
   </ion-row>
   </ion-card-content>
