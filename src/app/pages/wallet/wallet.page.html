@@ -70,7 +70,7 @@
         </div>
         <ion-row id="nft-gallery-preview">
           <ng-container *ngIf="walletExtended | async as wallet; else elseTemplate">
-            <ion-col size="12" sizeLg="3.6" class="ion-margin-end ion-margin-bottom" *ngFor="let nft of wallet.nfts">
+            <ion-col size="12" sizeLg="4" *ngFor="let nft of wallet.nfts">
               <app-nft-preview [nft]="nft"></app-nft-preview>
             </ion-col>
           </ng-container>

@@ -105,6 +105,9 @@ ion-radio label {
     flex-wrap: wrap;
     display: flex;
     justify-content: space-around;
+    width: 234px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 
@@ -113,6 +116,18 @@ app-wallet-connect {
     margin: 0 auto;
 }
 
+#rpc-service {
+    text-align: center;
+    padding: 10px;
+    a{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    ion-img{
+        width: 100px;
+    }
+}
 .divider {
     height: 1px;
     background: rgba(132, 141, 164, 0.2);

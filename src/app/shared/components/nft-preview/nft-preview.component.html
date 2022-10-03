@@ -14,7 +14,7 @@
       <h5 class="heading-5">{{nft.name}}</h5>
       <a [href]="'https://solscan.io/token/'+ nft.mintAddress" target="_blank"><ion-icon name="link-outline"></ion-icon></a>
     </div>
-    <ion-card-title class="sub">{{nft.symbol}}</ion-card-title>
+    <ion-card-title style="height:16px" class="sub">{{nft.symbol}}</ion-card-title>
     <ion-accordion-group [ngStyle]="{'visibility': !nft?.attributes ? 'hidden' : ''}">
       <ion-accordion value="first">
         <ion-item id="attr-header" slot="header">
