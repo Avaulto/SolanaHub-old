@@ -41,6 +41,7 @@ export default async function GETAllOnwerNfts(request, response): Promise<Nft[]>
       }
       return nft
     } catch (error) {
+      return {} as Nft;
       console.warn(error)
     }
   }))

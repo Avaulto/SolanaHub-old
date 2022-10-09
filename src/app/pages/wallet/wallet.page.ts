@@ -30,7 +30,7 @@ export class WalletPage implements OnInit, OnDestroy {
         // get solPrice
         asset.coinData = await firstValueFrom(this._dataAggregator.getCoinData(asset.name));
         asset.tokens = await this._getTokens(wallet.publicKey);
-        asset.nfts = (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3)
+        // asset.nfts = (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3)
 
 
         // assign wallet logged

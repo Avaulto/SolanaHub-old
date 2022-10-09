@@ -8,7 +8,8 @@ export const environment = {
   solanaEnv: 'devnet',
   solanaCluster:'https://api.devnet.solana.com',
   magicEdenProxyAPI: 'https://dev.compact-defi.avaulto.com/api/ME-proxy?env=devnet',
-  metaplexProxyAPI: 'https://dev.compact-defi.avaulto.com/api/MP-proxy'
+  metaplexProxyAPI: 'https://dev.compact-defi.avaulto.com/api/MP-proxy',
+  HyperspaceKey:'',
 };
 
 /*
