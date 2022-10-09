@@ -6,7 +6,7 @@ import { Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -88,20 +88,20 @@ export class NftStoreService {
     const getNFTsReq = await fetch(uri)
     const nfts: Nft[] = await getNFTsReq.json();
 
-    // const magicEdenNfts: Nft[] = await this.getMagicEdenOwnerNFTS(walletOwnerAddress);
+    const magicEdenNfts: Nft[] = await this.getMagicEdenOwnerNFTS(walletOwnerAddress);
     // merge both data source
-    // const extendNFTdata = magicEdenNfts.map(nft => {
-    //   const extendNFT = nfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
-    //   // console.log(extendNFT)
-    //   if(extendNFT){
-    //     return {...extendNFT, ...nft};
-    //   }else{
-    //     return nft;
-    //   }
+    const extendNFTdata = magicEdenNfts.map(nft => {
+      const extendNFT = nfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
+      // console.log(extendNFT)
+      if(extendNFT){
+        return {...extendNFT, ...nft};
+      }else{
+        return nft;
+      }
      
-    // });
+    });
     // this.myNfts.next(nfts);
-    return nfts
+    return extendNFTdata
     // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
     // this._metaplex.use(walletAdapterIdentity(wallet));
     // const myNfts = await this._metaplex
