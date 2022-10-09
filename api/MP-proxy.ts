@@ -2,10 +2,10 @@ import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from "@solana/web3.js";
 import { Nft } from "src/app/models";
 import { Connection, clusterApiUrl } from '@solana/web3.js';
-import { environment } from "src/environments/environment";
 export default async function GETAllOnwerNfts(request, response): Promise<Nft[]> {
   const { env, walletAdress } = request.query;
-  const connection = new Connection(environment.solanaCluster)
+  const cluster = env == 'dev' ? 'https://api.devnet.solana.com' : 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d'
+  const connection = new Connection(cluster)
   const _metaplex = new Metaplex(connection);
   async function getMetaData(uri: string): Promise<any> {
     let metaData: any = {}
