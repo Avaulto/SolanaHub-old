@@ -12,6 +12,16 @@ import { ApiService, UtilsService, DataAggregatorService, SolanaUtilsService, Nf
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit, OnDestroy {
+  public myNfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+    this._utilsService.isNotNull,
+    this._utilsService.isNotUndefined,
+    switchMap(async wallet=> {
+      console.log(wallet)
+       const nfts= (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3)
+
+       return nfts
+      })
+  )
   public walletExtended: Observable<Asset> = this._walletStore.anchorWallet$.pipe(
     this._utilsService.isNotNull,
     shareReplay(1),
