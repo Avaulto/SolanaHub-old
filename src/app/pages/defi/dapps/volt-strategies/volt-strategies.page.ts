@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FriktionLocal, FriktionMarket, FriktionVol } from 'src/app/models';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
-import {
-  // sdk WITHOUT a user wallet attached
-  VoltSDK,
-  // sdk WITH a user wallet attached
-  toConnectedSDK,
-  FriktionSDK,
-} from "@friktion-labs/friktion-sdk";
+// import {
+//   // sdk WITHOUT a user wallet attached
+//   VoltSDK,
+//   // sdk WITH a user wallet attached
+//   toConnectedSDK,
+//   FriktionSDK,
+// } from "@friktion-labs/friktion-sdk";
 import { clusterApiUrl, PublicKey } from '@solana/web3.js';
-import { AnchorProvider } from "@friktion-labs/anchor";
+// import { AnchorProvider } from "@friktion-labs/anchor";
 import { Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 
@@ -40,43 +40,43 @@ export class VoltStrategiesPage implements OnInit {
     console.log(marketInfo);
     return;
   }
-  public async friktionSDKInit() {
-    this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull).subscribe(async wallet => {
-      console.log(wallet)
-      const provider = new AnchorProvider(
-        this._solanaUtilsService.connection,
-        wallet,
-        {}
-      );
-      const connection = provider.connection;
-      const user = provider.wallet.publicKey;
-      // SOL Covered Call Volt pubkey
-      const voltVaultId = new PublicKey(
-        "CbPemKEEe7Y7YgBmYtFaZiECrVTP5sGrYzrrrviSewKY"
-      );
+  // public async friktionSDKInit() {
+  //   this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull).subscribe(async wallet => {
+  //     console.log(wallet)
+  //     const provider = new AnchorProvider(
+  //       this._solanaUtilsService.connection,
+  //       wallet,
+  //       {}
+  //     );
+  //     const connection = provider.connection;
+  //     const user = provider.wallet.publicKey;
+  //     // SOL Covered Call Volt pubkey
+  //     const voltVaultId = new PublicKey(
+  //       "CbPemKEEe7Y7YgBmYtFaZiECrVTP5sGrYzrrrviSewKY"
+  //     );
 
-      const friktionSDK: FriktionSDK = new FriktionSDK({
-        provider, // e.g AnchorProvider
-        network: 'mainnet-beta', // e.g mainnet-beta
-      });
+  //     const friktionSDK: FriktionSDK = new FriktionSDK({
+  //       provider, // e.g AnchorProvider
+  //       network: 'mainnet-beta', // e.g mainnet-beta
+  //     });
 
-      const cVoltSDK = toConnectedSDK(
-        await friktionSDK.loadVoltSDKByKey(voltVaultId),
-        connection,
-        user,
-        // below field is only used if depositing from a PDA or other program-owned account
-        undefined
-      );
+  //     const cVoltSDK = toConnectedSDK(
+  //       await friktionSDK.loadVoltSDKByKey(voltVaultId),
+  //       connection,
+  //       user,
+  //       // below field is only used if depositing from a PDA or other program-owned account
+  //       undefined
+  //     );
 
-      console.log(friktionSDK, cVoltSDK)
+  //     console.log(friktionSDK, cVoltSDK)
 
-    })
+  //   })
 
 
-  }
+  // }
   ngOnInit() {
     // this.getFriktionMarketInfo();
-    this.friktionSDKInit();
+    // this.friktionSDKInit();
   }
 
 }
