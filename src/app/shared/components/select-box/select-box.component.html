@@ -1,4 +1,4 @@
-<div id="select-box-options">
+<div id="select-box-options" *ngIf="!disabled">
   <div class="nodes" id="search-box">
     <ion-input (ionChange)="onSearch($event.target)" type="search" placeholder="search"></ion-input>
     <ion-icon name="search-outline"></ion-icon>

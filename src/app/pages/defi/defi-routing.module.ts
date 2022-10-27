@@ -24,6 +24,10 @@ const routes: Routes = [
     path: 'laboratory',
     loadChildren: () => import('./dapps/laboratory/laboratory.module').then( m => m.LaboratoryPageModule)
   },
+  {
+    path: 'volt-strategies',
+    loadChildren: () => import('./dapps/volt-strategies/volt-strategies.module').then( m => m.VoltStrategiesPageModule)
+  },
 ];
 
 @NgModule({

@@ -4,16 +4,16 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SupportUsPageRoutingModule } from './support-us-routing.module';
+import { VoltStrategiesPageRoutingModule } from './volt-strategies-routing.module';
 
-import { SupportUsPage } from './support-us.page';
+import { VoltStrategiesPage } from './volt-strategies.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
 SharedModule,
-    SupportUsPageRoutingModule
+    VoltStrategiesPageRoutingModule
   ],
-  declarations: [SupportUsPage]
+  declarations: [VoltStrategiesPage]
 })
-export class SupportUsPageModule {}
+export class VoltStrategiesPageModule {}

@@ -1,0 +1,31 @@
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
+    <ion-row id="token-swap-header" class="ion-align-items-center ion-margin-bottom">
+      <div class="ion-margin-end">
+        <span class="heading-1">Powered by</span>
+      </div>
+      <div id="friktion-logo">
+        <ion-img src="/assets/images/icons/friktionBoltColored.png"></ion-img>
+        <span class="heading-1">Friktion</span>
+      </div>
+    </ion-row>
+    <ion-row  class="ion-justify-content-between">
+      <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
+        <app-data-box  [title]="'total value locked'" [loading]="false" [desc]="'total value locked'">
+        </app-data-box>
+      </ion-col>
+      <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
+        <app-data-box  [title]="'volume'" [loading]="false" [desc]="'volume'">
+        </app-data-box>
+      </ion-col>
+      <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
+        <app-data-box  [title]="'total products'" [loading]="false" [desc]="'total products'">
+        </app-data-box>
+      </ion-col>
+      <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
+        <app-data-box  [title]="'top performing asset'" [loading]="false" [desc]="'top performing asset'">
+        </app-data-box>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

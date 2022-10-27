@@ -41,11 +41,6 @@ export const pages: any = [
     //   url: "laboratory",
     //   icon: 'flask',
     // },
-    // {
-    //   title: "support us",
-    //   url: "support-us",
-    //   icon: 'heart-circle',
-    // },
     {
       title: "DeFi",
       icon: "cube-outline",
@@ -61,12 +56,16 @@ export const pages: any = [
           url: "/defi/liquid-stake",
           icon: 'water',
         },
-        {
-          title: "the lab",
-          url: "/defi/laboratory",
-          icon: 'flask',
-        },
+        // {
+        //   title: "volt strategies",
+        //   url: "/defi/volt-strategies",
+        //   icon: 'flask',
+        // },
       ]
     },
-
+    {
+      title: "support us",
+      url: "support-us",
+      icon: 'heart-circle',
+    },
   ];

@@ -6,5 +6,13 @@ export interface ValidatorData{
     wizScore: number;
     commission: number;
     apy_estimate: number;
+    stake?: string;
     uptime: number;
+    delegetors?: any;
+    skipRate: string
+    rank?: ValidatorRank;
 }
+interface ValidatorRank {
+    rank: number;
+    numOfValidators: number;
+  }

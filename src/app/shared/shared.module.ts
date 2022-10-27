@@ -28,7 +28,9 @@ import {
   NftBurnComponent,
   NftListingComponent,
   NftSendComponent,
-  ChartComponent
+  ChartComponent,
+  StakeComponent,
+  ApyCalcComponent
 } from "./components";
 
 // // import directives
@@ -67,7 +69,9 @@ import { CustomInterceptor } from "../services";
     NftListingComponent,
     NftSendComponent,
     ChartComponent,
-    WalletNotConnectedStateComponent
+    WalletNotConnectedStateComponent,
+    StakeComponent,
+    ApyCalcComponent
   ],
   imports: [
     CommonModule,
@@ -114,7 +118,9 @@ import { CustomInterceptor } from "../services";
     NftListingComponent,
     NftSendComponent,
     ChartComponent,
-    WalletNotConnectedStateComponent
+    WalletNotConnectedStateComponent,
+    StakeComponent,
+    ApyCalcComponent
   ]
 })
 export class SharedModule {}

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class SelectBoxComponent implements OnInit {
   @Input() dataset: Observable<any>;
   @Input() filterBy: string;
+  @Input() disabled: boolean = false;
   @Output() onSelectItem = new EventEmitter();
   selectedItem: any;
   searchTerm = '';

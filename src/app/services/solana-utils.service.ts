@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ConnectionStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
-import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
 import { PopoverController } from '@ionic/angular';
@@ -27,8 +27,7 @@ interface StakeWizEpochInfo {
 })
 export class SolanaUtilsService {
   public connection: Connection;
-  private validatorsData: BehaviorSubject<ValidatorData[]> = new BehaviorSubject([] as ValidatorData[]);
-  public currentValidatorData = this.validatorsData.asObservable();
+  private validatorsData:ValidatorData[];
   constructor(
     private _apiService: ApiService,
     private _toasterService: ToasterService,
@@ -44,25 +43,7 @@ export class SolanaUtilsService {
   public onAccountChangeCB(walletOwnerPk: PublicKey, cb: any): void{
     this.connection.onAccountChange(walletOwnerPk, cb);
   }
-  async showWalletAdapters() {
-    const popover = await this.popoverController.create({
-      component: WalletAdapterOptionsComponent,
-      cssClass: 'wallet-adapter-options',
-      mode:'md'
-    });
-    await popover.present();
-  }
-  async showConnectWalletActions(e: Event) {
-    const popover = await this.popoverController.create({
-      component: WalletConnectedDropdownComponent,
-      event: e,
-      alignment: 'start',
-      side: 'top',
-      cssClass: 'wallet-connect-dropdown',
-      mode:'md'
-    });
-    await popover.present();
-  }
+
 
   private _formatErrors(error: any) {
     console.log('my err', error)
@@ -72,6 +53,28 @@ export class SolanaUtilsService {
       segmentClass: "toastError",
     });
     return throwError(error);
+  }
+  public getSingleValidatorData(vote_identity: string = ''): Observable<ValidatorData> {
+    return this._apiService.get(`https://api.stakewiz.com/validator/${vote_identity}`).pipe(
+      map((validator) => {
+        const filteredValidator: ValidatorData = {
+          skipRate: validator.skip_rate,
+          name: validator.name || '',
+          image: validator.image || '/assets/images/icons/node-placeholder.svg',
+          vote_identity: validator.vote_identity,
+          website: validator.website,
+          wizScore: validator.wiz_score,
+          commission: validator.commission,
+          apy_estimate: validator.apy_estimate,
+          uptime: validator.uptime,
+          stake: validator.activated_stake
+          // extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
+
+        }
+        return filteredValidator;
+      }),
+      catchError(this._formatErrors)
+    );
   }
   public getValidatorData(vote_identity: string = ''): Observable<ValidatorData[]> {
     return this._apiService.get(`https://api.stakewiz.com/validators/${vote_identity}`).pipe(
@@ -89,7 +92,7 @@ export class SolanaUtilsService {
             extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
           }
         })
-        this.validatorsData.next(filteredValidators);
+        this.validatorsData = validators;
         return filteredValidators;
       }),
       catchError(this._formatErrors)
@@ -159,7 +162,7 @@ export class SolanaUtilsService {
     const stake = parsedData?.delegation?.stake || 0;
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
 
-    const validatorData = this.validatorsData.value.filter(validator => validator.vote_identity == validatorVoteKey)[0]
+    const validatorData = (await firstValueFrom(this.getValidatorData())).filter(validator => validator.vote_identity == validatorVoteKey)[0]
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this._utilService.addrUtil(addr).addrShort,
@@ -247,7 +250,6 @@ export class SolanaUtilsService {
       { filters: filters }
     );
 
-    // console.log(`Found ${accounts.length} token account(s) for wallet ${wallet}.`);
     const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
       //Parse the account data
       const parsedAccountInfo: any = account.account.data;
@@ -256,11 +258,8 @@ export class SolanaUtilsService {
       // console.log(parsedAccountInfo["parsed"]["info"])
       return { tokenPubkey: account.pubkey.toString(), mintAddress, balance }
     }).filter(token => token.balance > 0.00001);
+    console.log(tokensBalance)
     return tokensBalance;
-    //   const data = {
-    //     pubkey: PublicKey,      //Token Account Public Key
-    //     account: AccountInfo    //Object including information about our token account
-    // }[]
 
   }
   getSingleTokenBalance(){}

@@ -50,14 +50,25 @@
                         </ion-col>
                     </ion-row>
                     <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
-                        <div>
-                            exchange rate
-                            <ion-icon maxWidth="300px"
+                        <div style="display: flex; align-items:center;">
+                            exchange rate 
+                            <ion-icon style="margin-inline-start: 5px;" maxWidth="300px"
                                 tooltip="SOL/mSOL exchange rate is determined by a formula: Marinade’s SOL staked / current mSOL supply. Because staked SOL is earning yield, it grows in size vs. mSOL over time. When you swap mSOL back to SOL, you receive more SOL than you staked/swapped before."
                                 placement="top" name="alert-circle-outline"></ion-icon>
                         </div>
                         <div>
                             1 mSOL = {{marinadeInfo?.msolRatio}} SOL
+                        </div>
+                    </ion-row>
+                    <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
+                        <div style="display: flex; align-items:center;">
+                            platform fee 
+                            <ion-icon style="margin-inline-start: 5px;" maxWidth="300px"
+                                tooltip="Marinade partner"
+                                placement="top" name="alert-circle-outline"></ion-icon>
+                        </div>
+                        <div>
+                            0%
                         </div>
                     </ion-row>
                 </ion-row>

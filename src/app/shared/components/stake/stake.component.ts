@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { lastValueFrom, map, observable, Observable, Subscriber, switchMap } from 'rxjs';
-import { Asset,ValidatorData } from 'src/app/models';
+import { firstValueFrom, lastValueFrom, map, observable, Observable, Subscriber, switchMap } from 'rxjs';
+import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 
 import Plausible from 'plausible-tracker'
@@ -18,22 +18,9 @@ const { trackEvent } = Plausible();
 })
 export class StakeComponent implements OnInit {
   @Input() wallet: Asset;
-
-  public validatorsData: Observable<ValidatorData[] | any> = this._solanaUtilsService.currentValidatorData
-    .pipe(map((validators) => {
-      const validatorsExtended = validators.map((validator: ValidatorData) => {
-        return {
-          name: validator.name,
-          vote_identity: validator.vote_identity,
-          image: validator.image,
-          selectable: true,
-          apy_estimate: validator.apy_estimate,
-          extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
-        }
-      })
-      return validatorsExtended
-    }))
+  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>
   @Input() avgApy: number;
+  @Input() privateValidatorPage: boolean = false;
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
   public formSubmitted: boolean = false;
@@ -52,16 +39,7 @@ export class StakeComponent implements OnInit {
     private _utilsService: UtilsService,
     private _route: ActivatedRoute
   ) { }
-  ngOnInit() {
-    this._route.queryParams
-    .subscribe(params => {
-      const validatorIdentity = params.validatorIdentity
-      if(validatorIdentity){
-        this._preSelectValidator(validatorIdentity);
-      }
-    }
-  );
-
+  async ngOnInit() {
     this.stakeForm = this._fb.group({
       amount: ['', [Validators.required]],
       voteAccount: ['', [Validators.required]],
@@ -71,26 +49,40 @@ export class StakeComponent implements OnInit {
       this.rewardInfo.amount = form.amount
     })
 
+    if (!this.privateValidatorPage) {
+      this._route.queryParams
+        .subscribe(params => {
+          const validatorIdentity = params.validatorIdentity
+          if (validatorIdentity) {
+            this._preSelectValidator(validatorIdentity);
+          }
+        }
+        );
+    } else {
+      const myValidator: any = await firstValueFrom(this.validatorsData);
+      this._preSelectValidator(myValidator.vote_identity);
+    }
   }
-  public setMaxAmount():void {
+
+  public setMaxAmount(): void {
     const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
 
-  private async _preSelectValidator(validatorVoteKey:string){
+  private async _preSelectValidator(validatorVoteKey: string) {
     const validatorsList = await lastValueFrom(this._solanaUtilsService.getValidatorData());
     const getSelectedValidator = validatorsList.filter(validator => validator.vote_identity == validatorVoteKey)[0];
-   this.setSelectedValidator(getSelectedValidator);
+    this.setSelectedValidator(getSelectedValidator);
   }
 
-  public setSelectedValidator(validator: ValidatorData):void {
+  public setSelectedValidator(validator: ValidatorData): void {
     this.rewardInfo.apy = validator.apy_estimate
 
     this.selectedValidator = validator;
 
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
   }
-  public submitNewStake():void {
+  public submitNewStake(): void {
     trackEvent('regular stake')
 
     const { amount, voteAccount, monthLockuptime } = this.stakeForm.value;

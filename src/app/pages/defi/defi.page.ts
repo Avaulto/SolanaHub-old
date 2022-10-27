@@ -31,6 +31,13 @@ export class DefiPage implements OnInit {
       deepLink: 'token-swap'
     },
     // {
+    //   name: 'friktion',
+    //   image: 'assets/images/icons/friktionBolt.png',
+    //   description: `Passive, quantitative strategies generating returns based on market opportunities. Volts allow anyone to access strategies that are built with risk & returns, principal protection, and volatility in mind. `,
+    //   learnMoreLink: 'https://docs.friktion.fi/',
+    //   deepLink: 'volt-strategies'
+    // },
+    // {
     //   name: 'The lab',
     //   image: 'assets/images/icons/jupiter-logo.svg',
     //   description: `Jupiter brings together all the liquidity sources across Solana into a single endpoint, providing crucial swap aggregation, pricing data and payment features for all users and developers alike.`,

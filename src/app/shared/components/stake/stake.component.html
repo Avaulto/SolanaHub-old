@@ -24,22 +24,22 @@
       <div id="node-selection">
 
         <app-select-item [item]="selectedValidator" (click)="showValidatorList = !showValidatorList"
-          [isDropDownOpen]="showValidatorList" [showDropDownIcon]="true">
+          [isDropDownOpen]="showValidatorList" [showDropDownIcon]="!privateValidatorPage">
         </app-select-item>
-        <!-- <app-validator (click)="showValidatorList = !showValidatorList" [showValidatorList]="showValidatorList"
-          [validatorData]="selectedValidator" [showDropDownIcon]="true">
-        </app-validator> -->
 
-        <app-select-box *ngIf="showValidatorList" [dataset]="validatorsData" [filterBy]="'name'"
+        <app-select-box 
+          *ngIf="showValidatorList" 
+          [disabled]="privateValidatorPage" 
+          [dataset]="validatorsData" 
+          [filterBy]="'name'"
           (onSelectItem)="setSelectedValidator($event); this.showValidatorList = !this.showValidatorList">
-
         </app-select-box>
 
       </div>
     </ion-row>
     <ion-row class="heading-6 ion-justify-content-between">
       <div class="aligned">commitment <ion-icon
-          tooltip="feeling bulish? lock your stake account and commit to your validator(and yourself)" placement="top"
+          tooltip="feeling bulish? lock your stake account and commit to yourself" placement="top"
           name="alert-circle-outline"></ion-icon>
       </div>
       <div>
@@ -47,18 +47,19 @@
       </div>
     </ion-row>
     <ion-row id="commitment-amount">
-      <ion-range formControlName="monthLockuptime" [min]="0" [max]="32"  [pin]="true" [ticks]="true" [snaps]="true"></ion-range>
+      <ion-range formControlName="monthLockuptime" [min]="0" [max]="32" [pin]="true" [ticks]="true" [snaps]="true">
+      </ion-range>
     </ion-row>
     <ion-row class="ion-justify-content-center">
       <ng-container *ngIf="wallet; else elseTemplate">
         <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"
-        class="ion-text-capitalize">stake</ion-button>
+          class="ion-text-capitalize">stake</ion-button>
         <!-- {{wallet.tokens}} -->
       </ng-container>
       <ng-template #elseTemplate>
         <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
       </ng-template>
-     
+
     </ion-row>
   </form>
   <app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc>

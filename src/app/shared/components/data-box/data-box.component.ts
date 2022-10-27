@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DataBoxComponent implements OnInit {
   @Input() title: string;
-  @Input() desc: string;
+  @Input() desc: any;
   @Input() size: string;
   @Input() loading: boolean = true;
   constructor() { }

@@ -67,7 +67,8 @@ export class LiquidStakePage implements OnInit {
   async initMarinade(): Promise<void> {
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
-      publicKey: this.wallet.publicKey
+      publicKey: this.wallet.publicKey,
+      // referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
     })
     this.marinade = new Marinade(config)
     const state = await this.marinade.getMarinadeState();

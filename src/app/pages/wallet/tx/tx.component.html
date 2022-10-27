@@ -7,7 +7,7 @@
   </div>
   <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
 
-    <app-stake *ngSwitchCase="'stake'" [avgApy]="avgApy" [wallet]="wallet"></app-stake>
+    <app-stake *ngSwitchCase="'stake'" [validatorsData]="validatorsData" [avgApy]="avgApy" [wallet]="wallet"></app-stake>
     <app-accounts *ngSwitchCase="'accounts'" [wallet]="wallet"></app-accounts>
     <app-send *ngSwitchCase="'send'" [wallet]="wallet"></app-send>
     <!-- <app-history  *ngSwitchCase="'history'"></app-history> -->

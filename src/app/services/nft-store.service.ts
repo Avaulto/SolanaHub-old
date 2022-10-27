@@ -75,13 +75,13 @@ export class NftStoreService {
 
     return listStatus
   }
-  public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft> {
-    this._metaplex.use(walletAdapterIdentity(wallet));
-    const metaplexItem = await this._metaplex.nfts().findByMint({ mintAddress: mintAddressPK }).run();
-    const metaData = await this.getMetaData(metaplexItem.uri);
-    const nft: Nft = this._nftDataPrep(metaData, metaplexItem)
-    return nft
-  }
+  // public async getSingleNft(wallet, mintAddressPK: PublicKey): Promise<Nft> {
+  //   this._metaplex.use(walletAdapterIdentity(wallet));
+  //   const metaplexItem = await this._metaplex.nfts().findByMint({ mintAddress: mintAddressPK }).run();
+  //   const metaData = await this.getMetaData(metaplexItem.uri);
+  //   const nft: Nft = this._nftDataPrep(metaData, metaplexItem)
+  //   return nft
+  // }
   public async getAllOnwerNfts(walletOwnerAddress): Promise<Nft[]> {
     // debugger
     const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
@@ -123,58 +123,58 @@ export class NftStoreService {
 
   }
 
-  private _nftDataPrep(metaData, metaplexItem): Nft {
-    try {
-      const nft: Nft = {
-        image: metaData.image,
-        description: metaData.description,
-        attributes: metaData.attributes,
-        websiteURL: metaData.external_url,
-        name: metaplexItem.name,
-        mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
-        collectionName: metaplexItem.collection?.name,
-        explorerURL: 'https://solscan.io/token/' + metaplexItem.address,
-        symbol: metaplexItem.symbol
-      }
-      return nft
-    } catch (error) {
-      console.warn(error)
-    }
-  }
-  private async getMetaData(uri: string): Promise<any> {
-    let metaData: any = {}
-    try {
-      metaData = await (await fetch(uri)).json();
-      // metaDataRes = await metaDataReq.json();
-    } catch (error) {
-      // console.error(error)
-      return metaData
-    }
-    return metaData
-  }
-  public async getCollectionData(groupIdentifierMintAddress: string): Promise<NFTGroup> {
-    let collectionInfo: NFTGroup = { collectionImage: null, description: null, collectionName: null, symbol: null, mint: null, floorPrice: 0 }
-    const mintAddress = new PublicKey(groupIdentifierMintAddress);
-    // check if the NFT is part of a collection
-    const validateNftCollectionTask = this._metaplex.nfts().findByMint({ mintAddress });
+  // private _nftDataPrep(metaData, metaplexItem): Nft {
+  //   try {
+  //     const nft: Nft = {
+  //       image: metaData.image,
+  //       description: metaData.description,
+  //       attributes: metaData.attributes,
+  //       websiteURL: metaData.external_url,
+  //       name: metaplexItem.name,
+  //       mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
+  //       collectionName: metaplexItem.collection?.name,
+  //       explorerURL: 'https://solscan.io/token/' + metaplexItem.address,
+  //       symbol: metaplexItem.symbol
+  //     }
+  //     return nft
+  //   } catch (error) {
+  //     console.warn(error)
+  //   }
+  // }
+  // private async getMetaData(uri: string): Promise<any> {
+  //   let metaData: any = {}
+  //   try {
+  //     metaData = await (await fetch(uri)).json();
+  //     // metaDataRes = await metaDataReq.json();
+  //   } catch (error) {
+  //     // console.error(error)
+  //     return metaData
+  //   }
+  //   return metaData
+  // }
+  // public async getCollectionData(groupIdentifierMintAddress: string): Promise<NFTGroup> {
+  //   let collectionInfo: NFTGroup = { collectionImage: null, description: null, collectionName: null, symbol: null, mint: null, floorPrice: 0 }
+  //   const mintAddress = new PublicKey(groupIdentifierMintAddress);
+  //   // check if the NFT is part of a collection
+  //   const validateNftCollectionTask = this._metaplex.nfts().findByMint({ mintAddress });
 
-    const { collection, json } = await validateNftCollectionTask.run();
-    collectionInfo.description = json.description;
-    if (collection) {
-      const collectionDataTask = this._metaplex.nfts().findByMint({ mintAddress: collection.address });
-      const { mint, json } = await collectionDataTask.run();
-      collectionInfo = { collectionImage: json.image, collectionName: json.name, description: collectionInfo.description, symbol: json.symbol, mint: mint.address.toBase58() }
-    }
-    return collectionInfo
-  }
-  public async getCollectionMarketplaceData(symbol: string) {
-    const queryParam = encodeURIComponent('limit=1')
-    const uri = `${this.magicEdenApiProxy}&endpoint=/collections/${symbol}/listings&queryParam=${queryParam}`;
-    const getCollectionMarketplace = await fetch(uri)
-    const marketplacedata: any = await getCollectionMarketplace.json();
-    return marketplacedata[0]
-  }
-  private getFloorPrice(nft: Nft): number {
-    return 0
-  }
+  //   const { collection, json } = await validateNftCollectionTask.run();
+  //   collectionInfo.description = json.description;
+  //   if (collection) {
+  //     const collectionDataTask = this._metaplex.nfts().findByMint({ mintAddress: collection.address });
+  //     const { mint, json } = await collectionDataTask.run();
+  //     collectionInfo = { collectionImage: json.image, collectionName: json.name, description: collectionInfo.description, symbol: json.symbol, mint: mint.address.toBase58() }
+  //   }
+  //   return collectionInfo
+  // }
+  // public async getCollectionMarketplaceData(symbol: string) {
+  //   const queryParam = encodeURIComponent('limit=1')
+  //   const uri = `${this.magicEdenApiProxy}&endpoint=/collections/${symbol}/listings&queryParam=${queryParam}`;
+  //   const getCollectionMarketplace = await fetch(uri)
+  //   const marketplacedata: any = await getCollectionMarketplace.json();
+  //   return marketplacedata[0]
+  // }
+  // private getFloorPrice(nft: Nft): number {
+  //   return 0
+  // }
 }
