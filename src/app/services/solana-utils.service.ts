@@ -258,7 +258,6 @@ export class SolanaUtilsService {
       // console.log(parsedAccountInfo["parsed"]["info"])
       return { tokenPubkey: account.pubkey.toString(), mintAddress, balance }
     }).filter(token => token.balance > 0.00001);
-    console.log(tokensBalance)
     return tokensBalance;
 
   }

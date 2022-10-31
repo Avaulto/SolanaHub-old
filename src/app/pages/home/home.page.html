@@ -3,7 +3,7 @@
         <ion-row class="ion-justify-content-between ">
 
             <ion-col size="12" sizeLg="2.2" class="data-box ion-padding">
-                <app-data-box [title]="'Circulating Supply'" [loading]="(clusterInfo | async) == null" [desc]="(clusterInfo | async)?.supply?.circulating">
+                <app-data-box [title]="'Circulating Supply'" [loading]="!(clusterInfo | async).supply" [desc]="(clusterInfo | async)?.supply?.circulating">
                 </app-data-box>
 
             </ion-col>
