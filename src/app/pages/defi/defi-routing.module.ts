@@ -21,12 +21,12 @@ const routes: Routes = [
     loadChildren: () => import('./dapps/token-swap/token-swap.module').then( m => m.TokenSwapPageModule)
   },
   {
-    path: 'laboratory',
-    loadChildren: () => import('./dapps/laboratory/laboratory.module').then( m => m.LaboratoryPageModule)
-  },
-  {
     path: 'volt-strategies',
     loadChildren: () => import('./dapps/volt-strategies/volt-strategies.module').then( m => m.VoltStrategiesPageModule)
+  },
+  {
+    path: 'pools',
+    loadChildren: () => import('./dapps/pools/pools.module').then( m => m.PoolsPageModule)
   },
 ];
 

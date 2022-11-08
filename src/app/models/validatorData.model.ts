@@ -11,6 +11,7 @@ export interface ValidatorData{
     delegetors?: any;
     skipRate: string
     rank?: ValidatorRank;
+    selectable: boolean
 }
 interface ValidatorRank {
     rank: number;

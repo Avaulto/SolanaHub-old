@@ -8,4 +8,5 @@ export interface StakeAccountExtended {
   state?: 'active' | 'inactive' | 'activating' | 'deactivating';
   validatorData?: ValidatorData,
   extraData?;
+  checkedForMerge: boolean
 }

@@ -67,8 +67,8 @@ export class SolanaUtilsService {
           commission: validator.commission,
           apy_estimate: validator.apy_estimate,
           uptime: validator.uptime,
-          stake: validator.activated_stake
-          // extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
+          stake: validator.activated_stake,
+          selectable: true,
 
         }
         return filteredValidator;
@@ -89,6 +89,7 @@ export class SolanaUtilsService {
             commission: validator.commission,
             apy_estimate: validator.apy_estimate,
             uptime: validator.uptime,
+            selectable: true,
             extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
           }
         })
@@ -157,18 +158,29 @@ export class SolanaUtilsService {
   public async extendStakeAccount(account: { pubkey: PublicKey; account: AccountInfo<Buffer | ParsedAccountData | any> }): Promise<any> {
     const pk = account.pubkey;
     const addr = pk.toBase58()
+    
     const parsedData = account.account.data.parsed.info.stake || null//.delegation.stake
     const validatorVoteKey = parsedData?.delegation?.voter
     const stake = parsedData?.delegation?.stake || 0;
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
+    let validatorData: ValidatorData = null
 
-    const validatorData = (await firstValueFrom(this.getValidatorData())).filter(validator => validator.vote_identity == validatorVoteKey)[0]
+    if(this.validatorsData){
+      validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
+    }else{
+      try {
+        validatorData = (await firstValueFrom(this.getSingleValidatorData(validatorVoteKey)))
+      } catch (error) {
+        console.warn(error)
+      }
+    }
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this._utilService.addrUtil(addr).addrShort,
       balance: this._utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
       state,
-      validatorData
+      validatorData,
+      checkedForMerge: false
     }
     return stakeAccountInfo
   }
@@ -247,7 +259,7 @@ export class SolanaUtilsService {
     ];
     const accounts = await this.connection.getParsedProgramAccounts(
       TOKEN_PROGRAM_ID,   //SPL Token Program, new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
-      { filters: filters }
+      { filters }
     );
 
     const tokensBalance: TokenBalance[] = accounts.map((account, i) => {

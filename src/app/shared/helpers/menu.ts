@@ -1,4 +1,4 @@
-import { faArrowRightArrowLeft, faBox, faHandHoldingDroplet, faHome, faPalette, faShieldHeart, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faBox, faHandHoldingDroplet, faHome, faPalette, faShieldHeart, faSwimmingPool, faWallet } from "@fortawesome/free-solid-svg-icons";
 
 export const pages: any = [
     {
@@ -6,6 +6,11 @@ export const pages: any = [
       url: "home",
       icon: 'home',
     },
+    // {
+    //   title: "learning center",
+    //   url: "learn",
+    //   icon: 'book-outline',
+    // },
     {
       title: "dashboard",
       url: "dashboard",
@@ -56,6 +61,11 @@ export const pages: any = [
           url: "/defi/liquid-stake",
           icon: 'water',
         },
+        // {
+        //   title: "pools",
+        //   url: "/defi/pools",
+        //   icon: 'faSwimmingPool',
+        // },
         // {
         //   title: "volt strategies",
         //   url: "/defi/volt-strategies",

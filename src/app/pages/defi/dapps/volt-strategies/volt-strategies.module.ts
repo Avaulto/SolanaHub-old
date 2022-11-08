@@ -8,12 +8,13 @@ import { VoltStrategiesPageRoutingModule } from './volt-strategies-routing.modul
 
 import { VoltStrategiesPage } from './volt-strategies.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { FriktionInfoComponent } from './friktion-info/friktion-info.component';
 
 @NgModule({
   imports: [
-SharedModule,
+    SharedModule,
     VoltStrategiesPageRoutingModule
   ],
-  declarations: [VoltStrategiesPage]
+  declarations: [VoltStrategiesPage,FriktionInfoComponent]
 })
-export class VoltStrategiesPageModule {}
+export class VoltStrategiesPageModule { }

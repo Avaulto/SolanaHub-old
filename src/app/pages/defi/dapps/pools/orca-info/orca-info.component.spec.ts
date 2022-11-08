@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { LaboratoryPage } from './laboratory.page';
+import { OrcaInfoComponent } from './orca-info.component';
 
-describe('LaboratoryPage', () => {
-  let component: LaboratoryPage;
-  let fixture: ComponentFixture<LaboratoryPage>;
+describe('OrcaInfoComponent', () => {
+  let component: OrcaInfoComponent;
+  let fixture: ComponentFixture<OrcaInfoComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LaboratoryPage ],
+      declarations: [ OrcaInfoComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LaboratoryPage);
+    fixture = TestBed.createComponent(OrcaInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

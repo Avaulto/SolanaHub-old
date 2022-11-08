@@ -29,7 +29,7 @@ export class AppComponent {
         connectionConfigProviderFactory({
       commitment: "confirmed",
     })
-    this._connectionStore.setEndpoint(environment.solanaCluster) ;
+    this._connectionStore.setEndpoint(environment.solanaCluster) 
     this._walletStore.setAdapters([
       new PhantomWalletAdapter(),
       new ExodusWalletAdapter(),

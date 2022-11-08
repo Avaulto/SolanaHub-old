@@ -19,8 +19,9 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
   //   }),
   //   distinctUntilChanged()
   // ).subscribe()
-  private stakeAccounts: Subject<StakeAccountExtended[]> = new Subject();
+  private stakeAccounts: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject({} as StakeAccountExtended[]);
   public stakeAccounts$ = this.stakeAccounts.asObservable().pipe(shareReplay(1));
+  public initMerge: boolean = false;
   @Input() wallet: Asset;
   constructor(
     public loaderService: LoaderService,
@@ -32,12 +33,12 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
 
   public async ngOnInit(): Promise<void> {
     // automatic update when account has change
-    this._updateStakeAccounts(this.wallet.publicKey)
+    this._updateStakeAccounts(this.wallet.publicKey);
   }
   public async ngOnChanges(changes: SimpleChanges): Promise<void> {
     try {
-      const latestStakeAccounts = await this._getStakeAccount(this.wallet.publicKey);
-      this.stakeAccounts.next(latestStakeAccounts);
+      const stakeAccounts = await this._getStakeAccount(this.wallet.publicKey);
+      this.stakeAccounts.next(stakeAccounts);
     } catch (error) {
       console.warn(error)
     }
@@ -52,7 +53,6 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
   }
   private async _getStakeAccount(publicKey: PublicKey): Promise<StakeAccountExtended[]> {
     const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(publicKey);
-
     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
       return await this._solanaUtilsService.extendStakeAccount(acc)
     })
@@ -60,6 +60,13 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     return extendStakeAccountRes;
   }
 
+  public async mergeAccounts() {
+    const walletOwner = this.wallet.publicKey
+    const stakeAccountsSource: PublicKey[] = this.stakeAccounts.value.filter(account => account.checkedForMerge).map(account => new PublicKey(account.addr));
+    console.log(walletOwner, stakeAccountsSource,this.stakeAccounts.value)
+    this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, stakeAccountsSource[0]);
+
+  }
   private _updateStakeAccounts(publicKey: PublicKey): void {
     this._solanaUtilsService.onAccountChangeCB(publicKey,
       async () => {

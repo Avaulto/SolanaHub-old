@@ -16,7 +16,6 @@ export class SelectBoxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
   }
   onSearch(term: any) {
     this.searchTerm = term.value;

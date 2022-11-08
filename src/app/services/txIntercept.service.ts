@@ -91,6 +91,21 @@ export class TxInterceptService {
 
 
   }
+  public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey,) {
+
+    
+    const mergeAccounts: Transaction[] = sourceStakePubKey.map(sourceAcc => {
+      return StakeProgram.merge({
+        authorizedPubkey: walletOwnerPk,
+        sourceStakePubKey:sourceAcc,
+        stakePubkey: targetStakePubkey,
+      });
+    })
+
+    console.log(mergeAccounts)
+    this.sendTx(mergeAccounts, walletOwnerPk)
+  }
+
   public async withdrawStake(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {
     const withdrawTx = StakeProgram.withdraw({
       stakePubkey: new PublicKey(stakeAccount),
@@ -101,55 +116,55 @@ export class TxInterceptService {
     // try {
     //   const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
     //   if (validTx) {
-        this.sendTx([withdrawTx], walletOwnerPk)
+    this.sendTx([withdrawTx], walletOwnerPk)
     //   }
     // } catch (error) {
     //   console.error(error)
     // }
   }
   async getOrCreateTokenAccountInstruction(mint: PublicKey, user: PublicKey, payer: PublicKey | null = null): Promise<TransactionInstruction | null> {
-   try {
-    const userTokenAccountAddress = await getAssociatedTokenAddress(mint, user, false);
-    const userTokenAccount = await this.solanaUtilsService.connection.getParsedAccountInfo(userTokenAccountAddress);
-    if (userTokenAccount.value === null) {
-      return createAssociatedTokenAccountInstruction(payer ? payer : user, userTokenAccountAddress, user, mint);
-    } else {
-      return null;
+    try {
+      const userTokenAccountAddress = await getAssociatedTokenAddress(mint, user, false);
+      const userTokenAccount = await this.solanaUtilsService.connection.getParsedAccountInfo(userTokenAccountAddress);
+      if (userTokenAccount.value === null) {
+        return createAssociatedTokenAccountInstruction(payer ? payer : user, userTokenAccountAddress, user, mint);
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.warn(error)
+      return
+      // this._formatErrors()
     }
-  } catch (error) {
-    console.warn(error)
-    return
-    // this._formatErrors()
-  }
   }
   public async sendSplOrNft(mintAddressPK: PublicKey, walletOwner: PublicKey, toWallet: string, amount: number) {
     try {
-    const toWalletPK = new PublicKey(toWallet);
-    const ownerAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, walletOwner, walletOwner);
-    const targetAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, toWalletPK, walletOwner);
-    const tokenAccountSourcePubkey = await getAssociatedTokenAddress(mintAddressPK, walletOwner);
-    const tokenAccountTargetPubkey = await getAssociatedTokenAddress(mintAddressPK, toWalletPK);
-    
-    const decimals = await (await this.solanaUtilsService.connection.getParsedAccountInfo(mintAddressPK)).value.data['parsed'].info.decimals;
+      const toWalletPK = new PublicKey(toWallet);
+      const ownerAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, walletOwner, walletOwner);
+      const targetAta = await this.getOrCreateTokenAccountInstruction(mintAddressPK, toWalletPK, walletOwner);
+      const tokenAccountSourcePubkey = await getAssociatedTokenAddress(mintAddressPK, walletOwner);
+      const tokenAccountTargetPubkey = await getAssociatedTokenAddress(mintAddressPK, toWalletPK);
 
-    const transferSplOrNft = createTransferCheckedInstruction(
-      tokenAccountSourcePubkey,
-      mintAddressPK,
-      tokenAccountTargetPubkey,
-      walletOwner,
-      amount,
-      decimals,
-      [],
-      TOKEN_PROGRAM_ID
-    )
-    const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
-    this.sendTx(instructions, walletOwner)
-  } catch (error) {
-    
-    const res = new TokenOwnerOffCurveError()
-    console.error(error,res)
-    this._formatErrors(error)
-  }
+      const decimals = await (await this.solanaUtilsService.connection.getParsedAccountInfo(mintAddressPK)).value.data['parsed'].info.decimals;
+
+      const transferSplOrNft = createTransferCheckedInstruction(
+        tokenAccountSourcePubkey,
+        mintAddressPK,
+        tokenAccountTargetPubkey,
+        walletOwner,
+        amount,
+        decimals,
+        [],
+        TOKEN_PROGRAM_ID
+      )
+      const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
+      this.sendTx(instructions, walletOwner)
+    } catch (error) {
+
+      const res = new TokenOwnerOffCurveError()
+      console.error(error, res)
+      this._formatErrors(error)
+    }
   }
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime: number) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
@@ -242,7 +257,7 @@ export class TxInterceptService {
           const config: BlockheightBasedTransactionConfirmationStrategy = {
             signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
           }
-          await this.solanaUtilsService.connection.confirmTransaction(config,'confirmed') //.confirmTransaction(txid, 'confirmed');
+          await this.solanaUtilsService.connection.confirmTransaction(config, 'confirmed') //.confirmTransaction(txid, 'confirmed');
           const txCompleted: toastData = {
             message: 'transaction completed',
             icon: 'information-circle-outline',
