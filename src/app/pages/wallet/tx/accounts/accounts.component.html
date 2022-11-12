@@ -1,15 +1,20 @@
 <ion-grid>
   <ng-container *ngIf="wallet; else elseTemplate">
-    <!-- <ion-button class="ion-margin-bottom" (click)="initMerge = !initMerge; mergeAccounts()">
+    <ion-button class="ion-margin-bottom" (click)="initMerge = !initMerge; mergeAccounts()">
       <span>merge accounts</span>
-    </ion-button> -->
-    <!-- <ion-button (click)="mergeAccounts()">merge now</ion-button> -->
+    </ion-button>
+    <ion-button (click)="mergeAccounts()">merge now</ion-button>
     <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
-      *ngFor="let account of stakeAccounts$ | async">
+      *ngFor="let account of stakeAccounts$ | async as stakeAccounts">
       <div class="flex-item-center">
         <div class="table-icon">
           <ion-img *ngIf="!initMerge" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
-          <ion-checkbox (ionChange)="account.checkedForMerge = checked.checked" #checked *ngIf="initMerge"></ion-checkbox>
+          <ion-checkbox 
+          (ionChange)="checkForMerge(account);account.checkedForMerge = checked.checked" 
+          #checked 
+          [disabled]="!account.canMerge"
+          *ngIf="initMerge && account.state == 'active'"
+          ></ion-checkbox>
         </div>
         <div class="validator-info heading-6">
           {{account?.validatorData?.name || 'name not found'}} <br>

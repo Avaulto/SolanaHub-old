@@ -60,6 +60,16 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     return extendStakeAccountRes;
   }
 
+  public checkForMerge(SA:StakeAccountExtended){
+    const stakeAccounts = this.stakeAccounts.value;
+    const canMergeAccounts = stakeAccounts.map(account => {
+      console.log(account)
+      if(account.validatorData.vote_identity == SA.validatorData.vote_identity && account.state == 'active'){
+        return account
+      }
+    });
+    this.stakeAccounts.next(canMergeAccounts);
+  }
   public async mergeAccounts() {
     const walletOwner = this.wallet.publicKey
     const stakeAccountsSource: PublicKey[] = this.stakeAccounts.value.filter(account => account.checkedForMerge).map(account => new PublicKey(account.addr));

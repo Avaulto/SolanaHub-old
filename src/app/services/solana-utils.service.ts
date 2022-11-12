@@ -180,7 +180,8 @@ export class SolanaUtilsService {
       balance: this._utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
       state,
       validatorData,
-      checkedForMerge: false
+      checkedForMerge: false,
+      canMerge: true
     }
     return stakeAccountInfo
   }

@@ -30,13 +30,13 @@ export class DefiPage implements OnInit {
       learnMoreLink: 'https://docs.jup.ag/',
       deepLink: 'token-swap'
     },
-    // {
-    //   name: 'orca',
-    //   image: 'assets/images/icons/orca-logo.svg',
-    //   description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.`,
-    //   learnMoreLink: 'https://docs.orca.so/orca-for-liquidity-providers/how-to-provide-liquidity-on-orca',
-    //   deepLink: 'pools'
-    // },
+    {
+      name: 'orca',
+      image: 'assets/images/icons/orca-logo.svg',
+      description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.`,
+      learnMoreLink: 'https://docs.orca.so/orca-for-liquidity-providers/how-to-provide-liquidity-on-orca',
+      deepLink: 'pools'
+    },
     // {
     //   name: 'friktion',
     //   image: 'assets/images/icons/friktionBolt.png',
