@@ -8,6 +8,7 @@ import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
 import { PopoverController } from '@ionic/angular';
 import { WalletAdapterOptionsComponent, WalletConnectedDropdownComponent } from '../shared/components';
+import { environment } from 'src/environments/environment';
 
 
 interface StakeWizEpochInfo {
@@ -53,6 +54,29 @@ export class SolanaUtilsService {
       segmentClass: "toastError",
     });
     return throwError(error);
+  }
+  public getSingleValidatorData2(vote_identity: string = ''): Observable<ValidatorData> {
+    return this._apiService.get(`https://dev.compact-defi.avaulto.com/api/validators-info?env=${environment.solanaEnv}&validator=${vote_identity}`).pipe(
+      map((validator) => {
+      console.log(validator);  
+        const filteredValidator: ValidatorData = {
+          skipRate: validator.skip_rate,
+          name: validator.name || '',
+          image: validator.image || '/assets/images/icons/node-placeholder.svg',
+          vote_identity: validator.vote_identity,
+          website: validator.website,
+          wizScore: validator.wiz_score,
+          commission: validator.commission,
+          apy_estimate: validator.apy_estimate,
+          uptime: validator.uptime,
+          stake: validator.activated_stake,
+          selectable: true,
+
+        }
+        return filteredValidator;
+      }),
+      catchError(this._formatErrors)
+    );
   }
   public getSingleValidatorData(vote_identity: string = ''): Observable<ValidatorData> {
     return this._apiService.get(`https://api.stakewiz.com/validator/${vote_identity}`).pipe(
@@ -169,7 +193,7 @@ export class SolanaUtilsService {
       validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
     }else{
       try {
-        validatorData = (await firstValueFrom(this.getSingleValidatorData(validatorVoteKey)))
+        validatorData = (await firstValueFrom(this.getSingleValidatorData2(validatorVoteKey)))
       } catch (error) {
         console.warn(error)
       }
