@@ -5,7 +5,7 @@ export default async function ValidatorData(request, response) {
     const url = `https://www.validators.app/api/v1/validators/${env}${validator}?${queryParamDecode}`;
     const settings = {
         headers: { 
-            Authorization: "Token " + process.env.validators_app
+            Token: process.env.validators_app
         },
     }
     const res = await fetch(url, settings);
