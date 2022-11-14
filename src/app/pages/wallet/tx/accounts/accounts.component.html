@@ -4,7 +4,7 @@
       <span>Merge accounts</span>
     </ion-button>
     <ion-button (click)="mergeAccounts()">merge now</ion-button> -->
-    <app-loader *ngIf="(stakeAccounts$ | async).length == 0"></app-loader>
+    <!-- <app-loader *ngIf="(stakeAccounts$ | async).length == 0"></app-loader> -->
 
     <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
       *ngFor="let account of stakeAccounts$ | async as stakeAccounts">
