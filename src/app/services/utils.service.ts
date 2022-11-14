@@ -40,7 +40,12 @@ export class UtilsService {
     let assets = {};
   }
   public shortenNum(number,aftetDot = 3): number{
-    return Number(number).toFixedNoRounding(aftetDot)
+    if(number){
+      return Number(number).toFixedNoRounding(aftetDot)
+    }else{
+      return 0
+    }
+ 
   }
   public numFormater(number: number): any{
     return Intl.NumberFormat('en-US', {

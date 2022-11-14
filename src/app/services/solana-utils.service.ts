@@ -47,7 +47,7 @@ export class SolanaUtilsService {
 
 
   private _formatErrors(error: any) {
-    console.log('my err', error)
+    console.warn('my err', error)
     this._toasterService.msg.next({
       message: error.message,
       icon: 'alert-circle-outline',
@@ -55,29 +55,29 @@ export class SolanaUtilsService {
     });
     return throwError(error);
   }
-  public getSingleValidatorData2(vote_identity: string = ''): Observable<ValidatorData> {
-    return this._apiService.get(`https://dev.compact-defi.avaulto.com/api/validators-info?env=${environment.solanaEnv}&validator=${vote_identity}`).pipe(
-      map((validator) => {
-      console.log(validator);  
-        const filteredValidator: ValidatorData = {
-          skipRate: validator.skip_rate,
-          name: validator.name || '',
-          image: validator.image || '/assets/images/icons/node-placeholder.svg',
-          vote_identity: validator.vote_identity,
-          website: validator.website,
-          wizScore: validator.wiz_score,
-          commission: validator.commission,
-          apy_estimate: validator.apy_estimate,
-          uptime: validator.uptime,
-          stake: validator.activated_stake,
-          selectable: true,
+  // public getSingleValidatorData2(vote_identity: string = ''): Observable<ValidatorData> {
+  //   return this._apiService.get(`https://dev.compact-defi.avaulto.com/api/validators-info?env=${environment.solanaEnv}&validator=${vote_identity}`).pipe(
+  //     map((validator) => {
+  //     console.log(validator);  
+  //       const filteredValidator: ValidatorData = {
+  //         skipRate: validator.skip_rate,
+  //         name: validator.name || '',
+  //         image: validator.image || '/assets/images/icons/node-placeholder.svg',
+  //         vote_identity: validator.vote_identity,
+  //         website: validator.website,
+  //         wizScore: validator.wiz_score,
+  //         commission: validator.commission,
+  //         apy_estimate: validator.apy_estimate,
+  //         uptime: validator.uptime,
+  //         stake: validator.activated_stake,
+  //         selectable: true,
 
-        }
-        return filteredValidator;
-      }),
-      catchError(this._formatErrors)
-    );
-  }
+  //       }
+  //       return filteredValidator;
+  //     }),
+  //     catchError(this._formatErrors)
+  //   );
+  // }
   public getSingleValidatorData(vote_identity: string = ''): Observable<ValidatorData> {
     return this._apiService.get(`https://api.stakewiz.com/validator/${vote_identity}`).pipe(
       map((validator) => {
@@ -193,11 +193,13 @@ export class SolanaUtilsService {
       validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
     }else{
       try {
-        validatorData = (await firstValueFrom(this.getSingleValidatorData2(validatorVoteKey)))
+        validatorData = (await firstValueFrom(this.getSingleValidatorData(validatorVoteKey)))
       } catch (error) {
         console.warn(error)
       }
     }
+
+
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this._utilService.addrUtil(addr).addrShort,

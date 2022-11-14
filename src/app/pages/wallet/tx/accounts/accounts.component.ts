@@ -12,6 +12,7 @@ import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } f
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
+  public numOfAccounts: number = 2;
   // private walletChanged =  this._walletStore.anchorWallet$.pipe(
   //   switchMap(async wallet =>  {
   //     const latestStakeAccounts = await this.getStakeAccount(wallet.publicKey);
@@ -19,7 +20,7 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
   //   }),
   //   distinctUntilChanged()
   // ).subscribe()
-  private stakeAccounts: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject({} as StakeAccountExtended[]);
+  private stakeAccounts: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject([] as StakeAccountExtended[]);
   public stakeAccounts$ = this.stakeAccounts.asObservable().pipe(shareReplay(1));
   public initMerge: boolean = false;
   @Input() wallet: Asset;
@@ -33,7 +34,9 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
 
   public async ngOnInit(): Promise<void> {
     // automatic update when account has change
-    this._updateStakeAccounts(this.wallet.publicKey);
+    if(this.wallet){  
+      this._updateStakeAccounts(this.wallet.publicKey);
+    }
   }
   public async ngOnChanges(changes: SimpleChanges): Promise<void> {
     try {
@@ -57,12 +60,15 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
       return await this._solanaUtilsService.extendStakeAccount(acc)
     })
     const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+    // console.log(extendStakeAccountRes)
     return extendStakeAccountRes;
   }
 
   public checkForMerge(SA:StakeAccountExtended): void{
     const stakeAccounts = this.stakeAccounts.value;
+
     const canMergeAccounts = stakeAccounts.map(account => {
+      // console.log(account)
       if(account.validatorData.vote_identity == SA.validatorData.vote_identity && account.state == 'active'){
         return account
       }

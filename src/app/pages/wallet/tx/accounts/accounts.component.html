@@ -1,20 +1,22 @@
 <ion-grid>
   <ng-container *ngIf="wallet; else elseTemplate">
-    <ion-button class="ion-margin-bottom" (click)="initMerge = !initMerge; mergeAccounts()">
-      <span>merge accounts</span>
+    <!-- <ion-button class="ion-margin-bottom" (click)="initMerge = !initMerge;">
+      <span>Merge accounts</span>
     </ion-button>
-    <ion-button (click)="mergeAccounts()">merge now</ion-button>
+    <ion-button (click)="mergeAccounts()">merge now</ion-button> -->
+    <app-loader *ngIf="(stakeAccounts$ | async).length == 0"></app-loader>
+
     <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
       *ngFor="let account of stakeAccounts$ | async as stakeAccounts">
       <div class="flex-item-center">
         <div class="table-icon">
           <ion-img *ngIf="!initMerge" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
-          <ion-checkbox 
+          <!-- <ion-checkbox 
           (ionChange)="checkForMerge(account);account.checkedForMerge = checked.checked" 
           #checked 
           [disabled]="!account.canMerge"
-          *ngIf="initMerge && account.state == 'active'"
-          ></ion-checkbox>
+          *ngIf="initMerge && account?.state == 'active'"
+          ></ion-checkbox> -->
         </div>
         <div class="validator-info heading-6">
           {{account?.validatorData?.name || 'name not found'}} <br>
@@ -31,7 +33,7 @@
         {{account?.balance}}
       </div>
       <div>
-        <span [ngSwitch]="account.state">
+        <span [ngSwitch]="account?.state">
           <p *ngSwitchCase="'activating'">
             <ion-icon [tooltip]="'activating'" name="hourglass-outline"></ion-icon>
           </p>
@@ -50,7 +52,7 @@
         </span>
       </div>
 
-      <div style="text-align:right" [ngSwitch]="account.state">
+      <div style="text-align:right" [ngSwitch]="account?.state">
         <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">
           unstake</ion-button>
         <ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>

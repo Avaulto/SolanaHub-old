@@ -58,11 +58,6 @@ export class WalletPage implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit() {
-    this.isReady$.subscribe(val => {
-      if (!val) {
-        // this.walletExtended = null;
-      }
-    })
   }
 
 

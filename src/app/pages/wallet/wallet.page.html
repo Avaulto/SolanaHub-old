@@ -69,8 +69,8 @@
           <ion-button routerLink="/nft-gallery" routerDirection="forward" fill="outline">view all</ion-button>
         </div>
         <ion-row id="nft-gallery-preview">
-          <ng-container *ngIf="myNfts | async as nfts; else elseTemplate">
-            <ion-col size="12" sizeLg="4" *ngFor="let nft of nfts">
+          <ng-container *ngIf="walletExtended | async; else elseTemplate">
+            <ion-col size="12" sizeLg="4" *ngFor="let nft of myNfts | async as nfts">
               <app-nft-preview [nft]="nft"></app-nft-preview>
             </ion-col>
           </ng-container>

@@ -19,11 +19,9 @@ export class SelectItemComponent implements OnChanges {
     // console.log(this.item)
   }
   public onSelectItem(item){
-    console.log(item)
     if(!item?.selectable){
       return
     }else{
-      console.log('emit')
       this.onSelect.emit(item)
     }
   }
