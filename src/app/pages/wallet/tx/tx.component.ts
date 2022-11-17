@@ -12,7 +12,7 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 export class TxComponent implements OnInit {
   @Input() wallet:Asset;
   public validatorsData: Observable<ValidatorData[]> = this._solanaUtilsService.getValidatorData()
-  segmentUtilTab: string = 'stake'
+  public segmentUtilTab: string = 'stake'
   public hasStake: boolean = false;
   public avgApy:number = 0;
   constructor(

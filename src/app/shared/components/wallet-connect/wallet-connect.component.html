@@ -1,7 +1,7 @@
 <div id="solana-wallet-connect">
   <ng-container *ngIf=" (isReady$ | async) === false; else elseTemplate">
     <ion-button class="ion-hide-lg-down" (click)="showWalletAdapters()" expand="block">
-      <ion-icon name="flash-sharp"></ion-icon> connect wallet
+       connect wallet
     </ion-button>
     <ion-fab-button class="ion-hide-lg-up ion-margin-horizontal" (click)="showWalletAdapters()">
       <ion-icon name="wallet"></ion-icon>

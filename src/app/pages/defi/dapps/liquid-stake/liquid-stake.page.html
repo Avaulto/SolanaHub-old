@@ -10,7 +10,7 @@
         </ion-row>
         <app-marinade-info-box (onMarinadeInfo)="marinadeInfo = $event"></app-marinade-info-box>
         <ion-row class="ion-justify-content-between">
-            <ion-col sizeLg="5.9" sizeMd="12" class="data-box ion-padding">
+            <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
                 <ion-row class="ion-margin-bottom" id="stake-apr-box">
                     <div>~{{marinadeInfo?.apy}}% <span>APY</span></div>
                     <p id="">Stake SOL and use mSOL while earning rewards</p>
@@ -73,7 +73,7 @@
                     </ion-row>
                 </ion-row>
             </ion-col>
-            <ion-col sizeLg="5.9" sizeMd="12" class="data-box ion-padding">
+            <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
                 <ng-container *ngIf="stakeAccounts | async; else elseTemplate">
                     <app-stake-sol-box *ngIf="stakePate == 'sol'" [marinade]="marinade" [marinadeInfo]="marinadeInfo">
                     </app-stake-sol-box>

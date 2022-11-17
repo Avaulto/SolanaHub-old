@@ -1,0 +1,53 @@
+#segment-header {
+    border-bottom: 1px solid rgb(132 141 164 / 20%);
+    text-align: center;
+    display: block;
+    span {
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 14px;
+        margin-inline-end: 40px;
+        &:last-child{
+            margin-inline-end: 0;
+        }
+        &.active{
+            border-bottom: 3px solid var(--ion-color-primary);
+            padding-bottom: 7px;
+        }
+    }
+}
+
+#deposit-amount {
+    position: relative;
+
+    span {
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
+}
+ion-accordion {
+    background: transparent;
+}
+
+#attr-header {
+    text-transform: capitalize;
+    --background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    --inner-padding-start: 0;
+    --inner-padding-end: 0;
+    --ripple-color: transparent;
+    --padding-end: 0;
+    --padding-start: 0;
+    --color-hover: white;
+}
+.nft-attr {
+    display: flex;
+    justify-content: space-between;
+}

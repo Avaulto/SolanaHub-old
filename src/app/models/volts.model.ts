@@ -25,6 +25,7 @@ export interface FriktionMarket {
 
 export interface AllMainnetVolt {
     globalId: string;
+    image?: string;
     voltVaultId: string;
     extraVaultDataId: string;
     vaultAuthority: string;

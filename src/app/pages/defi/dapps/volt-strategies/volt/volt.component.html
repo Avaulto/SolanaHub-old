@@ -1,0 +1,42 @@
+<div class="volt card" [class.card-flipped]="flipCard">
+  <div class="content">
+    <div class="front">
+      <div class="volt-head">
+        <div class="volt-type-wrapper" [tooltip]="voltToolTip" placement="top">
+          <ion-icon [class]="'volt-type-'+ volt.voltType" name="flash"></ion-icon>
+        </div>
+        <div class="asset-info">
+
+          <app-image-placeholder [imagePath]="volt.image"></app-image-placeholder>
+          <span>{{volt.depositTokenSymbol}}</span>
+        </div>
+        <div class="asset-apy">
+
+          {{volt.apy}}%
+          <span>APY</span>
+        </div>
+      </div>
+      <div class="volt-body">
+        <div class="deposits">
+          <span class="heading-3">
+            Total Deposit:
+          </span>
+          <ion-progress-bar [value]="progress"></ion-progress-bar>
+
+          <div class="tvl-usd">
+            {{volt.tvlUsd| currency}}
+          </div>
+        </div>
+        <ng-container *ngIf="isConnected; else elseTemplate">
+          <ion-button (click)="switchToDeposit()" fill="outline" color="secondary">deposit</ion-button>
+        </ng-container>
+        <ng-template #elseTemplate>
+          <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+        </ng-template>
+      </div>
+    </div>
+    <div class="back">
+      <app-volt-popup [volt]="volt" (onFlipVolt)="flipCard = !flipCard"></app-volt-popup>
+    </div>
+  </div>
+</div>

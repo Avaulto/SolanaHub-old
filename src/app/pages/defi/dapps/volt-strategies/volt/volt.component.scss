@@ -1,0 +1,122 @@
+.volt-head {
+    background: linear-gradient(107.82deg, #395DF0 20.41%, #FE5B94 107.95%);
+    border-radius: 8px;
+    min-height: 120px;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    .volt-type-wrapper {
+        background: #0c1f43;
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+    ion-icon {
+        font-size: 16px;
+    }
+    .asset-info {
+        display: flex;
+        align-items: flex-start;
+
+        app-image-placeholder {
+            margin-inline-end: 6px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        span {
+            font-size: 18px;
+        }
+    }
+
+    .asset-apy {
+        font-size: 3vh;
+        display: flex;
+        align-items: self-end;
+        font-weight: 900;
+        position: relative;
+    }
+}
+
+.volt-body {
+    .deposits {
+        margin-block: 10px;
+    }
+
+    ion-button {
+        width: 100%;
+    }
+    .tvl-usd{
+        margin-block-start: 5px;
+    }
+}
+
+.volt-type-1 {
+    color: rgb(99, 125, 255);
+}
+
+.volt-type-2 {
+    color: rgb(40, 237, 191);
+}
+
+.volt-type-3 {
+    color: rgb(255, 192, 3);
+}
+
+.volt-type-4 {
+    color:rgb(242, 126, 227)
+}
+
+.volt-type-5 {
+    color:  rgb(144, 92, 255);
+}
+
+
+
+.card {
+    width: inherit;
+    min-height: 250px;
+    perspective: 500px;
+    text-transform: capitalize;
+  }
+  
+  .content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+  }
+  
+  .card-flipped .content {
+    transform: rotateY( 180deg ) ;
+    transition: transform 0.5s;
+  }
+  .card-flipped .front{
+    visibility: hidden;
+    transition: visibility 1s;
+  }
+  .front,
+  .back {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    backface-visibility: hidden;
+  }
+  
+  .back {
+    transform: rotateY( 180deg );
+  }

@@ -9,11 +9,41 @@
         <span class="heading-1">Friktion</span>
       </div>
     </ion-row>
-    <app-friktion-info></app-friktion-info>
-    <div id="tool-box">
-      <div id="sort">
-        
+    <app-friktion-info [friktionInfo]="friktionInfo"></app-friktion-info>
+
+    <ion-row id="tool-box" class="ion-margin-bottom ion-justify-content-between ion-align-items-center">
+      <div id="search-box">
+        <app-search-input (search)="searchVolt($event)" [placeholder]="'Filter by symbol'"></app-search-input>
       </div>
-    </div>
+      <div id="filter-buttons" class="ion-hide-md-down">
+        <ion-button id="volt-type-1" (click)="filterVolt(0)" [class]="voltsFilter.includes(0) ? 'volt-type-1-bg' : ''"
+          fill="outline">
+          Generate Income
+        </ion-button>
+        <ion-button id="volt-type-2" (click)="filterVolt(1)" [class]="voltsFilter.includes(1) ? 'volt-type-2-bg' : ''"
+          fill="outline">
+          Sustainable Stables
+        </ion-button>
+        <ion-button id="volt-type-3" (click)="filterVolt(2)" [class]="voltsFilter.includes(2) ? 'volt-type-3-bg' : ''"
+          fill="outline">
+          Crab Strategy
+        </ion-button>
+        <ion-button id="volt-type-4" (click)="filterVolt(3)" [class]="voltsFilter.includes(3) ? 'volt-type-4-bg' : ''"
+          fill="outline">
+          Basis Yield
+        </ion-button>
+        <ion-button id="volt-type-5" (click)="filterVolt(4)" [class]="voltsFilter.includes(4) ? 'volt-type-5-bg' : ''"
+          fill="outline">
+          Capital Protection
+        </ion-button>
+      </div>
+    </ion-row>
+    <ion-row class="ion-justify-content-between ion-align-items-start">
+      <ion-col *ngFor="let volt of voltsData | async | filter: 'depositTokenSymbol':searchTerm"
+        class="data-box ion-padding" sizeMd="3.8" sizeSm="5">
+        <app-volt [volt]="volt" [isConnected]="isReady$ | async"></app-volt>
+      </ion-col>
+    </ion-row>
+    <app-loader *ngIf="(voltsData | async).length == 0"></app-loader>
   </ion-grid>
 </ion-content>

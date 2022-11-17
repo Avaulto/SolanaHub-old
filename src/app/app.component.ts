@@ -9,7 +9,7 @@ import {
   SolletExtensionWalletAdapter,
   SolletWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,6 +29,7 @@ export class AppComponent {
     connectionConfigProviderFactory({
       commitment: "confirmed",
     })
+
 
     this._connectionStore.setEndpoint(environment.solanaCluster)
     this._walletStore.setAdapters([

@@ -1,0 +1,16 @@
+:host{
+    position: relative;
+}
+ion-input {
+    border: 1px solid var(--ion-color-primary);
+    border-radius: 4px;
+    height: 38px;
+    margin: 0 auto;
+}
+
+ion-icon {
+    position: absolute;
+    right: 13px;
+    top: 13px;
+    z-index: 2;
+}
