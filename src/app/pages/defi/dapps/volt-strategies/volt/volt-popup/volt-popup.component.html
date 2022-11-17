@@ -1,6 +1,6 @@
 <ion-grid>
-  <ion-icon name="arrow-back-outline" (click)="onFlipVolt.emit()"></ion-icon>
-  <ion-row style="cursor: pointer;" id="segment-header" class="ion-text-uppercase">
+  <ion-icon  style="cursor: pointer;" name="arrow-back-outline" (click)="onFlipVolt.emit()"></ion-icon>
+  <ion-row id="segment-header" class="ion-text-uppercase">
 
     <span (click)="setUtil('deposit')" [class.active]="segmentUtilTab == 'deposit'">deposit</span>
     <span (click)="setUtil('withdraw')" [class.active]="segmentUtilTab == 'withdraw'">withdraw</span>
