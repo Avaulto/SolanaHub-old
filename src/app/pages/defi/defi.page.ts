@@ -45,6 +45,7 @@ export class DefiPage implements OnInit {
     //   deepLink: 'volt-strategies'
     // },
   ]
+  
   constructor(private _popoverController: PopoverController) { }
 
   ngOnInit() {
