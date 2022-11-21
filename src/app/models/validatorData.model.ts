@@ -1,5 +1,6 @@
 export interface ValidatorData{
     name: string;
+    identity?: string;
     image:string;
     vote_identity:string;
     website:string;

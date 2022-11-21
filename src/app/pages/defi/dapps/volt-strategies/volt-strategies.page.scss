@@ -1,54 +1,73 @@
-#friktion-logo{
+#friktion-logo {
     display: flex;
     align-items: center;
+
     ion-img {
         width: 50px;
         margin-inline-end: 8px;
     }
 }
-#filter-buttons ion-button {
-    margin-inline-end: 10px;
-    margin-block: 5px;
-}
 
+#filter-buttons {
+    display: flex;
+
+    ion-button {
+        margin-inline-end: 10px;
+        margin-block: 5px;
+    }
+}
+.button-group{
+    position: relative;
+    ion-icon{
+        position:absolute;
+        top:10px;
+        right: 10px;
+    }
+}
 :root {
 
     // other color
-    --volt-1-color:rgb(99, 125, 255);
+    --volt-1-color: rgb(99, 125, 255);
 
 }
+
 #volt-type-1 {
-    
-    --border-color:rgb(99, 125, 255);
-    &.volt-type-1-bg{
+
+    --border-color: rgb(99, 125, 255);
+
+    &.volt-type-1-bg {
         --background: rgb(99, 125, 255);
     }
 }
 
 #volt-type-2 {
     --border-color: rgb(40, 237, 191);
-    &.volt-type-2-bg{
-        --background:rgb(40, 237, 191);
+
+    &.volt-type-2-bg {
+        --background: rgb(40, 237, 191);
     }
 }
 
 #volt-type-3 {
     --border-color: rgb(255, 192, 3);
-    &.volt-type-3-bg{
-        --background:rgb(255, 192, 3);
+
+    &.volt-type-3-bg {
+        --background: rgb(255, 192, 3);
     }
 }
 
 #volt-type-4 {
     --border-color: rgb(242, 126, 227);
-    &.volt-type-4-bg{
-        --background:rgb(242, 126, 227);
+
+    &.volt-type-4-bg {
+        --background: rgb(242, 126, 227);
     }
 }
 
 #volt-type-5 {
-    --border-color:  rgb(144, 92, 255);
-    &.volt-type-5-bg{
-        --background:rgb(144, 92, 255);
+    --border-color: rgb(144, 92, 255);
+
+    &.volt-type-5-bg {
+        --background: rgb(144, 92, 255);
     }
 }

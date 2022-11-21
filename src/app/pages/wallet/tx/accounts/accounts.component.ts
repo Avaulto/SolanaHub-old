@@ -12,7 +12,7 @@ import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } f
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
-  public numOfAccounts: number = 2;
+  public accountToMerge:StakeAccountExtended[] = [];
   // private walletChanged =  this._walletStore.anchorWallet$.pipe(
   //   switchMap(async wallet =>  {
   //     const latestStakeAccounts = await this.getStakeAccount(wallet.publicKey);
@@ -66,7 +66,7 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
 
   public checkForMerge(SA:StakeAccountExtended): void{
     const stakeAccounts = this.stakeAccounts.value;
-
+    
     const canMergeAccounts = stakeAccounts.map(account => {
       // console.log(account)
       if(account.validatorData.vote_identity == SA.validatorData.vote_identity && account.state == 'active'){

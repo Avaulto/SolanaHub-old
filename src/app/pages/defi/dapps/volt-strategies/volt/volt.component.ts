@@ -23,14 +23,21 @@ export class VoltComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.volt.image = await this.getCoinIcon();
+    this.volt.depositTokenImage = await this.getDepositTokenIcon();
+    this.volt.underlineTokenImage = await this.getUnderlineTokenIcon();
     this.setVoltToolTip(this.volt.voltType);
     this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
     this.totalDepositUsd = this.volt.tvlUsd.toLocaleString()
   }
 
-  async getCoinIcon(): Promise<string> {
+  async getDepositTokenIcon(): Promise<string> {
     return await (await firstValueFrom(this._dataAggregator.getCoinData(this.volt.depositTokenCoingeckoId))).image.large;
+  }
+  async getUnderlineTokenIcon(): Promise<string> {
+    if(this.volt.depositTokenCoingeckoId != this.volt.underlyingTokenCoingeckoId){
+      return await (await firstValueFrom(this._dataAggregator.getCoinData(this.volt.underlyingTokenCoingeckoId))).image.large;
+    }
+    return this.volt.depositTokenImage;
   }
   private setVoltToolTip(voltType: number): void {
     let toolTip = '';

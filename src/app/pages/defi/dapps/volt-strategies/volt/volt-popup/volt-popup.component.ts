@@ -14,7 +14,6 @@ export class VoltPopupComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.volt)
   }
   public setUtil(util: string): void{
     this.segmentUtilTab = util;

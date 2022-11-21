@@ -1,9 +1,14 @@
 <ion-grid>
   <ng-container *ngIf="wallet; else elseTemplate">
-    <!-- <ion-button class="ion-margin-bottom" (click)="initMerge = !initMerge;">
-      <span>Merge accounts</span>
-    </ion-button>
-    <ion-button (click)="mergeAccounts()">merge now</ion-button> -->
+    <!-- <ion-row class="ion-margin-bottom">
+
+      <ion-button fill="outline" (click)="initMerge = !initMerge;">
+        <span>Merge accounts</span>
+      </ion-button>
+      <ion-button (click)="mergeAccounts()" *ngIf="accountToMerge.length > 1">
+        <ion-icon name="checkmark-outline"></ion-icon>
+      </ion-button>
+    </ion-row> -->
     <!-- <app-loader *ngIf="(stakeAccounts$ | async).length == 0"></app-loader> -->
 
     <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
