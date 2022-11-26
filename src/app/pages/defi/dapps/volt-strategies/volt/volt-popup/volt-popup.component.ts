@@ -17,7 +17,6 @@ export class VoltPopupComponent implements OnInit {
     hideDelay: 400000,
     maxWidth: '320px',
     placement:'bottom'
-    
   }
   constructor() { }
 
