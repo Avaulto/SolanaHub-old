@@ -61,11 +61,9 @@ export class VoltStrategiesPage implements OnInit {
     let marketInfo: FriktionMarket = await getMarketInfoReq.json();
     return marketInfo;
   }
-  private mergeDuplicateDepositAssetVolts(volts: AllMainnetVolt[]): AllMainnetVolt[] {
-    const mergredVolts = volts.map(volt =>{
-      
-    })
-    return
+  public getHighVolt(volt: AllMainnetVolt): AllMainnetVolt | null {
+    
+    return this.voltsOriginal.filter(i => i.globalId == volt.highVoltage)[0] || null
   }
   public async friktionSDKInit() {
     this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(async wallet => {
@@ -106,6 +104,7 @@ export class VoltStrategiesPage implements OnInit {
     const volume = await this.getFriktionVol();
     const hideNoneApyVolts = friktionMarketInfo.allMainnetVolts.filter(volt => volt.apy);
     this.voltsOriginal = hideNoneApyVolts // this.mergeDuplicateDepositAssetVolts(hideNoneApyVolts);
+    console.log(this.voltsOriginal);
     console.log(friktionMarketInfo)
     this.friktionInfo = {
       tvl: friktionMarketInfo.totalTvlUSD,

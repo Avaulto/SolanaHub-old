@@ -7,10 +7,8 @@
     flex-direction: row;
     justify-content: space-between;
     position: relative;
+
     .volt-type-wrapper {
-        background: #0c1f43;
-        width: 25px;
-        height: 25px;
         position: absolute;
         top: 5px;
         right: 5px;
@@ -19,9 +17,11 @@
         justify-content: center;
         border-radius: 50%;
     }
+
     ion-icon {
         font-size: 16px;
     }
+
     .asset-info {
         display: flex;
         align-items: flex-start;
@@ -56,7 +56,8 @@
     ion-button {
         width: 100%;
     }
-    .tvl-usd{
+
+    .tvl-usd {
         margin-block-start: 5px;
     }
 }
@@ -74,49 +75,66 @@
 }
 
 .volt-type-4 {
-    color:rgb(242, 126, 227)
+    color: rgb(242, 126, 227)
 }
 
 .volt-type-5 {
-    color:  rgb(144, 92, 255);
+    color: rgb(144, 92, 255);
 }
 
 
-
+// flip v1
 .card {
     width: inherit;
-    min-height: 250px;
+    min-height: 280px;
     perspective: 500px;
     text-transform: capitalize;
-  }
-  
-  .content {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: transform 1s;
+}
+
+
+.tp-box {
+    position: relative;
+    -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-  }
-  
-  .card-flipped .content {
-    transform: rotateY( 180deg ) ;
-    transition: transform 0.5s;
-  }
-  .card-flipped .front{
-    visibility: hidden;
-    transition: visibility 1s;
-  }
-  .front,
-  .back {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: absolute;
-    height: 100%;
+    -webkit-transform: transform 1s;
+    -ms-transform: transform 1s;
+    transform: transform 1s;
+}
+
+.tp-box__side {
     width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-  }
-  
-  .back {
-    transform: rotateY( 180deg );
-  }
+
+
+}
+
+.tp-box__front {
+    -webkit-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+.tp-box__back {
+    -webkit-transform: rotateY(-180deg);
+    -ms-transform: rotateY(-180deg);
+    transform: rotateY(-180deg);
+}
+
+ion-toggle {
+    height: 25px;
+    width: 50px;
+    --handle-height: 25px;
+    --handle-width: 25px;
+    border: 1px solid #3f51b5;
+    border-radius: 17px;
+    transition: 0.3s ease all;
+    --handle-background: #fff url('/assets/images/icons/friktionBoltColored.png') no-repeat center / 60%;
+    --handle-background-checked: #fff url('/assets/images/icons/friktionBoltColored.png') no-repeat center / 60%;
+    filter: grayscale(100%);;
+    &.toggle-checked{
+        filter: grayscale(0%);
+    }
+}

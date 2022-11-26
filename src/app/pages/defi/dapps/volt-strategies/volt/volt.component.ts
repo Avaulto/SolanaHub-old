@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
@@ -9,10 +10,31 @@ import { VoltPopupComponent } from './volt-popup/volt-popup.component';
   selector: 'app-volt',
   templateUrl: './volt.component.html',
   styleUrls: ['./volt.component.scss'],
+  animations: [
+    trigger('flipState', [
+      state('active', style({
+        transform: 'rotateY(179deg)'
+      })),
+      state('inactive', style({
+        transform: 'rotateY(0)'
+      })),
+      transition('active => inactive', animate('500ms ease-out')),
+      transition('inactive => active', animate('500ms ease-in'))
+    ])
+  ]
 })
 export class VoltComponent implements OnInit {
+  flip: string = 'inactive';
+
+  toggleFlip() {
+    this.flip = (this.flip == 'inactive') ? 'active' : 'inactive';
+  }
+  
   @Input() volt: AllMainnetVolt;
+  public voltTemp: AllMainnetVolt;
+  @Input() highVolt: AllMainnetVolt | null;
   @Input() isConnected: boolean = false;
+
   public voltToolTip = '';
   public progress: number = 0;
   public totalDepositUsd;
@@ -27,7 +49,11 @@ export class VoltComponent implements OnInit {
     this.volt.underlineTokenImage = await this.getUnderlineTokenIcon();
     this.setVoltToolTip(this.volt.voltType);
     this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
-    this.totalDepositUsd = this.volt.tvlUsd.toLocaleString()
+    this.totalDepositUsd = this.volt.tvlUsd.toLocaleString();
+
+
+    // store initial volt value
+    this.voltTemp = this.volt;
   }
 
   async getDepositTokenIcon(): Promise<string> {
@@ -71,9 +97,11 @@ export class VoltComponent implements OnInit {
     });
     await popover.present();
   }
-
-  public flipCard: boolean = false;
-  public switchToDeposit(){
-    this.flipCard = !this.flipCard
+  public switchToHighVolt(event):void{
+     if(event.detail.checked){
+       this.volt = this.highVolt;
+     }else{
+      this.volt = this.voltTemp;
+     }
   }
 }

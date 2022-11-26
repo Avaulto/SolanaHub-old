@@ -37,13 +37,13 @@ export class DefiPage implements OnInit {
     //   learnMoreLink: 'https://docs.orca.so/orca-for-liquidity-providers/how-to-provide-liquidity-on-orca',
     //   deepLink: 'pools'
     // },
-    // {
-    //   name: 'friktion',
-    //   image: 'assets/images/icons/friktionBolt.png',
-    //   description: `Passive, quantitative strategies generating returns based on market opportunities. Volts allow anyone to access strategies that are built with risk & returns, principal protection, and volatility in mind. `,
-    //   learnMoreLink: 'https://docs.friktion.fi/',
-    //   deepLink: 'volt-strategies'
-    // },
+    {
+      name: 'friktion',
+      image: 'assets/images/icons/friktionBolt.png',
+      description: `Passive, quantitative strategies generating returns based on market opportunities. Volts allow anyone to access strategies that are built with risk & returns, principal protection, and volatility in mind. `,
+      learnMoreLink: 'https://docs.friktion.fi/',
+      deepLink: 'volt-strategies'
+    },
   ]
   
   constructor(private _popoverController: PopoverController) { }

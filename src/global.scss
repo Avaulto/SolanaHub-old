@@ -229,3 +229,16 @@ ion-input, ion-select {
     --max-width: 98%;
     --height:532px;
 }
+
+.friktion-tool-tip {
+    .tooltip-wrapper{
+    background-color: black;
+    padding: 10px;
+    width:310px;
+    div{
+    display:flex;
+    justify-content: space-between; 
+    }
+}
+
+}

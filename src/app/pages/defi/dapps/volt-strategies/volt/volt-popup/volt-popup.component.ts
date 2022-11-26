@@ -11,9 +11,29 @@ export class VoltPopupComponent implements OnInit {
   @Output() onFlipVolt = new EventEmitter();
   public segmentUtilTab: string = 'deposit'
   public voltDetailBox:boolean = false;
+  public toolTipHtml = '';
+  public tooltipoptions = {
+    tooltipClass: 'friktion-tool-tip',
+    hideDelay: 400000,
+    maxWidth: '320px',
+    placement:'bottom'
+    
+  }
   constructor() { }
 
   ngOnInit() {
+    this.toolTipHtml = `  <div class="tooltip-wrapper">
+
+    <div>
+      <span>Underlying asset</span>
+      <span>${this.volt.underlyingTokenSymbol}</span>
+    </div>
+    <div >
+      <span>Capacity</span>
+      <span>${this.volt.tvlUsd} / ${this.volt.capacityUsd}</span>
+    </div>
+
+  </div>`
   }
   public setUtil(util: string): void{
     this.segmentUtilTab = util;

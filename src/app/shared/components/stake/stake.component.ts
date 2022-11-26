@@ -85,12 +85,14 @@ export class StakeComponent implements OnInit {
   public submitNewStake(): void {
     trackEvent('regular stake')
 
-    const { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
+    let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
     const walletOwnerPublicKey = this.wallet.publicKey;
     // const testnetvoteAccount = '87QuuzX6cCuWcKQUFZFm7vP9uJ72ayQD5nr6ycwWYWBG'
-    const lockupTime = this._getLockuptimeMilisecond(monthLockuptime);
-
-    this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, lockupTime)
+    if(monthLockuptime){  
+      monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
+    }
+    console.log(monthLockuptime)
+    this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime)
   }
   private _getLockuptimeMilisecond(months: number): number {
     const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();

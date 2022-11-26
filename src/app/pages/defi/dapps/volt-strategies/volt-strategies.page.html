@@ -59,9 +59,9 @@
       </div>
     </ion-row>
     <ion-row class="ion-justify-content-between ion-align-items-start">
-      <ion-col *ngFor="let volt of voltsData | async | filter: 'depositTokenSymbol':searchTerm"
-        class="data-box ion-padding" sizeMd="3.8" sizeSm="5">
-        <app-volt [volt]="volt" [isConnected]="isReady$ | async"></app-volt>
+      <ion-col size="12" sizeMd="3.8" *ngFor="let volt of voltsData | async | filter: 'depositTokenSymbol':searchTerm"
+        class="data-box volt-wrapper ion-padding" [ngClass]="volt.isVoltage == false ? '': 'hide-volt'">
+        <app-volt [volt]="volt" [highVolt]="getHighVolt(volt)" [isConnected]="isReady$ | async"></app-volt>
       </ion-col>
     </ion-row>
     <app-loader *ngIf="(voltsData | async).length == 0"></app-loader>

@@ -29,25 +29,12 @@
         top: 12px;
     }
 }
-ion-accordion {
-    background: transparent;
-}
-
-#attr-header {
-    text-transform: capitalize;
-    --background: transparent;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    --inner-padding-start: 0;
-    --inner-padding-end: 0;
-    --ripple-color: transparent;
-    --padding-end: 0;
-    --padding-start: 0;
-    --color-hover: white;
-}
-.nft-attr {
-    display: flex;
-    justify-content: space-between;
+#volt-info{
+    cursor: help;
+    span {
+        color: var(--ion-color-primary);
+        text-decoration: underline;
+        align-items: center;
+        display: flex;
+    }
 }
