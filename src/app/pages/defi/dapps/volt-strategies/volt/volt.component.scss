@@ -32,13 +32,25 @@
             height: 40px;
             border-radius: 50%;
             overflow: hidden;
+            z-index: 2;
         }
 
         span {
             font-size: 18px;
         }
     }
-
+    .underline-asset{
+        span {
+            transform: translate(-14px, 0px);
+            font-size: 18px;
+        }
+        app-image-placeholder:nth-child(2){
+            z-index: 0;
+            transform: translate(-15px, 4px);
+            width: 30px;
+            height: 30px;
+        }
+    }
     .asset-apy {
         font-size: 3vh;
         display: flex;

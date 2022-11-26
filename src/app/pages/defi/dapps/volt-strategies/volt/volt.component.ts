@@ -35,7 +35,7 @@ export class VoltComponent implements OnInit {
   @Input() highVolt: AllMainnetVolt | null;
   @Input() isConnected: boolean = false;
 
-  public voltToolTip = '';
+  
   public progress: number = 0;
   public totalDepositUsd;
   constructor(
@@ -47,7 +47,7 @@ export class VoltComponent implements OnInit {
   async ngOnInit() {
     this.volt.depositTokenImage = await this.getDepositTokenIcon();
     this.volt.underlineTokenImage = await this.getUnderlineTokenIcon();
-    this.setVoltToolTip(this.volt.voltType);
+    console.log(this.volt.underlineTokenImage)
     this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
     this.totalDepositUsd = this.volt.tvlUsd.toLocaleString();
 
@@ -60,32 +60,12 @@ export class VoltComponent implements OnInit {
     return await (await firstValueFrom(this._dataAggregator.getCoinData(this.volt.depositTokenCoingeckoId))).image.large;
   }
   async getUnderlineTokenIcon(): Promise<string> {
-    if(this.volt.depositTokenCoingeckoId != this.volt.underlyingTokenCoingeckoId){
+    if(this.volt.depositTokenSymbol != this.volt.underlyingTokenSymbol){
       return await (await firstValueFrom(this._dataAggregator.getCoinData(this.volt.underlyingTokenCoingeckoId))).image.large;
     }
-    return this.volt.depositTokenImage;
+    return null
   }
-  private setVoltToolTip(voltType: number): void {
-    let toolTip = '';
-    switch (voltType) {
-      case 1:
-        toolTip = 'Best in bearish to mild bull markets'
-        break;
-      case 2:
-        toolTip = 'Best in bull to moderately bearish markets (rising prices lowering chance of options being exercised)'
-        break;
-      case 3:
-        toolTip = 'Best in range-bound "crab" markets. Based on current funding rates, this strategy would be unprofitable if BTC moves more than +/-11.7% every Epoch (the Profit Range).'
-        break;
-      case 4:
-        toolTip = 'Best in negative funding rate environments (perpetuals trade below spot)'
-        break;
-      case 5:
-        toolTip = 'Best in volatile markets with rising interest rates.'
-        break;
-    }
-    this.voltToolTip = toolTip;
-  }
+
   public async deposit(): Promise<void>{
     const popover = await this.popoverController.create({
       component: VoltPopupComponent,

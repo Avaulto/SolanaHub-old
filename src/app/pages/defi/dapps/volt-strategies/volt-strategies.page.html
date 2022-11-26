@@ -18,38 +18,34 @@
       <div id="filter-buttons" class="ion-hide-md-down">
         <div class="button-group">
 
-          <ion-button id="volt-type-1" (click)="filterVolt(0)" [class]="voltsFilter.includes(0) ? 'volt-type-1-bg' : ''"
+          <ion-button id="volt-type-1" (click)="filterVolt(0)"  *ngIf="voltExists(1)" [class]="voltsFilter.includes(0) ? 'volt-type-1-bg' : ''"
             fill="outline">
             Generate Income
-          
           </ion-button>
-          <!-- <ion-icon slot="end" name="alert-circle-outline" maxWidth="300px" placement="top"
-          tooltip="generates income by running an automated covered call strategy and collecting the option premium. Deposits are deployed in the upcoming Epoch and earnings are auto-compounded weekly.">
-        </ion-icon> -->
         </div>
         <div class="button-group">
-          <ion-button id="volt-type-2" (click)="filterVolt(1)" [class]="voltsFilter.includes(1) ? 'volt-type-2-bg' : ''"
+          <ion-button id="volt-type-2" (click)="filterVolt(1)" *ngIf="voltExists(2)" [class]="voltsFilter.includes(1) ? 'volt-type-2-bg' : ''"
             fill="outline">
             Sustainable Stables
           </ion-button>
           <!-- <ion-icon slot="end" name="alert-circle-outline" maxWidth="300px" placement="top" tooltip=""></ion-icon> -->
         </div>
         <div class="button-group">
-          <ion-button id="volt-type-3" (click)="filterVolt(2)" [class]="voltsFilter.includes(2) ? 'volt-type-3-bg' : ''"
+          <ion-button id="volt-type-3" (click)="filterVolt(2)" *ngIf="voltExists(3)" [class]="voltsFilter.includes(2) ? 'volt-type-3-bg' : ''"
             fill="outline">
             Crab Strategy
           </ion-button>
           <!-- <ion-icon slot="end" name="alert-circle-outline" maxWidth="300px" placement="top" tooltip=""></ion-icon> -->
         </div>
         <div class="button-group">
-          <ion-button id="volt-type-4" (click)="filterVolt(3)" [class]="voltsFilter.includes(3) ? 'volt-type-4-bg' : ''"
+          <ion-button id="volt-type-4" (click)="filterVolt(3)"  *ngIf="voltExists(4)" [class]="voltsFilter.includes(3) ? 'volt-type-4-bg' : ''"
             fill="outline">
             Basis Yield
           </ion-button>
           <!-- <ion-icon slot="end" name="alert-circle-outline" maxWidth="300px" placement="top" tooltip=""></ion-icon> -->
         </div>
         <div class="button-group">
-          <ion-button id="volt-type-5" (click)="filterVolt(4)" [class]="voltsFilter.includes(4) ? 'volt-type-5-bg' : ''"
+          <ion-button id="volt-type-5" (click)="filterVolt(4)" *ngIf="voltExists(5)" [class]="voltsFilter.includes(4) ? 'volt-type-5-bg' : ''"
             fill="outline">
             Capital Protection
           </ion-button>
@@ -58,7 +54,7 @@
         </div>
       </div>
     </ion-row>
-    <ion-row class="ion-justify-content-between ion-align-items-start">
+    <ion-row [ngClass]="(voltsData | async).length > 2 ? 'ion-justify-content-between' : 'ion-justify-content-around'" class=" ion-align-items-start">
       <ion-col size="12" sizeMd="3.8" *ngFor="let volt of voltsData | async | filter: 'depositTokenSymbol':searchTerm"
         class="data-box volt-wrapper ion-padding" [ngClass]="volt.isVoltage == false ? '': 'hide-volt'">
         <app-volt [volt]="volt" [highVolt]="getHighVolt(volt)" [isConnected]="isReady$ | async"></app-volt>

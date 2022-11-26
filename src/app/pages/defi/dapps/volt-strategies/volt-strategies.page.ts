@@ -43,7 +43,6 @@ export class VoltStrategiesPage implements OnInit {
   public voltsData: BehaviorSubject<AllMainnetVolt[]> = new BehaviorSubject([] as AllMainnetVolt[]);
   public friktionInfo:FriktionInfo = null;
   constructor(
-    private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
     private _walletStore: WalletStore,
     private _utilsService: UtilsService
@@ -104,7 +103,8 @@ export class VoltStrategiesPage implements OnInit {
     const volume = await this.getFriktionVol();
     const hideNoneApyVolts = friktionMarketInfo.allMainnetVolts.filter(volt => volt.apy);
     this.voltsOriginal = hideNoneApyVolts // this.mergeDuplicateDepositAssetVolts(hideNoneApyVolts);
-    console.log(this.voltsOriginal);
+    const vt2 = this.voltsOriginal.filter(volt => volt.voltType == 2)
+    console.log(this.voltsOriginal, vt2);
     console.log(friktionMarketInfo)
     this.friktionInfo = {
       tvl: friktionMarketInfo.totalTvlUSD,
@@ -116,6 +116,9 @@ export class VoltStrategiesPage implements OnInit {
     // this.friktionSDKInit();
   }
 
+  public voltExists(type:number): boolean{
+    return this.voltsOriginal.filter(volt => volt.voltType == type).length > 0
+  }
   public filterVolt(type: number){
     // add or remove type from volt filter
     this.voltsFilter[type] === undefined ?  this.voltsFilter[type] = type : this.voltsFilter[type] = undefined;
