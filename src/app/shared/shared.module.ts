@@ -45,8 +45,8 @@ import {
   import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
   // toop tip
-  import { TooltipModule } from 'ng2-tooltip-directive';
 import { CustomInterceptor } from "../services";
+import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
 @NgModule({
   declarations: [
     FilterPipe,

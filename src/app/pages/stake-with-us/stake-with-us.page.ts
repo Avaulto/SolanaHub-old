@@ -9,11 +9,11 @@ interface ValidatorRank {
   numOfValidators: number;
 }
 @Component({
-  selector: 'app-support-us',
-  templateUrl: './support-us.page.html',
-  styleUrls: ['./support-us.page.scss'],
+  selector: 'app-stake-with-us',
+  templateUrl: './stake-with-us.page.html',
+  styleUrls: ['./stake-with-us.page.scss'],
 })
-export class SupportUsPage implements OnInit, OnDestroy {
+export class StakeWithUsPage implements OnInit, OnDestroy {
   public apy: number;
   private AvaultoVoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   private anchorWallet$: Subscription;

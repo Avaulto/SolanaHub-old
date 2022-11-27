@@ -54,8 +54,8 @@ export const pages: any = [
       ]
     },
     {
-      title: "support us",
-      url: "support-us",
+      title: "stake with us",
+      url: "stake-with-us",
       icon: 'heart-circle',
     },
   ];

@@ -23,8 +23,8 @@ const routes: Routes = [
   },
 
   {
-    path: 'support-us',
-    loadChildren: () => import('./pages/support-us/support-us.module').then( m => m.SupportUsPageModule)
+    path: 'stake-with-us',
+    loadChildren: () => import('./pages/stake-with-us/stake-with-us.module').then( m => m.StakeWithUsPageModule)
   },
   {
     path: 'defi',
