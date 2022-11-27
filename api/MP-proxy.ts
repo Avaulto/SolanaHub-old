@@ -23,7 +23,7 @@ export default async function GETAllOnwerNfts(request, response): Promise<Nft[]>
   const myNfts = await _metaplex
     .nfts()
     .findAllByOwner({ owner: new PublicKey(walletAdress) })
-    .run();
+    
 
   const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem: any) => {
     try {

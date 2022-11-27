@@ -9,12 +9,14 @@ import { HistoryComponent } from './history/history.component';
 import { TxComponent } from './tx/tx.component';
 import { AccountsComponent } from './tx/accounts/accounts.component';
 import { AssetsBalanceComponent } from './assets-balance/assets-balance.component';
+import { QRCodeModule } from 'angularx-qrcode';
 
 
 @NgModule({
   imports: [
     SharedModule,
-    WalletPageRoutingModule
+    WalletPageRoutingModule,
+    QRCodeModule
   ],
   declarations: [
     WalletPage,

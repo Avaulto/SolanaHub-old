@@ -6,7 +6,7 @@ import { Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from '@solana/web3.js';
 import { firstValueFrom, Subject } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 interface ListInstuction {
   sellerAddress: string,
@@ -41,7 +41,7 @@ export class NftStoreService {
         name: "my nft 2",
         sellerFeeBasisPoints: 500, // Represents 5.00%.
       })
-      .run();
+      
   }
   public async getMagicEdenOwnerNFTS(walletOwnerAddress: string): Promise<any[]> {
     const uri = `${this.magicEdenApiProxy}&endpoint=wallets/${walletOwnerAddress}/tokens`

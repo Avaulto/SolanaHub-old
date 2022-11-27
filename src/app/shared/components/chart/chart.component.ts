@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { firstValueFrom } from 'rxjs';
 import { UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';

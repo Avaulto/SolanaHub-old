@@ -39,8 +39,7 @@ import {
   
   // } from "./directives";
   
-  import { QRCodeModule } from 'angularx-qrcode';
-  
+
   // font awesome
   import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
@@ -83,7 +82,6 @@ import {
     RouterModule,
     FontAwesomeModule,
     IonicModule,
-    QRCodeModule,
     TooltipModule,
     
   ],
@@ -104,7 +102,6 @@ import {
     DataBoxComponent,
     LogoComponent,
     GoBackBtnComponent,
-    QRCodeModule,
     TooltipModule,
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
