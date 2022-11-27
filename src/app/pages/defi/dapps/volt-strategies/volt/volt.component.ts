@@ -47,7 +47,6 @@ export class VoltComponent implements OnInit {
   async ngOnInit() {
     this.volt.depositTokenImage = await this.getDepositTokenIcon();
     this.volt.underlineTokenImage = await this.getUnderlineTokenIcon();
-    console.log(this.volt.underlineTokenImage)
     this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
     this.totalDepositUsd = this.volt.tvlUsd.toLocaleString();
 

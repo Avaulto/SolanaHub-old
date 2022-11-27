@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SupportUsPageRoutingModule } from './support-us-routing.module';
+import { SupportUsPageRoutingModule } from './stake-with-us-routing.module';
 
-import { SupportUsPage } from './support-us.page';
+import { StakeWithUsPage } from './stake-with-us.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
@@ -14,6 +14,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 SharedModule,
     SupportUsPageRoutingModule
   ],
-  declarations: [SupportUsPage]
+  declarations: [StakeWithUsPage]
 })
-export class SupportUsPageModule {}
+export class StakeWithUsPageModule {}

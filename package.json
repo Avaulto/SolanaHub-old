@@ -5,7 +5,7 @@
   "homepage": "https://avaulto.com/",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --configuration=development",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

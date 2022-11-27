@@ -117,6 +117,8 @@ export class VoltStrategiesPage implements OnInit {
   }
 
   public voltExists(type:number): boolean{
+    const isAvaliable = this.voltsOriginal.filter(volt => volt.voltType == type);
+    console.log(isAvaliable)
     return this.voltsOriginal.filter(volt => volt.voltType == type).length > 0
   }
   public filterVolt(type: number){

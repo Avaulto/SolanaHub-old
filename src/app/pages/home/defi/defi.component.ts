@@ -24,15 +24,15 @@ export class DefiComponent implements OnInit {
       link: '/defi/liquid-stake'
     },
     {
+      name: 'Frition',
+      desc: 'Earn interest and borrow assets on the best lending protocol over solana.',
+      img: '/assets/images/icons/friktionBoltColored.png',
+      link: '/defi/volt-strategies'
+    },
+    {
       name: 'Orca',
       desc: 'Join Defi pools over solana with your favorite coins',
       img: '/assets/images/icons/orca-logo.png',
-      link: '#'
-    },
-    {
-      name: 'Solend',
-      desc: 'Earn interest and borrow assets on the best lending protocol over solana.',
-      img: '/assets/images/icons/solend-logo.webp',
       link: '#'
     },
     

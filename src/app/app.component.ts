@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 
-  readonly isReady$ = this._walletStore.connected$
+  // readonly isReady$ = this._walletStore.connected$
   constructor(
     public router: Router,
     private _connectionStore: ConnectionStore,
