@@ -22,7 +22,12 @@
               "events",
               "project-serum/anchor/dist/cjs/utils/token",
               "cross-fetch",
-              "@solana/*"
+              "@solana/*",
+              "debug",
+              "merkletreejs",
+              "mime",
+              "bs58",
+              "lodash.clonedeep"
            ],
             "customWebpackConfig": {
               "path": "./webpack.config.js"
@@ -37,6 +42,11 @@
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
               }
             ],
             "styles": [
