@@ -39,14 +39,14 @@ import {
   
   // } from "./directives";
   
-  // import { QRCodeModule } from 'angularx-qrcode';
+  import { QRCodeModule } from 'angularx-qrcode';
   
   // font awesome
   import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
   // toop tip
-  // import { TooltipModule } from 'ng2-tooltip-directive';
-import { CustomInterceptor } from "../services";
+  import { TooltipModule } from '@cloudfactorydk/ng2-tooltip-directive';
+  import { CustomInterceptor } from "../services";
 @NgModule({
   declarations: [
     FilterPipe,
@@ -83,8 +83,8 @@ import { CustomInterceptor } from "../services";
     RouterModule,
     FontAwesomeModule,
     IonicModule,
-    // QRCodeModule,
-    // TooltipModule,
+    QRCodeModule,
+    TooltipModule,
     
   ],
   providers:[
@@ -104,8 +104,8 @@ import { CustomInterceptor } from "../services";
     DataBoxComponent,
     LogoComponent,
     GoBackBtnComponent,
-    // QRCodeModule,
-    // TooltipModule,
+    QRCodeModule,
+    TooltipModule,
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
     WalletConnectedDropdownComponent,
