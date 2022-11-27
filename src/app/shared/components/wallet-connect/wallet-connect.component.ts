@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { MenuController, PopoverController } from '@ionic/angular';
+<<<<<<< HEAD
 import { WalletName } from '@solana/wallet-adapter-base';
+=======
+>>>>>>> hotfix/0.2.1
 import { distinctUntilChanged, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { ToasterService, UtilsService } from 'src/app/services';
 import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-adapter-options.component';

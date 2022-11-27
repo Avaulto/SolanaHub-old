@@ -9,7 +9,11 @@ interface ValidatorRank {
   numOfValidators: number;
 }
 @Component({
+<<<<<<< HEAD:src/app/pages/stake-with-us/stake-with-us.page.ts
   selector: 'app-support-us',
+=======
+  selector: 'app-stake-with-us',
+>>>>>>> hotfix/0.2.1:src/app/pages/support-us/support-us.page.ts
   templateUrl: './stake-with-us.page.html',
   styleUrls: ['./stake-with-us.page.scss'],
 })
