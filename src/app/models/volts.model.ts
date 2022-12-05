@@ -65,6 +65,7 @@ export interface AllMainnetVolt {
     nextAutocompoundingTime: number;
     lastTradedOption: string;
     abnormalEpochLength?: number;
+    tokenBalance?: number;
 }
 
 export enum HighVoltage {

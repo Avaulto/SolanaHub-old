@@ -289,7 +289,7 @@ export class SolanaUtilsService {
       { filters }
     );
 
-    const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
+    const tokensBalance: TokenBalance[] = accounts.map((account, i) => { 
       //Parse the account data
       const parsedAccountInfo: any = account.account.data;
       const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];

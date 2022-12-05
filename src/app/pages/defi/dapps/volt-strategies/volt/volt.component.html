@@ -53,7 +53,7 @@
       </div>
     </div>
     <div class="tp-box__side tp-box__back">
-      <app-volt-popup [volt]="volt" (onFlipVolt)="toggleFlip()"></app-volt-popup>
+      <app-volt-popup [volt]="volt" (onDepositVolt)="onDepositVolt.emit($event)" (onFlipVolt)="toggleFlip()"></app-volt-popup>
     </div>
   </div>
 </div>
