@@ -14,7 +14,7 @@ import { clusterApiUrl, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 // import { AnchorProvider } from "@friktion-labs/anchor";
 import { Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { faChessKnight } from '@fortawesome/free-regular-svg-icons';
 import Decimal from 'decimal.js';
@@ -55,7 +55,6 @@ export class VoltStrategiesPage implements OnInit {
   private voltsOriginal: AllMainnetVolt[] = [];
   public voltsData: BehaviorSubject<AllMainnetVolt[]> = new BehaviorSubject([] as AllMainnetVolt[]);
   public friktionInfo: FriktionInfo = null;
-  public friktionSDK: FriktionSDK = null;
   constructor(
     private _solanaUtilService: SolanaUtilsService,
     private _walletStore: WalletStore,
@@ -78,6 +77,7 @@ export class VoltStrategiesPage implements OnInit {
 
     return this.voltsOriginal.filter(i => i.globalId == volt.highVoltage)[0] || null
   }
+  public friktionSDK: FriktionSDK = null;
   public async friktionSDKInit() {
     this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(async wallet => {
       const provider = new AnchorProvider(
@@ -95,8 +95,6 @@ export class VoltStrategiesPage implements OnInit {
 
       // console.log(cVoltSDK)
     })
-
-
   }
   async ngOnInit() {
     const friktionMarketInfo = await this.getFriktionMarketInfo();
@@ -165,7 +163,7 @@ export class VoltStrategiesPage implements OnInit {
       // below field is only used if depositing from a PDA or other program-owned account
       undefined
     );
-
+     debugger;
     await cVoltSDK.doFullDeposit(depositAmount);
 
   }
