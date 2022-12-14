@@ -60,7 +60,14 @@
               "src/theme/variables.scss",
               "src/global.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           
           "configurations": {
@@ -72,7 +79,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -91,6 +98,9 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "ci": {
+              "progress": false
             }
           },
           "defaultConfiguration": "production"
@@ -103,6 +113,9 @@
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
+            },
+            "development": {
+              "browserTarget": "app:build:development"
             },
             "ci": {
               "progress": false

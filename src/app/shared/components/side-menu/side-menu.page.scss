@@ -121,11 +121,14 @@ app-wallet-connect {
     padding: 10px;
     a{
         display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
     }
     ion-img{
-        width: 100px;
+        width: 33px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-inline-start: 5px;
     }
 }
 .divider {

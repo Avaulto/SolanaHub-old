@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { AllMainnetVolt } from 'src/app/models';
@@ -25,6 +25,7 @@ import { VoltPopupComponent } from './volt-popup/volt-popup.component';
 })
 export class VoltComponent implements OnInit {
   flip: string = 'inactive';
+  @Output() onDepositVolt = new EventEmitter();
 
   toggleFlip() {
     this.flip = (this.flip == 'inactive') ? 'active' : 'inactive';

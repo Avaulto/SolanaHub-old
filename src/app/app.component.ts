@@ -6,11 +6,11 @@ import {
   PhantomWalletAdapter,
   SlopeWalletAdapter,
   SolflareWalletAdapter,
-  SolletExtensionWalletAdapter,
   SolletWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { SolanaUtilsService } from './services';
 
 @Component({
   selector: 'app-root',
@@ -23,13 +23,13 @@ export class AppComponent {
   constructor(
     public router: Router,
     private _connectionStore: ConnectionStore,
-    private _walletStore: WalletStore
+    private _walletStore: WalletStore,
+    private SolanaUtilsService:SolanaUtilsService
   ) { }
   async ngOnInit(): Promise<void> {
     connectionConfigProviderFactory({
       commitment: "confirmed",
     })
-
 
     this._connectionStore.setEndpoint(environment.solanaCluster)
     this._walletStore.setAdapters([

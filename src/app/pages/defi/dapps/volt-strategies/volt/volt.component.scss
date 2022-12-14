@@ -7,7 +7,7 @@
     flex-direction: row;
     justify-content: space-between;
     position: relative;
-
+    flex-wrap: wrap;
     .volt-type-wrapper {
         position: absolute;
         top: 5px;
@@ -52,7 +52,7 @@
         }
     }
     .asset-apy {
-        font-size: 3vh;
+        font-size: 26px;
         display: flex;
         align-items: self-end;
         font-weight: 900;
