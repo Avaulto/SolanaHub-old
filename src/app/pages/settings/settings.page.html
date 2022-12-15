@@ -5,7 +5,7 @@
       <app-data-box [title]="'RPC'" [loading]="false"></app-data-box>
       <ion-row id="btn-controls" class=" ion-align-items-center">
 
-        <ion-col size="12" sizeLg="4" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == tritonRPC}"
+        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == tritonRPC}"
           (click)="setRPC(tritonRPC)">
           <div class="select-group">
             <ion-img
@@ -16,7 +16,7 @@
 
 
         </ion-col>
-        <ion-col size="12" sizeLg="4" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
+        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
           (click)="setRPC(extrNodeRPC)">
           <div class="select-group">
             <ion-img src="assets/images/icons/extrnode.svg"></ion-img>
@@ -33,7 +33,7 @@
 
       <app-data-box [title]="'explorer'" [loading]="false"></app-data-box>
       <ion-row id="btn-controls" class=" ion-align-items-center">
-        <ion-col size="12" sizeLg="3.8" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
+        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
           (click)="setRPC(extrNodeRPC)">
           <div class="select-group">
             <ion-img src="assets/images/icons/solana-fm.svg" style="width:125px"></ion-img>
@@ -41,7 +41,7 @@
             </ion-checkbox>
           </div>
         </ion-col>
-        <ion-col size="12" sizeLg="3.8" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
+        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
           (click)="setRPC(extrNodeRPC)">
           <div class="select-group">
             <ion-img src="assets/images/icons/solscan.svg"></ion-img>
@@ -49,7 +49,7 @@
             </ion-checkbox>
           </div>
         </ion-col>
-        <ion-col size="12" sizeLg="3.8" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == tritonRPC}"
+        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == tritonRPC}"
           (click)="setRPC(tritonRPC)">
           <div class="select-group">
             <ion-img src="assets/images/icons/solana-explorer.svg" style="width:220px"></ion-img>
@@ -67,7 +67,7 @@
         <app-data-box [title]="'Theme'" [loading]="false"></app-data-box>
         <ion-row id="btn-controls" class=" ion-align-items-center">
 
-          <ion-col size="12" sizeLg="4" class="selected-by"
+          <ion-col size="12" sizeLg="3.85" class="selected-by"
             [ngClass]="{'selectedBtn': (currentTheme$ | async) == 'dark'}" (click)="selectTheme('dark')">
             <div class="select-group">
               <span>Dark</span>
@@ -83,7 +83,7 @@
 
 
           </ion-col>
-          <ion-col size="12" sizeLg="4" class="selected-by"
+          <ion-col size="12" sizeLg="3.85" class="selected-by"
             [ngClass]="{'selectedBtn': (currentTheme$ | async) == 'light'}" (click)="selectTheme('light')">
 
             <div class="select-group">
