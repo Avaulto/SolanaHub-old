@@ -30,7 +30,7 @@ import {
 } from '@solana/web3.js';
 import { throwError } from 'rxjs';
 import { toastData } from '../models';
-import { ToasterService, SolanaUtilsService } from './';
+import { ToasterService, SolanaUtilsService, UtilsService } from './';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +41,7 @@ export class TxInterceptService {
     private toasterService: ToasterService,
     private solanaUtilsService: SolanaUtilsService,
     private _walletStore: WalletStore,
+    private _utilsService: UtilsService
   ) {
   }
   // catch error
@@ -247,7 +248,7 @@ export class TxInterceptService {
 
           const rawTransaction = transaction.serialize({ requireAllSignatures: false });
           const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
-          console.log('https://solscan.io/tx/' + signature)
+          console.log(`${this._utilsService.explorer}/tx/${signature}`)
           const txSend: toastData = {
             message: 'transaction subbmitted',
             icon: 'information-circle-outline',

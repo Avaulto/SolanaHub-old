@@ -28,13 +28,22 @@ export class UtilsService {
   constructor() {}
   private _systemPair = new BehaviorSubject<string>('USD' as string);
   private _systemTheme = new BehaviorSubject<string>('dark' as string);
+  private _systemExplorer = new BehaviorSubject<string>('https://solana.fm' as string);
+
   public theme$ = this._systemTheme.asObservable();
+  public explorer$ = this._systemExplorer.asObservable();
 
   public updateSystemPair(string): void{
     this._systemPair.next(string);
   }
-  public changeTheme(name: string){
-    this._systemTheme.next(name);
+  public changeTheme(theme: string){
+    this._systemTheme.next(theme);
+  }
+  public changeExplorer(name: string){
+    this._systemExplorer.next(name);
+  }
+  get explorer(){
+    return this._systemExplorer.value;
   }
   public addrUtil(addr: string): {addr: string, addrShort:string} {
     return {addr, addrShort: addr?.substring(0, 4) + '...' + addr.substring(addr.length - 4, addr.length[addr.length])}

@@ -13,8 +13,10 @@ import { environment } from 'src/environments/environment.prod';
 export class SettingsPage implements OnInit {
   public currentRPC = environment.solanaCluster;
   public tritonRPC = 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d';
-  public extrNodeRPC = 'https://solana-mainnet.rpc.extrnode.com'
+  public extrNodeRPC = 'https://solana-mainnet.rpc.extrnode.com';
   readonly currentTheme$ = this._utilsService.theme$.pipe(shareReplay(1));
+  readonly currentExplorer$ = this._utilsService.explorer$.pipe(shareReplay(1));
+
   constructor(private _connectionStore: ConnectionStore, private _utilsService:UtilsService) { }
 
   ngOnInit() {
@@ -26,8 +28,12 @@ export class SettingsPage implements OnInit {
     this.currentRPC = url;
     this._connectionStore.setEndpoint(url);
   }
-  public selectTheme(theme: string){
+  public setTheme(theme: string){
     this._utilsService.changeTheme(theme)
+    // console.log(theme)
+  } 
+  public setExplorer(name: string){
+    this._utilsService.changeExplorer(name)
     // console.log(theme)
   } 
 }
