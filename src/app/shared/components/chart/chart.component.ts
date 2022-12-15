@@ -1,9 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-<<<<<<< HEAD
-import Chart from 'chart.js/auto';
-=======
 import Chart  from 'chart.js/auto';
->>>>>>> hotfix/0.2.1
 import { firstValueFrom } from 'rxjs';
 import { UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';

@@ -3,10 +3,6 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { SharedModule } from 'src/app/shared/shared.module';
-<<<<<<< HEAD
-=======
-
->>>>>>> hotfix/0.2.1
 import { DefiComponent } from './defi/defi.component';
 
 @NgModule({

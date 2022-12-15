@@ -35,13 +35,13 @@ ion-img {
 }
 
 .global-selected-pair {
-    color: #FE5B94;
+    color: var(--ion-color-tertiary);
     font-style: normal;
     font-weight: 600;
     font-size: 11px;
 }
 #bar-wrapper{
-    background: #04172c;
+    background: var(--deep-background);
     width: 100%;
     height: 8px;
     border-radius: 8px;
@@ -54,5 +54,5 @@ ion-img {
 }
 
 .global-selected-pair {
-    color: #FE5B94;
+    color: var(--ion-color-tertiary);
 }

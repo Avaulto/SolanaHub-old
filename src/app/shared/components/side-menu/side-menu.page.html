@@ -66,9 +66,6 @@
         </ion-button>
       </a>
     </div>
-    <div id="rpc-service">
-      <a href="https://extrnode.com/" target="_blank"> RPC powered by<ion-img src="assets/images/icons/extrnode.png"></ion-img></a>
-    </div>
     <a id="open-tnc" (click)="presentTncPopover()" style="cursor: pointer; text-align: center;"> Terms & Conditions</a>
     <ion-popover #popover [isOpen]="isTncOpen" (didDismiss)="isTncOpen = false">
       <ng-template>

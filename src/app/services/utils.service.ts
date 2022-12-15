@@ -27,8 +27,14 @@ Number.prototype.toFixedNoRounding = function(n) {
 export class UtilsService {
   constructor() {}
   private _systemPair = new BehaviorSubject<string>('USD' as string);
+  private _systemTheme = new BehaviorSubject<string>('dark' as string);
+  public theme$ = this._systemTheme.asObservable();
+
   public updateSystemPair(string): void{
     this._systemPair.next(string);
+  }
+  public changeTheme(name: string){
+    this._systemTheme.next(name);
   }
   public addrUtil(addr: string): {addr: string, addrShort:string} {
     return {addr, addrShort: addr?.substring(0, 4) + '...' + addr.substring(addr.length - 4, addr.length[addr.length])}

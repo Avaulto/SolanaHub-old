@@ -6,6 +6,7 @@
     height: 100%;
     color: white;
     border-right: 1px solid rgb(132 141 164 / 20%);
+    background-color: var(--side-menu-bg);
 }
 
 #logo-wrapper {
@@ -58,15 +59,18 @@ div>ion-item {
 div>ion-item.menu-item:nth-child(1) {
     border-bottom: 1px solid rgba(132, 141, 164, 0.2);
 }
-
+.menu-item.active{
+    background-color: var(--menu-item-bg);
+}
 ion-icon {
     font-size: 16px;
+    color: var(--icon-color);
 }
 
 ion-list,
 ion-item {
     cursor: pointer;
-    --color: white;
+    --color: var(--ion-text-color);
     font-weight: 500;
     --background: transparent;
     background: transparent;

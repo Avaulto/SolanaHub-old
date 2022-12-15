@@ -34,20 +34,8 @@
     margin: 0;
     padding: 0;
     font-size: 13px;
-    color: white;
 }
-// ion-grid{
-//     overflow: scroll;
-// }
-// ::-webkit-scrollbar {
-//     -webkit-appearance: none;
-//     width: 2px;
-//   }
-  
-//   ::-webkit-scrollbar-thumb {
-//     background-color: var(--ion-color-primary);
-//     box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-//   }
+
 
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
@@ -68,44 +56,53 @@ input[type=number]::-webkit-outer-spin-button {
     margin-bottom: 24px;
     box-sizing: border-box;
     border-radius: 4px;
-    background: rgb(6 24 50 / 60%);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.24);
+    background: var(--deep-background);
+    box-shadow: var(--deep-box-shadow);
 }
 
 .heading-1 {
     font-weight: 300;
     font-size: 34px;
     line-height: 51px;
+    color: var(--ion-text-color);
 }
 
 .heading-2 {
     font-weight: 300;
     font-size: 22px;
     line-height: 33px;
+    color: var(--ion-text-color);
 }
 
 .heading-3 {
     font-weight: 700;
     font-size: 16px;
     line-height: 24px;
+    color: var(--ion-text-color);
+
 }
 
 .heading-4 {
     font-weight: 700;
     font-size: 14px;
     line-height: 21px;
+    color: var(--ion-text-color);
+
 }
 
 .heading-5 {
     font-weight: 400;
     font-size: 13px;
     line-height: 20px;
+    color: var(--ion-text-color);
+
 }
 
 .heading-6 {
     font-weight: 600;
     font-size: 12px;
     line-height: 18px;
+    color: var(--ion-text-color);
 }
 
 .sub-strong {
@@ -153,8 +150,8 @@ ion-input, ion-select {
     margin-bottom: 16px;
     text-transform: capitalize;
     width:100%;
-    background: #04172C !important;
-    --background: #04172C !important;
+    background: var(--deep-background) !important;
+    --background: var(--deep-background) !important;
     --padding-start: 16px !important;
     padding-inline-start: 16px !important;
     --placeholder-color: white;
@@ -180,7 +177,7 @@ ion-input, ion-select {
 
 .toastStyle {
     --color: white;
-    --background: #04172C;
+    --background: var(--deep-background);
     --min-height: 50px;
     --width: 280px;
     --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);

@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AllMainnetVolt, FriktionLocal, FriktionMarket, FriktionVol, TokenBalance } from 'src/app/models';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
-import { AnchorProvider } from "@friktion-labs/anchor";
-import {
-  // sdk WITHOUT a user wallet attached
-  VoltSDK,
-  // sdk WITH a user wallet attached
-  toConnectedSDK,
-  FriktionSDK,
-  NetworkName,
-} from "@friktion-labs/friktion-sdk";
+// import { AnchorProvider } from "@friktion-labs/anchor";
+// import {
+//   // sdk WITHOUT a user wallet attached
+//   VoltSDK,
+//   // sdk WITH a user wallet attached
+//   toConnectedSDK,
+//   FriktionSDK,
+//   NetworkName,
+// } from "@friktion-labs/friktion-sdk";
 import { clusterApiUrl, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 // import { AnchorProvider } from "@friktion-labs/anchor";
 import { Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
@@ -77,25 +77,25 @@ export class VoltStrategiesPage implements OnInit {
 
     return this.voltsOriginal.filter(i => i.globalId == volt.highVoltage)[0] || null
   }
-  public friktionSDK: FriktionSDK = null;
-  public async friktionSDKInit() {
-    this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(async wallet => {
-      const provider = new AnchorProvider(
-        this._solanaUtilService.connection,
-        wallet,
-        {}
-      );
-      await this._setTokensBalance();
+  // public friktionSDK: FriktionSDK = null;
+  // public async friktionSDKInit() {
+  //   this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(async wallet => {
+  //     const provider = new AnchorProvider(
+  //       this._solanaUtilService.connection,
+  //       wallet,
+  //       {}
+  //     );
+  //     await this._setTokensBalance();
 
-      const networkName = environment.solanaEnv as NetworkName
-      this.friktionSDK = new FriktionSDK({
-        provider, // e.g AnchorProvider
-        network: networkName, // e.g mainnet-beta
-      });
+  //     const networkName = environment.solanaEnv as NetworkName
+  //     this.friktionSDK = new FriktionSDK({
+  //       provider, // e.g AnchorProvider
+  //       network: networkName, // e.g mainnet-beta
+  //     });
 
-      // console.log(cVoltSDK)
-    })
-  }
+  //     // console.log(cVoltSDK)
+  //   })
+  // }
   async ngOnInit() {
     const friktionMarketInfo = await this.getFriktionMarketInfo();
     const volume = await this.getFriktionVol();
@@ -110,7 +110,7 @@ export class VoltStrategiesPage implements OnInit {
       mostDepositedAsset: 'SOL'
     }
     this.voltsData.next(this.voltsOriginal);
-    this.friktionSDKInit();
+    // this.friktionSDKInit();
   }
 
   public voltExists(type:number): boolean{
@@ -150,21 +150,21 @@ export class VoltStrategiesPage implements OnInit {
       return volt.tokenBalance = this._utilsService.shortenNum(tokenBalance);
     })
   }
-  public async initDeposit(voltForm) {
-    const voltVaultId = new PublicKey(voltForm.voltId);
-    const depositAmount: Decimal = new Decimal(voltForm.amount);
-    const user = (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    console.log(voltForm,this.friktionSDK, user);
+  // public async initDeposit(voltForm) {
+  //   const voltVaultId = new PublicKey(voltForm.voltId);
+  //   const depositAmount: Decimal = new Decimal(voltForm.amount);
+  //   const user = (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+  //   console.log(voltForm,this.friktionSDK, user);
 
-    const cVoltSDK = toConnectedSDK(
-      await this.friktionSDK.loadVoltSDKByKey(voltVaultId),
-      this._solanaUtilService.connection,
-      user,
-      // below field is only used if depositing from a PDA or other program-owned account
-      undefined
-    );
-     debugger;
-    await cVoltSDK.doFullDeposit(depositAmount);
+  //   const cVoltSDK = toConnectedSDK(
+  //     await this.friktionSDK.loadVoltSDKByKey(voltVaultId),
+  //     this._solanaUtilService.connection,
+  //     user,
+  //     // below field is only used if depositing from a PDA or other program-owned account
+  //     undefined
+  //   );
+  //    debugger;
+  //   await cVoltSDK.doFullDeposit(depositAmount);
 
-  }
+  // }
 }

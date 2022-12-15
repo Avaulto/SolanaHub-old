@@ -4,16 +4,16 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { StakeWithUsPageRoutingModule } from './stake-with-us-routing.module';
+import { SettingsPageRoutingModule } from './settings-routing.module';
 
-import { StakeWithUsPage } from './stake-with-us.page';
+import { SettingsPage } from './settings.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
 SharedModule,
-StakeWithUsPageRoutingModule
+    SettingsPageRoutingModule
   ],
-  declarations: [StakeWithUsPage]
+  declarations: [SettingsPage]
 })
-export class StakeWithUsPageModule {}
+export class SettingsPageModule {}

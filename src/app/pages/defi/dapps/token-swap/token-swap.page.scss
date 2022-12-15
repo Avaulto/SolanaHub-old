@@ -63,7 +63,7 @@
         display: flex;
         align-items: center;
         flex-wrap: wrap;
-        background: #04172c;
+        background: var(--deep-background);
     }
 
     ion-input {

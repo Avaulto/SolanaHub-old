@@ -10,7 +10,7 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { SolanaUtilsService } from './services';
+import { SolanaUtilsService, UtilsService } from './services';
 
 @Component({
   selector: 'app-root',
@@ -24,8 +24,10 @@ export class AppComponent {
     public router: Router,
     private _connectionStore: ConnectionStore,
     private _walletStore: WalletStore,
-    private SolanaUtilsService:SolanaUtilsService
+    private SolanaUtilsService:SolanaUtilsService,
+    private _utilsService: UtilsService
   ) { }
+  readonly currentTheme$ = this._utilsService.theme$;
   async ngOnInit(): Promise<void> {
     connectionConfigProviderFactory({
       commitment: "confirmed",

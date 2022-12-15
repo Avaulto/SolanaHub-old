@@ -30,6 +30,14 @@ const routes: Routes = [
     path: 'defi',
     loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path:"**",
+    redirectTo:'home'
+  }
 ];
 
 @NgModule({

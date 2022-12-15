@@ -28,7 +28,7 @@
         background: transparent !important;
     }
     ion-datetime {
-        --background: #04172c;
+        --background: var(--deep-background);
         border-radius: 4px;
         box-shadow: rgba(var(--ion-color-rose-rgb), 0.3) 0px 10px 15px -3px;
          ion-item ion-label {

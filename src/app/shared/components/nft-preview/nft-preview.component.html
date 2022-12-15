@@ -1,4 +1,4 @@
-<ion-card class="nft-item" style="background: #04172C !important;">
+<ion-card class="nft-item" style="background: var(--deep-background) !important;">
   <ion-card-header>
     <app-image-placeholder [imagePath]="nft.image"></app-image-placeholder>
     <app-nft-burn *ngIf="nft.listStatus != 'listed'" [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK"

@@ -219,7 +219,7 @@ export class TokenSwapPage implements OnInit {
         inputMint: new PublicKey(inputToken.address),
         outputMint: new PublicKey(outputToken.address),
         amount: JSBI.BigInt(inputAmountInSmallestUnits),
-        slippageBps: 1, // 1 = 1%
+        slippage: 1, // 1 = 1%
         forceFetch: true, // (optional) to force fetching routes and not use the cache
         // intermediateTokens, if provided will only find routes that use the intermediate tokens
         // feeBps

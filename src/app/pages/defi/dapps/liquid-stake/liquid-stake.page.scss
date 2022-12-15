@@ -40,7 +40,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 4px;
-    background: #04172c;
+    background: var(--deep-background);
     padding: 12px;
     cursor: pointer;
     justify-content: space-evenly;
