@@ -43,7 +43,8 @@ export class UtilsService {
     this._systemPair.next(pair);
   }
   changeTheme(name: string){
-    this.localStore.saveData('theme',name);
+    this._systemTheme = name;
+    this.localStore.saveData('theme',this._systemTheme);
     if(name.toLocaleLowerCase() == 'light'){
       this.enableLightTheme()
     }else{
