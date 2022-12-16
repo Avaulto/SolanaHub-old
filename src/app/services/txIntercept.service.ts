@@ -46,11 +46,13 @@ export class TxInterceptService {
   }
   // catch error
   private _formatErrors(error: any) {
-    this.toasterService.msg.next({
+    const toastData:toastData = {
       message: error.message,
       icon: 'alert-circle-outline',
       segmentClass: "toastError",
-    });
+      
+    }
+    this.toasterService.msg.next(toastData);
     return throwError(error);
   }
 
@@ -103,7 +105,6 @@ export class TxInterceptService {
       });
     })
 
-    console.log(mergeAccounts)
     this.sendTx(mergeAccounts, walletOwnerPk)
   }
 
@@ -248,17 +249,20 @@ export class TxInterceptService {
 
           const rawTransaction = transaction.serialize({ requireAllSignatures: false });
           const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
-          console.log(`${this._utilsService.explorer}/tx/${signature}`)
+          const url = `${this._utilsService.explorer}/tx/${signature}`
+          console.log(url)
           const txSend: toastData = {
-            message: 'transaction subbmitted',
-            icon: 'information-circle-outline',
-            segmentClass: "toastInfo"
+            message: 'click on the icon to view transaction on explorer',
+            icon: 'exit-outline',
+            segmentClass: "toastInfo",
+            duration:10000,
+            cb: () => window.open(url)
           }
           this.toasterService.msg.next(txSend)
           const config: BlockheightBasedTransactionConfirmationStrategy = {
             signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
           }
-          await this.solanaUtilsService.connection.confirmTransaction(config, 'confirmed') //.confirmTransaction(txid, 'confirmed');
+          await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
           const txCompleted: toastData = {
             message: 'transaction completed',
             icon: 'information-circle-outline',

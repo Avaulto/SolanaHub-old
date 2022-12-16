@@ -101,8 +101,6 @@ export class VoltStrategiesPage implements OnInit {
     const volume = await this.getFriktionVol();
     const hideNoneApyVolts = friktionMarketInfo.allMainnetVolts.filter(volt => volt.apy);
     this.voltsOriginal = hideNoneApyVolts // this.mergeDuplicateDepositAssetVolts(hideNoneApyVolts);
-    console.log(this.voltsOriginal);
-    console.log(friktionMarketInfo)
     this.friktionInfo = {
       tvl: friktionMarketInfo.totalTvlUSD,
       volume,

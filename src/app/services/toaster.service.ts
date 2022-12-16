@@ -15,22 +15,22 @@ constructor(
   private toastController: ToastController,
   private router: Router
 ) {
-  this.msg.subscribe((toastData: toastData) => this.presentToastWithOptions(toastData.message,toastData.icon, toastData.segmentClass));
+  this.msg.subscribe((toastData: toastData) => this.presentToastWithOptions(toastData.message,toastData.icon, toastData.segmentClass,toastData.duration,  toastData.cb));
 }
 async presentToast(text: string, segmentClass: string) {
   const toast = await this.toastController.create({
     cssClass: `toastStyle ${segmentClass}`,
     message: text,
-    duration: 3000,
+    duration: 5000,
     animated: true,
   });
   toast.present();
 }
-async presentToastWithOptions(message: string,icon: string, segmentClass: string, cb?) {
+async presentToastWithOptions(message: string,icon: string, segmentClass: string, duration?: number, cb?: Function) {
   const toast = await this.toastController.create({
     cssClass: `toastStyle ${segmentClass}`,
     // color:'primary',
-    duration: 5000,
+    duration: duration | 3000,
     animated: true,
     message,
     buttons: [
@@ -38,7 +38,7 @@ async presentToastWithOptions(message: string,icon: string, segmentClass: string
         side: "start",
         icon,
         handler: () => {
-          return false
+          cb();
         },
       },
       {
@@ -47,7 +47,7 @@ async presentToastWithOptions(message: string,icon: string, segmentClass: string
         icon: "close-outline",
         role: "cancel",
         handler: () => {
-          cb();
+          return false
         },
       },
     ],

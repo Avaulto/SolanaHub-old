@@ -91,7 +91,6 @@ export class StakeComponent implements OnInit {
     if(monthLockuptime){  
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
-    console.log(monthLockuptime)
     this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime)
   }
   private _getLockuptimeMilisecond(months: number): number {
