@@ -3,7 +3,7 @@ import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { IonRadio } from '@ionic/angular';
 import { ReplaySubject, shareReplay } from 'rxjs';
 import { UtilsService } from 'src/app/services';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-settings',

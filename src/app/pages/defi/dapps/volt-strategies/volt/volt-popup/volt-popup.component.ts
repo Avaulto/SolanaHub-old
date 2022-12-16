@@ -51,7 +51,7 @@ export class VoltPopupComponent implements OnInit {
     </div>  
     <div >
       <span>Vault Authority</span>
-      <span>${this._utilsService.addrUtil(this.volt.vaultAuthority).addrShort}</span>
+      <span>${this._utilsService.addrUtil(this.volt.vaultAuthority).addrShort} </span>
     </div>  
     <div >
       <span>Deposit pool</span>

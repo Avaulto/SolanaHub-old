@@ -40,7 +40,14 @@
         </ion-row>
       </div>
       
-        <ion-button [disabled]="depositVoltForm.invalid"  (click)="deposit()" expand="block">deposit</ion-button>
+        <ion-button 
+        color="secondary"
+        [disabled]="true"  
+        
+         expand="block">
+         
+         disabled
+        </ion-button>
      
     </form>
     <ion-row *ngSwitchCase="'withdraw'" id="withdraw-area">

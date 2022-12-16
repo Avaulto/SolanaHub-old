@@ -19,14 +19,15 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   private anchorWallet$: Subscription;
   public wallet: any;
   public getValidatorInfo: Observable<ValidatorData> = this._solanaUtilsService.getSingleValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh').pipe(
-    shareReplay(),
+   
     tap(async validator => validator.delegetors = await this._getDelegetors()),
     tap(async validator => validator.rank = await this._getRank()),
     map(validator => {
       this.apy = validator.apy_estimate;
       validator.stake = validator.stake.toLocaleString().split('.')[0];
       return validator
-    })
+    }),
+    shareReplay(1)
   )
   constructor(
     private _utilsService: UtilsService,
