@@ -110,7 +110,7 @@ export class VoltStrategiesPage implements OnInit {
       mostDepositedAsset: 'SOL'
     }
     this.voltsData.next(this.voltsOriginal);
-    // this.friktionSDKInit();
+    this.friktionSDKInit();
   }
 
   public voltExists(type:number): boolean{
