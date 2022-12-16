@@ -10,8 +10,8 @@
 
 #filter-buttons {
     display: flex;
-
     ion-button {
+        color:var(--ion-text-color);
         margin-inline-end: 10px;
         margin-block: 5px;
     }

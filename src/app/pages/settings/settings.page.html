@@ -37,7 +37,7 @@
           (click)="setExplorer('https://solana.fm')">
           <div class="select-group">
             <ion-img src="assets/images/icons/solana-fm.svg" style="width:125px"></ion-img>
-            <ion-checkbox mode="ios" [checked]="(currentTheme$ | async) == 'https://solana.fm'" color="primary">
+            <ion-checkbox mode="ios" [checked]="(currentExplorer$ | async) == 'https://solana.fm'" color="primary">
             </ion-checkbox>
           </div>
         </ion-col>
@@ -45,7 +45,7 @@
           (click)="setExplorer('https://solscan.io')">
           <div class="select-group">
             <ion-img src="assets/images/icons/solscan.svg"></ion-img>
-            <ion-checkbox mode="ios" [checked]="(currentTheme$ | async) == 'https://solscan.io'" color="primary">
+            <ion-checkbox mode="ios" [checked]="(currentExplorer$ | async) == 'https://solscan.io'" color="primary">
             </ion-checkbox>
           </div>
         </ion-col>
@@ -54,7 +54,7 @@
           <div class="select-group">
             <ion-img src="assets/images/icons/solana-explorer.svg" style="width:220px"></ion-img>
 
-            <ion-checkbox mode="ios" [checked]="(currentTheme$ | async) == 'https://explorer.solana.com'" color="primary"></ion-checkbox>
+            <ion-checkbox mode="ios" [checked]="(currentExplorer$ | async) == 'https://explorer.solana.com'" color="primary"></ion-checkbox>
           </div>
         </ion-col>
       </ion-row>
@@ -68,7 +68,7 @@
         <ion-row id="btn-controls" class=" ion-align-items-center">
 
           <ion-col size="12" sizeLg="3.85" class="selected-by"
-            [ngClass]="{'selectedBtn': (currentTheme$ | async) == 'dark'}" (click)="setTheme('dark')">
+            [ngClass]="{'selectedBtn': currenTheme == 'dark'}" (click)="setTheme('dark')">
             <div class="select-group">
               <span>Dark</span>
               <div id="dark-theme" class="theme-color">
@@ -78,13 +78,13 @@
                 <span id="color-4"></span>
                 <span id="color-5"></span>
               </div>
-              <ion-checkbox mode="ios" [checked]="(currentTheme$ | async) == 'dark'" color="primary"></ion-checkbox>
+              <ion-checkbox mode="ios" [checked]="currenTheme == 'dark'" color="primary"></ion-checkbox>
             </div>
 
 
           </ion-col>
           <ion-col size="12" sizeLg="3.85" class="selected-by"
-            [ngClass]="{'selectedBtn': (currentTheme$ | async) == 'light'}" (click)="setTheme('light')">
+            [ngClass]="{'selectedBtn':currenTheme == 'light'}" (click)="setTheme('light')">
 
             <div class="select-group">
               <span>Light</span>
@@ -93,8 +93,9 @@
                 <span id="color-2"></span>
                 <span id="color-3"></span>
                 <span id="color-4"></span>
+                <span id="color-5"></span>
               </div>
-              <ion-checkbox mode="ios" [checked]="(currentTheme$ | async) == 'light'" color="primary">
+              <ion-checkbox mode="ios" [checked]="currenTheme == 'light'" color="primary">
               </ion-checkbox>
             </div>
 

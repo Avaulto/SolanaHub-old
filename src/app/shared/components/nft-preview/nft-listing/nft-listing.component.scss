@@ -1,9 +1,10 @@
 // list style
 :host{
-    background: black;
+    background: var(--ion-background-color);
 }
 #list-on-magic-eden-form{
     ion-label {
+        background:black;
         display: flex;
         align-items: center;
         font-size: 18px;

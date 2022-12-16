@@ -24,10 +24,7 @@ export class AppComponent {
     public router: Router,
     private _connectionStore: ConnectionStore,
     private _walletStore: WalletStore,
-    private SolanaUtilsService:SolanaUtilsService,
-    private _utilsService: UtilsService
   ) { }
-  readonly currentTheme$ = this._utilsService.theme$;
   async ngOnInit(): Promise<void> {
     connectionConfigProviderFactory({
       commitment: "confirmed",

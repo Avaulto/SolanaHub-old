@@ -50,7 +50,9 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 24px;
     margin: 0;
 }
-
+a{
+    color: var(--ion-color-text);
+}
 .data-box {
     min-height: 110px;
     margin-bottom: 24px;
@@ -176,7 +178,7 @@ ion-input, ion-select {
 }
 
 .toastStyle {
-    --color: white;
+    --color: var(--ion-text-color);
     --background: var(--deep-background);
     --min-height: 50px;
     --width: 280px;
@@ -185,7 +187,7 @@ ion-input, ion-select {
     font-size: 12px;
     --border-width: 1px;
     --border-style: solid;
-    --button-color: white;
+    --button-color: var(--ion-text-color);;
 
     &.toastSuc {
         --border-color: var(--ion-color-primary);
@@ -198,8 +200,8 @@ ion-input, ion-select {
     }
 
     &.toastInfo {
-        --border-color: #4285F4;
-        --button-color: #4285F4;
+        --border-color: var(--ion-color-secondary);
+        --button-color: var(--ion-color-secondary);;
     }
     &.merinadeErr{
         --border-color: #FBBC05;
@@ -239,3 +241,5 @@ ion-input, ion-select {
 }
 
 }
+
+

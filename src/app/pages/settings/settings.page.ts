@@ -14,7 +14,7 @@ export class SettingsPage implements OnInit {
   public currentRPC = environment.solanaCluster;
   public tritonRPC = 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d';
   public extrNodeRPC = 'https://solana-mainnet.rpc.extrnode.com';
-  readonly currentTheme$ = this._utilsService.theme$.pipe(shareReplay(1));
+  public currenTheme: string = this._utilsService._systemTheme;
   readonly currentExplorer$ = this._utilsService.explorer$.pipe(shareReplay(1));
 
   constructor(private _connectionStore: ConnectionStore, private _utilsService:UtilsService) { }
@@ -28,8 +28,9 @@ export class SettingsPage implements OnInit {
     this.currentRPC = url;
     this._connectionStore.setEndpoint(url);
   }
-  public setTheme(theme: string){
-    this._utilsService.changeTheme(theme)
+  public setTheme(name: string){
+    this.currenTheme = name
+    this._utilsService.changeTheme(name)
     // console.log(theme)
   } 
   public setExplorer(name: string){

@@ -7,7 +7,7 @@
 
 #stake-apr-box {
     height: 99px;
-    background: linear-gradient(99.46deg, #FF845A 13.88%, #FD49AD 124.05%);
+    background:var( --apr-box);
     border-radius: 6px;
     display: flex;
     flex-direction: column;

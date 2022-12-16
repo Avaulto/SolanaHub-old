@@ -1,5 +1,7 @@
-import { Injectable } from "@angular/core";
+import { DOCUMENT } from "@angular/common";
+import { Inject, Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 import { BehaviorSubject, filter, Observable } from "rxjs";
+import { LocalStorageService } from "./local-storage.servic";
 // import * as moment from "moment";
 // import { v4 as uuidv4 } from "uuid";
 declare global {
@@ -25,21 +27,37 @@ Number.prototype.toFixedNoRounding = function(n) {
   providedIn: "root",
 })
 export class UtilsService {
-  constructor() {}
+  constructor(private factory:RendererFactory2, @Inject(DOCUMENT) private document: Document,private localStore: LocalStorageService) {
+    this.renderer = this.factory.createRenderer(null,null);
+    this.changeTheme(this._systemTheme);
+  }
+  private renderer: Renderer2;
   private _systemPair = new BehaviorSubject<string>('USD' as string);
-  private _systemTheme = new BehaviorSubject<string>('dark' as string);
-  private _systemExplorer = new BehaviorSubject<string>('https://solana.fm' as string);
+  private _systemExplorer = new BehaviorSubject<string>( this.localStore.getData('explorer') || 'https://solana.fm' as string);
+  public _systemTheme = this.localStore.getData('theme') || 'dark';
 
-  public theme$ = this._systemTheme.asObservable();
   public explorer$ = this._systemExplorer.asObservable();
 
-  public updateSystemPair(string): void{
-    this._systemPair.next(string);
+  public updateSystemPair(pair: string): void{
+    this.localStore.saveData('pair',pair);
+    this._systemPair.next(pair);
   }
-  public changeTheme(theme: string){
-    this._systemTheme.next(theme);
+  changeTheme(name: string){
+    this.localStore.saveData('theme',name);
+    if(name.toLocaleLowerCase() == 'light'){
+      this.enableLightTheme()
+    }else{
+      this.enableDarkTheme();
+    }
+  }
+  public enableLightTheme(){
+    this.renderer.addClass(this.document.body,'light-theme');
+  }
+  public enableDarkTheme(){
+    this.renderer.removeClass(this.document.body,'light-theme');
   }
   public changeExplorer(name: string){
+    this.localStore.saveData('explorer',name);
     this._systemExplorer.next(name);
   }
   get explorer(){

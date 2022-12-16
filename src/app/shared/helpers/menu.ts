@@ -46,11 +46,11 @@ export const pages: any = [
         //   url: "/defi/pools",
         //   icon: 'faSwimmingPool',
         // },
-        // {
-        //   title: "volt strategies",
-        //   url: "/defi/volt-strategies",
-        //   icon: 'flask',
-        // },
+        {
+          title: "volt strategies",
+          url: "/defi/volt-strategies",
+          icon: 'flask',
+        },
       ]
     },
     {
