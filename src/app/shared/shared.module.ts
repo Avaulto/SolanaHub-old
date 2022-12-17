@@ -46,6 +46,7 @@ import {
   // toop tip
 import { CustomInterceptor } from "../services";
 import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
+import { CopyTextDirective } from "./directives/copy-text.directive";
 @NgModule({
   declarations: [
     FilterPipe,
@@ -72,7 +73,8 @@ import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
     WalletNotConnectedStateComponent,
     StakeComponent,
     ApyCalcComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    CopyTextDirective
   ],
   imports: [
     CommonModule,
@@ -120,7 +122,8 @@ import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
     WalletNotConnectedStateComponent,
     StakeComponent,
     ApyCalcComponent,
-    SearchInputComponent
+    SearchInputComponent,
+    CopyTextDirective
   ]
 })
 export class SharedModule {}

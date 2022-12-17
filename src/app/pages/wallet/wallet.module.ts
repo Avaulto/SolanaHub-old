@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { WalletPageRoutingModule } from './wallet-routing.module';
 
 import { WalletPage } from './wallet.page';
@@ -13,6 +13,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 
 
 @NgModule({
+  schemas:[NO_ERRORS_SCHEMA],
   imports: [
     SharedModule,
     WalletPageRoutingModule,

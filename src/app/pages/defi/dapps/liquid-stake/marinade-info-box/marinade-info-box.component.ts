@@ -28,7 +28,7 @@ export class MarinadeInfoBoxComponent implements OnInit {
     this.fetchMarinadeInfo();
   }
   fetchMarinadeInfo() {
-    this._apiService.get('https://api.marinade.finance/msol/apy/1y').subscribe(res => {
+    this._apiService.get('https://api.marinade.finance/msol/apy/30d').subscribe(res => {
       this.marinadeInfo.apy = Number((res.value * 100).toFixed(2));
       this.onMarinadeInfo.emit(this.marinadeInfo)
     });

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { observable, Observable, Subscriber } from 'rxjs';
 import { Asset } from 'src/app/models';
@@ -15,7 +15,7 @@ import {  TxInterceptService } from 'src/app/services/txIntercept.service';
 export class SendComponent implements OnInit {
   @Input() wallet: Asset;
   public showValidatorList: boolean = false;
-  public sendSolForm: FormGroup;
+  public sendCoinForm: FormGroup;
   public formSubmitted: boolean = false;
   selectedValidator;
   searchTerm = '';
@@ -26,20 +26,43 @@ export class SendComponent implements OnInit {
     private _utilsService: UtilsService,
     ) { }
   ngOnInit() {
-    this.sendSolForm = this._fb.group({
+    this.sendCoinForm = this._fb.group({
       amount: ['', [Validators.required]],
       targetAddress: ['', [Validators.required]],
     })
+    // this.sendCoinForm.valueChanges.subscribe(async val =>{
+    //   const pk = new PublicKey(val.targetAddress)
+    //   const isValid =  PublicKey.isOnCurve(pk.toBytes());
+    //   console.log(isValid)
+    // })
+  }
+  async pkVerifyValidator(){
+
+    
+    return  (control:AbstractControl) : ValidationErrors | null => {
+
+      const value = control.value;
+      const pk = new PublicKey(value)
+      const isValid =  PublicKey.isOnCurve(pk.toBytes());
+      console.log(isValid)
+      if (!isValid) {
+          return null;
+      }
+      
+  
+
+      return 
+  }
   }
   setMaxAmount() {
     const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
-    this.sendSolForm.controls.amount.setValue(fixedAmount);
+    this.sendCoinForm.controls.amount.setValue(fixedAmount);
   }
 
 
-  async submitSendSol(){
+  async send(){
     this.formSubmitted = true;
-    const {amount, targetAddress} = this.sendSolForm.value;
+    const {amount, targetAddress} = this.sendCoinForm.value;
     const walletOwnerPublicKey = new PublicKey(this.wallet.address)
     const res = await this._txInterceptService.sendSol(amount * LAMPORTS_PER_SOL , targetAddress ,walletOwnerPublicKey)
     this.formSubmitted = false;

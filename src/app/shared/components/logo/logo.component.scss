@@ -3,7 +3,8 @@
     align-items: center;
     width: 100%;
     justify-content: flex-end;
-    img{
+    color:var(--ion-text-color);
+    ion-img{
         width: 70px;
         margin-inline-start: 6px;
     }
