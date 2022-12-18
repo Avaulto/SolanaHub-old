@@ -28,14 +28,11 @@
           <div id="swap-pair-one">
             <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
               <div id="">Send</div>
-              <div id="balance">
-                <!-- Balance: 21 -->
-              </div>
             </ion-row>
 
             <ion-row class="ion-margin-bottom swap-box">
               <div class="pair-selection">
-                <div class="pair-setup">
+                <div id="swap-input" class="pair-setup">
 
                   <app-select-item style="flex: 1;" [item]="swapForm.value.inputToken"
                     (click)="showCoinsListOne = !showCoinsListOne" [isDropDownOpen]="showCoinsListOne"
@@ -44,6 +41,7 @@
                   </app-select-item>
                   <ion-input type="number" placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount"
                     #inAmount formControlName="inputAmount"></ion-input>
+                    <span class="heading-6" (click)="setMaxAmount(swapForm.value.inputToken)">MAX</span>
                 </div>
                 <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
                   (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
@@ -59,9 +57,6 @@
           <div id="swap-pair-two">
             <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
               <div id="">Receive</div>
-              <div id="balance">
-                <!-- Balance: 300 -->
-              </div>
             </ion-row>
 
             <ion-row class="ion-margin-bottom swap-box">
@@ -71,7 +66,7 @@
                     (click)="showCoinsListTwo = !showCoinsListTwo" [isDropDownOpen]="showCoinsListTwo"
                     [showDropDownIcon]="true">
                   </app-select-item>
-                  <ion-input [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
+                  <ion-input style="text-align: right;" [value]="outputAmount" [hidden]="!swapForm.value.inputAmount" readonly></ion-input>
                   <app-loader *ngIf="calcLoader | async"></app-loader>
                 </div>
                 <app-select-box style="width: 100%;" *ngIf="showCoinsListTwo"

@@ -239,6 +239,11 @@ export class TokenSwapPage implements OnInit {
     const swapDetails = await this._prepSwapDetails(this._bestRoute, this.outputAmount);
     this._swapDetail$.next(swapDetails);
   }
+  public setMaxAmount(token: Token): void {
+    console.log(token)
+    // const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
+    this.swapForm.controls.inputAmount.setValue(token.balance);
+  }
   public async submitSwap(): Promise<void> {
     trackEvent('jupiter swap')
 

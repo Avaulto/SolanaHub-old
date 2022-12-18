@@ -14,12 +14,15 @@
               <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
           </ion-row>
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-              <div id="">mSOL You will receive</div>
+              <div id="">You will receive</div>
           </ion-row>
 
           <ion-row id="recive-amount" style="margin-bottom:8px;">
               <ion-input readonly [value]="((stakeAmount || 0) / marinadeInfo?.msolRatio).toFixed(3)">
               </ion-input>
+              <span>
+                  MSOL
+              </span>
           </ion-row>
           <ion-row class="ion-justify-content-center">
               <!-- <app-loader></app-loader> -->

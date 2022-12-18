@@ -27,25 +27,15 @@ export const pages: any = [
       url: "/defi",
       children: [
         {
-          title: "swap",
-          url: "/defi/token-swap",
-          icon: 'swap-horizontal',
-        },
-        {
           title: "liquid staking",
           url: "/defi/liquid-stake",
           icon: 'water',
         },
-          // {
-    //   title: "lending",
-    //   url: "lending",
-    //   icon: faCoins,
-    // },
-        // {
-        //   title: "pools",
-        //   url: "/defi/pools",
-        //   icon: 'faSwimmingPool',
-        // },
+        {
+          title: "swap",
+          url: "/defi/token-swap",
+          icon: 'swap-horizontal',
+        },
         {
           title: "volt strategies",
           url: "/defi/volt-strategies",

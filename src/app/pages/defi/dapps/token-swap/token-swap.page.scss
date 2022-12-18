@@ -21,8 +21,17 @@
     font-weight: 800;
 }
 
-#swap-wrapper {}
-
+#swap-input{
+    position: relative;
+    span{
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 6;
+        right: 15px;
+        top: 21px;
+    }
+}
 
 
     #swap-setting {
@@ -43,6 +52,7 @@
 
         ion-icon {
             font-size: 20px;
+            color: var(--icon-color);
             transition: 0.5s ease;
 
             &:hover {
@@ -67,7 +77,7 @@
     }
 
     ion-input {
-        text-align: right;
+        text-align: left;
         --padding-bottom: 0;
         // border: 1px solid var(--ion-color-primary);
         --padding-top: 10;
@@ -76,7 +86,7 @@
         flex: 0.4;
         --padding-end: 8px;
         --padding-start: 10px;
-        z-index: 222;
+        z-index: 5;
     }
 
     #inputAmountEl {
