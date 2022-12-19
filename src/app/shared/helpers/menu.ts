@@ -44,6 +44,11 @@ export const pages: any = [
       ]
     },
     {
+      title: "learning center",
+      url: "learning-center",
+      icon: 'book-outline',
+    },
+    {
       title: "stake with us",
       url: "stake-with-us",
       icon: 'heart-circle',

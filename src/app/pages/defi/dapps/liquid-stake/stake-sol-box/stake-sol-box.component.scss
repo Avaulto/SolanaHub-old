@@ -46,4 +46,13 @@ ion-row{
 }
 
 
+#recive-amount{
+    position: relative;
+    span {
+        position: absolute;
+        z-index: 3;
+        right: 15px;
+        top: 12px;
+    }
+}
 
