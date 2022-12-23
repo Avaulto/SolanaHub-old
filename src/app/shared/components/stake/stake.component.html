@@ -2,7 +2,9 @@
 
   <form [formGroup]="stakeForm" id="stake-box" class="ion-text-capitalize">
     <ion-row class="ion-margin-bottom" id="stake-apr-box">
-      <div>~{{avgApy}}% <span>APY</span></div>
+      <div>~{{avgApy}}% <span>APY</span>
+        <span id="mev-reward" *ngIf="privateValidatorPage">+ MEV rewards</span>
+      </div>
       <p id="">Earn passive income from your crypto by staking it.</p>
     </ion-row>
     <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
