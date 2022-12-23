@@ -48,6 +48,7 @@ export const pages: any = [
     //   url: "learning-center",
     //   icon: 'book-outline',
     // },
+    
     {
       title: "stake with us",
       url: "stake-with-us",
