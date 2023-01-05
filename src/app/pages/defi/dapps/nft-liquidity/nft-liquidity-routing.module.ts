@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { PoolsPage } from './pools.page';
+import { NftLiquidityPage } from './nft-liquidity.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PoolsPage
+    component: NftLiquidityPage
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PoolsPageRoutingModule {}
+export class NftLiquidityPageRoutingModule {}

@@ -21,3 +21,4 @@ export * from './wallet-not-connected-state/wallet-not-connected-state.component
 export * from './stake/stake.component';
 export * from './stake/apy-calc/apy-calc.component';
 export * from './search-input/search-input.component';
+export * from './dapp-head/dapp-head.component'

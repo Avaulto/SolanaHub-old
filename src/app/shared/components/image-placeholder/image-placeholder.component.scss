@@ -4,7 +4,9 @@ ion-img,ion-skeleton-text {
     height: 100%;
     max-width: 100%;
 }
-
+ion-skeleton-text{
+    min-height: 200px ;
+}
 ion-icon{
     position: absolute;
     right: 0;

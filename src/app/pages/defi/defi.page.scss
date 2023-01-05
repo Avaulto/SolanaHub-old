@@ -6,9 +6,12 @@ ion-card {
     height: 150px;
     display: flex;
     justify-content: center;
-
+    align-items: center;
     ion-img {
         width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        overflow: hidden;
     }
 }
 

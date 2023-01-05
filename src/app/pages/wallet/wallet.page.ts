@@ -13,12 +13,12 @@ import { ApiService, UtilsService, DataAggregatorService, SolanaUtilsService, Nf
 })
 export class WalletPage implements OnInit, OnDestroy {
   public myNfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
-    this._utilsService.isNotNull,
-    this._utilsService.isNotUndefined,
+    this.utilsService.isNotNull,
+    this.utilsService.isNotUndefined,
     switchMap(async wallet=> (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3))
   )
   public walletExtended: Observable<Asset> = this._walletStore.anchorWallet$.pipe(
-    this._utilsService.isNotNull,
+    this.utilsService.isNotNull,
     shareReplay(1),
     mergeMap(async wallet => {
       if (wallet) {
@@ -48,7 +48,7 @@ export class WalletPage implements OnInit, OnDestroy {
   public walletTotalValue = { usdValue: 0, solValue: 0 }
   readonly isReady$ = this._walletStore.connected$;
   constructor(
-    private _utilsService: UtilsService,
+    public utilsService: UtilsService,
     private _nftStore: NftStoreService,
     private _dataAggregator: DataAggregatorService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -83,7 +83,7 @@ export class WalletPage implements OnInit, OnDestroy {
   private _prepAsset(coinData: CoinData, token: TokenBalance): Asset {
     return {
       name: coinData.symbol,
-      balance: this._utilsService.shortenNum(token.balance),
+      balance: this.utilsService.shortenNum(token.balance),
       icon: coinData.image.small,
       totalUsdValue: token.balance * coinData.price.usd
     }
@@ -93,21 +93,21 @@ export class WalletPage implements OnInit, OnDestroy {
       (previousValue, currentValue: Asset) => previousValue + currentValue.totalUsdValue,
       0
     );
-    this.walletTotalValue.solValue = this._utilsService.shortenNum(this.walletTotalValue.usdValue / asset.coinData.price.usd);
+    this.walletTotalValue.solValue = this.utilsService.shortenNum(this.walletTotalValue.usdValue / asset.coinData.price.usd);
     asset.tokens.map(token => {
-      token.baseOfPortfolio = this._utilsService.shortenNum(token.totalUsdValue / this.walletTotalValue.usdValue * 100, 1)
+      token.baseOfPortfolio = this.utilsService.shortenNum(token.totalUsdValue / this.walletTotalValue.usdValue * 100, 1)
     })
     asset.tokens = asset.tokens.sort((a, b) => a.baseOfPortfolio - b.baseOfPortfolio);
     return asset;
   }
   private async _setWallet(wallet: any, asset: Asset): Promise<Asset> {
-    const walletAddrs = this._utilsService.addrUtil(wallet.publicKey.toBase58());
+    const walletAddrs = this.utilsService.addrUtil(wallet.publicKey.toBase58());
     asset.publicKey = wallet.publicKey;
     asset.address = walletAddrs.addr
     asset.addrShort = walletAddrs.addrShort
     const balanace = (await this._solanaUtilsService.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL;
-    asset.balance = this._utilsService.shortenNum((balanace));
-    asset.totalUsdValue = this._utilsService.shortenNum(balanace * asset.coinData?.price?.usd)
+    asset.balance = this.utilsService.shortenNum((balanace));
+    asset.totalUsdValue = this.utilsService.shortenNum(balanace * asset.coinData?.price?.usd)
 
     const { balance, totalUsdValue } = asset;
     const { small } = asset.coinData.image

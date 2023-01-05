@@ -1,14 +1,8 @@
 <ion-content scroll-y style="--background:transparent;">
     <ion-grid class="ion-padding">
-        <ion-row id="liquid-stake-header" class="ion-align-items-center ion-margin-bottom">
-            <div class="ion-margin-end">
-                <span class="heading-1">Powered by</span>
-            </div>
-            <div id="marinade-logo">
-                <ion-img src="/assets/images/icons/MNDE.svg"></ion-img>
-                <span class="heading-1">Marinade</span>
-            </div>
-        </ion-row>
+
+        <app-dapp-head name="Marinade" imgPath="/assets/images/icons/MNDE.svg"></app-dapp-head>
+
         <app-marinade-info-box (onMarinadeInfo)="marinadeInfo = $event"></app-marinade-info-box>
         <ion-row class="ion-justify-content-between">
             <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">

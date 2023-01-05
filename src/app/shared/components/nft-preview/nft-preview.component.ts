@@ -5,7 +5,7 @@ import { NavController, PopoverController } from '@ionic/angular';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
 import { Nft } from 'src/app/models';
-import { NftStoreService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import { NftStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { NftListingComponent } from './nft-listing/nft-listing.component';
 import { NftSendComponent } from './nft-send/nft-send.component';
 
@@ -24,7 +24,8 @@ export class NftPreviewComponent implements OnInit {
     private _walletStore: WalletStore,
     private _nftStoreService: NftStoreService,
     private popoverController: PopoverController,
-    private txInterceptService: TxInterceptService
+    private txInterceptService: TxInterceptService,
+    public utilsService: UtilsService
   ) { }
   hideSkelaton: boolean = false;
   async ngOnInit() {

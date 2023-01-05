@@ -17,7 +17,7 @@
 
                 <div class="heading-4 ion-margin-end">{{wallet.addrShort}}</div>
                 <ion-icon name="copy-outline" appCopyText [copyText]="wallet.address" class="ion-margin-end"></ion-icon>
-                <a [href]="'https://solscan.io/account/'+ wallet.address" target="_blank">
+                <a [href]="utilsService.explorer + '/account/'+ wallet.address" target="_blank">
                   <ion-icon name="link-outline"></ion-icon>
                 </a>
               </ion-row>

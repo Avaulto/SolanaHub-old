@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { OrcaInfoComponent } from './orca-info.component';
+import { NftLiquidityPage } from './nft-liquidity.page';
 
-describe('OrcaInfoComponent', () => {
-  let component: OrcaInfoComponent;
-  let fixture: ComponentFixture<OrcaInfoComponent>;
+describe('NftLiquidityPage', () => {
+  let component: NftLiquidityPage;
+  let fixture: ComponentFixture<NftLiquidityPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrcaInfoComponent ],
+      declarations: [ NftLiquidityPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(OrcaInfoComponent);
+    fixture = TestBed.createComponent(NftLiquidityPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
