@@ -41,6 +41,11 @@ export const pages: any = [
           url: "/defi/volt-strategies",
           icon: 'flask',
         },
+        {
+          title: 'nft-liquidity',
+          url: "/defi/nft-liquidity",
+          icon: 'cash-outline',
+        },
       ]
     },
     // {
