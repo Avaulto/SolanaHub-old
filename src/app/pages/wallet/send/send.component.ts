@@ -44,7 +44,6 @@ export class SendComponent implements OnInit {
       const value = control.value;
       const pk = new PublicKey(value)
       const isValid =  PublicKey.isOnCurve(pk.toBytes());
-      console.log(isValid)
       if (!isValid) {
           return null;
       }

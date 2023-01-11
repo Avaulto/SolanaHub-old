@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { MarinadeInfoBoxComponent } from './marinade-info-box.component';
+import { SwapProviderBtnComponent } from './swap-provider-btn.component';
 
-describe('MarinadeInfoBoxComponent', () => {
-  let component: MarinadeInfoBoxComponent;
-  let fixture: ComponentFixture<MarinadeInfoBoxComponent>;
+describe('SwapProviderBtnComponent', () => {
+  let component: SwapProviderBtnComponent;
+  let fixture: ComponentFixture<SwapProviderBtnComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MarinadeInfoBoxComponent ],
+      declarations: [ SwapProviderBtnComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MarinadeInfoBoxComponent);
+    fixture = TestBed.createComponent(SwapProviderBtnComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

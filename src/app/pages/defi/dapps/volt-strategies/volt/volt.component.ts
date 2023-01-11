@@ -50,8 +50,7 @@ export class VoltComponent implements OnInit {
     this.volt.underlineTokenImage = await this.getUnderlineTokenIcon();
     this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
     this.totalDepositUsd = this.volt.tvlUsd.toLocaleString();
-
-
+    
     // store initial volt value
     this.voltTemp = this.volt;
   }

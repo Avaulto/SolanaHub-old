@@ -152,7 +152,6 @@ export class VoltStrategiesPage implements OnInit {
     const voltVaultId = new PublicKey(voltForm.voltId);
     const depositAmount: Decimal = new Decimal(voltForm.amount);
     const user = (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    console.log(voltForm,this.friktionSDK, user);
 
     const cVoltSDK = toConnectedSDK(
       await this.friktionSDK.loadVoltSDKByKey(voltVaultId),
@@ -161,7 +160,6 @@ export class VoltStrategiesPage implements OnInit {
       // below field is only used if depositing from a PDA or other program-owned account
       undefined
     );
-     debugger;
     await cVoltSDK.doFullDeposit(depositAmount);
 
   }

@@ -18,10 +18,10 @@
           </ion-row>
 
           <ion-row id="recive-amount" style="margin-bottom:8px;">
-              <ion-input readonly [value]="((stakeAmount || 0) / marinadeInfo?.msolRatio).toFixed(3)">
+              <ion-input readonly [value]="((stakeAmount || 0) / stakePoolStats?.assetRatio).toFixed(3)">
               </ion-input>
               <span>
-                  MSOL
+                  {{selectedProvider.ticker}}
               </span>
           </ion-row>
           <ion-row class="ion-justify-content-center">
@@ -33,19 +33,19 @@
       </form>
       <form *ngSwitchCase="'unstake'">
 
-        <app-label-layout [layoutConfig]="{title: 'MSOL Amount', balance:mSOLBalance}"></app-label-layout>
+        <app-label-layout [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance:xSOLBalance}"></app-label-layout>
 
 
           <ion-row id="stake-amount" style="margin-bottom:8px;">
               <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unStakeAmount" placeholder="Amount"></ion-input>
-              <span class="heading-6" (click)="setMaxAmountMSOL()">MAX</span>
+              <span class="heading-6" (click)="setMaxAmountxSOL()">MAX</span>
           </ion-row>
           <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
               <div id="">You will receive</div>
           </ion-row>
 
           <ion-row id="sol-recive-amount" style="margin-bottom:8px;">
-              <ion-input readonly [value]="((unStakeAmount || 0 ) * marinadeInfo?.msolRatio).toFixed(3)">
+              <ion-input readonly [value]="((unStakeAmount || 0 ) * stakePoolStats?.assetRatio).toFixed(3)">
               </ion-input>
           </ion-row>
           <ion-row class="sub">

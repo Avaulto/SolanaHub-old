@@ -22,6 +22,7 @@ import {
   LAMPORTS_PER_SOL,
   Lockup,
   PublicKey,
+  Signer,
   StakeProgram,
   SystemProgram,
   Transaction,
@@ -229,7 +230,7 @@ export class TxInterceptService {
       this.sendTx([transfer], walletOwnerPk)
     }
   }
-  public async sendTx(txParam: TransactionInstruction[] | Transaction[], walletPk: PublicKey, extraSigners?: Keypair[]) {
+  public async sendTx(txParam: TransactionInstruction[] | Transaction[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
     try {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
@@ -250,7 +251,6 @@ export class TxInterceptService {
           const rawTransaction = transaction.serialize({ requireAllSignatures: false });
           const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
           const url = `${this._utilsService.explorer}/tx/${signature}`
-          console.log(url)
           const txSend: toastData = {
             message: 'click on the icon to view transaction on explorer',
             icon: 'exit-outline',

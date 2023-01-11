@@ -14,7 +14,7 @@ interface FraktStats{
   styleUrls: ['./frakt-stats.component.scss'],
 })
 export class FraktStatsComponent implements OnInit {
-  public fraktStats: Observable<FraktStats> = this._apiService.get('https://fraktion-monorep.herokuapp.com/stats/total').pipe(this._utilsService.isNotNull,shareReplay(1))
+  public fraktStats: Observable<FraktStats> = this._apiService.get('https://api.frakt.xyz/stats/total').pipe(this._utilsService.isNotNull,shareReplay(1))
 
   constructor(private _utilsService: UtilsService,private _apiService: ApiService) { }
 

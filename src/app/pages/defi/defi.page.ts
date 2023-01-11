@@ -17,10 +17,10 @@ interface DefiApps {
 export class DefiPage implements OnInit {
   public defiApps: DefiApps[] = [
     {
-      name: 'marinade finance',
-      image: 'assets/images/icons/marinade-logo-small.svg',
-      description: `Marinade.Finance is a non-custodial liquid staking protocol built on Solana. You can stake your SOL tokens with Marinade using automated staking strategies and receive "marinated SOL" tokens (mSOL) that you can use in decentralized finance (DeFi). `,
-      learnMoreLink: 'https://docs.marinade.finance/',
+      name: 'Liquid staking',
+      image: 'assets/images/icons/liquid-stake-logo.gif',
+      description: `Liquid staking is a non-custodial protocol built on Solana. You can stake your SOL tokens with Pool provider using automated staking strategies and receive equivilant tokens (mSOL/bSOL) that you can use in decentralized finance (DeFi). `,
+      learnMoreLink: 'https://solana.org/stake-pools',
       deepLink: 'liquid-stake'
     },
     {
@@ -44,13 +44,13 @@ export class DefiPage implements OnInit {
       learnMoreLink: 'https://docs.friktion.fi/',
       deepLink: 'volt-strategies'
     },
-    {
-      name: 'frakt',
-      image: 'assets/images/icons/frakt-logo.jpeg',
-      description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
-      learnMoreLink: 'https://docs.frakt.xyz/frakt',
-      deepLink: 'nft-liquidity'
-    },
+    // {
+    //   name: 'frakt',
+    //   image: 'assets/images/icons/frakt-logo.jpeg',
+    //   description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
+    //   learnMoreLink: 'https://docs.frakt.xyz/frakt',
+    //   deepLink: 'nft-liquidity'
+    // }
   ]
   
   constructor(private _popoverController: PopoverController) { }

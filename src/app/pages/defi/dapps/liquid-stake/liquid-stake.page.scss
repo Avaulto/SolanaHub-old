@@ -7,7 +7,10 @@
         margin-inline-end: 8px;
     }
 }
-
+#stake-pool-header{
+    display: flex;
+    justify-content: space-between;
+}
 #stake-apr-box {
     height: 99px;
     background:var( --apr-box);
@@ -71,4 +74,23 @@ app-wallet-not-connected-state {
     display: flex;
     align-items: center;
     height: 100%;
+}
+
+// select provider UI
+#liquid-stake-provider{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;    
+
+ion-button {
+    width: 100%;
+    letter-spacing: 1.5px;
+    margin-block-end: 8px;
+    ion-img {
+        margin-inline-end: 8px;
+        width: 15px;
+    }
+}
+
 }

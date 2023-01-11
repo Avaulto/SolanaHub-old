@@ -240,7 +240,6 @@ export class TokenSwapPage implements OnInit {
     this._swapDetail$.next(swapDetails);
   }
   public setMaxAmount(token: Token): void {
-    console.log(token)
     // const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
     this.swapForm.controls.inputAmount.setValue(token.balance);
   }

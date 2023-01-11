@@ -9,6 +9,7 @@ import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMa
 import { toastData,StakeAccountExtended } from 'src/app/models';
 
 import Plausible from 'plausible-tracker'
+import { StakePoolStats } from '../stake-pool.model';
 const { trackEvent } = Plausible();
 
 
@@ -19,6 +20,7 @@ const { trackEvent } = Plausible();
 })
 export class StakeAccountBoxComponent implements OnInit {
   @Input() marinadeInfo: {msolRatio};
+  @Input() stakePoolStats: StakePoolStats;
   @Input() marinade: Marinade;
   @Input() stakeAccounts: Observable<StakeAccountExtended[]>
   public selectedStakeAccount: StakeAccountExtended;

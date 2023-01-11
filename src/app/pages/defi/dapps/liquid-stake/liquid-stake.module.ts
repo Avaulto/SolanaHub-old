@@ -8,9 +8,10 @@ import { LiquidStakePageRoutingModule } from './liquid-stake-routing.module';
 
 import { LiquidStakePage } from './liquid-stake.page';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { MarinadeInfoBoxComponent } from './marinade-info-box/marinade-info-box.component';
+import { LiquidStakingStatsComponent } from './liquid-staking-stats/liquid-staking-stats.component';
 import { StakeSolBoxComponent } from './stake-sol-box/stake-sol-box.component';
 import { StakeAccountBoxComponent } from './stake-account-box/stake-account-box.component';
+import { SwapProviderBtnComponent } from './swap-provider-btn/swap-provider-btn.component';
 
 @NgModule({
   imports: [
@@ -19,9 +20,10 @@ import { StakeAccountBoxComponent } from './stake-account-box/stake-account-box.
   ],
   declarations: [
     LiquidStakePage,
-     MarinadeInfoBoxComponent,
+    LiquidStakingStatsComponent,
     StakeSolBoxComponent,
-    StakeAccountBoxComponent
+    StakeAccountBoxComponent,
+    SwapProviderBtnComponent
   ]
 })
 export class LiquidStakePageModule { }

@@ -7,7 +7,6 @@ import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
 import { PopoverController } from '@ionic/angular';
-import { WalletAdapterOptionsComponent, WalletConnectedDropdownComponent } from '../shared/components';
 import { environment } from 'src/environments/environment';
 
 
@@ -58,7 +57,6 @@ export class SolanaUtilsService {
   public getSingleValidatorData2(vote_identity: string = ''): Observable<ValidatorData> {
     return this._apiService.get(`https://dev.compact-defi.avaulto.com/api/validators-info?env=${environment.solanaEnv}&validator=${vote_identity}`).pipe(
       map((validator) => {
-      console.log(validator);  
         const filteredValidator: ValidatorData = {
           skipRate: validator.skip_rate,
           name: validator.name || '',

@@ -2,7 +2,7 @@
   <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{title}}</div>
   <div *ngIf="!loading" id="box-desc">
     <div class="heading-2">{{desc}}</div>
-    <ng-content #data></ng-content>
+    <ng-content style="display: block;" #data></ng-content>
   </div>
   <app-loader *ngIf="loading"></app-loader>
 </ion-col>

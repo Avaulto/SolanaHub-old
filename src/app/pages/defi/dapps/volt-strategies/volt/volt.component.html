@@ -8,8 +8,7 @@
           </ion-toggle>
         </div>
         <div class="asset-info" [ngClass]="volt.underlineTokenImage ? 'underline-asset' : ''">
-
-          <app-image-placeholder [imagePath]="volt.depositTokenImage"></app-image-placeholder>
+          <app-image-placeholder *ngIf="volt.depositTokenImage" [imagePath]="volt.depositTokenImage"></app-image-placeholder>
           <app-image-placeholder *ngIf="volt.underlineTokenImage" [imagePath]="volt.underlineTokenImage"></app-image-placeholder>
 
           <span>{{volt.depositTokenSymbol}}</span>
