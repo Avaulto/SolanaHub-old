@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
@@ -16,7 +16,7 @@ const { trackEvent } = Plausible();
   templateUrl: './stake-sol-box.component.html',
   styleUrls: ['./stake-sol-box.component.scss'],
 })
-export class StakeSolBoxComponent implements OnInit {
+export class StakeSolBoxComponent implements OnChanges {
   @Input() selectedProvider: StakePoolProvider;
   @Input() stakePoolStats: StakePoolStats;
   @Input() marinade: Marinade;
@@ -34,18 +34,13 @@ export class StakeSolBoxComponent implements OnInit {
     private _utilsService: UtilsService
   ) { }
 
-  async ngOnInit() {
+  async ngOnChanges() {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
+      console.log('ob')
       if (wallet) {
         this.wallet = wallet;
         this.solBalance = this._utilsService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
-        const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.mintAddress);
-        if (splAccount) {
-          this.xSOLBalance = splAccount?.balance < 0.01 ? 0 : splAccount.balance;
-        } else {
-          this.xSOLBalance = 0;
-        }
+        this.xSOLBalance = this.stakePoolStats?.userHoldings?.staked_asset // splAccount?.balance < 0.01 ? 0 : splAccount.balance;
       }
     })
   }
@@ -98,12 +93,12 @@ export class StakeSolBoxComponent implements OnInit {
       // sign and send the `transaction`
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {
-      let withdrawTx = await withdrawSol(
+      let withdrawTx = await withdrawStake(
         this._solanaUtilsService.connection,
         this.selectedProvider.poolpubkey,
         this.wallet.publicKey,
-        this.wallet.publicKey,
         this.unStakeAmount,
+        false
       );
       this._txInterceptService.sendTx(withdrawTx.instructions, this.wallet.publicKey, withdrawTx.signers)
 

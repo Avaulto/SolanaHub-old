@@ -18,7 +18,7 @@
           </ion-row>
 
           <ion-row id="recive-amount" style="margin-bottom:8px;">
-              <ion-input readonly [value]="((stakeAmount || 0) / stakePoolStats?.assetRatio).toFixed(3)">
+              <ion-input readonly [value]="((stakeAmount || 0) / stakePoolStats?.assetRatio) | number : '1.2-3'">
               </ion-input>
               <span>
                   {{selectedProvider.ticker}}
@@ -33,7 +33,7 @@
       </form>
       <form *ngSwitchCase="'unstake'">
 
-        <app-label-layout [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance:xSOLBalance}"></app-label-layout>
+        <app-label-layout [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance:xSOLBalance | number  : '1.2-3'}"></app-label-layout>
 
 
           <ion-row id="stake-amount" style="margin-bottom:8px;">
@@ -45,7 +45,7 @@
           </ion-row>
 
           <ion-row id="sol-recive-amount" style="margin-bottom:8px;">
-              <ion-input readonly [value]="((unStakeAmount || 0 ) * stakePoolStats?.assetRatio).toFixed(3)">
+              <ion-input readonly [value]="((unStakeAmount || 0 ) * stakePoolStats?.assetRatio) | number : '1.2-3'">
               </ion-input>
           </ion-row>
           <ion-row class="sub">
@@ -55,7 +55,7 @@
               <!-- <app-loader></app-loader> -->
               <ion-button (click)="liquidUnstake()" [disabled]="!unStakeAmount"
                   class="ion-text-capitalize">
-                  withdrawal SOL
+                  Withdraw SOL
               </ion-button>
           </ion-row>
 

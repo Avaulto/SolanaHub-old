@@ -46,7 +46,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
     } else {
       await this.fetchSolBlazeStats()
     }
-    this.fetchUserHoldings()
+    await this.fetchUserHoldings();
     this.onStakePoolStats.emit(this.stakePoolStats);
   }
 
@@ -91,8 +91,10 @@ export class LiquidStakingStatsComponent implements OnChanges {
     const solprice = await (await firstValueFrom(this._dataAggregatorService.getCoinData('solana'))).price.usd;
     const walletOwner:any = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(walletOwner) || [];
-    const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.mintAddress);;
-    const TVL = { staked_usd: splAccount.balance * solprice, staked_asset: splAccount.balance }
-    this.stakePoolStats.userHoldings =  TVL
+    const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.mintAddress);
+    if(splAccount){
+      const TVL = { staked_usd: splAccount.balance * solprice || 0, staked_asset: splAccount.balance || 0}
+      this.stakePoolStats.userHoldings =  TVL
+    }
   }
 }
