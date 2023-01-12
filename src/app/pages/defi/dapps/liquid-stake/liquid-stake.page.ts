@@ -28,13 +28,13 @@ export class LiquidStakePage implements OnInit {
 
   // avaliable stake pool providers to select
   protected providers: StakePoolProvider[] = [{
-    name: 'marinade',
+    name: 'Marinade',
     image: 'assets/images/icons/marinade-logo-small.svg',
     mintAddress:'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
     ticker: 'mSOL'
   },
   {
-    name: 'solblaze',
+    name: 'SolBlaze',
     image: 'assets/images/icons/solblaze-logo.png',
     poolpubkey: new PublicKey(environment.solblazepool),
     mintAddress:'bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1',
@@ -43,7 +43,7 @@ export class LiquidStakePage implements OnInit {
   ]
   public currentProvider: Subject<StakePoolProvider> = new Subject();
   public subCurrentProvider = this.currentProvider.asObservable().pipe(shareReplay(1))
-  provider = null
+  public provider:StakePoolProvider = null
   public marinade: Marinade;
   public stakePoolStats: StakePoolStats;
   public wallet;
@@ -111,9 +111,9 @@ export class LiquidStakePage implements OnInit {
     })
   }
   /** @SP = reffer as stake pool */
-  async initSPProvider(SP: StakePoolProvider) {
-    if (SP.name == 'solBlaze') {
-      let info = await stakePoolInfo(this._solanaUtilsService.connection, SP.poolpubkey);
+  async initSPProvider(selectedProvider: StakePoolProvider) {
+    if (selectedProvider.name.toLowerCase() == 'solBlaze') {
+      let info = await stakePoolInfo(this._solanaUtilsService.connection, selectedProvider.poolpubkey);
       if (info.details.updateRequired) {
         await this.updateSolBlazePool();
       }

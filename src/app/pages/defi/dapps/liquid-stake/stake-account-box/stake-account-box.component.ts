@@ -1,15 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
-import { Marinade, MarinadeConfig, Provider} from '@marinade.finance/marinade-ts-sdk'
+import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
 import { MarinadeResult } from '@marinade.finance/marinade-ts-sdk/dist/src/marinade.types';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import bn from 'bn.js'
-import { SolanaUtilsService,TxInterceptService , ToasterService, UtilsService } from 'src/app/services';
+import { SolanaUtilsService, TxInterceptService, ToasterService, UtilsService } from 'src/app/services';
 import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
-import { toastData,StakeAccountExtended } from 'src/app/models';
+import { toastData, StakeAccountExtended } from 'src/app/models';
 
 import Plausible from 'plausible-tracker'
-import { StakePoolStats } from '../stake-pool.model';
+import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
+import { depositStake } from '@solana/spl-stake-pool';
 const { trackEvent } = Plausible();
 
 
@@ -19,7 +20,7 @@ const { trackEvent } = Plausible();
   styleUrls: ['./stake-account-box.component.scss'],
 })
 export class StakeAccountBoxComponent implements OnInit {
-  @Input() marinadeInfo: {msolRatio};
+  @Input() selectedProvider: StakePoolProvider;
   @Input() stakePoolStats: StakePoolStats;
   @Input() marinade: Marinade;
   @Input() stakeAccounts: Observable<StakeAccountExtended[]>
@@ -28,7 +29,7 @@ export class StakeAccountBoxComponent implements OnInit {
   // public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
   //   tap(wallet => wallet ? wallet : null),
   //   switchMap(async (wallet) => {
-      
+
   //     const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
   //     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
   //       const {shortAddr,addr, balance,state} = await this._solanaUtilsService.extendStakeAccount(acc)
@@ -50,35 +51,47 @@ export class StakeAccountBoxComponent implements OnInit {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
     private _walletStore: WalletStore,
-    private toasterService:ToasterService
+    private toasterService: ToasterService
   ) { }
 
 
   ngOnInit() {
 
   }
-  setSelectedStakeAccount(stakeAccount:StakeAccountExtended) {
-    
+  setSelectedStakeAccount(stakeAccount: StakeAccountExtended) {
+
     this.selectedStakeAccount = stakeAccount;
     this.showAccountList = !this.showAccountList
 
   }
-  async delegateStakeAccount(){
-    trackEvent('marinade stake')
+  async delegateStakeAccount() {
+    trackEvent('delegate stake account stake')
     // get walletOwner
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-
-    const accountPK = new PublicKey(this.selectedStakeAccount.addr)
+    const accountPK = new PublicKey(this.selectedStakeAccount.addr);
     try {
-      const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(accountPK);
-      const txIns: Transaction = depositAccount.transaction
-      const res = await this._txInterceptService.sendTx([txIns], walletOwner);
-      
+      if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+        const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(accountPK);
+        const txIns: Transaction = depositAccount.transaction
+        await this._txInterceptService.sendTx([txIns], walletOwner);
+      } else {
+        const validator = new PublicKey(this.selectedStakeAccount.validatorData.vote_identity)
+        let depositTx = await depositStake(
+          this._solanaUtilsService.connection,
+          this.selectedProvider.poolpubkey,
+          walletOwner,
+          validator,
+          accountPK
+        );
+        await this._txInterceptService.sendTx(depositTx.instructions, walletOwner, depositTx.signers);
+
+      }
     } catch (error) {
       const toasterMessage: toastData = {
-        message: error.toString().substring(6),      
-        icon:'alert-circle-outline',
-      segmentClass: "merinadeErr"}
+        message: error.toString().substring(6),
+        icon: 'alert-circle-outline',
+        segmentClass: "merinadeErr"
+      }
       this.toasterService.msg.next(toasterMessage)
     }
   }

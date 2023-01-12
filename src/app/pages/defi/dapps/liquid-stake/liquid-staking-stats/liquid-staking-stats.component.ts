@@ -35,7 +35,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
     this.fetchProviderStats();
   }
   async fetchProviderStats() {
-    if (this.selectedProvider.name == 'marinade') {
+    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
       await this.fetchMarinadeStats()
     } else {
       await this.fetchSolBlazeStats()
