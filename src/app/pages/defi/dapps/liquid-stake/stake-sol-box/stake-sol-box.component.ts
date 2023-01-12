@@ -57,11 +57,8 @@ export class StakeSolBoxComponent implements OnChanges {
     trackEvent('liquid stake ' + this.selectedProvider.name)
     const amount: number = Number(this.stakeAmount);
     const sol = new bn(amount * LAMPORTS_PER_SOL);
-    if (this.selectedProvider.name == 'marinade') {
-      const {
-        associatedMSolTokenAccountAddress,
-        transaction,
-      } = await this.marinade.deposit(sol);
+    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+      const { transaction } = await this.marinade.deposit(sol);
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {
       let depositTx = await depositSol(
@@ -70,13 +67,6 @@ export class StakeSolBoxComponent implements OnChanges {
         this.wallet.publicKey,
         Number(sol)
       );
-      // let transaction = new Transaction();
-      // transaction.add(SystemProgram.transfer({
-      //   fromPubkey: this.wallet,
-      //   toPubkey: SOLPAY_API_ACTIVATION,
-      //   lamports: 5000
-      // }));
-      // transaction.add(...depositTx.instructions);
       this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
     }
 
@@ -84,11 +74,9 @@ export class StakeSolBoxComponent implements OnChanges {
   }
   public async liquidUnstake() {
     const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
-    if (this.selectedProvider.name == 'marinade') {
-      const {
-        associatedMSolTokenAccountAddress,
-        transaction,
-      } = await this.marinade.liquidUnstake(sol)
+    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+      const { transaction } = await this.marinade.liquidUnstake(sol)
+
       // sign and send the `transaction`
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {

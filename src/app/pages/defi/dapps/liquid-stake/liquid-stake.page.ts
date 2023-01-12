@@ -98,6 +98,7 @@ export class LiquidStakePage implements OnInit {
   async ngOnInit() {
     this.currentProvider.subscribe((provider: StakePoolProvider) => {
       this.provider = provider;
+      this.initSPProvider(provider)
     })
 
 
