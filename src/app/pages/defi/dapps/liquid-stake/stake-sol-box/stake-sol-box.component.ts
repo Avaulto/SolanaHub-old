@@ -36,7 +36,6 @@ export class StakeSolBoxComponent implements OnChanges {
 
   async ngOnChanges() {
     this._walletStore.anchorWallet$.subscribe(async wallet => {
-      console.log('ob')
       if (wallet) {
         this.wallet = wallet;
         this.solBalance = this._utilsService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
