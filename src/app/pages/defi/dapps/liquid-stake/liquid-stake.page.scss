@@ -87,9 +87,12 @@ ion-button {
     width: 100%;
     letter-spacing: 1.5px;
     margin-block-end: 8px;
+    ion-text {
+        min-width: 80px;
+    }
     ion-img {
         margin-inline-end: 8px;
-        width: 15px;
+        width: 20px;
     }
 }
 
