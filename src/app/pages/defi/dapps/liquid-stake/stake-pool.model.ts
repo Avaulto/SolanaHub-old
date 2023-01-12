@@ -6,7 +6,7 @@ export interface StakePoolStats {
     supply: any;
     TVL: {staked_usd: number, staked_sol: number};
     validators: number;
-    userHoldings?: number;
+    userHoldings?: {staked_usd: number, staked_asset: number};
     ticker?: 'mSOL' | 'bSOL'
   }
 

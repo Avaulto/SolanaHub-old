@@ -1,23 +1,30 @@
 <ion-row class="ion-justify-content-between ion-text-capitalize">
-    <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
+    <ion-col class="data-box ion-padding" sizeMd="2.3" sizeSm="5">
+        <app-data-box [title]="'Your stake ' + selectedProvider?.ticker" [loading]="!stakePoolStats?.TVL"
+            [desc]="stakePoolStats?.userHoldings?.staked_asset| number : '1.2-2'">
+            <div class="heading-5">= ${{stakePoolStats?.userHoldings?.staked_usd|  number : '1.2-2'}}</div>
+        </app-data-box>
+    </ion-col>
+
+    <ion-col class="data-box ion-padding" sizeMd="2.3" sizeSm="5">
         <app-data-box title="Total SOL staked" [loading]="!stakePoolStats?.TVL"
             [desc]="stakePoolStats?.TVL?.staked_sol | number : '1.2-2'">
             <div class="heading-5">= ${{stakePoolStats?.TVL?.staked_usd |  number : '1.2-2'}}</div>
         </app-data-box>
     </ion-col>
 
-    <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+    <ion-col sizeMd="2.3" sizeSm="5" class="data-box ion-padding">
         <app-data-box [title]="''+selectedProvider?.ticker+'/SOL ratio'" [loading]="!stakePoolStats?.assetRatio"
             [desc]="stakePoolStats?.assetRatio  | number : '1.2-3' ">
         </app-data-box>
     </ion-col>
-    <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+    <ion-col sizeMd="2.3" sizeSm="5" class="data-box ion-padding">
         <app-data-box title="shared between" [loading]="!stakePoolStats?.validators"
             [desc]="stakePoolStats?.validators">
             <div class="heading-4">validators</div>
         </app-data-box>
     </ion-col>
-    <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
+    <ion-col sizeMd="2.3" sizeSm="5" class="data-box ion-padding">
         <app-data-box [title]="''+selectedProvider?.ticker+' supply'" [loading]="!stakePoolStats?.supply"
             [desc]="stakePoolStats?.supply  | number : '1.2-2'">
         </app-data-box>
