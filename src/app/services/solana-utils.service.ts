@@ -189,7 +189,7 @@ export class SolanaUtilsService {
     const validatorVoteKey = parsedData?.delegation?.voter
     const stake = parsedData?.delegation?.stake || 0;
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
-    let validatorData: ValidatorData = null
+    let validatorData: ValidatorData = null;
     if(this.validatorsData){
       validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
     }else{

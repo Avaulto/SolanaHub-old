@@ -80,7 +80,14 @@
 
                 <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
                     <ng-container *ngIf="stakeAccounts | async; else elseTemplate">
-                        <app-stake-sol-box *ngIf="stakePath == 'sol'" [selectedProvider]="provider"  [marinade]="marinade" [stakePoolStats]="stakePoolStats">
+                        <app-stake-sol-box 
+                            *ngIf="stakePath == 'sol'"
+                            [selectedProvider]="provider" 
+                            [marinade]="marinade" 
+                            [stakePoolStats]="stakePoolStats"
+                            [solBalance]="solBalance"
+                            [wallet]="wallet"
+                          >
                         </app-stake-sol-box>
                         <app-stake-account-box *ngIf="stakePath == 'stakeAcc'"  [selectedProvider]="provider"  [stakeAccounts]="stakeAccounts"
                             [marinade]="marinade" [stakePoolStats]="stakePoolStats">

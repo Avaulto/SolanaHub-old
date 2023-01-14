@@ -30,20 +30,20 @@ export class LiquidStakePage implements OnInit {
   protected providers: StakePoolProvider[] = [{
     name: 'Marinade',
     image: 'assets/images/icons/marinade-logo-small.svg',
-    mintAddress:'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
+    mintAddress: 'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
     ticker: 'mSOL'
   },
   {
     name: 'SolBlaze',
     image: 'assets/images/icons/solblaze-logo.png',
     poolpubkey: new PublicKey(environment.solblazepool),
-    mintAddress:'bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1',
+    mintAddress: 'bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1',
     ticker: 'bSOL'
   }
   ]
   public currentProvider: Subject<StakePoolProvider> = new Subject();
   public subCurrentProvider = this.currentProvider.asObservable().pipe(shareReplay(1))
-  public provider:StakePoolProvider = null
+  public provider: StakePoolProvider = null
   public marinade: Marinade;
   public stakePoolStats: StakePoolStats;
   public wallet;
@@ -52,25 +52,26 @@ export class LiquidStakePage implements OnInit {
     this._utilService.isNotNull,
     this._utilService.isNotUndefined,
     switchMap(async (wallet) => {
-      if (wallet) {
-        const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
-        const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-          const { shortAddr, addr, balance, state } = await this._solanaUtilsService.extendStakeAccount(acc)
-          let selectable: boolean = false;
-          // remove account that have less then 2sol - program not support
-          if (balance > 1 && state == 'active') {
-            selectable = true
-          }
-          return { name: shortAddr, addr, selectable, extraData: { balance, state, selectable } };
-        })
-        const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-        return extendStakeAccountRes;
-      } else {
-        return null
+      this.wallet = wallet;
+      this.solBalance = this._utilService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
+      if (this.provider) {
+        this.initSPProvider(this.provider)
       }
+      const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
+      const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+        const { shortAddr, addr, balance, state, validatorData } = await this._solanaUtilsService.extendStakeAccount(acc)
+        let selectable: boolean = false;
+        // remove account that have less then 2sol - program not support
+        if (balance > 1 && state == 'active') {
+          selectable = true
+        }
+        return { name: shortAddr, addr, selectable, validatorData, extraData: { balance, state, selectable } };
+      })
+      const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+      return extendStakeAccountRes;
+
     }),
-    //  filter((res: any[]) => res.length > 0),
-    distinctUntilChanged()
+    shareReplay(1)
   )
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
@@ -98,19 +99,6 @@ export class LiquidStakePage implements OnInit {
   async ngOnInit() {
     this.currentProvider.subscribe((provider: StakePoolProvider) => {
       this.provider = provider;
-      this.initSPProvider(provider)
-    })
-
-
-    this._walletStore.anchorWallet$.subscribe(async wallet => {
-      if (wallet) {
-        this.wallet = wallet;
-        this.solBalance = this._utilService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        if(this.provider){
-          this.initSPProvider(this.provider)
-        }
-        //const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
-      }
     })
   }
   /** @SP = reffer as stake pool */

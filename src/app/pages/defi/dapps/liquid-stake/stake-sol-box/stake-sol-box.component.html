@@ -32,14 +32,14 @@
       </form>
       <form *ngSwitchCase="'unstake'">
 
-        <app-label-layout [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance:xSOLBalance | number  : '1.2-3'}"></app-label-layout>
+        <app-label-layout [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-3'}"></app-label-layout>
 
 
           <ion-row id="stake-amount" style="margin-bottom:8px;">
               <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unStakeAmount" placeholder="Amount"></ion-input>
               <span class="heading-6" (click)="setMaxAmountxSOL()">MAX</span>
           </ion-row>
-          <app-label-layout [layoutConfig]="{title: 'You will receive', toolTip:'you will receive SOL in a form of stake account, in order to unlock your SOL you need to unstake this account and wait till epoch end to fully acquire it'}">
+          <app-label-layout [layoutConfig]="{title: 'You will receive', toolTip: selectedProvider?.name?.toLowerCase() == 'solblaze' ? 'you will receive SOL in a form of stake account, in order to unlock your SOL you need to unstake this account and wait till epoch end to fully acquire it' : ''}">
           </app-label-layout>
 
           <ion-row id="sol-recive-amount" style="margin-bottom:8px;">
@@ -56,7 +56,7 @@
                   Withdraw SOL
               </ion-button>
             </ion-row>
-            <span class="sub" id="unstake-it">looking for Instantly unstake your SOL? Check <a target="_blank" href="https://www.unstake.it">unstake.it</a></span>
+            <span class="sub" *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'" id="unstake-it">looking for Instantly unstake your SOL? Check <a target="_blank" href="https://www.unstake.it">unstake.it</a></span>
 
       </form>
   </div>

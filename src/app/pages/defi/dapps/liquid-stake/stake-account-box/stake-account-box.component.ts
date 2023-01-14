@@ -49,13 +49,15 @@ export class StakeAccountBoxComponent implements OnInit {
     // get walletOwner
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     const accountPK = new PublicKey(this.selectedStakeAccount.addr);
+    console.log(this.selectedStakeAccount)
     try {
       if (this.selectedProvider.name.toLowerCase() == 'marinade') {
         const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(accountPK);
         const txIns: Transaction = depositAccount.transaction
         await this._txInterceptService.sendTx([txIns], walletOwner);
       } else {
-        const validator = new PublicKey(this.selectedStakeAccount.validatorData.vote_identity)
+        const validator = new PublicKey(this.selectedStakeAccount.validatorData.vote_identity);
+
         let depositTx = await depositStake(
           this._solanaUtilsService.connection,
           this.selectedProvider.poolpubkey,
@@ -67,6 +69,7 @@ export class StakeAccountBoxComponent implements OnInit {
 
       }
     } catch (error) {
+      
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
         icon: 'alert-circle-outline',

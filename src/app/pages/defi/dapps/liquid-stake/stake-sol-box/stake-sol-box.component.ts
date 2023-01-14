@@ -20,13 +20,12 @@ export class StakeSolBoxComponent implements OnChanges {
   @Input() selectedProvider: StakePoolProvider;
   @Input() stakePoolStats: StakePoolStats;
   @Input() marinade: Marinade;
+  @Input() solBalance: number = 0;
+  @Input() wallet;
   formSubmitted: boolean = false;
   stakeAmount: number;
   unStakeAmount: number;
   public segmentUtilTab: string = 'stake'
-  public wallet;
-  public solBalance: number = 0;
-  public xSOLBalance: number = 0;
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
@@ -35,13 +34,7 @@ export class StakeSolBoxComponent implements OnChanges {
   ) { }
 
   async ngOnChanges() {
-    this._walletStore.anchorWallet$.subscribe(async wallet => {
-      if (wallet) {
-        this.wallet = wallet;
-        this.solBalance = this._utilsService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        this.xSOLBalance = this.stakePoolStats?.userHoldings?.staked_asset // splAccount?.balance < 0.01 ? 0 : splAccount.balance;
-      }
-    })
+
   }
   setUtil(util: string) {
     this.segmentUtilTab = util;
@@ -51,7 +44,7 @@ export class StakeSolBoxComponent implements OnChanges {
     // console.log(this.stakeAmount, this.solBalance)
   }
   setMaxAmountxSOL() {
-    this.unStakeAmount = this.xSOLBalance;
+    this.unStakeAmount = this.stakePoolStats.userHoldings.staked_asset
   }
   async liquidStake() {
     trackEvent('liquid stake ' + this.selectedProvider.name)
