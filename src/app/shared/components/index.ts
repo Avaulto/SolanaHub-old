@@ -22,3 +22,4 @@ export * from './stake/stake.component';
 export * from './stake/apy-calc/apy-calc.component';
 export * from './search-input/search-input.component';
 export * from './dapp-head/dapp-head.component'
+export * from './icon-tooltip/icon-tooltip.component'

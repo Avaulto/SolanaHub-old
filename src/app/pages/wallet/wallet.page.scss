@@ -9,45 +9,6 @@ ion-icon {
     cursor: pointer;
 }
 
-
-#coin-data {
-    ion-img {
-        width: 30px;
-    }
-
-    span {
-        font-weight: 500;
-        font-size: 14px;
-    }
-
-    #coin-price {
-        font-weight: 500;
-        font-size: 24px;
-    }
-
-  
-
-    p {
-        font-size: 14px;
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        white-space: pre-wrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    a {
-        text-decoration: none;
-        display: flex;
-    }
-
-    ion-icon {
-        font-size: 14px;
-        margin-inline-end: 10px;
-    }
-}
-
 #nft-header-preview {
     display: flex;
     justify-content: space-between;

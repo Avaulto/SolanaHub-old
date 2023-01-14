@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "author": "avaulto",
   "homepage": "https://avaulto.com/",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --configuration=development",

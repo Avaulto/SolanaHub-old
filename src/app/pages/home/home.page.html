@@ -32,9 +32,7 @@
             <ion-col size="12" sizeLg="2.2" class="data-box ion-padding ">
                 <app-data-box [title]="'Price'" [loading]="(clusterInfo | async) == null">
                    
-                        <span class="heading-2"
-                        id="coin-price">${{(clusterInfo | async)?.solData.price?.usd}} </span> <span class="price-bg"
-                        id="coin-price-change">{{(clusterInfo | async)?.solData.price_change_percentage_24h_in_currency?.usd}}%</span>
+                        <span class="heading-2" style="display: flex;">${{(clusterInfo | async)?.solData.price?.usd}} <span class="price-bg" >{{(clusterInfo | async)?.solData.price_change_percentage_24h_in_currency?.usd}}%</span></span> 
                   
                 </app-data-box>
             </ion-col>
