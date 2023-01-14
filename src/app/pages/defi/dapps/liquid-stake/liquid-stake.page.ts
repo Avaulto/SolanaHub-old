@@ -106,7 +106,9 @@ export class LiquidStakePage implements OnInit {
       if (wallet) {
         this.wallet = wallet;
         this.solBalance = this._utilService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-        // this.initSPProvider(provider)
+        if(this.provider){
+          this.initSPProvider(this.provider)
+        }
         //const splAccounts = await this.solanaUtilsService.getTokensAccountbyOwner(this.wallet.publicKey);
       }
     })

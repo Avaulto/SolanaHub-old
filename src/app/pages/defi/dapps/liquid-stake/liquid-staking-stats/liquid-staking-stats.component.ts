@@ -92,9 +92,9 @@ export class LiquidStakingStatsComponent implements OnChanges {
     const walletOwner:any = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
     const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(walletOwner) || [];
     const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.mintAddress);
-    if(splAccount){
-      const TVL = { staked_usd: splAccount.balance * solprice || 0, staked_asset: splAccount.balance || 0}
+  
+      const TVL = { staked_usd: splAccount?.balance * solprice || 0, staked_asset: splAccount?.balance || 0}
       this.stakePoolStats.userHoldings =  TVL
-    }
+
   }
 }
