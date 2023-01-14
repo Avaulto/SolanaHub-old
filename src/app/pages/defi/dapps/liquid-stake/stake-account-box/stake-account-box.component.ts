@@ -26,27 +26,7 @@ export class StakeAccountBoxComponent implements OnInit {
   @Input() stakeAccounts: Observable<StakeAccountExtended[]>
   public selectedStakeAccount: StakeAccountExtended;
   public showAccountList: boolean = false;
-  // public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
-  //   tap(wallet => wallet ? wallet : null),
-  //   switchMap(async (wallet) => {
 
-  //     const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
-  //     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-  //       const {shortAddr,addr, balance,state} = await this._solanaUtilsService.extendStakeAccount(acc)
-  //       let selectable: boolean = false;
-  //       // remove account that have less then 2sol - marinade program not support
-  //       if(balance > 1 && state == 'active'){
-  //         selectable = true
-  //       }
-  //       console.log(selectable)
-  //       return { name: shortAddr, addr, selectable, extraData: {balance, state, selectable} };
-  //     })
-  //     const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-  //     return extendStakeAccountRes;
-  //   }),
-  //   // filter((res: any[]) => res.filter(item => item.balance > 2)),
-  //   distinctUntilChanged()
-  // )
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,

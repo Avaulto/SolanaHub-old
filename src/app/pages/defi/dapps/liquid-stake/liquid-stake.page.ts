@@ -57,7 +57,7 @@ export class LiquidStakePage implements OnInit {
         const extendStakeAccount = await stakeAccounts.map(async (acc) => {
           const { shortAddr, addr, balance, state } = await this._solanaUtilsService.extendStakeAccount(acc)
           let selectable: boolean = false;
-          // remove account that have less then 2sol - marinade program not support
+          // remove account that have less then 2sol - program not support
           if (balance > 1 && state == 'active') {
             selectable = true
           }
