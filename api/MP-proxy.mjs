@@ -2,13 +2,13 @@ import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { PublicKey } from "@solana/web3.js";
 import { Nft } from "src/app/models";
 import { Connection, clusterApiUrl } from '@solana/web3.js';
-export default async function GETAllOnwerNfts(request, response): Promise<Nft[]> {
+export default async function GETAllOnwerNfts(request, response){
   const { env, walletAdress } = request.query;
   const cluster = env == 'dev' ? 'https://api.devnet.solana.com' : 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d'
   const connection = new Connection(cluster)
   const _metaplex = new Metaplex(connection);
-  async function getMetaData(uri: string): Promise<any> {
-    let metaData: any = {}
+  async function getMetaData(uri){
+    let metaData = {}
     try {
       metaData = await (await fetch(uri)).json();
       // metaDataRes = await metaDataReq.json();
@@ -25,10 +25,10 @@ export default async function GETAllOnwerNfts(request, response): Promise<Nft[]>
     .findAllByOwner({ owner: new PublicKey(walletAdress) })
     
 
-  const myNftsExtended: Nft[] = await Promise.all(myNfts.map(async (metaplexItem: any) => {
+  const myNftsExtended = await Promise.all(myNfts.map(async (metaplexItem) => {
     try {
       const metaData = await getMetaData(metaplexItem.uri);
-      const nft: Nft = {
+      const nft= {
         image: metaData.image,
         description: metaData.description,
         attributes: metaData.attributes,
@@ -41,7 +41,7 @@ export default async function GETAllOnwerNfts(request, response): Promise<Nft[]>
       }
       return nft
     } catch (error) {
-      return {} as Nft;
+      return {};
       console.warn(error)
     }
   }))
