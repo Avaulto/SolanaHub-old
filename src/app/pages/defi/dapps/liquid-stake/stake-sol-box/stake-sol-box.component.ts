@@ -49,7 +49,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     if (this.selectedProvider.name.toLowerCase() == 'marinade') {
       this.removeValidatorControl()
     }
-    console.log(this.stakeForm)
   }
   setUtil(util: string) {
     this.segmentUtilTab = util;
