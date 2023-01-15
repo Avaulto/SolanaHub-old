@@ -1,8 +1,10 @@
 <div id="segmented-util" >
   <div id="segment-header" class="ion-text-uppercase">
-      <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">liquid stake</span>
-      <span (click)="setUtil('unstake')" [class.active]="segmentUtilTab == 'unstake'">liquid
-          unstake</span>
+    
+      <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
+      <span *ngIf=" selectedProvider?.name?.toLowerCase() == 'solblaze' " (click)="setUtil('cls')" [class.active]="segmentUtilTab == 'cls'">custom validator stake</span>
+
+      <span (click)="setUtil('unstake')" [class.active]="segmentUtilTab == 'unstake'">unstake</span>
   </div>
   <div [ngSwitch]="segmentUtilTab" id="liquid-stake-form" class="ion-padding-vertical">
       <form *ngSwitchCase="'stake'">
@@ -59,5 +61,6 @@
             <span class="sub" *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'" id="unstake-it">looking for Instantly unstake your SOL? Check <a target="_blank" href="https://www.unstake.it">unstake.it</a></span>
 
       </form>
+      <app-stake-custom-validator [wallet]="wallet" [selectedProvider]="selectedProvider" [solBalance]="solBalance" *ngSwitchCase="'cls'"></app-stake-custom-validator>
   </div>
 </div>

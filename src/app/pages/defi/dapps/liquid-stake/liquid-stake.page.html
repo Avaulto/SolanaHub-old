@@ -89,8 +89,14 @@
                             [wallet]="wallet"
                           >
                         </app-stake-sol-box>
-                        <app-stake-account-box *ngIf="stakePath == 'stakeAcc'"  [selectedProvider]="provider"  [stakeAccounts]="stakeAccounts"
-                            [marinade]="marinade" [stakePoolStats]="stakePoolStats">
+                        <app-stake-account-box
+                         *ngIf="stakePath == 'stakeAcc'" 
+                          [selectedProvider]="provider"
+                            [stakeAccounts]="stakeAccounts"
+                            [marinade]="marinade" 
+                            [stakePoolStats]="stakePoolStats"
+                            [wallet]="wallet"
+                            >
                         </app-stake-account-box>
                     </ng-container>
                     <ng-template #elseTemplate>

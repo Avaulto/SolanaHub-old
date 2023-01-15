@@ -24,6 +24,7 @@ export class StakeAccountBoxComponent implements OnInit {
   @Input() stakePoolStats: StakePoolStats;
   @Input() marinade: Marinade;
   @Input() stakeAccounts: Observable<StakeAccountExtended[]>
+  @Input() wallet;
   public selectedStakeAccount: StakeAccountExtended;
   public showAccountList: boolean = false;
 
@@ -47,25 +48,22 @@ export class StakeAccountBoxComponent implements OnInit {
   async delegateStakeAccount() {
     trackEvent('delegate stake account stake')
     // get walletOwner
-    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    const accountPK = new PublicKey(this.selectedStakeAccount.addr);
-    console.log(this.selectedStakeAccount)
+    const stakeAccount = new PublicKey(this.selectedStakeAccount.addr);
     try {
       if (this.selectedProvider.name.toLowerCase() == 'marinade') {
-        const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(accountPK);
+        const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(stakeAccount);
         const txIns: Transaction = depositAccount.transaction
-        await this._txInterceptService.sendTx([txIns], walletOwner);
+        await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
       } else {
-        const validator = new PublicKey(this.selectedStakeAccount.validatorData.vote_identity);
-
+        const validator_vote_key = new PublicKey(this.selectedStakeAccount.validatorData.vote_identity);
         let depositTx = await depositStake(
           this._solanaUtilsService.connection,
           this.selectedProvider.poolpubkey,
-          walletOwner,
-          validator,
-          accountPK
+          this.wallet.publicKey,
+          validator_vote_key,
+          stakeAccount
         );
-        await this._txInterceptService.sendTx(depositTx.instructions, walletOwner, depositTx.signers);
+        await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
 
       }
     } catch (error) {

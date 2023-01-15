@@ -65,7 +65,11 @@ export class LiquidStakePage implements OnInit {
         if (balance > 1 && state == 'active') {
           selectable = true
         }
-        return { name: shortAddr, addr, selectable, validatorData, extraData: { balance, state, selectable } };
+        let extraData: any =  { balance, selectable }
+        if(validatorData){
+          extraData.validatorName = validatorData.name;
+        }
+        return { name: shortAddr, addr, selectable, validatorData, extraData };
       })
       const extendStakeAccountRes = await Promise.all(extendStakeAccount);
       return extendStakeAccountRes;

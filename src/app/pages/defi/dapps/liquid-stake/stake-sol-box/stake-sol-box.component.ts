@@ -26,6 +26,8 @@ export class StakeSolBoxComponent implements OnChanges {
   stakeAmount: number;
   unStakeAmount: number;
   public segmentUtilTab: string = 'stake'
+
+  
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
