@@ -2,32 +2,60 @@
   <div id="segment-header" class="ion-text-uppercase">
     
       <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
-      <span *ngIf=" selectedProvider?.name?.toLowerCase() == 'solblaze' " (click)="setUtil('cls')" [class.active]="segmentUtilTab == 'cls'">custom validator stake</span>
+      <!-- <span *ngIf=" selectedProvider?.name?.toLowerCase() == 'solblaze' " (click)="setUtil('cls')" [class.active]="segmentUtilTab == 'cls'">custom validator stake</span> -->
 
       <span (click)="setUtil('unstake')" [class.active]="segmentUtilTab == 'unstake'">unstake</span>
   </div>
+
+
   <div [ngSwitch]="segmentUtilTab" id="liquid-stake-form" class="ion-padding-vertical">
-      <form *ngSwitchCase="'stake'">
+      <form *ngSwitchCase="'stake'" [formGroup]="stakeForm">
           <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance, toolTip:'A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.'}">
           </app-label-layout>
-          <ion-row id="stake-amount" style="margin-bottom:8px;">
-              <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stakeAmount" placeholder="Amount"></ion-input>
+          <ion-row id="stake-amount">
+              <ion-input class="button-text" formControlName="stakeAmount" placeholder="Amount"></ion-input>
               <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
           </ion-row>
-          <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
-              <div id="">You will receive</div>
-          </ion-row>
 
-          <ion-row id="recive-amount" style="margin-bottom:8px;">
-              <ion-input readonly [value]="((stakeAmount || 0) / stakePoolStats?.assetRatio) | number : '1.2-3'">
+          <app-label-layout [layoutConfig]="{title: 'You will receive'}">
+        </app-label-layout>
+
+        
+          <ion-row id="recive-amount">
+              <ion-input readonly [value]="((stakeForm.controls.stakeAmount.value || 0) / stakePoolStats?.assetRatio) | number : '1.2-3'">
               </ion-input>
               <span>
                   {{selectedProvider.ticker}}
               </span>
           </ion-row>
+
+          <ng-container *ngIf="withCLS; else elseTemplate">
+                <div id="cls-wrapper">
+
+                    <app-stake-custom-validator (onValidatorSelect)="setValidator($event)"></app-stake-custom-validator>
+                    <ion-button class="cls-btn" fill="clear" slot="start" (click)="removeValidatorControl()">
+                        <div>
+                            remove custom validator
+                        </div>
+                    </ion-button>
+                </div>
+
+            
+          </ng-container>
+          <ng-template #elseTemplate>
+                <ion-button 
+                *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'"
+                 class="cls-btn" fill="clear"
+                 (click)="addValidatorControl()" 
+                 tooltip="stake with custom validator will give you the benefit to support your favorite validator while join liquid staking pool">
+                <div>
+                    add custom validator
+                </div>
+                </ion-button>
+          </ng-template>
           <ion-row class="ion-justify-content-center">
               <!-- <app-loader></app-loader> -->
-              <ion-button (click)="liquidStake()" [disabled]="!stakeAmount" class="ion-text-capitalize">
+              <ion-button (click)="liquidStake()"  [disabled]="formSubmitted || stakeForm.invalid" class="ion-text-capitalize">
                   deposit SOL
               </ion-button>
           </ion-row>
@@ -48,11 +76,10 @@
               <ion-input readonly [value]="((unStakeAmount || 0 ) * stakePoolStats?.assetRatio) | number : '1.2-3'">
               </ion-input>
           </ion-row>
-          <ion-row class="sub">
+          <ion-row class="sub" style="margin-bottom:8px;">
               Unstake fee: from 0.3%
           </ion-row>
-          <ion-row class="ion-justify-content-center">
-              <!-- <app-loader></app-loader> -->
+          <ion-row class="ion-justify-content-center" style="margin-bottom:8px;">
               <ion-button (click)="liquidUnstake()" [disabled]="!unStakeAmount"
                   class="ion-text-capitalize">
                   Withdraw SOL
@@ -61,6 +88,5 @@
             <span class="sub" *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'" id="unstake-it">looking for Instantly unstake your SOL? Check <a target="_blank" href="https://www.unstake.it">unstake.it</a></span>
 
       </form>
-      <app-stake-custom-validator [wallet]="wallet" [selectedProvider]="selectedProvider" [solBalance]="solBalance" *ngSwitchCase="'cls'"></app-stake-custom-validator>
   </div>
 </div>

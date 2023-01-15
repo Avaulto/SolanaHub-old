@@ -1,41 +1,37 @@
-
 #segment-header {
     border-bottom: 1px solid rgb(132 141 164 / 20%);
     text-align: center;
     padding-top: 21px;
     padding-bottom: 10.5px;
+
     span {
         cursor: pointer;
         font-weight: 500;
         font-size: 14px;
         margin-inline-end: 40px;
-        &:last-child{
+
+        &:last-child {
             margin-inline-end: 0;
         }
-        &.active{
+
+        &.active {
             border-bottom: 3px solid var(--ion-color-primary);
             padding-bottom: 7px;
         }
     }
 }
-ion-row{
-    margin-bottom:8px;
-}
 
-#liquid-stake-form{
-    width: 324px;
-    max-width: 100%;
-    margin: 0 auto;
-}
 
 #balance {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-#stake-amount{
+
+#stake-amount {
     position: relative;
-    span{
+
+    span {
         cursor: pointer;
         position: absolute;
         color: var(--ion-color-primary);
@@ -46,8 +42,9 @@ ion-row{
 }
 
 
-#recive-amount{
+#recive-amount {
     position: relative;
+
     span {
         position: absolute;
         z-index: 3;
@@ -56,9 +53,32 @@ ion-row{
     }
 }
 
-#unstake-it{
+#unstake-it {
     width: 210px;
     display: block;
     margin: 0 auto;
     text-align: center;
+}
+
+
+#cls-wrapper{
+    position: relative;
+    ion-button{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 194px;
+    }
+}
+.cls-btn {
+    height: 20px;
+    color: white;
+    border-bottom: 1px dashed;
+    margin-bottom: 10px;
+    --padding-start: 0;
+    text-align: inherit;
+
+    div {
+        width: 100%;
+    }
 }

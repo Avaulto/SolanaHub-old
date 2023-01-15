@@ -1,0 +1,25 @@
+
+  <ion-row style="margin-bottom:8px" class="heading-6" id="node-select">
+    Choose validator
+  </ion-row>
+  <ion-input style="display:none;" readonly></ion-input>
+  <ion-row class="ion-margin-bottom">
+
+    <div id="node-selection">
+
+      <app-select-item [item]="selectedValidator" (click)="showValidatorList = !showValidatorList"
+        [isDropDownOpen]="showValidatorList">
+      </app-select-item>
+
+      <div *ngIf="validatorsData | async">
+
+        <app-select-box 
+        *ngIf="showValidatorList" 
+        [dataset]="validatorsData" 
+        [filterBy]="'name'"
+        (onSelectItem)="setSelectedValidator($event); this.showValidatorList = !this.showValidatorList">
+      </app-select-box>
+    </div>
+
+    </div>
+  </ion-row>

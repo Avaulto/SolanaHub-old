@@ -12,7 +12,7 @@ import { LiquidStakingStatsComponent } from './liquid-staking-stats/liquid-staki
 import { StakeSolBoxComponent } from './stake-sol-box/stake-sol-box.component';
 import { StakeAccountBoxComponent } from './stake-account-box/stake-account-box.component';
 import { SwapProviderBtnComponent } from './swap-provider-btn/swap-provider-btn.component';
-import { StakeCustomValidatorComponent } from './stake-sol-box/stake-custom-validator/stake-custom-validator.component';
+import { StakeCustomValidatorComponent } from './stake-custom-validator/stake-custom-validator.component';
 
 @NgModule({
   imports: [

@@ -10,8 +10,8 @@
 
             <app-liquid-staking-stats (onStakePoolStats)="stakePoolStats = $event"
                 [selectedProvider]="provider"></app-liquid-staking-stats>
-            <ion-row class="ion-justify-content-between">
-                <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
+            <ion-row class="ion-justify-content-between ion-align-items-start">
+                <ion-col style="min-height: 345px;"  sizeLg="5.9" size="12"  style="min-height: 345px;" class="data-box ion-padding">
                     <ion-row class="ion-margin-bottom" id="stake-apr-box">
                         <div>~{{stakePoolStats?.apy | number : '1.2-2'}}% <span>APY</span></div>
                         <p id="">Stake SOL and use {{provider?.ticker}} while earning rewards</p>
@@ -78,8 +78,9 @@
                     </ion-row>
                 </ion-col>
 
-                <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
+                <ion-col style="min-height: 345px;"  sizeLg="5.9" size="12" class="data-box ion-padding">
                     <ng-container *ngIf="stakeAccounts | async; else elseTemplate">
+                        
                         <app-stake-sol-box 
                             *ngIf="stakePath == 'sol'"
                             [selectedProvider]="provider" 

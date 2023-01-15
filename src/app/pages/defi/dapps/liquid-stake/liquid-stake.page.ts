@@ -1,20 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
-import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
-import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
+import { Component, OnInit } from '@angular/core';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
+import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk'
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
-import bn from 'bn.js'
+
 import { UtilsService, TxInterceptService } from 'src/app/services';
-import { distinctUntilChanged, filter, map, Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import {  Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import { StakeAccountExtended } from 'src/app/models';
 
-
-// const { Connection, Transaction, Keypair, SystemProgram, PublicKey, LAMPORTS_PER_SOL, sendAndConfirmRawTransaction, TransactionInstruction } = solanaWeb3;
-// const { getStakePoolAccount, updateStakePool, depositSol, depositStake, withdrawSol, withdrawStake, stakePoolInfo } = solanaStakePool;
-
-import { getStakePoolAccount, updateStakePool, depositSol, depositStake, withdrawSol, withdrawStake, stakePoolInfo } from '@solana/spl-stake-pool';
+import {  stakePoolInfo } from '@solana/spl-stake-pool';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 
 @Component({

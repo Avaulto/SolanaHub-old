@@ -18,9 +18,9 @@ export class DefiComponent implements OnInit {
       link: '/defi/token-swap'
     },
     {
-      name: 'Marinade',
+      name: 'Liquid staking',
       desc: 'Stake Solana without locking in your funds',
-      img: '/assets/images/icons/marinade-logo-small.svg',
+      img: '/assets/images/icons/liquid-stake-logo.gif',
       link: '/defi/liquid-stake'
     },
     {
