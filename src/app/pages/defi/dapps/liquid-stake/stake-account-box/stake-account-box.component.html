@@ -5,13 +5,13 @@
       <ion-row class="ion-margin-bottom">
         <app-label-layout [layoutConfig]="{title: 'Choose stake account'}"></app-label-layout>
         <div id="stake-account-selection">
-          <app-select-item [item]="selectedStakeAccount" (click)="showAccountList = !showAccountList"
+          <app-select-item [item]="stakeForm.controls.stakeAccount.value" (click)="showAccountList = !showAccountList"
             [isDropDownOpen]="showAccountList" [showDropDownIcon]="true">
 
           </app-select-item>
           <app-select-box *ngIf="showAccountList" (onSelectItem)="setSelectedStakeAccount($event)"
             [dataset]="stakeAccounts" [filterBy]="'name'"></app-select-box>
-          <div id="deposit-account-info" *ngIf="selectedStakeAccount && !showAccountList">
+          <div id="deposit-account-info" *ngIf="stakeForm.controls.stakeAccount.value && !showAccountList">
             <h3 class="heading-6">
               Deposit review
             </h3>
@@ -20,7 +20,7 @@
               For deposit this stake account you will start gain staking
               reward from staking pool
               and will receive
-              <b>{{selectedStakeAccount.extraData.balance / stakePoolStats.assetRatio | number : '1.2-3'}}</b>
+              <b>{{stakeForm.controls.stakeAccount.value.extraData.balance / stakePoolStats.assetRatio | number : '1.2-3'}}</b>
               {{selectedProvider.ticker}}
             </p>
           </div>

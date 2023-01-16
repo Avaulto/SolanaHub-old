@@ -82,7 +82,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     } else {
       // custom stake to a validator using solblaze pool
       if (validatorVoteAccount) {
-        this.stakeCLS();
+        this.stakeCLS(stakeAmount);
       } else {
 
         let depositTx = await depositSol(
@@ -98,13 +98,11 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     // console.log(signature)
   }
   // stake custom validator
-  public async stakeCLS() {
-    let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
+  public async stakeCLS(stakeAmount: number) {
+    let { validatorVoteAccount } = this.stakeForm.value;
     trackEvent('custom validator stake ' + validatorVoteAccount)
 
     const validator = new PublicKey(validatorVoteAccount);
-
-    const sol = new bn(stakeAmount * LAMPORTS_PER_SOL);
 
     const wallet = this.wallet.publicKey;
 
@@ -113,7 +111,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         this._solanaUtilsService.connection,
         this.selectedProvider.poolpubkey,
         wallet,
-        Number(sol)
+        stakeAmount
       );
 
       let memo = JSON.stringify({

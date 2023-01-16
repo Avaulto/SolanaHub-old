@@ -10,7 +10,7 @@ import { StakeAccountExtended } from 'src/app/models';
 
 import {  stakePoolInfo } from '@solana/spl-stake-pool';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -63,7 +63,7 @@ export class LiquidStakePage implements OnInit {
         }
         let extraData: any =  { balance, selectable }
         if(validatorData){
-          extraData.validatorName = validatorData.name;
+          extraData['validator name'] = validatorData.name;
         }
         return { name: shortAddr, addr, selectable, validatorData, extraData };
       })

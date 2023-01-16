@@ -29,7 +29,6 @@ export class StakeAccountBoxComponent implements OnInit {
   public stakeForm: FormGroup;
   formSubmitted: boolean = false;
   withCLS = false;
-  public selectedStakeAccount: StakeAccountExtended;
   public showAccountList: boolean = false;
 
   constructor(
@@ -84,16 +83,15 @@ export class StakeAccountBoxComponent implements OnInit {
         await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
       } else {
         if (validatorVoteAccount) {
-          this.stakeCLS()
+          this.stakeCLS(stakeAccountPK)
         } else {
-
-          const validator_vote_key = new PublicKey(this.selectedStakeAccount.validatorData.vote_identity);
+          const validator_vote_key = new PublicKey(stakeAccount.validatorData.vote_identity);
           let depositTx = await depositStake(
             this._solanaUtilsService.connection,
             this.selectedProvider.poolpubkey,
             this.wallet.publicKey,
             validator_vote_key,
-            stakeAccount
+            stakeAccountPK
           );
           await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
         }
@@ -109,13 +107,10 @@ export class StakeAccountBoxComponent implements OnInit {
       this.toasterService.msg.next(toasterMessage)
     }
   }
-  public async stakeCLS() {
-    let { stakeAccount, validatorVoteAccount } = this.stakeForm.value;
+  public async stakeCLS(stakeAccountPK: PublicKey) {
+    let { validatorVoteAccount } = this.stakeForm.value;
     trackEvent('custom validator stake ' + validatorVoteAccount)
-
     const validator = new PublicKey(validatorVoteAccount);
-
-    const stakeAccountPK = new PublicKey(stakeAccount.addr);
 
     const wallet = this.wallet.publicKey;
 
