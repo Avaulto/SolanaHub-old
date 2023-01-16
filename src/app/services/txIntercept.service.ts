@@ -233,7 +233,6 @@ export class TxInterceptService {
   public async sendTx(txParam: TransactionInstruction[] | Transaction[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
 
     try {
-      console.log('runs')
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);

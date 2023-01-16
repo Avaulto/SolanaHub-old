@@ -58,7 +58,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     // console.log(this.stakeAmount, this.solBalance)
   }
   setMaxAmountxSOL() {
-    this.stakeForm.controls.stakeAmount.setValue(this.stakePoolStats.userHoldings.staked_asset)
+    this.unStakeAmount = this.stakePoolStats.userHoldings.staked_asset
   }
   addValidatorControl() {
     this.withCLS = true;
@@ -74,15 +74,15 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   async liquidStake() {
     trackEvent('liquid stake ' + this.selectedProvider.name)
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
-    const amount: number = Number(stakeAmount);
-    const sol = new bn(amount * LAMPORTS_PER_SOL);
+    // const amount: number = Number(stakeAmount);
+    const sol = new bn(stakeAmount * LAMPORTS_PER_SOL);
     if (this.selectedProvider.name.toLowerCase() == 'marinade') {
       const { transaction } = await this.marinade.deposit(sol);
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {
       // custom stake to a validator using solblaze pool
       if (validatorVoteAccount) {
-        this.stakeCLS(stakeAmount);
+        this.stakeCLS(Number(sol));
       } else {
 
         let depositTx = await depositSol(
@@ -98,7 +98,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     // console.log(signature)
   }
   // stake custom validator
-  public async stakeCLS(stakeAmount: number) {
+  public async stakeCLS(sol: number) {
     let { validatorVoteAccount } = this.stakeForm.value;
     trackEvent('custom validator stake ' + validatorVoteAccount)
 
@@ -111,7 +111,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         this._solanaUtilsService.connection,
         this.selectedProvider.poolpubkey,
         wallet,
-        stakeAmount
+        sol
       );
 
       let memo = JSON.stringify({
@@ -143,6 +143,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     }
   }
   public async liquidUnstake() {
+    
     const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
     if (this.selectedProvider.name.toLowerCase() == 'marinade') {
       const { transaction } = await this.marinade.liquidUnstake(sol)
