@@ -10,7 +10,7 @@ import { StakeAccountExtended } from 'src/app/models';
 
 import {  stakePoolInfo } from '@solana/spl-stake-pool';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
