@@ -70,7 +70,6 @@ export class StakeAccountBoxComponent implements OnInit {
   setValidator(voteAccount) {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
   }
-
   async delegateStakeAccount() {
     trackEvent('delegate stake account stake ' + this.selectedProvider.name)
     let { stakeAccount, validatorVoteAccount } = this.stakeForm.value;
