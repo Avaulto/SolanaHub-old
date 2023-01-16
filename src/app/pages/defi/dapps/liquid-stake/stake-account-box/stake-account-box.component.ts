@@ -62,7 +62,7 @@ export class StakeAccountBoxComponent implements OnInit {
     this.stakeForm.addControl('validatorVoteAccount', new FormControl('', Validators.required))
   }
   removeValidatorControl() {
-    if(this.stakeForm.controls.validatorVoteAccount){
+    if(this.withCLS){
       this.withCLS = false;
       this.stakeForm.removeControl('validatorVoteAccount')
     }

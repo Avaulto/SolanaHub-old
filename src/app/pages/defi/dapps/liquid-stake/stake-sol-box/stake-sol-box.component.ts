@@ -65,8 +65,10 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm.addControl('validatorVoteAccount', new FormControl('', Validators.required))
   }
   removeValidatorControl() {
-    this.withCLS = false;
-    this.stakeForm.removeControl('validatorVoteAccount')
+    if(this.withCLS){
+      this.withCLS = false;
+      this.stakeForm.removeControl('validatorVoteAccount')
+    }
   }
   setValidator(voteAccount) {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
