@@ -38,7 +38,6 @@ export class LiquidStakePage implements OnInit {
   }
   ]
   public currentProvider: Subject<StakePoolProvider> = new Subject();
-  public subCurrentProvider = this.currentProvider.asObservable().pipe(shareReplay(1))
   public provider: StakePoolProvider = null
   public marinade: Marinade;
   public stakePoolStats: StakePoolStats;
