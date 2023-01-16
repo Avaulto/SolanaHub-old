@@ -6,7 +6,7 @@ import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from
 import bn from 'bn.js'
 import { SolanaUtilsService, TxInterceptService, ToasterService, UtilsService } from 'src/app/services';
 import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
-import { toastData, StakeAccountExtended } from 'src/app/models';
+import { toastData, StakeAccountExtended, ValidatorData } from 'src/app/models';
 
 import Plausible from 'plausible-tracker'
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
@@ -73,8 +73,9 @@ export class StakeAccountBoxComponent implements OnInit {
   async delegateStakeAccount() {
     trackEvent('delegate stake account stake ' + this.selectedProvider.name)
     let { stakeAccount, validatorVoteAccount } = this.stakeForm.value;
-    // get walletOwner
+
     const stakeAccountPK = new PublicKey(stakeAccount.addr);
+
     try {
       if (this.selectedProvider.name.toLowerCase() == 'marinade') {
         const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(stakeAccountPK);
@@ -82,7 +83,7 @@ export class StakeAccountBoxComponent implements OnInit {
         await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
       } else {
         if (validatorVoteAccount) {
-          this.stakeCLS(stakeAccountPK)
+          this.stakeCLS(stakeAccount, validatorVoteAccount)
         } else {
           const validator_vote_key = new PublicKey(stakeAccount.validatorData.vote_identity);
           let depositTx = await depositStake(
@@ -106,11 +107,15 @@ export class StakeAccountBoxComponent implements OnInit {
       this.toasterService.msg.next(toasterMessage)
     }
   }
-  public async stakeCLS(stakeAccountPK: PublicKey) {
-    let { validatorVoteAccount } = this.stakeForm.value;
-    trackEvent('custom validator stake ' + validatorVoteAccount)
-    const validator = new PublicKey(validatorVoteAccount);
+  public async stakeCLS(stakeAccount:StakeAccountExtended, targetValidatorVoteAccount: string) {
 
+    trackEvent('custom validator stake')
+    // current validator whom delegated by stake account
+    const currentValidator = new PublicKey(stakeAccount.validatorData.vote_identity);
+    // target validator you wish to delegate
+    const validator = new PublicKey(targetValidatorVoteAccount)
+
+    const stakeAccountPK = new PublicKey(stakeAccount.addr);
     const wallet = this.wallet.publicKey;
 
     try {
@@ -118,10 +123,10 @@ export class StakeAccountBoxComponent implements OnInit {
         this._solanaUtilsService.connection,
         this.selectedProvider.poolpubkey,
         wallet,
-        validator,
+        currentValidator,
         stakeAccountPK
       );
-
+        console.log(depositTx)
       let memo = JSON.stringify({
         type: "cls/validator_stake/lamports",
         value: {
