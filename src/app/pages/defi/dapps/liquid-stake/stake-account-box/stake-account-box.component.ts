@@ -126,7 +126,6 @@ export class StakeAccountBoxComponent implements OnInit {
         currentValidator,
         stakeAccountPK
       );
-        console.log(depositTx)
       let memo = JSON.stringify({
         type: "cls/validator_stake/lamports",
         value: {
