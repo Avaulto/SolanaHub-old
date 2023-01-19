@@ -10,6 +10,7 @@ import { TxComponent } from './tx/tx.component';
 import { AccountsComponent } from './tx/accounts/accounts.component';
 import { AssetsBalanceComponent } from './assets-balance/assets-balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
+import { ActionsComponent } from './tx/accounts/actions/actions.component';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { QRCodeModule } from 'angularx-qrcode';
     AssetsBalanceComponent,
     AccountsComponent,
     TxComponent,
-
+    ActionsComponent,
     SendComponent,
     HistoryComponent,
   ]

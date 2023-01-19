@@ -13,8 +13,6 @@ import { SharedModule } from './shared/shared.module';
 
 
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
-import { CustomInterceptor } from './services/http.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 

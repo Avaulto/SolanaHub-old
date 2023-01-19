@@ -18,7 +18,7 @@ export class WalletConnectComponent implements OnInit {
   readonly wallet$ = this._walletStore.wallet$.pipe(shareReplay(1));
   readonly isReady$ = this._walletStore.connected$.pipe(map(isReady => {
     if (isReady) {
-      trackEvent('Wallet connected')
+      trackEvent('wallet connected')
 
       this._toasterService.msg.next({
         message: 'Wallet connected',
@@ -43,26 +43,9 @@ export class WalletConnectComponent implements OnInit {
   ) { }
   ngOnInit() {
 
-    // this.wallet$.subscribe(val => {
-    //   if (val) {
-    //     if (val.readyState == 'NotDetected') {
-    //       this.toasterService.msg.next({
-    //         message: 'Wallet not detected',
-    //         icon: 'alert-circle-outline',
-    //         segmentClass: "toastError"
-    //       })
-    //     }
-    //   }
-    // })
+
   }
 
-  // onConnect() {
-  //   this._walletStore.connect().subscribe();
-  // }
-
-  // onDisconnect() {
-  //   this._walletStore.disconnect().subscribe();
-  // }
   public async showWalletAdapters() {
     const popover = await this.popoverController.create({
       component: WalletAdapterOptionsComponent,

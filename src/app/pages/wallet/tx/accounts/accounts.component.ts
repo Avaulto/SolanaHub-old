@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
+import { PopoverController } from '@ionic/angular';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { BehaviorSubject, shareReplay, Subject } from 'rxjs';
 import { Asset, StakeAccountExtended } from 'src/app/models';
 import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import { ActionsComponent } from './actions/actions.component';
 
 @Component({
   selector: 'app-accounts',
@@ -13,13 +15,6 @@ import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } f
 })
 export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
   public accountToMerge:StakeAccountExtended[] = [];
-  // private walletChanged =  this._walletStore.anchorWallet$.pipe(
-  //   switchMap(async wallet =>  {
-  //     const latestStakeAccounts = await this.getStakeAccount(wallet.publicKey);
-  //     this.stakeAccounts$.next(latestStakeAccounts);
-  //   }),
-  //   distinctUntilChanged()
-  // ).subscribe()
   private stakeAccounts: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject([] as StakeAccountExtended[]);
   public stakeAccounts$ = this.stakeAccounts.asObservable().pipe(shareReplay(1));
   public initMerge: boolean = false;
@@ -29,7 +24,7 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
     private _walletStore: WalletStore,
-    private _utilsService: UtilsService
+    private popoverController: PopoverController
   ) { }
 
   public async ngOnInit(): Promise<void> {
@@ -45,6 +40,18 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     } catch (error) {
       console.warn(error)
     }
+  }
+  public async showAccountActions(e: Event, account: StakeAccountExtended) {
+    console.log(account)
+    const popover = await this.popoverController.create({
+      component: ActionsComponent,
+      componentProps: {account} ,
+      event: e,
+      cssClass:'account-actions',
+      alignment: 'start',
+      side: 'top',
+    });
+    await popover.present();
   }
   public async deactiveStake(stakeAccount: string): Promise<void> {
     await this._txInterceptService.deactivateStakeAccount(stakeAccount, this.wallet.publicKey);

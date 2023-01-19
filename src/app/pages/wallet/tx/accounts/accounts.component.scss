@@ -35,3 +35,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.action-item, ion-fab-button{
+    width: 30px;
+    height: 30px;
+}

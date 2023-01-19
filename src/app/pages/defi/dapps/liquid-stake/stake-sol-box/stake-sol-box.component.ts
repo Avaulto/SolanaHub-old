@@ -74,7 +74,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
   }
   async liquidStake() {
-    trackEvent('liquid stake ' + this.selectedProvider.name)
+    trackEvent('liquid stake')
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     // const amount: number = Number(stakeAmount);
     const sol = new bn(stakeAmount * LAMPORTS_PER_SOL);
@@ -102,7 +102,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   // stake custom validator
   public async stakeCLS(sol: number) {
     let { validatorVoteAccount } = this.stakeForm.value;
-    trackEvent('custom validator stake ' + validatorVoteAccount)
+    trackEvent('custom validator stake')
 
     const validator = new PublicKey(validatorVoteAccount);
 

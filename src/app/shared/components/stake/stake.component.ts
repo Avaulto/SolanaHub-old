@@ -83,7 +83,11 @@ export class StakeComponent implements OnInit {
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
   }
   public submitNewStake(): void {
-    trackEvent('regular stake')
+    if(this.privateValidatorPage){
+      trackEvent('regular stake')
+    }else{
+      trackEvent('stake with avaulto')
+    }
 
     let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
     const walletOwnerPublicKey = this.wallet.publicKey;

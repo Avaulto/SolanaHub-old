@@ -1,0 +1,19 @@
+<ul id="wallet-connected-actions">
+   <li class="sub"  *ngIf="account?.state  == 'activating' || account?.state == 'active'" (click)="deactiveStake(account.addr)">
+    unstake
+   </li>
+   <li class="sub"  *ngIf="account?.state  == 'inactive'" (click)="withdrawStake(account)">
+    withdraw stake
+   </li>
+   <li class="sub" *ngIf="account?.state  == 'deactivating'">cold down time</li>
+   <li class="sub">merge</li>
+   <li class="sub">split</li>
+ </ul>
+ <!-- <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">
+  unstake</ion-button>
+<ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
+<ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">
+  unstake
+</ion-button>
+<ion-button fill="outline" color="danger" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">withdraw
+  stake</ion-button> -->

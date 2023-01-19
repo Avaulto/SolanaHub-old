@@ -65,17 +65,6 @@ export class VoltComponent implements OnInit {
     return null
   }
 
-  public async deposit(): Promise<void>{
-    const popover = await this.popoverController.create({
-      component: VoltPopupComponent,
-      // event: e,
-      componentProps: {volt: this.volt},
-      alignment: 'start',
-      side: 'top',
-      cssClass: 'wallet-connect-dropdown'
-    });
-    await popover.present();
-  }
   public switchToHighVolt(event):void{
      if(event.detail.checked){
        this.volt = this.highVolt;

@@ -1,14 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
-import Plausible from 'plausible-tracker';
 import { firstValueFrom, map, Observable, ReplaySubject, shareReplay, Subject, switchMap } from 'rxjs';
 import { toastData, ValidatorData } from 'src/app/models';
 import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
-import { StakePoolProvider } from '../stake-pool.model';
-const { trackEvent } = Plausible();
-import bn from 'bn.js'
-import { depositSol } from '@solana/spl-stake-pool';
 @Component({
   selector: 'app-stake-custom-validator',
   templateUrl: './stake-custom-validator.component.html',

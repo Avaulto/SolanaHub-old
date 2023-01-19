@@ -71,7 +71,7 @@ export class StakeAccountBoxComponent implements OnInit {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
   }
   async delegateStakeAccount() {
-    trackEvent('delegate stake account stake ' + this.selectedProvider.name)
+    trackEvent('delegate stake account')
     let { stakeAccount, validatorVoteAccount } = this.stakeForm.value;
 
     const stakeAccountPK = new PublicKey(stakeAccount.addr);
