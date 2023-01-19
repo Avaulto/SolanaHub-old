@@ -6,18 +6,18 @@
 
 
 # Compact-DeFi
-Compact-DeFi is a A landscape for Solana users where they can embrace the most used application on the ecosystem and enjoy seamless workflow for the most common usage like getting wallet balance, managing assets, and joining trusted DeFi protocols - all at once!
+Compact-DeFi is a landscape for Solana users where they can embrace the most used application on the ecosystem and enjoy seamless workflow for the most common usage like getting wallet balance, managing assets, and joining trusted DeFi protocols - all at once!
 
 
 What you can find on Compact-DeFi?
-- Wallet connect with multipale options
+- Wallet connect with multiple options
 - View asset balance
-- Execute various type of transactions
+- Execute various types of transactions
 - Join defi protocols
 - Customized utilities
 
 ## Installation
-1. Clone the project by running Run `git clone https://github.com/Avaulto/Compact-DeFi` on you favorite terminal
+1. Clone the project by running Run `git clone https://github.com/Avaulto/Compact-DeFi` on your favorite terminal
 2. then `cd Compact-DeFi && npm i`
 3. run the project with `npm run start`
 
@@ -36,8 +36,8 @@ Credit to all Solana amazing builders
 If you want to Contribute or having any issues, please feel free to join our discord at: https://discord.gg/7SxUZkqa6Q
 
 #Support
-If you like what we do, please consider stake with us on https://compact-defi.avaulto.com/stake-with-us 
+If you like what we do, please consider staking with us at https://compact-defi.avaulto.com/stake-with-us 
 | Vote account: 7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh
 
 ## What next?
-stay tuned with our road map on https://avaulto-compact-defi.hellonext.co
+stay tuned with our road map at https://avaulto-compact-defi.hellonext.co
