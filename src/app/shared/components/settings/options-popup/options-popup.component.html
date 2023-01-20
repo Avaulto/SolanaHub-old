@@ -1,11 +1,14 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
-    <ion-row class="data-box ion-padding">
+    <div id="settings-title" class="heading-3">Settings</div>
+    <ion-row class="setting-section">
+      <ion-label>
+        RPC Endpoint
+      </ion-label>
 
-      <app-data-box [title]="'RPC'" [loading]="false"></app-data-box>
-      <ion-row id="btn-controls" class=" ion-align-items-center">
+      <ion-row id="btn-controls" class=" ion-align-items-center ion-justify-content-between">
 
-        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == tritonRPC}"
+        <ion-col size="12" sizeLg="3.9" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == tritonRPC}"
           (click)="setRPC(tritonRPC)">
           <div class="select-group">
             <ion-img
@@ -16,7 +19,7 @@
 
 
         </ion-col>
-        <ion-col size="12" sizeLg="3.85" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
+        <ion-col size="12" sizeLg="3.9" class="selected-by" [ngClass]="{'selectedBtn': currentRPC == extrNodeRPC}"
           (click)="setRPC(extrNodeRPC)">
           <div class="select-group">
             <ion-img src="assets/images/icons/extrnode.svg"></ion-img>
@@ -26,22 +29,29 @@
 
 
         </ion-col>
+        <ion-col size="12" sizeLg="3.9"></ion-col>
       </ion-row>
     </ion-row>
 
-    <ion-row class="data-box ion-padding">
+    <ion-row class="setting-section">
+      <ion-label>
+        Preferred Explorer
+      </ion-label>
 
-      <app-data-box [title]="'explorer'" [loading]="false"></app-data-box>
-      <ion-row id="btn-controls" class=" ion-align-items-center">
-        <ion-col size="12" sizeLg="3.85" class="selected-by"  [ngClass]="{'selectedBtn': (currentExplorer$ | async) == 'https://solana.fm'}"
+
+      <ion-row id="btn-controls" class=" ion-align-items-center ion-justify-content-between">
+
+        <ion-col size="12" sizeLg="3.9" class="selected-by"
+          [ngClass]="{'selectedBtn': (currentExplorer$ | async) == 'https://solana.fm'}"
           (click)="setExplorer('https://solana.fm')">
           <div class="select-group">
-            <ion-img src="assets/images/icons/solana-fm.svg" style="width:125px"></ion-img>
+            <ion-img src="assets/images/icons/solana-fm.svg" style="width:100px"></ion-img>
             <ion-checkbox mode="ios" [checked]="(currentExplorer$ | async) == 'https://solana.fm'" color="primary">
             </ion-checkbox>
           </div>
         </ion-col>
-        <ion-col size="12" sizeLg="3.85" class="selected-by"  [ngClass]="{'selectedBtn': (currentExplorer$ | async) == 'https://solscan.io'}"
+        <ion-col size="12" sizeLg="3.9" class="selected-by"
+          [ngClass]="{'selectedBtn': (currentExplorer$ | async) == 'https://solscan.io'}"
           (click)="setExplorer('https://solscan.io')">
           <div class="select-group">
             <ion-img src="assets/images/icons/solscan.svg"></ion-img>
@@ -49,72 +59,97 @@
             </ion-checkbox>
           </div>
         </ion-col>
-        <ion-col size="12" sizeLg="3.85" class="selected-by"  [ngClass]="{'selectedBtn': (currentExplorer$ | async) == 'https://explorer.solana.com'}"
+        <ion-col size="12" sizeLg="3.9" class="selected-by"
+          [ngClass]="{'selectedBtn': (currentExplorer$ | async) == 'https://explorer.solana.com'}"
           (click)="setExplorer('https://explorer.solana.com')">
           <div class="select-group">
-            <ion-img src="assets/images/icons/solana-explorer.svg" style="width:220px"></ion-img>
+            <ion-img src="assets/images/icons/solana-explorer2.png" style="width:110px"></ion-img>
 
-            <ion-checkbox mode="ios" [checked]="(currentExplorer$ | async) == 'https://explorer.solana.com'" color="primary"></ion-checkbox>
+            <ion-checkbox mode="ios" [checked]="(currentExplorer$ | async) == 'https://explorer.solana.com'"
+              color="primary"></ion-checkbox>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+    <ion-row class="setting-section">
+      <ion-label>
+        Priority Fee
+      </ion-label>
+
+
+      <ion-row id="btn-controls" class=" ion-align-items-center ion-justify-content-between">
+
+        <ion-col size="12" sizeLg="3.9" class="selected-by" [ngClass]="{'selectedBtn': currentPrioretyFee == '0'}"
+          (click)="setPriorityFee('None')">
+          <div class="select-group">
+            <ion-text>none</ion-text>
+            <ion-checkbox mode="ios" [checked]="currentPrioretyFee == '0'" color="primary">
+            </ion-checkbox>
+          </div>
+        </ion-col>
+        <ion-col size="12" sizeLg="3.9" class="selected-by" [ngClass]="{'selectedBtn': currentPrioretyFee == '1'}"
+          (click)="setPriorityFee('Fast')">
+          <div class="select-group">
+            <ion-text>fast</ion-text>
+            <ion-checkbox mode="ios" [checked]="currentPrioretyFee == '1'" color="primary">
+            </ion-checkbox>
+          </div>
+        </ion-col>
+        <ion-col size="12" sizeLg="3.9" class="selected-by" [ngClass]="{'selectedBtn': currentPrioretyFee == '3'}"
+          (click)="setPriorityFee('Supercharger')">
+          <div class="select-group">
+            <ion-text>supercharger</ion-text>
+            <ion-checkbox mode="ios" [checked]="currentPrioretyFee == '3'" color="primary">
+            </ion-checkbox>
           </div>
         </ion-col>
       </ion-row>
     </ion-row>
 
+    <ion-row class="setting-section">
+      <ion-label>
+        Theme
+      </ion-label>
 
-    <ion-row>
+      <ion-row id="btn-controls" class=" ion-align-items-center  ion-justify-content-between">
 
-      <ion-col size="12" class="data-box ion-padding">
-        <app-data-box [title]="'Theme'" [loading]="false"></app-data-box>
-        <ion-row id="btn-controls" class=" ion-align-items-center">
 
-          <ion-col size="12" sizeLg="3.85" class="selected-by"
-            [ngClass]="{'selectedBtn': currenTheme == 'dark'}" (click)="setTheme('dark')">
-            <div class="select-group">
-              <span>Dark</span>
-              <div id="dark-theme" class="theme-color">
-                <span id="color-1"></span>
-                <span id="color-2"></span>
-                <span id="color-3"></span>
-                <span id="color-4"></span>
-                <span id="color-5"></span>
-              </div>
-              <ion-checkbox mode="ios" [checked]="currenTheme == 'dark'" color="primary"></ion-checkbox>
+        <ion-col size="12" sizeLg="5.9" class="selected-by" [ngClass]="{'selectedBtn': currenTheme == 'dark'}"
+          (click)="setTheme('dark')">
+          <div class="select-group">
+            <span>Dark</span>
+            <div id="dark-theme" class="theme-color">
+              <span id="color-1"></span>
+              <span id="color-2"></span>
+              <span id="color-3"></span>
+              <span id="color-4"></span>
+              <span id="color-5"></span>
             </div>
+            <ion-checkbox mode="ios" [checked]="currenTheme == 'dark'" color="primary"></ion-checkbox>
+          </div>
 
 
-          </ion-col>
-          <ion-col size="12" sizeLg="3.85" class="selected-by"
-            [ngClass]="{'selectedBtn':currenTheme == 'light'}" (click)="setTheme('light')">
+        </ion-col>
+        <ion-col size="12" sizeLg="5.9" class="selected-by" [ngClass]="{'selectedBtn':currenTheme == 'light'}"
+          (click)="setTheme('light')">
 
-            <div class="select-group">
-              <span>Light</span>
-              <div id="light-theme" class="theme-color">
-                <span id="color-1"></span>
-                <span id="color-2"></span>
-                <span id="color-3"></span>
-                <span id="color-4"></span>
-                <span id="color-5"></span>
-              </div>
-              <ion-checkbox mode="ios" [checked]="currenTheme == 'light'" color="primary">
-              </ion-checkbox>
+          <div class="select-group">
+            <span>Light</span>
+            <div id="light-theme" class="theme-color">
+              <span id="color-1"></span>
+              <span id="color-2"></span>
+              <span id="color-3"></span>
+              <span id="color-4"></span>
+              <span id="color-5"></span>
             </div>
+            <ion-checkbox mode="ios" [checked]="currenTheme == 'light'" color="primary">
+            </ion-checkbox>
+          </div>
 
 
-          </ion-col>
-        </ion-row>
-        <!-- </app-data-box> -->
-
-
-      </ion-col>
+        </ion-col>
+      </ion-row>
     </ion-row>
-    <ion-row>
-
-      <ion-col size="12" class="data-box ion-padding">
-        <app-data-box [title]="'Currency'" [loading]="false">
-          SOON
-        </app-data-box>
-
-      </ion-col>
-    </ion-row>
+    <!-- </app-data-box> -->
   </ion-grid>
 </ion-content>

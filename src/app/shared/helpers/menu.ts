@@ -58,10 +58,5 @@ export const pages: any = [
       title: "stake with us",
       url: "stake-with-us",
       icon: 'heart-circle',
-    },
-    {
-      title: "settings",
-      url: "settings",
-      icon: 'cog',
-    },
+    }
   ];

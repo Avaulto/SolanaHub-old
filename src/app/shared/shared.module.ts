@@ -33,7 +33,9 @@ import {
   ApyCalcComponent,
   SearchInputComponent,
   DappHeadComponent,
-  IconTooltipComponent
+  IconTooltipComponent,
+  SettingsComponent,
+  OptionsPopupComponent
 } from "./components";
 
 // // import directives
@@ -78,7 +80,9 @@ import { CopyTextDirective } from "./directives/copy-text.directive";
     SearchInputComponent,
     CopyTextDirective,
     DappHeadComponent,
-    IconTooltipComponent
+    IconTooltipComponent,
+    SettingsComponent,
+    OptionsPopupComponent
   ],
   imports: [
     CommonModule,
@@ -129,7 +133,9 @@ import { CopyTextDirective } from "./directives/copy-text.directive";
     SearchInputComponent,
     CopyTextDirective,
     DappHeadComponent,
-    IconTooltipComponent
+    IconTooltipComponent,
+    SettingsComponent,
+    OptionsPopupComponent
   ]
 })
 export class SharedModule {}

@@ -37,11 +37,11 @@
 }
 
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     -moz-appearance: none;
-    appearance: none; 
+    appearance: none;
 }
 
 .title {
@@ -50,9 +50,11 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 24px;
     margin: 0;
 }
-a{
+
+a {
     color: var(--ion-color-text);
 }
+
 .data-box {
     min-height: 110px;
     margin-bottom: 24px;
@@ -118,12 +120,13 @@ a{
     font-size: 11px;
     line-height: 16px;
 }
-.ButtonText{
-font-size: 12px;
-font-weight: 500;
-line-height: 18px;
-letter-spacing: 0em;
-text-align: left;
+
+.ButtonText {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
 
 }
 
@@ -131,19 +134,23 @@ text-align: left;
     --ion-color-base: #092F4E !important;
 }
 
-form ion-button{
+form ion-button {
     width: 100%;
 }
-ion-button{
+
+ion-button {
     font-weight: 500;
     height: 32px;
     text-transform: capitalize;
     font-size: 12px;
-    &[disabled]{
+
+    &[disabled] {
         opacity: 0.8;
     }
 }
-ion-input, ion-select {
+
+ion-input,
+ion-select {
     border: 2px solid transparent;
     box-sizing: border-box;
     border-radius: 4px;
@@ -151,7 +158,7 @@ ion-input, ion-select {
     height: 41px;
     margin-bottom: 16px;
     text-transform: capitalize;
-    width:100%;
+    width: 100%;
     background: var(--deep-background) !important;
     --background: var(--deep-background) !important;
     --padding-start: 16px !important;
@@ -170,11 +177,12 @@ ion-input, ion-select {
     &::placeholder {
         color: white;
     }
+
     &::part(icon) {
         color: var(--ion-color-primary);
         margin-inline-end: 15px;
         opacity: 1;
-      }
+    }
 }
 
 .toastStyle {
@@ -187,7 +195,8 @@ ion-input, ion-select {
     font-size: 12px;
     --border-width: 1px;
     --border-style: solid;
-    --button-color: var(--ion-text-color);;
+    --button-color: var(--ion-text-color);
+    ;
 
     &.toastSuc {
         --border-color: var(--ion-color-primary);
@@ -201,48 +210,55 @@ ion-input, ion-select {
 
     &.toastInfo {
         --border-color: var(--ion-color-secondary);
-        --button-color: var(--ion-color-secondary);;
+        --button-color: var(--ion-color-secondary);
+        ;
     }
-    &.merinadeErr{
+
+    &.merinadeErr {
         --border-color: #FBBC05;
         --button-color: #FBBC05;
-        --width:440px
+        --width: 440px
     }
 }
-.account-actions{
-    --width:130px;
+
+.account-actions {
+    --width: 130px;
     padding: 12px;
 }
 
-.wallet-connect-dropdown{
-    --width:130px;
+.wallet-connect-dropdown {
+    --width: 130px;
     padding: 12px;
 }
-.wallet-adapter-options{
-    --width:350px;
+
+.wallet-adapter-options {
+    --width: 350px;
 }
 
-.tncPopup{
-    --width:400px
-    --max-width:98%;
+.tncPopup {
+    --width: 400px --max-width:98%;
 }
-.defi-tour-popup{
+.settings-popup{
+    --width: 520px;
+    --max-width: 98%;
+    --height: 495px;
+}
+.defi-tour-popup {
     --width: 450px;;
     --max-width: 98%;
-    --height:532px;
+    --height: 532px;
 }
 
 .friktion-tool-tip {
-    .tooltip-wrapper{
-    background-color: black;
-    padding: 10px;
-    width:310px;
-    div{
-    display:flex;
-    justify-content: space-between; 
+    .tooltip-wrapper {
+        background-color: black;
+        padding: 10px;
+        width: 310px;
+
+        div {
+            display: flex;
+            justify-content: space-between;
+        }
     }
-}
 
 }
-
-

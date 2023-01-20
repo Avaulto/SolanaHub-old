@@ -23,3 +23,5 @@ export * from './stake/apy-calc/apy-calc.component';
 export * from './search-input/search-input.component';
 export * from './dapp-head/dapp-head.component'
 export * from './icon-tooltip/icon-tooltip.component'
+export * from './settings/settings.component'
+export * from './settings/options-popup/options-popup.component'

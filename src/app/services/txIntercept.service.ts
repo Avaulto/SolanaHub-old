@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import {
-  getMinimumBalanceForRentExemptAccount,
-  ACCOUNT_SIZE,
   TOKEN_PROGRAM_ID,
   createTransferCheckedInstruction,
-  createTransferInstruction,
-  getOrCreateAssociatedTokenAccount,
-  mintTo,
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   TokenOwnerOffCurveError
@@ -15,7 +10,7 @@ import {
 import {
   Authorized,
   BlockheightBasedTransactionConfirmationStrategy,
-  Connection,
+  ComputeBudgetProgram,
   CreateStakeAccountParams,
   DelegateStakeParams,
   Keypair,
@@ -32,6 +27,8 @@ import {
 import { firstValueFrom, throwError } from 'rxjs';
 import { toastData } from '../models';
 import { ToasterService, SolanaUtilsService, UtilsService } from './';
+import { PriorityFee } from '../models/priorityFee.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -230,12 +227,30 @@ export class TxInterceptService {
       this.sendTx([transfer], walletOwnerPk)
     }
   }
+  private _addPriorityFee(priorityFee: PriorityFee): TransactionInstruction[] | null {
+    if (priorityFee != '0') {
+      const units = Number(priorityFee) * 1000000;
+      const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
+        units
+      });
+      
+      const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
+        microLamports: 1
+      });
+      return [modifyComputeUnits, addPriorityFee]
+    }
+    return null
+  }
   public async sendTx(txParam: TransactionInstruction[] | Transaction[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
 
     try {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);
+      const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
+      if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
+      console.log(transaction)
+
       // this._walletStore.signTransaction(transaction);
       const res = await firstValueFrom(this._walletStore.signTransaction(transaction));
 
@@ -249,7 +264,7 @@ export class TxInterceptService {
       }
       const rawTransaction = transaction.serialize({ requireAllSignatures: false });
       const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
-      const url = `${this._utilsService.explorer}/tx/${signature}`
+      const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
       const txSend: toastData = {
         message: 'click on the icon to view transaction on explorer',
         icon: 'exit-outline',

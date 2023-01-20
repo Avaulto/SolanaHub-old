@@ -20,7 +20,7 @@
               For deposit this stake account you will start gain staking
               reward from staking pool
               and will receive
-              <b>{{stakeForm.controls.stakeAccount.value.extraData.balance / stakePoolStats.assetRatio | number : '1.2-3'}}</b>
+              <b>{{stakeForm.controls.stakeAccount.value?.extraData?.balance / stakePoolStats.assetRatio | number : '1.2-3'}}</b>
               {{selectedProvider.ticker}}
             </p>
           </div>

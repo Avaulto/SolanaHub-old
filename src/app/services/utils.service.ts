@@ -1,9 +1,12 @@
 import { DOCUMENT } from "@angular/common";
 import { Inject, Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 import { BehaviorSubject, filter, Observable } from "rxjs";
+import { PriorityFee } from "../models/priorityFee.model";
 import { LocalStorageService } from "./local-storage.servic";
 // import * as moment from "moment";
 // import { v4 as uuidv4 } from "uuid";
+
+ 
 declare global {
   interface Date {
     addDays(): Function;
@@ -35,13 +38,26 @@ export class UtilsService {
   private _systemPair = new BehaviorSubject<string>('USD' as string);
   private _systemExplorer = new BehaviorSubject<string>( this.localStore.getData('explorer') || 'https://solana.fm' as string);
   public _systemTheme = this.localStore.getData('theme') || 'dark';
-
+  
+  private _PriorityFee = PriorityFee.None;
+  
   public explorer$ = this._systemExplorer.asObservable();
 
   public updateSystemPair(pair: string): void{
     this.localStore.saveData('pair',pair);
     this._systemPair.next(pair);
   }
+
+  
+  public get priorityFee() : PriorityFee {
+    return this._PriorityFee;
+  }
+  
+  
+  public set priorityFee(v : PriorityFee) {
+    this._PriorityFee = v;
+  }
+  
   changeTheme(name: string){
     this._systemTheme = name;
     this.localStore.saveData('theme',this._systemTheme);
@@ -89,30 +105,4 @@ export class UtilsService {
   }
   isNotNull = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== null));
   isNotUndefined = <T>(source: Observable<T | null>) => source.pipe(filter((item: T | null): item is T => item !== undefined));
-  // generateUUID() {
-  //   return uuidv4();
-  // }
-  // mmddFormat(date): string {
-  //   return moment(date, "DD/MM/YYYY").format("MM/DD/YYYY");
-  // }
-  // dynamicFormat(date: any, format: string): string {
-  //   return moment(date).format(format);
-  // }
-  // // return the distance between given and current dates
-  // dateDiff(date, by: "days" | "month"): number {
-  //   return moment(date).diff(moment(), by);
-  // }
-  // // for chat use
-  // timeStamp(unixTime): string {
-  //   let timeToMS = unixTime / Number("10000000");
-  //   return (
-  //     moment.unix(timeToMS).format("HH:mm") +
-  //     " " +
-  //     moment.unix(timeToMS).format("DD/MM/YYYY")
-  //   );
-  // }
-  // // return custom date
-  // dynamicDate(date: Date, number: number, by: "days" | "month"): string {
-  //   return moment(date).add(number, by).toString();
-  // }
 }

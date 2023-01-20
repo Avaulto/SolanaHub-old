@@ -13,28 +13,27 @@ export class DefiComponent implements OnInit {
   public defiApps = [
     {
       name: 'Jupiter',
-      desc: 'The cheapest & fastest way to swap tokens',
-      img: 'https://jup.ag/svg/jupiter-logo.svg',
-      link: '/defi/token-swap'
+      description: 'The cheapest & fastest way to swap tokens',
+      image: 'https://jup.ag/svg/jupiter-logo.svg',
+      deepLink: '/defi/token-swap'
     },
     {
       name: 'Liquid staking',
-      desc: 'Stake Solana without locking in your funds',
-      img: '/assets/images/icons/liquid-stake-logo.gif',
-      link: '/defi/liquid-stake'
+      description: 'Stake Solana without locking in your funds',
+      image: '/assets/images/icons/liquid-stake-logo.gif',
+      deepLink: '/defi/liquid-stake'
     },
     {
       name: 'Frition',
-      desc: 'Earn interest and borrow assets on the best lending protocol over solana.',
-      img: '/assets/images/icons/friktionBoltColored.png',
-      link: '/defi/volt-strategies'
+      description: 'Earn interest and borrow assets on the best lending protocol over solana.',
+      image: '/assets/images/icons/friktionBoltColored.png',
+      deepLink: '/defi/volt-strategies'
     },
     {
-      name: 'Orca',
-      desc: 'Join Defi pools over solana with your favorite coins',
-      img: '/assets/images/icons/orca-logo.png',
-      link: '#'
-    },
-    
+      name: 'Frakt',
+      description: 'RAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana',
+      image: 'assets/images/icons/frakt-logo.jpeg',
+      deepLink: '#'
+    }
   ]
 }
