@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { connectionConfigProviderFactory, ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import {
   BackpackWalletAdapter,
+  BraveWalletAdapter,
   ExodusWalletAdapter,
+  GlowWalletAdapter,
   LedgerWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
@@ -37,7 +39,8 @@ export class AppComponent {
       new BackpackWalletAdapter,
       new SolflareWalletAdapter(),
       new SlopeWalletAdapter(),
-      new SolletWalletAdapter(),
+      new BraveWalletAdapter(),
+      new GlowWalletAdapter(),
       new ExodusWalletAdapter(),
       new LedgerWalletAdapter()
     ]);
