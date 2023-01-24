@@ -22,8 +22,15 @@
             <span class="sub ion-margin-bottom">
               {{dapp.description}}
             </span>
-            <ion-button expand="block" [routerLink]="dapp.deepLink" routerDirection="forward">view</ion-button>
+            <ng-container *ngIf="dapp.status == 'active'; else elseTemplate">
+              <ion-button expand="block" [routerLink]="dapp.deepLink" routerDirection="forward">view</ion-button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <ion-button expand="block" disabled routerDirection="forward">pending</ion-button>
+            </ng-template>
             <a  class="sub " target="_blank" [href]="dapp.learnMoreLink">learn more</a>
+            
+            
           </ion-card-content>
           
         </ion-card>

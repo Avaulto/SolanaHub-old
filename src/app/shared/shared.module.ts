@@ -35,7 +35,8 @@ import {
   DappHeadComponent,
   IconTooltipComponent,
   SettingsComponent,
-  OptionsPopupComponent
+  OptionsPopupComponent,
+  TabsComponent
 } from "./components";
 
 // // import directives
@@ -82,7 +83,9 @@ import { CopyTextDirective } from "./directives/copy-text.directive";
     DappHeadComponent,
     IconTooltipComponent,
     SettingsComponent,
-    OptionsPopupComponent
+    OptionsPopupComponent,
+    TabsComponent,
+    
   ],
   imports: [
     CommonModule,
@@ -135,7 +138,9 @@ import { CopyTextDirective } from "./directives/copy-text.directive";
     DappHeadComponent,
     IconTooltipComponent,
     SettingsComponent,
-    OptionsPopupComponent
+    OptionsPopupComponent,
+    TabsComponent,
+    
   ]
 })
 export class SharedModule {}

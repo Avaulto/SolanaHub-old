@@ -30,11 +30,6 @@ export class SendComponent implements OnInit {
       amount: ['', [Validators.required]],
       targetAddress: ['', [Validators.required]],
     })
-    // this.sendCoinForm.valueChanges.subscribe(async val =>{
-    //   const pk = new PublicKey(val.targetAddress)
-    //   const isValid =  PublicKey.isOnCurve(pk.toBytes());
-    //   console.log(isValid)
-    // })
   }
   async pkVerifyValidator(){
 

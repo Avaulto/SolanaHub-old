@@ -27,7 +27,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   public stakeForm: FormGroup;
   formSubmitted: boolean = false;
   withCLS = false;
-  public segmentUtilTab: string = 'stake'
+  public menu: string[] = ['stake', 'unstake'];
+  public currentTab: string = this.menu[0]
 
   public unStakeAmount;
   constructor(
@@ -50,12 +51,9 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
       this.removeValidatorControl()
     }
   }
-  setUtil(util: string) {
-    this.segmentUtilTab = util;
-  }
+
   setMaxAmountSOL() {
     this.stakeForm.controls.stakeAmount.setValue(this._utilsService.shortenNum(this.solBalance - 0.0001));
-    // console.log(this.stakeAmount, this.solBalance)
   }
   setMaxAmountxSOL() {
     this.unStakeAmount = this.stakePoolStats.userHoldings.staked_asset
@@ -65,7 +63,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm.addControl('validatorVoteAccount', new FormControl('', Validators.required))
   }
   removeValidatorControl() {
-    if(this.withCLS){
+    if (this.withCLS) {
       this.withCLS = false;
       this.stakeForm.removeControl('validatorVoteAccount')
     }
@@ -97,7 +95,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
       }
     }
 
-    // console.log(signature)
   }
   // stake custom validator
   public async stakeCLS(sol: number) {
@@ -145,7 +142,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     }
   }
   public async liquidUnstake() {
-    
+
     const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
     if (this.selectedProvider.name.toLowerCase() == 'marinade') {
       const { transaction } = await this.marinade.liquidUnstake(sol)

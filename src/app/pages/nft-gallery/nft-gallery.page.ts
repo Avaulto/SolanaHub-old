@@ -22,12 +22,6 @@ export class NftGalleryPage implements OnInit {
       }
     }))
 
-  // public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
-  //   this.util.isNotNull,
-  //   map(async wallet => {console.log(wallet), await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())}),
-  //   switchMap(myNfts => this._nftStore.myNft$ )
-  //   )
-  // public nfts: Nft[] = []
   constructor(
     private _walletStore: WalletStore,
     private _nftStore: NftStoreService,

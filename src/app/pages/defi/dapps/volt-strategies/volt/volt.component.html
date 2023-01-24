@@ -3,7 +3,7 @@
     <div class="tp-box__side tp-box__front">
       <div class="volt-head">
         <div class="volt-type-wrapper"  placement="top">
-          <ion-toggle (ionChange)="switchToHighVolt($event)" *ngIf="volt.highVoltage || volt.isVoltage" maxWidth="300px" placement="top"
+          <ion-toggle (ionChange)="toggleHighVolt($event)" *ngIf="volt.highVoltage || volt.isVoltage" maxWidth="300px" placement="top"
             tooltip="Higher Voltage = increased risk, defined by a higher probability of the option being exercised.">
           </ion-toggle>
         </div>
@@ -27,8 +27,9 @@
             <div class="heading-3" style="display: flex; align-items:center;">
               Your deposit
             </div>
-            <div>
-              0
+            <div style="display: flex;">
+              <ion-skeleton-text *ngIf="!volt.tokenBalanceInVolt?.totalBalance" [animated]="true" style="background-color: #e0f7fa36; width: 30px;"></ion-skeleton-text>
+              <span style="    margin-inline-end: 3px;" *ngIf="volt.tokenBalanceInVolt?.totalBalance">{{volt.tokenBalanceInVolt?.totalBalance}} </span> {{volt.depositTokenSymbol}}
             </div>
           </ion-row>
           <ion-row class="ion-margin-bottom">
@@ -52,7 +53,7 @@
       </div>
     </div>
     <div class="tp-box__side tp-box__back">
-      <app-volt-popup [volt]="volt" (onDepositVolt)="onDepositVolt.emit($event)" (onFlipVolt)="toggleFlip()"></app-volt-popup>
+      <app-volt-back [volt]="volt" (onDepositVolt)="onDepositVolt.emit($event)" (onFlipVolt)="toggleFlip()"></app-volt-back>
     </div>
   </div>
 </div>

@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   solanaEnv: 'devnet',
   solblazepool:'azFVdHtAJN8BX3sbGAYkXvtdjdrT5U6rj9rovvUFos9',
+  orcaWhirlPool: {programId:'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',config:'', poolAPI: 'https://api.devnet.orca.so/v1/whirlpool/list'},
   solanaCluster:'https://api.devnet.solana.com',
   magicEdenProxyAPI: 'https://dev.compact-defi.avaulto.com/api/ME-proxy?env=devnet',
   metaplexProxyAPI: 'https://dev.compact-defi.avaulto.com/api/MP-proxy',

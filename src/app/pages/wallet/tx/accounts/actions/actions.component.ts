@@ -13,7 +13,7 @@ export class ActionsComponent implements OnInit {
   constructor(private _txInterceptService: TxInterceptService, private _solanaUtilsService: SolanaUtilsService) { }
 
   ngOnInit() {
-    console.log(this.account)
+
   }
   public async deactiveStake(stakeAccount: string): Promise<void> {
     // await this._txInterceptService.deactivateStakeAccount(stakeAccount, this.wallet.publicKey);

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { connectionConfigProviderFactory, ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import {
+  BackpackWalletAdapter,
   ExodusWalletAdapter,
   LedgerWalletAdapter,
   PhantomWalletAdapter,
@@ -8,7 +9,7 @@ import {
   SolflareWalletAdapter,
   SolletWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
 
 
@@ -33,10 +34,11 @@ export class AppComponent {
     this._connectionStore.setEndpoint(environment.solanaCluster)
     this._walletStore.setAdapters([
       new PhantomWalletAdapter(),
-      new ExodusWalletAdapter(),
-      new SlopeWalletAdapter(),
+      new BackpackWalletAdapter,
       new SolflareWalletAdapter(),
+      new SlopeWalletAdapter(),
       new SolletWalletAdapter(),
+      new ExodusWalletAdapter(),
       new LedgerWalletAdapter()
     ]);
 

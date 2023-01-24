@@ -36,9 +36,6 @@ export class SolanaUtilsService {
     public popoverController: PopoverController,
   ) {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
-    // this._connectionStore.connection$.subscribe(con => this.connection$.next(con));
-    // console.log(this.connection$.sub)
-    // this.connection$
   }
   public onAccountChangeCB(walletOwnerPk: PublicKey, cb: any): void{
     this.connection.onAccountChange(walletOwnerPk, cb);
@@ -295,7 +292,6 @@ export class SolanaUtilsService {
       const parsedAccountInfo: any = account.account.data;
       const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];
       const balance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
-      // console.log(parsedAccountInfo["parsed"]["info"])
       return { tokenPubkey: account.pubkey.toString(), mintAddress, balance }
     }).filter(token => token.balance > 0.00001);
     return tokensBalance;

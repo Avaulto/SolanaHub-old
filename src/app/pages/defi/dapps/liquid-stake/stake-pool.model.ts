@@ -2,7 +2,7 @@ import { PublicKey } from "@solana/web3.js";
 
 export interface StakePoolStats {
     assetRatio: number;
-    apy: number;
+    // apy: number;
     supply: any;
     TVL: {staked_usd: number, staked_sol: number};
     validators: number;

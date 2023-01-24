@@ -4,17 +4,19 @@ import { AllMainnetVolt } from 'src/app/models';
 import { UtilsService } from 'src/app/services';
 
 @Component({
-  selector: 'app-volt-popup',
-  templateUrl: './volt-popup.component.html',
-  styleUrls: ['./volt-popup.component.scss'],
+  selector: 'app-volt-back',
+  templateUrl: './volt-back.component.html',
+  styleUrls: ['./volt-back.component.scss'],
 })
-export class VoltPopupComponent implements OnInit {
+export class VoltBackComponent implements OnInit {
   @Input() volt: AllMainnetVolt = null;
   @Output() onFlipVolt = new EventEmitter();
   @Output() onDepositVolt = new EventEmitter();
   public depositVoltForm: FormGroup;
   // public formSubmitted: boolean = false;
-  public segmentUtilTab: string = 'deposit'
+  public menu: string[] = ['deposit'];
+  public currentTab: string = this.menu[0]
+
   public voltDetailBox:boolean = false;
   public toolTipHtml = '';
   public tooltipoptions = {
@@ -60,9 +62,6 @@ export class VoltPopupComponent implements OnInit {
   </div>`
   }
 
-  public setUtil(util: string): void{
-    this.segmentUtilTab = util;
-  }
   public setMaxAmount(): void {
     // const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
     this.depositVoltForm.controls.amount.setValue(this.volt.tokenBalance);

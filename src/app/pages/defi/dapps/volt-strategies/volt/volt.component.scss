@@ -29,8 +29,8 @@
 
         app-image-placeholder {
             margin-inline-end: 6px;
-            width: 40px;
-            height: 40px;
+            width: 33px;
+            height: 33px;
             border-radius: 50%;
             overflow: hidden;
             z-index: 2;
@@ -47,9 +47,8 @@
         }
         app-image-placeholder:nth-child(2){
             z-index: 0;
-            transform: translate(-15px, 4px);
-            width: 30px;
-            height: 30px;
+            transform: translate(-15px, 0px);
+
         }
     }
     .asset-apy {
@@ -99,13 +98,14 @@
 // flip v1
 .card {
     width: inherit;
-    min-height: 280px;
     perspective: 500px;
     text-transform: capitalize;
 }
 
 
 .tp-box {
+    height: 300px;
+
     position: relative;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
@@ -120,7 +120,9 @@
     position: absolute;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-
+display: flex;
+    justify-content: space-around;
+    flex-direction: column;
 
 }
 

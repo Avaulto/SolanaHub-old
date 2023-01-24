@@ -2,5 +2,16 @@
   <ion-grid class="ion-padding">
     <app-dapp-head name="Frakt" imgPath="/assets/images/icons/frakt-logo.jpeg"></app-dapp-head>
     <app-frakt-stats></app-frakt-stats>
+
+    <ion-row>
+      <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+    </ion-row>
+    <ion-row>
+      <ng-container [ngSwitch]="currentTab">
+        <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+        <app-borrow *ngSwitchCase="'borrow'"></app-borrow>
+        <app-lend *ngSwitchCase="'lend'"></app-lend>
+      </ng-container>
+    </ion-row>
   </ion-grid>
 </ion-content>

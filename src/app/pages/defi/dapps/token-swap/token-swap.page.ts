@@ -213,7 +213,6 @@ export class TokenSwapPage implements OnInit {
     const inputAmountInSmallestUnits = inputToken
       ? Math.round(Number(inputAmount) * 10 ** inputToken.decimals)
       : 0;
-    // console.log(slippage, outputToken, inputToken, inputAmount, amount)
     try {
       const routes = await this._jupiter.computeRoutes({
         inputMint: new PublicKey(inputToken.address),
@@ -267,8 +266,6 @@ export class TokenSwapPage implements OnInit {
       const txFees = await routeInfo.getDepositAndFee();
       const feesByToken: Token = this.tokensList.value.filter(token => token.address == marketInfos[0].lpFee.mint)[0] || null;
 
-      // console.log(marketInfos,txFees)
-      // Number(marketInfos[0].outputMint) * this.swapForm.value.slippage
       const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) * -1;
       const minimumRecived: any = (outputAmount * slippagePercentage).toFixedNoRounding(3)//  / (10 ** outputToken.decimals)
       const priceImpact = marketInfos[0].priceImpactPct

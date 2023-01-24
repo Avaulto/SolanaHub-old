@@ -1,14 +1,9 @@
 <div id="segmented-util" >
-  <div id="segment-header" class="ion-text-uppercase">
-    
-      <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
-      <!-- <span *ngIf=" selectedProvider?.name?.toLowerCase() == 'solblaze' " (click)="setUtil('cls')" [class.active]="segmentUtilTab == 'cls'">custom validator stake</span> -->
 
-      <span (click)="setUtil('unstake')" [class.active]="segmentUtilTab == 'unstake'">unstake</span>
-  </div>
+    <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
 
 
-  <div [ngSwitch]="segmentUtilTab" id="liquid-stake-form" class="ion-padding-vertical">
+  <div [ngSwitch]="currentTab" id="liquid-stake-form" class="ion-padding-vertical">
       <form *ngSwitchCase="'stake'" [formGroup]="stakeForm">
           <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance, toolTip:'A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.'}">
           </app-label-layout>

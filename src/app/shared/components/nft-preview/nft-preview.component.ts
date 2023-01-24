@@ -29,7 +29,6 @@ export class NftPreviewComponent implements OnInit {
   ) { }
   hideSkelaton: boolean = false;
   async ngOnInit() {
-    // console.log(this.nft)
     this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
 
     this.mintAddressPK = new PublicKey(this.nft.mintAddress)

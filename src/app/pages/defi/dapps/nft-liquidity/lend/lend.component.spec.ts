@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { VoltStrategiesPage } from './volt-strategies.page';
+import { LendComponent } from './lend.component';
 
-describe('VoltStrategiesPage', () => {
-  let component: VoltStrategiesPage;
-  let fixture: ComponentFixture<VoltStrategiesPage>;
+describe('LendComponent', () => {
+  let component: LendComponent;
+  let fixture: ComponentFixture<LendComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ VoltStrategiesPage ],
+      declarations: [ LendComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VoltStrategiesPage);
+    fixture = TestBed.createComponent(LendComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

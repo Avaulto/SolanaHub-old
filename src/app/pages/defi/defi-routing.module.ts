@@ -24,6 +24,10 @@ const routes: Routes = [
     path: 'nft-liquidity',
     loadChildren: () => import('./dapps/nft-liquidity/nft-liquidity.module').then( m => m.NftLiquidityPageModule)
   },
+  {
+    path: 'pools',
+    loadChildren: () => import('./dapps/pools/pools.module').then( m => m.PoolsPageModule)
+  },
 ];
 
 @NgModule({

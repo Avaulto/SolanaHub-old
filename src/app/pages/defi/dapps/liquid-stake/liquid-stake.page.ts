@@ -4,8 +4,8 @@ import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 
-import { UtilsService, TxInterceptService } from 'src/app/services';
-import {  Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import { UtilsService, TxInterceptService, ApiService } from 'src/app/services';
+import {  firstValueFrom, Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import { StakeAccountExtended } from 'src/app/models';
 
 import {  stakePoolInfo } from '@solana/spl-stake-pool';
@@ -19,8 +19,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./liquid-stake.page.scss'],
 })
 export class LiquidStakePage implements OnInit {
-  // solblaze tx fee covrage from users
-  private SOLPAY_API_ACTIVATION = new PublicKey("7f18MLpvAp48ifA1B8q8FBdrGQhyt9u5Lku2VBYejzJL");
 
   // avaliable stake pool providers to select
   protected providers: StakePoolProvider[] = [{
@@ -43,6 +41,7 @@ export class LiquidStakePage implements OnInit {
   public stakePoolStats: StakePoolStats;
   public wallet;
   public solBalance = 0;
+  public Apy: number = null;
   public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
     this._utilService.isNotNull,
     this._utilService.isNotUndefined,
@@ -74,7 +73,7 @@ export class LiquidStakePage implements OnInit {
   )
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
-    private _txInterceptService: TxInterceptService,
+    private _apiService: ApiService,
     private _walletStore: WalletStore,
     private _utilService: UtilsService
   ) { }
@@ -96,18 +95,20 @@ export class LiquidStakePage implements OnInit {
     });
   }
   async ngOnInit() {
-    this.currentProvider.subscribe((provider: StakePoolProvider) => {
+    this.currentProvider.pipe(shareReplay(),this._utilService.isNotNull).subscribe(async(provider: StakePoolProvider) => {
       this.provider = provider;
     })
   }
   /** @SP = reffer as stake pool */
   async initSPProvider(selectedProvider: StakePoolProvider) {
-    if (selectedProvider.name.toLowerCase() == 'solBlaze') {
+    if (selectedProvider.name.toLowerCase() == 'solblaze') {
+      this.Apy = (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/apy'))).apy
       let info = await stakePoolInfo(this._solanaUtilsService.connection, selectedProvider.poolpubkey);
       if (info.details.updateRequired) {
         await this.updateSolBlazePool();
       }
     } else {
+      this.Apy = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/apy/30d'))).value * 100
       this.initMarinade();
     }
   }
@@ -119,7 +120,6 @@ export class LiquidStakePage implements OnInit {
     })
     this.marinade = new Marinade(config)
     const state = await this.marinade.getMarinadeState();
-    // console.log(this.marinade.depositStakeAccount , state)
   }
 
 

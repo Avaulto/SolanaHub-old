@@ -1,12 +1,8 @@
 <ion-grid>
   <ion-icon  style="cursor: pointer;" name="arrow-back-outline" (click)="onFlipVolt.emit()"></ion-icon>
-  <ion-row id="segment-header" class="ion-text-uppercase">
+  <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
 
-    <span (click)="setUtil('deposit')" [class.active]="segmentUtilTab == 'deposit'">deposit</span>
-    <span (click)="setUtil('withdraw')" [class.active]="segmentUtilTab == 'withdraw'">withdraw</span>
-
-  </ion-row>
-  <div [ngSwitch]="segmentUtilTab" class="ion-padding-top">
+  <div [ngSwitch]="currentTab" class="ion-padding-top">
     <form [formGroup]="depositVoltForm"  *ngSwitchCase="'deposit'" id="deposit-area">
       <div class="group ion-margin-bottom" >
         <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
@@ -42,11 +38,11 @@
       
         <ion-button 
         color="secondary"
-        [disabled]="true"  
-        
+       
+        (click)="deposit()"
          expand="block">
          
-         disabled
+         deposit
         </ion-button>
      
     </form>

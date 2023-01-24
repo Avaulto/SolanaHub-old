@@ -92,7 +92,7 @@ export class NftStoreService {
     // merge both data source
     const extendNFTdata = magicEdenNfts.map(nft => {
       const extendNFT = nfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
-      // console.log(extendNFT)
+
       if(extendNFT){
         return {...extendNFT, ...nft};
       }else{

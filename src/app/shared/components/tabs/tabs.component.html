@@ -1,0 +1,7 @@
+
+
+  <ion-segment [value]="currentTab" mode="md">
+    <ion-segment-button [value]="tab" *ngFor="let tab of menu;" (click)="setTab(tab)" [class.active]="currentTab == tab">
+      <ion-label>{{tab}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>

@@ -21,6 +21,11 @@ export class DefiTourComponent implements OnInit {
     title: 'Why Compact-DeFi',
     description: `We have been reviewing a variety of DeFi applications to find the best fit for our platform. 
     Our goal is to provide you with seamless and permissionless access to a new generation of finance.`,
+
+  },
+  {
+    title: 'DYOR',
+    description: `Unleashing the true potential of DeFi, we've scoured the market to bring you the cream of the crop in terms of apps. However, as with any technology, there's always the possibility of bugs or malicious activity from third parties. Keep in mind, the operators of these apps have the ultimate authority to change their functionality. But don't just take our word for it - always remember to DYOR (Do Your Own Research) before diving in.`,
     button: 'see apps',
   }
 

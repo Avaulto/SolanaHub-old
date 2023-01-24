@@ -4,7 +4,6 @@ import { PopoverController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { AllMainnetVolt } from 'src/app/models';
 import { DataAggregatorService, UtilsService } from 'src/app/services';
-import { VoltPopupComponent } from './volt-popup/volt-popup.component';
 
 @Component({
   selector: 'app-volt',
@@ -30,13 +29,13 @@ export class VoltComponent implements OnInit {
   toggleFlip() {
     this.flip = (this.flip == 'inactive') ? 'active' : 'inactive';
   }
-  
+
   @Input() volt: AllMainnetVolt;
   public voltTemp: AllMainnetVolt;
   @Input() highVolt: AllMainnetVolt | null;
   @Input() isConnected: boolean = false;
 
-  
+
   public progress: number = 0;
   public totalDepositUsd;
   constructor(
@@ -48,28 +47,31 @@ export class VoltComponent implements OnInit {
   async ngOnInit() {
     this.volt.depositTokenImage = await this.getDepositTokenIcon();
     this.volt.underlineTokenImage = await this.getUnderlineTokenIcon();
-    this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
-    this.totalDepositUsd = this.volt.tvlUsd.toLocaleString();
-    
+    this._renderVoltStats()
     // store initial volt value
     this.voltTemp = this.volt;
   }
 
+  private _renderVoltStats() {
+    this.progress = this.volt.tvlUsd / this.volt.capacityUsd;
+    this.totalDepositUsd = this.volt.tvlUsd.toLocaleString();
+  }
   async getDepositTokenIcon(): Promise<string> {
     return await (await firstValueFrom(this._dataAggregator.getCoinData(this.volt.depositTokenCoingeckoId))).image.large;
   }
   async getUnderlineTokenIcon(): Promise<string> {
-    if(this.volt.depositTokenSymbol != this.volt.underlyingTokenSymbol){
+    if (this.volt.depositTokenSymbol != this.volt.underlyingTokenSymbol) {
       return await (await firstValueFrom(this._dataAggregator.getCoinData(this.volt.underlyingTokenCoingeckoId))).image.large;
     }
     return null
   }
 
-  public switchToHighVolt(event):void{
-     if(event.detail.checked){
-       this.volt = this.highVolt;
-     }else{
+  public toggleHighVolt(event): void {
+    if (event.detail.checked) {
+      this.volt = this.highVolt;
+    } else {
       this.volt = this.voltTemp;
-     }
+    }
+    this._renderVoltStats();
   }
 }

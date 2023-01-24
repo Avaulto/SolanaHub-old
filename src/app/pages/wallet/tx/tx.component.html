@@ -1,11 +1,8 @@
 <div id="segmented-util">
-  <div id="segment-header" class="ion-text-uppercase">
-    <span (click)="setUtil('stake')" [class.active]="segmentUtilTab == 'stake'">stake</span>
-    <span (click)="setUtil('accounts')" [class.active]="segmentUtilTab == 'accounts'">accounts</span>
-    <span (click)="setUtil('send')" [class.active]="segmentUtilTab == 'send'">send</span>
-    <!-- <span (click)="setUtil('history')" [class.active]="segmentUtilTab == 'history'">history</span> -->
-  </div>
-  <div [ngSwitch]="segmentUtilTab" class="ion-padding-vertical">
+
+  <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+
+  <div [ngSwitch]="currentTab" class="ion-padding-vertical">
 
     <app-stake *ngSwitchCase="'stake'" [validatorsData]="validatorsData" [avgApy]="avgApy" [wallet]="wallet"></app-stake>
     <app-accounts *ngSwitchCase="'accounts'" [wallet]="wallet"></app-accounts>

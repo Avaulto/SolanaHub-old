@@ -12,7 +12,8 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 export class TxComponent implements OnInit {
   @Input() wallet:Asset;
   public validatorsData: Observable<ValidatorData[]> = this._solanaUtilsService.getValidatorData()
-  public segmentUtilTab: string = 'stake'
+  public menu: string[] = ['stake', 'accounts', 'send'];
+  public currentTab: string = this.menu[0]
   public hasStake: boolean = false;
   public avgApy:number = 0;
   constructor(
@@ -22,9 +23,7 @@ export class TxComponent implements OnInit {
   ngOnInit() {
     this._solanaUtilsService.getAvgApy().subscribe(avgApy => this.avgApy = avgApy)
   }
-  setUtil(util: string){
-    this.segmentUtilTab = util;
-  }
+
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.

@@ -16,7 +16,7 @@ export class SelectItemComponent implements OnChanges {
   ngOnChanges(changes): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    // console.log(this.item)
+
   }
   public onSelectItem(item){
     if(!item?.selectable){

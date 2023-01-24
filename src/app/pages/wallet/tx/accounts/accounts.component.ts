@@ -42,7 +42,6 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   public async showAccountActions(e: Event, account: StakeAccountExtended) {
-    console.log(account)
     const popover = await this.popoverController.create({
       component: ActionsComponent,
       componentProps: {account} ,
@@ -67,7 +66,6 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
       return await this._solanaUtilsService.extendStakeAccount(acc)
     })
     const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-    // console.log(extendStakeAccountRes)
     return extendStakeAccountRes;
   }
 
@@ -75,7 +73,6 @@ export class AccountsComponent implements OnInit, OnChanges, OnDestroy {
     const stakeAccounts = this.stakeAccounts.value;
     
     const canMergeAccounts = stakeAccounts.map(account => {
-      // console.log(account)
       if(account.validatorData.vote_identity == SA.validatorData.vote_identity && account.state == 'active'){
         return account
       }

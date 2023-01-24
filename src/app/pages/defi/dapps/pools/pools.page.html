@@ -1,0 +1,38 @@
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
+
+    <app-dapp-head name="Orca" imgPath="/assets/images/icons/orca-logo.png"></app-dapp-head>
+    <ion-row class="ion-justify-content-between ion-text-capitalize">
+      <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5" *ngFor="let stat of whirlPoolsStats | keyvalue ">
+        <app-data-box [title]="stat.value.title" [loading]="!stat.value.value" [desc]="stat.value.value">
+        </app-data-box>
+      </ion-col>
+    </ion-row>
+    <ion-row id="tool-box" class="ion-margin-bottom ion-justify-content-between ion-align-items-center">
+      <div id="search-box">
+        <app-search-input (search)="searchPool($event)" [placeholder]="'Filter by symbol'"></app-search-input>
+      </div>
+    </ion-row>
+    <ion-row>
+
+
+      <ion-virtual-scroll class="ion-padding-bottom" [items]="(orcaDataset | async)?.whirlpools | filter: 'tokenA.symbol':searchTerm"
+        approxItemHeight="74px" minBufferPx="200" maxBufferPx="500">
+        <div *virtualItem="let item; let i = i" class="data-box ion-padding ion-margin-bottom"  [ngClass]=" false ? '': 'extra-reward'" style="margin-bottom:50px;min-height: auto;" >
+
+          <div *ngIf="true" class="reward-info" tooltip="10 ORCA per week">
+            orca reward
+          </div>
+
+          <ion-col size="12">
+            <app-whirl-pool (poolLoaded)="getPoolReward($event)" [pool]="item" [isConnected]="isReady$ | async"></app-whirl-pool>
+          </ion-col>
+        </div>
+      </ion-virtual-scroll>
+
+
+    </ion-row>
+    <app-loader *ngIf="orcaDataset | async"></app-loader>
+    <!-- <app-friktion-info [friktionInfo]="friktionInfo"></app-friktion-info> -->
+  </ion-grid>
+</ion-content>

@@ -26,9 +26,7 @@ export class OptionsPopupComponent implements OnInit {
     private _utilsService: UtilsService) { }
 
   ngOnInit() {
-    // this.theme.ionFocus.subscribe(val =>{
-    //   console.log(val);
-    // })
+
   }
   public setRPC(url: string) {
     this.currentRPC = url;
@@ -49,7 +47,6 @@ export class OptionsPopupComponent implements OnInit {
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)
-    // console.log(theme)
   }
   public setExplorer(name: string) {
     this._utilsService.changeExplorer(name)
@@ -59,7 +56,6 @@ export class OptionsPopupComponent implements OnInit {
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)
-    // console.log(theme)
   }
 
   public setPriorityFee(rank: string) {
@@ -72,6 +68,5 @@ export class OptionsPopupComponent implements OnInit {
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)
-    // console.log(theme)
   }
 }

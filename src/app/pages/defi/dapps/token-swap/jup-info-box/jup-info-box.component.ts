@@ -30,7 +30,6 @@ export class JupInfoBoxComponent implements OnInit {
     // .subscribe((stats: JupiterStats) => 
     // { 
     //   this.showLoader = false;
-    //   console.log( typeof stats.totalVolumeInUSD);
     //   stats.totalVolumeInUSD = stats.totalVolumeInUSD.toLocaleString();
     //   stats.lastXTransactionsCount = stats.lastXTransactionsCount.toLocaleString();
     //   stats.lastXAddressesCount = stats.lastXAddressesCount.toLocaleString();

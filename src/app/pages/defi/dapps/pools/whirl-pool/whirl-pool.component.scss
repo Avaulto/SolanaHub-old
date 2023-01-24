@@ -1,0 +1,27 @@
+.pool {
+    display: flex;
+}
+
+.pool-logo-name {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    .pool-logo {
+        display: flex;
+    }
+}
+.pool-stats-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex: 3;
+    align-items: center;
+}
+app-image-placeholder {
+        width: 40px;
+        overflow: hidden;
+        border-radius: 50%;   
+}
+.overlap-icon{
+    position: relative;
+    right: 10px;
+}

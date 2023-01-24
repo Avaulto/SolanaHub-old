@@ -1,10 +1,10 @@
+
 ion-img,ion-skeleton-text {
     overflow: hidden;
     width: 100%;
-    max-height: 300px;
 }
 ion-skeleton-text{
-    min-height: inherit ;
+    // min-height: 40px ;
 }
 ion-icon{
     position: absolute;

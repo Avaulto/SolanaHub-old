@@ -1,3 +1,5 @@
+import Decimal from "decimal.js";
+
 export interface FriktionLocal {
     tvl: number,
     volume: number,
@@ -65,9 +67,21 @@ export interface AllMainnetVolt {
     nextAutocompoundingTime: number;
     lastTradedOption: string;
     abnormalEpochLength?: number;
-    tokenBalance?: number;
+    tokenBalance?: number; // custom prop for holding user balance in wallet
+    tokenBalanceInVolt?: voltUserBalance // custom prop for holding user balance in volt
 }
-
+export interface voltUserBalance {
+    totalBalance: Decimal, // total # SOL user has in Friktion (e.g 0.001 SOL)
+    normalBalance: Decimal, // SOL value of volt tokens in user's wallet
+    pendingDeposits: Decimal, // SOL value of users's unclaimed and pending deposits
+    pendingWithdrawals: Decimal, // SOL value of user's unclaimed and pending withdrawals
+    mintableShares: Decimal, // # of volt tokens user could mint immediately. from the claimable deposit
+    claimableUnderlying: Decimal, // SOL value of user's *mintableShares*
+    normFactor: Decimal, // 10^(number of decimals in SOL mint) = 10^9 for SOL, varies depending on deposit token
+    vaultNormFactor: Decimal // generally equivalent to normFactor, but may differ if deposit token was migrated (e.g sollet deprecation)
+  }
+  
+  
 export enum HighVoltage {
     Empty = "",
     MainnetIncomeCallSolHigh = "mainnet_income_call_sol_high",

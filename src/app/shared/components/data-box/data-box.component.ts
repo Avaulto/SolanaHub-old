@@ -9,7 +9,7 @@ export class DataBoxComponent implements OnInit {
   @Input() title: string;
   @Input() desc: any;
   @Input() size: string;
-  @Input() loading: boolean = true;
+  @Input() loading: any = true;
   constructor() { }
 
   ngOnInit() {
