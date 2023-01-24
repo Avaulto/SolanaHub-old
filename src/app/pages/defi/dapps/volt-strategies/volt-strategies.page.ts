@@ -16,7 +16,7 @@ import { clusterApiUrl, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction,
 // import { AnchorProvider } from "@friktion-labs/anchor";
 import { Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { BehaviorSubject, firstValueFrom, TimeoutError } from 'rxjs';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { faChessKnight } from '@fortawesome/free-regular-svg-icons';
 import Decimal from 'decimal.js';
