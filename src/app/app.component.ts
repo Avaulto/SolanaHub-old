@@ -8,8 +8,7 @@ import {
   LedgerWalletAdapter,
   PhantomWalletAdapter,
   SlopeWalletAdapter,
-  SolflareWalletAdapter,
-  SolletWalletAdapter,
+  SolflareWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';

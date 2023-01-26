@@ -1,0 +1,24 @@
+
+<div class="item-head" (click)="appendAccountData()">
+  <div class="flex-item-center">
+    <div class="table-icon">
+      <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
+      <ion-checkbox #accCheckbox *ngIf="mergeCondition"></ion-checkbox>
+    </div>
+    <div class="validator-info heading-6">
+      {{account?.validatorData?.name || 'name not found'}} <br>
+      <span class="sub">
+        fee: {{account?.validatorData?.commission}}% uptime: {{account?.validatorData?.uptime}}%
+      </span>
+    </div>
+  </div>
+  <!-- {{account | json}} -->
+  <div class="sub">
+    {{account?.shortAddr}}
+  </div>
+  <div class="sub">
+    {{account?.balance}} ◎
+  </div>
+
+  
+</div>

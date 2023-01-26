@@ -25,7 +25,7 @@ import {
   TransactionInstruction
 } from '@solana/web3.js';
 import { firstValueFrom, throwError } from 'rxjs';
-import { toastData } from '../models';
+import { StakeAccountExtended, toastData } from '../models';
 import { ToasterService, SolanaUtilsService, UtilsService } from './';
 import { PriorityFee } from '../models/priorityFee.model';
 import { environment } from 'src/environments/environment';
@@ -103,10 +103,10 @@ export class TxInterceptService {
       });
     })
 
-    this.sendTx(mergeAccounts, walletOwnerPk)
+    await this.sendTx(mergeAccounts, walletOwnerPk)
   }
 
-  public async withdrawStake(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {
+  public async withdrawFromStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {
     const withdrawTx = StakeProgram.withdraw({
       stakePubkey: new PublicKey(stakeAccount),
       authorizedPubkey: walletOwnerPk,
@@ -215,6 +215,21 @@ export class TxInterceptService {
     }
 
   }
+  public delegateStakeAccount(stakeAcc: StakeAccountExtended, walletOwnerPk) {
+    try {
+
+      const instruction: DelegateStakeParams = {
+        stakePubkey: new PublicKey(stakeAcc.addr),
+        authorizedPubkey: walletOwnerPk,
+        votePubkey: new PublicKey(stakeAcc.validatorVoteKey)
+      }
+      const delegateTX: Transaction = StakeProgram.delegate(instruction);
+
+      this.sendTx([delegateTX], walletOwnerPk)
+    } catch (error) {
+      console.error(error);
+    }
+  }
   public async sendSol(lamportsToSend: number, toAddress: PublicKey, walletOwnerPk: PublicKey): Promise<any> {
     const transfer: TransactionInstruction =
       SystemProgram.transfer({
@@ -233,7 +248,7 @@ export class TxInterceptService {
       const modifyComputeUnits = ComputeBudgetProgram.setComputeUnitLimit({
         units
       });
-      
+
       const addPriorityFee = ComputeBudgetProgram.setComputeUnitPrice({
         microLamports: 1
       });

@@ -44,7 +44,7 @@
     "@solana/spl-token": "0.3.4",
     "@solana/wallet-adapter-base": "0.9.18",
     "@solana/wallet-adapter-wallets": "^0.16.8",
-    "@solana/web3.js": "^1.66.2",
+    "@solana/web3.js": "1.73.0",
     "@types/keccak": "^3.0.1",
     "@types/node-fetch": "^2.6.2",
     "@types/readable-stream": "^2.3.13",

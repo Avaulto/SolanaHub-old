@@ -31,7 +31,7 @@ export class DefiComponent implements OnInit {
     },
     {
       name: 'Frakt',
-      description: 'RAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana',
+      description: 'FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana',
       image: 'assets/images/icons/frakt-logo.jpeg',
       deepLink: '#'
     }

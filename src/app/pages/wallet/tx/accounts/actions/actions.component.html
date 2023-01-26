@@ -1,19 +1,31 @@
-<ul id="wallet-connected-actions">
-   <li class="sub"  *ngIf="account?.state  == 'activating' || account?.state == 'active'" (click)="deactiveStake(account.addr)">
-    unstake
-   </li>
-   <li class="sub"  *ngIf="account?.state  == 'inactive'" (click)="withdrawStake(account)">
-    withdraw stake
-   </li>
-   <li class="sub" *ngIf="account?.state  == 'deactivating'">cold down time</li>
-   <li class="sub">merge</li>
-   <li class="sub">split</li>
- </ul>
- <!-- <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">
-  unstake</ion-button>
-<ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
-<ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">
-  unstake
-</ion-button>
-<ion-button fill="outline" color="danger" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">withdraw
-  stake</ion-button> -->
+
+
+
+      <ul [ngSwitch]="account?.state">
+        <li class="sub" *ngSwitchCase="'activating'" (click)="deactiveStake(account)">
+          unstake
+          
+        </li>
+        <li class="sub" *ngSwitchCase="'deactivating'" (click)="reStake(account)">
+          restake
+          
+        </li>
+        <li class="sub" *ngSwitchCase="'active'"  (click)="deactiveStake(account)">
+          unstake
+          
+        </li>
+        <li class="sub" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">
+          withdraw stake
+          
+        </li>
+        <li class="sub" (click)="claimMEV(account)">
+          claim exceed lamport <ion-icon style="margin-inline-start: 5px;" maxWidth="300px" tooltip="Claim any exceeded Lamport that you've received from MEV or any other wallet" placement="top" name="alert-circle-outline"></ion-icon>
+        </li>
+        <!-- <li class="sub" (click)="splitStake()">
+          split stake
+        </li> -->
+        <li class="sub" (click)="openMergeAccountPopup()" >
+          merge account 
+        </li>
+      </ul>
+

@@ -155,7 +155,6 @@ export class SolanaUtilsService {
       })
 
 
-
       return stakeAccounts;
     } catch (error) {
       return new Error(error)
@@ -184,7 +183,11 @@ export class SolanaUtilsService {
     
     const parsedData = account.account.data.parsed.info.stake || null//.delegation.stake
     const validatorVoteKey = parsedData?.delegation?.voter
-    const stake = parsedData?.delegation?.stake || 0;
+    const stake =  Number(parsedData?.delegation?.stake) || 0;
+    const startEpoch = parsedData.delegation.activationEpoch;
+    const rentReseve = Number(account.account.data.parsed.info.meta.rentExemptReserve);
+    const accountLamport = Number(account.account.lamports);
+    const excessLamport = accountLamport - stake  - rentReseve
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
     let validatorData: ValidatorData = null;
     if(this.validatorsData){
@@ -204,7 +207,10 @@ export class SolanaUtilsService {
       balance: this._utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
       state,
       validatorData,
+      validatorVoteKey,
+      excessLamport,
       checkedForMerge: false,
+      startEpoch,
       canMerge: true
     }
     return stakeAccountInfo

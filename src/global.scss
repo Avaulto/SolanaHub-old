@@ -44,6 +44,26 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--ion-color-primary); 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ion-color-secondary); ; 
+  }
+
 .title {
     text-transform: capitalize;
     font-weight: 500;
@@ -234,9 +254,14 @@ ion-select {
 .wallet-adapter-options {
     --width: 350px;
 }
-
+.merge-accounts-popup{
+    --width: 450px;
+    --height:550px;
+    --max-width:98%;
+}
 .tncPopup {
-    --width: 400px --max-width:98%;
+    --width: 400px;
+    --max-width:98%;
 }
 .settings-popup{
     --width: 520px;

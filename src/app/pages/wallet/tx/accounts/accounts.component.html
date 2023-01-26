@@ -1,76 +1,45 @@
 <ion-grid>
   <ng-container *ngIf="wallet; else elseTemplate">
-    <!-- <ion-row class="ion-margin-bottom">
+    <app-loader *ngIf="this.stakeAccountStatic == null"></app-loader>
+    <ion-accordion-group multiple>
+      <ion-accordion [value]="i" *ngFor="let account of stakeAccounts$ | async as stakeAccounts; let i = index">
+        <ion-item slot="header" button detail="true">
+          <app-account [account]="account"></app-account>
+        </ion-item>
+        <div class="ion-padding item-content" slot="content">
+          <div class="account-info">
+            
+            <div class="account-status">         
+              <span>status: </span>
+              <span class="sub" [ngStyle]="{'color': getStatusColor(account?.state)}">{{account?.state}}</span>              
+            </div>
+            
+            <div class="account-status">
+              <span>active since epoch: </span>
+              <span class="sub" >{{account?.startEpoch}}</span>
+            </div>
+            <div class="account-status">
+              <span>account address: </span>
+              <span class="sub" >{{account?.addr}} <ion-icon name="copy-outline" trigger="click" tooltip="coppied" appCopyText [copyText]="account.addr" ></ion-icon>
+              </span>
+            </div>
+            <div class="account-status">
+              <span>validator vote key: </span>
+              <span class="sub" >{{account?.validatorVoteKey}} <ion-icon name="copy-outline" trigger="click" tooltip="coppied" appCopyText [copyText]="account.validatorVoteKey" ></ion-icon>
+              </span>
+            </div>
+          </div>
+          <ion-button fill="outline" (click)="openStakeAccountActions($event, account, stakeAccounts)">actions</ion-button>
 
-      <ion-button fill="outline" (click)="initMerge = !initMerge;">
-        <span>Merge accounts</span>
-      </ion-button>
-      <ion-button (click)="mergeAccounts()" *ngIf="accountToMerge.length > 1">
-        <ion-icon name="checkmark-outline"></ion-icon>
-      </ion-button>
-    </ion-row> -->
-    <!-- <app-loader *ngIf="(stakeAccounts$ | async).length == 0"></app-loader> -->
+          <div class="stake-account-actions">
 
-    <ion-row class="stake-balance ion-text-capitalize ion-align-items-center ion-justify-content-between"
-      *ngFor="let account of stakeAccounts$ | async as stakeAccounts">
-      <div class="flex-item-center">
-        <div class="table-icon">
-          <ion-img *ngIf="!initMerge" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
-          <!-- <ion-checkbox 
-          (ionChange)="checkForMerge(account);account.checkedForMerge = checked.checked" 
-          #checked 
-          [disabled]="!account.canMerge"
-          *ngIf="initMerge && account?.state == 'active'"
-          ></ion-checkbox> -->
+          
+          </div>
         </div>
-        <div class="validator-info heading-6">
-          {{account?.validatorData?.name || 'name not found'}} <br>
-          <span class="sub">
-            fee: {{account?.validatorData?.commission}}% uptime: {{account?.validatorData?.uptime}}%
-          </span>
-        </div>
-      </div>
+      </ion-accordion>
+    </ion-accordion-group>
 
-      <div class="sub">
-        {{account?.shortAddr}}
-      </div>
-      <div class="sub">
-        {{account?.balance}}
-      </div>
-      <div>
-        <span [ngSwitch]="account?.state">
-          <p *ngSwitchCase="'activating'">
-            <ion-icon [tooltip]="'activating'" name="hourglass-outline"></ion-icon>
-          </p>
-          <p *ngSwitchCase="'deactivating'">
-            <ion-icon [tooltip]="'deactivating'" name="hourglass-outline"></ion-icon>
-          </p>
-          <p *ngSwitchCase="'active'">
-            <ion-icon [tooltip]="'active'" name="checkmark-done-outline"></ion-icon>
-          </p>
-          <p *ngSwitchCase="'inactive'">
-            <ion-icon [tooltip]="'inactive'" name="alert-circle-outline"></ion-icon>
-          </p>
-          <p *ngSwitchDefault>
-            <ion-icon name="close-outline"></ion-icon>
-          </p>
-        </span>
-      </div>
-      <!-- <ion-icon (click)="showAccountActions($event,account)" name="ellipsis-horizontal-circle-outline"></ion-icon> -->
-
-      <div style="text-align:right" [ngSwitch]="account?.state">
-        <ion-button fill="outline" color="warning" *ngSwitchCase="'activating'" (click)="deactiveStake(account.addr)">
-          unstake</ion-button>
-        <ion-button fill="outline" color="warning" disabled *ngSwitchCase="'deactivating'">cold down time</ion-button>
-        <ion-button fill="outline" color="primary" *ngSwitchCase="'active'" (click)="deactiveStake(account.addr)">
-          unstake
-        </ion-button>
-        <ion-button fill="outline" color="danger" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">withdraw
-          stake</ion-button>
-
-      </div>
-    </ion-row>
-
+    
   </ng-container>
   <ng-template #elseTemplate>
     <app-wallet-not-connected-state></app-wallet-not-connected-state>

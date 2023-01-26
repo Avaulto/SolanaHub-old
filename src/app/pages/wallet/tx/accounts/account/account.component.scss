@@ -1,0 +1,43 @@
+:host{
+    display: block;
+    width: 100%;
+}
+.flex-item-center {
+    display: flex;
+    align-items: center;
+}
+.table-icon {
+    width: 26px;
+    height: 26px;
+    margin-inline-end: 20px;
+    overflow: hidden;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    
+}
+
+.validator-info.heading-6 {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+::ng-deep{
+
+    ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon {
+        
+        color: white;
+    }
+}
+
+.item-head {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    align-items: center;
+}
