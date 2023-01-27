@@ -17,10 +17,6 @@ const routes: Routes = [
     loadChildren: () => import('./dapps/token-swap/token-swap.module').then( m => m.TokenSwapPageModule)
   },
   {
-    path: 'volt-strategies',
-    loadChildren: () => import('./dapps/volt-strategies/volt-strategies.module').then( m => m.VoltStrategiesPageModule)
-  },
-  {
     path: 'nft-liquidity',
     loadChildren: () => import('./dapps/nft-liquidity/nft-liquidity.module').then( m => m.NftLiquidityPageModule)
   },

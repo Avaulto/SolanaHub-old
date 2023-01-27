@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IonCheckbox, PopoverController } from '@ionic/angular';
 import { PublicKey } from '@solana/web3.js';
 import { StakeAccountExtended } from 'src/app/models';
-import { TxInterceptService } from 'src/app/services';
+import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
 
 @Component({
   selector: 'app-merge-accounts-popup',
@@ -15,7 +15,11 @@ export class MergeAccountsPopupComponent implements OnInit {
   @Input() wallet
   public accountsToMerge: StakeAccountExtended[]
   public selectedAccounts =[]
-  constructor(private _txInterceptService: TxInterceptService, private _popoverController:PopoverController) { }
+  constructor(
+    private _txInterceptService: TxInterceptService,
+     private _popoverController:PopoverController,
+     private _solanaUtilsService: SolanaUtilsService,
+     ) { }
 
   ngOnInit() {
     this.accountsToMerge = this._avaliableToMerge()
@@ -31,18 +35,18 @@ export class MergeAccountsPopupComponent implements OnInit {
   }
   public storeSelection(accountData: {account:StakeAccountExtended, accCheckbox}){
     if(accountData.accCheckbox.el.checked){
-      this.selectedAccounts.push(accountData)
+      this.selectedAccounts.push(accountData.account)
     }else{
       const filterAcc = this.selectedAccounts.filter((account:StakeAccountExtended) => account.addr == accountData.account.addr)
       this.selectedAccounts = filterAcc;
     }
-    console.log(this.selectedAccounts);
   }
   public async mergeAccounts(): Promise<void> {
     const walletOwner = this.wallet.publicKey
     const stakeAccountsSource: PublicKey[] = this.selectedAccounts.map(account => new PublicKey(account.addr));
     const accountTarget = new PublicKey(this.account.addr)
-    this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
     this._popoverController.dismiss();
+    await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
+    this._solanaUtilsService.fetchAndUpdateStakeAccount(this.wallet.publicKey);
   }
 }

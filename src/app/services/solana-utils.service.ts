@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConnectionStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, firstValueFrom, Observable, Subject, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, shareReplay } from 'rxjs/operators';
 import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
@@ -27,7 +27,9 @@ interface StakeWizEpochInfo {
 })
 export class SolanaUtilsService {
   public connection: Connection;
-  private validatorsData:ValidatorData[];
+  private validatorsData: ValidatorData[];
+  private _stakeAccounts$: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject(null as StakeAccountExtended[]);
+  public stakeAccounts$ = this._stakeAccounts$.asObservable()
   constructor(
     private _apiService: ApiService,
     private _toasterService: ToasterService,
@@ -37,10 +39,14 @@ export class SolanaUtilsService {
   ) {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
   }
-  public onAccountChangeCB(walletOwnerPk: PublicKey, cb: any): void{
-    this.connection.onAccountChange(walletOwnerPk, cb);
+  public onAccountChangeCB(walletOwnerPk: PublicKey): void {
+    this.connection.onAccountChange(walletOwnerPk, async () => {
+      await this.fetchAndUpdateStakeAccount(walletOwnerPk);
+    });
   }
-
+  public getStakeAccountsExtended() {
+    return this._stakeAccounts$.value;
+  }
 
   private _formatErrors(error: any) {
     console.warn('my err', error)
@@ -51,29 +57,7 @@ export class SolanaUtilsService {
     });
     return throwError(error);
   }
-  public getSingleValidatorData2(vote_identity: string = ''): Observable<ValidatorData> {
-    return this._apiService.get(`https://dev.compact-defi.avaulto.com/api/validators-info?env=${environment.solanaEnv}&validator=${vote_identity}`).pipe(
-      map((validator) => {
-        const filteredValidator: ValidatorData = {
-          skipRate: validator.skip_rate,
-          name: validator.name || '',
-          image: validator.image || '/assets/images/icons/node-placeholder.svg',
-          vote_identity: validator.vote_identity,
-          identity: validator.identity,
-          website: validator.website,
-          wizScore: validator.wiz_score,
-          commission: validator.commission,
-          apy_estimate: validator.apy_estimate,
-          uptime: validator.uptime,
-          stake: validator.activated_stake,
-          selectable: true,
 
-        }
-        return filteredValidator;
-      }),
-      catchError(this._formatErrors)
-    );
-  }
   public getSingleValidatorData(vote_identity: string = ''): Observable<ValidatorData> {
     return this._apiService.get(`https://api.stakewiz.com/validator/${vote_identity}`).pipe(
       map((validator) => {
@@ -130,7 +114,7 @@ export class SolanaUtilsService {
     );
   }
 
- 
+
 
   public async getStakeAccountsByOwner(publicKey: PublicKey): Promise<Array<{
     pubkey: PublicKey;
@@ -180,19 +164,19 @@ export class SolanaUtilsService {
   public async extendStakeAccount(account: { pubkey: PublicKey; account: AccountInfo<Buffer | ParsedAccountData | any> }): Promise<any> {
     const pk = account.pubkey;
     const addr = pk.toBase58()
-    
+
     const parsedData = account.account.data.parsed.info.stake || null//.delegation.stake
     const validatorVoteKey = parsedData?.delegation?.voter
-    const stake =  Number(parsedData?.delegation?.stake) || 0;
+    const stake = Number(parsedData?.delegation?.stake) || 0;
     const startEpoch = parsedData.delegation.activationEpoch;
     const rentReseve = Number(account.account.data.parsed.info.meta.rentExemptReserve);
     const accountLamport = Number(account.account.lamports);
-    const excessLamport = accountLamport - stake  - rentReseve
+    const excessLamport = accountLamport - stake - rentReseve
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
     let validatorData: ValidatorData = null;
-    if(this.validatorsData){
+    if (this.validatorsData) {
       validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
-    }else{
+    } else {
       try {
         validatorData = (await firstValueFrom(this.getSingleValidatorData(validatorVoteKey)))
       } catch (error) {
@@ -215,6 +199,17 @@ export class SolanaUtilsService {
     }
     return stakeAccountInfo
   }
+
+  public async fetchAndUpdateStakeAccount(publicKey: PublicKey) {
+    const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
+    const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+      return await this.extendStakeAccount(acc)
+    })
+    const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+    this._stakeAccounts$.next(extendStakeAccountRes);
+  }
+
+
 
   public async getSupply(): Promise<{ circulating: any, noneCirculating: any }> {
     const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true, commitment: "finalized" });
@@ -293,7 +288,7 @@ export class SolanaUtilsService {
       { filters }
     );
 
-    const tokensBalance: TokenBalance[] = accounts.map((account, i) => { 
+    const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
       //Parse the account data
       const parsedAccountInfo: any = account.account.data;
       const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];
@@ -303,5 +298,4 @@ export class SolanaUtilsService {
     return tokensBalance;
 
   }
-  getSingleTokenBalance(){}
 }

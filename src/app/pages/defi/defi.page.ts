@@ -33,14 +33,13 @@ export class DefiPage implements OnInit {
       deepLink: 'token-swap',
       status:'active'
     },
-
     {
-      name: 'friktion',
-      image: 'assets/images/icons/friktionBolt.png',
-      description: `Passive, quantitative strategies generating returns based on market opportunities. Volts allow anyone to access strategies that are built with risk & returns, principal protection, and volatility in mind. `,
-      learnMoreLink: 'https://docs.friktion.fi/',
-      deepLink: 'volt-strategies',
-      status:'active'
+      name: 'orca',
+      image: 'assets/images/icons/orca-logo.svg',
+      description: `Orca is a place where you can provide liquidity to a liquidity pools, including concentrated liquidity pools (Whirlpools) to earn trading fees and token emissions.`,
+      learnMoreLink: 'https://docs.orca.so/',
+      deepLink: 'pools',
+      status:'pending'
     },
     {
       name: 'solend',
@@ -48,14 +47,6 @@ export class DefiPage implements OnInit {
       description: `Solend is an algorithmic, decentralized protocol for lending and borrowing on Solana.`,
       learnMoreLink: 'https://docs.solend.fi/',
       deepLink: 'lending-strategies',
-      status:'pending'
-    },
-    {
-      name: 'orca',
-      image: 'assets/images/icons/orca-logo.svg',
-      description: `Orca is a place where you can provide liquidity to a liquidity pools, including concentrated liquidity pools (Whirlpools) to earn trading fees and token emissions.`,
-      learnMoreLink: 'https://docs.orca.so/',
-      deepLink: 'pools',
       status:'pending'
     },
     {

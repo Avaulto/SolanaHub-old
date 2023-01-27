@@ -24,10 +24,10 @@ export class DefiComponent implements OnInit {
       deepLink: '/defi/liquid-stake'
     },
     {
-      name: 'Frition',
-      description: 'Earn interest and borrow assets on the best lending protocol over solana.',
-      image: '/assets/images/icons/friktionBoltColored.png',
-      deepLink: '/defi/volt-strategies'
+      name: 'Orca',
+      description: 'Provide liquidity to a liquidity pools',
+      image: '/assets/images/icons/orca-logo.png',
+      deepLink: '#'
     },
     {
       name: 'Frakt',
