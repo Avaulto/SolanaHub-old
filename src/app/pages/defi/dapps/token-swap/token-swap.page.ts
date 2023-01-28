@@ -243,7 +243,6 @@ export class TokenSwapPage implements OnInit {
     this.swapForm.controls.inputAmount.setValue(token.balance);
   }
   public async submitSwap(): Promise<void> {
-    trackEvent('jupiter swap')
 
     const { transactions } = await this._jupiter.exchange({
       routeInfo: this._bestRoute
@@ -258,7 +257,8 @@ export class TokenSwapPage implements OnInit {
       }
       arrayOfTx.push(transaction)
     }
-     this._txInterceptService.sendTx(arrayOfTx, this.wallet.publicKey)
+     await this._txInterceptService.sendTx(arrayOfTx, this.wallet.publicKey);
+     trackEvent('jupiter swap')
   }
   private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
     const { marketInfos } = routeInfo

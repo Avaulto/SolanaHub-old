@@ -72,7 +72,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
   }
   async liquidStake() {
-    trackEvent('liquid stake')
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     // const amount: number = Number(stakeAmount);
     const sol = new bn(stakeAmount * LAMPORTS_PER_SOL);
@@ -91,7 +90,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
           this.wallet.publicKey,
           Number(sol)
         );
-        this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
+        await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
+        trackEvent('liquid stake')
       }
     }
 

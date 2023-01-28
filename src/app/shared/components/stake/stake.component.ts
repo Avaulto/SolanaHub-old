@@ -18,7 +18,7 @@ const { trackEvent } = Plausible();
 })
 export class StakeComponent implements OnInit {
   @Input() wallet: Asset;
-  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>
+  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
   @Input() avgApy: number;
   @Input() privateValidatorPage: boolean = false;
   public showValidatorList: boolean = false;
@@ -49,18 +49,20 @@ export class StakeComponent implements OnInit {
       this.rewardInfo.amount = form.amount
     })
 
+    const validatorData: any = await firstValueFrom(this.validatorsData);
     if (!this.privateValidatorPage) {
       this._route.queryParams
         .subscribe(params => {
           const validatorIdentity = params.validatorIdentity
           if (validatorIdentity) {
-            this._preSelectValidator(validatorIdentity);
+            this._preSelectValidator(validatorData, validatorIdentity);
           }
         }
         );
     } else {
-      const myValidator: any = await firstValueFrom(this.validatorsData);
-      this._preSelectValidator(myValidator.vote_identity);
+      const myValidatorIdentity =validatorData.vote_identity
+      validatorData.extraData['support MEV reward'] = true;
+      this._preSelectValidator([validatorData], myValidatorIdentity);
     }
   }
 
@@ -69,9 +71,9 @@ export class StakeComponent implements OnInit {
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
 
-  private async _preSelectValidator(validatorVoteKey: string) {
-    const validatorsList = await lastValueFrom(this._solanaUtilsService.getValidatorData());
-    const getSelectedValidator = validatorsList.filter(validator => validator.vote_identity == validatorVoteKey)[0];
+  private async _preSelectValidator(validators:ValidatorData[],validatorVoteKey: string) {
+    // const validatorsList: ValidatorData[] | any = await firstValueFrom(this.validatorsData);
+    const getSelectedValidator = validators.filter(validator => validator.vote_identity == validatorVoteKey)[0];
     this.setSelectedValidator(getSelectedValidator);
   }
 
@@ -82,12 +84,8 @@ export class StakeComponent implements OnInit {
 
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
   }
-  public submitNewStake(): void {
-    if(this.privateValidatorPage){
-      trackEvent('regular stake')
-    }else{
-      trackEvent('stake with avaulto')
-    }
+  public async submitNewStake(): Promise<void> {
+
 
     let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
     const walletOwnerPublicKey = this.wallet.publicKey;
@@ -95,7 +93,12 @@ export class StakeComponent implements OnInit {
     if(monthLockuptime){  
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
-    this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime)
+    await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
+    if(this.privateValidatorPage){
+      trackEvent('regular stake')
+    }else{
+      trackEvent('stake with avaulto')
+    }
   }
   private _getLockuptimeMilisecond(months: number): number {
     const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();

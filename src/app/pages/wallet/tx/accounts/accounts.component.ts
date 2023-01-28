@@ -24,7 +24,6 @@ export class AccountsComponent implements OnChanges {
   ) { }
 
   public async ngOnChanges(){
-    console.log(this.wallet)
     // automatic update when account has change
     if (this.wallet) {
       this._solanaUtilsService.fetchAndUpdateStakeAccount(this.wallet.publicKey);

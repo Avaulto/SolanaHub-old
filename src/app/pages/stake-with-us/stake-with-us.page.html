@@ -9,7 +9,7 @@
             </ion-col>
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
                 <app-data-box [title]="'stake'" [loading]="(getValidatorInfo | async) == null"
-                    [desc]="(getValidatorInfo | async)?.stake + ' ◎'">
+                    [desc]="(getValidatorInfo | async)?.activated_stake | number: '1.2-2'">
                 </app-data-box>
             </ion-col>
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
@@ -29,7 +29,7 @@
             </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center">
-            <ion-col size="12" sizeMd="6" class="data-box ion-padding">
+            <ion-col size="12" sizeMd="7" class="data-box ion-padding">
                 <app-stake [validatorsData]="getValidatorInfo" [privateValidatorPage]="true" [avgApy]="apy"
                     [wallet]="wallet"></app-stake>
             </ion-col>

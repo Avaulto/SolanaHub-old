@@ -69,7 +69,6 @@ export class NftListingComponent implements OnInit {
 
   }
   public async listNft(): Promise<void> {
-    trackEvent('list NFT')
 
     // get walletOwner
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
@@ -84,7 +83,8 @@ export class NftListingComponent implements OnInit {
     txn.instructions[0].keys[1].isSigner= false
     
     // submit transaction using wallet adapter
-    this._txInterceptService.sendTx([txn], walletOwner)
+    await this._txInterceptService.sendTx([txn], walletOwner)
+    trackEvent('list NFT')
   }
   public async cancelNftListing(): Promise<void> {
     const listInfo = this.listNftForm.value;

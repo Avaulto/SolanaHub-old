@@ -6,10 +6,11 @@
     background: var(--deep-background);
     display: flex;
     align-items: center;
-    height: 54px;
+    height: 60px;
     border-radius: 4px;
     cursor: pointer;
     transition: 0.3s ease;
+    border-bottom: 1px solid rgb(132 141 164 / 20%);;
     // opacity: 0.8;
 
     // &:hover {

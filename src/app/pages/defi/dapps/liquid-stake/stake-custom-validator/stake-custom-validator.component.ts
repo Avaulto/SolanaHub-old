@@ -10,7 +10,7 @@ import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } 
 export class StakeCustomValidatorComponent implements OnInit {
   @Output() onValidatorSelect: EventEmitter<string> = new EventEmitter();
   public validatorsData$: Observable<ValidatorData[] | ValidatorData> = this._solanaUtilsService.getValidatorData().pipe(shareReplay(),
-    switchMap(async validators => {
+    switchMap(async (validators: ValidatorData[]) => {
       const eligibleVoteKeys: string[] = await this.getEligibleValidators();
       const filterValidators = validators.filter(validator => eligibleVoteKeys.find((votekey, i) => votekey == validator.vote_identity));
       return filterValidators

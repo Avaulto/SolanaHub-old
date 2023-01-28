@@ -71,7 +71,7 @@ export class StakeAccountBoxComponent implements OnInit {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
   }
   async delegateStakeAccount() {
-    trackEvent('delegate stake account')
+
     let { stakeAccount, validatorVoteAccount } = this.stakeForm.value;
 
     const stakeAccountPK = new PublicKey(stakeAccount.addr);
@@ -94,6 +94,7 @@ export class StakeAccountBoxComponent implements OnInit {
             stakeAccountPK
           );
           await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
+          trackEvent('delegate stake account')
         }
 
       }
@@ -109,7 +110,6 @@ export class StakeAccountBoxComponent implements OnInit {
   }
   public async stakeCLS(stakeAccount:StakeAccountExtended, targetValidatorVoteAccount: string) {
 
-    trackEvent('custom validator stake')
     // current validator whom delegated by stake account
     const currentValidator = new PublicKey(stakeAccount.validatorData.vote_identity);
     // target validator you wish to delegate
@@ -144,6 +144,7 @@ export class StakeAccountBoxComponent implements OnInit {
 
       const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
+      trackEvent('custom validator stake')
     } catch (error) {
 
       const toasterMessage: toastData = {

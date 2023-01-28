@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ConnectionStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, firstValueFrom, Observable, Subject, throwError } from 'rxjs';
-import { catchError, map, shareReplay } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
@@ -10,6 +10,11 @@ import { PopoverController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
 
+interface jitoValidators {
+  vote_account: string,
+  mev_commission_bps: 800,
+  running_jito: true
+}
 interface StakeWizEpochInfo {
   epoch: number,
   start_slot: number,
@@ -49,56 +54,73 @@ export class SolanaUtilsService {
   }
 
   private _formatErrors(error: any) {
-    console.warn('my err', error)
+    console.warn('my err', this._toasterService)
     this._toasterService.msg.next({
       message: error.message,
       icon: 'alert-circle-outline',
       segmentClass: "toastError",
     });
-    return throwError(error);
+    return throwError((() => error))
   }
 
-  public getSingleValidatorData(vote_identity: string = ''): Observable<ValidatorData> {
-    return this._apiService.get(`https://api.stakewiz.com/validator/${vote_identity}`).pipe(
-      map((validator) => {
-        const filteredValidator: ValidatorData = {
-          skipRate: validator.skip_rate,
-          name: validator.name || '',
-          image: validator.image || '/assets/images/icons/node-placeholder.svg',
-          vote_identity: validator.vote_identity,
-          website: validator.website,
-          wizScore: validator.wiz_score,
-          commission: validator.commission,
-          apy_estimate: validator.apy_estimate,
-          uptime: validator.uptime,
-          stake: validator.activated_stake,
-          selectable: true,
-
-        }
-        return filteredValidator;
-      }),
-      catchError(this._formatErrors)
-    );
+  public async fetchMevValidators(): Promise<jitoValidators[]> {
+    try {
+      const fetchValidatorsList = await fetch('https://kobe.mainnet.jito.network/api/v1/validators');
+      const resValidatorList = await fetchValidatorsList.json();
+      const runningJito = resValidatorList.validators.filter(validator => validator.running_jito);
+      return runningJito
+    } catch (error) {
+      console.warn(error);
+      return []
+    }
   }
-  public getValidatorData(vote_identity: string = ''): Observable<ValidatorData[]> {
-    return this._apiService.get(`https://api.stakewiz.com/validators/${vote_identity}`).pipe(
-      map((validators) => {
-        const filteredValidators: ValidatorData[] = validators.map(validator => {
-          return {
-            name: validator.name || '',
-            image: validator.image || '/assets/images/icons/node-placeholder.svg',
-            vote_identity: validator.vote_identity,
-            website: validator.website,
-            wizScore: validator.wiz_score,
-            commission: validator.commission,
-            apy_estimate: validator.apy_estimate,
-            uptime: validator.uptime,
+  public getValidatorData(vote_identity?: string): Observable<ValidatorData | ValidatorData[]> {
+    const prefixPath = vote_identity ? `/validator/${vote_identity}` : '/validators'
+    const stakewizeAPI = 'https://api.stakewiz.com/' + prefixPath
+    return this._apiService.get(stakewizeAPI).pipe(
+      map( data => { 
+        let result;
+        if (vote_identity) {
+          result = {
+            name: data.name || '',
+            image: data.image || '/assets/images/icons/node-placeholder.svg',
+            vote_identity: data.vote_identity,
+            website: data.website,
+            wizScore: data.wiz_score,
+            commission: data.commission,
+            apy_estimate: data.apy_estimate,
+            activated_stake: data.activated_stake,
+            uptime: data.uptime,
             selectable: true,
-            extraData: { 'APY estimate': validator.apy_estimate + '%', commission: validator.commission + '%' }
+            extraData: {
+              'APY estimate': data.apy_estimate + '%',
+              commission: data.commission + '%'
+            },
           }
-        })
-        this.validatorsData = validators;
-        return filteredValidators;
+        } else {
+ 
+          result = data.map(validator => {
+ 
+            return {
+              name: validator.name || '',
+              image: validator.image || '/assets/images/icons/node-placeholder.svg',
+              vote_identity: validator.vote_identity,
+              website: validator.website,
+              wizScore: validator.wiz_score,
+              commission: validator.commission,
+              apy_estimate: validator.apy_estimate,
+              activated_stake: data.activated_stake,
+              uptime: validator.uptime,
+              selectable: true,
+              extraData: {
+                'APY estimate': validator.apy_estimate + '%',
+                commission: validator.commission + '%'
+              }
+            }
+          })
+          this.validatorsData = result;
+        }
+        return result;
       }),
       catchError(this._formatErrors)
     );
@@ -173,12 +195,12 @@ export class SolanaUtilsService {
     const accountLamport = Number(account.account.lamports);
     const excessLamport = accountLamport - stake - rentReseve
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
-    let validatorData: ValidatorData = null;
+    let validatorData: ValidatorData | any = null;
     if (this.validatorsData) {
       validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
     } else {
       try {
-        validatorData = (await firstValueFrom(this.getSingleValidatorData(validatorVoteKey)))
+        validatorData = (await firstValueFrom(this.getValidatorData(validatorVoteKey)))
       } catch (error) {
         console.warn(error)
       }

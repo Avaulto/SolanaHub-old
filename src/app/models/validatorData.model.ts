@@ -7,12 +7,14 @@ export interface ValidatorData{
     wizScore: number;
     commission: number;
     apy_estimate: number;
-    stake?: string;
+    activated_stake: number;
     uptime: number;
     delegetors?: any;
     skipRate: string
     rank?: ValidatorRank;
     selectable: boolean
+    extraData?: {};
+
 }
 interface ValidatorRank {
     rank: number;
