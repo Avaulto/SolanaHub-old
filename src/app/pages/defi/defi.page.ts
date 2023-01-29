@@ -39,7 +39,7 @@ export class DefiPage implements OnInit {
       description: `Orca is a place where you can provide liquidity to a liquidity pools, including concentrated liquidity pools (Whirlpools) to earn trading fees and token emissions.`,
       learnMoreLink: 'https://docs.orca.so/',
       deepLink: 'pools',
-      status:'active'
+      status:'pending'
     },
     {
       name: 'solend',
