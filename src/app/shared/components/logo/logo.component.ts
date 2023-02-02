@@ -7,15 +7,20 @@ import { UtilsService } from 'src/app/services';
   styleUrls: ['./logo.component.scss'],
 })
 export class LogoComponent implements OnInit {
-  public logoUrl = '/assets/images/logo-color.svg'
+  public logoUrl = '/assets/images/avaulto-logo-white.png'
+  public compactDefiLogo = '/assets/images/compact-defi-logo.svg'
   constructor(private _utilsService: UtilsService) { }
 
   ngOnInit() {
-    if(this._utilsService._systemTheme == 'dark'){
-      this.logoUrl =  '/assets/images/logo-color.svg';
-    }else{
-      this.logoUrl =  '/assets/images/logo-black.png';
-    }
+    this._utilsService.systemTheme$.subscribe(theme =>{
+      if(theme == 'dark'){
+        this.logoUrl =  '/assets/images/avaulto-logo-white.png';
+        this.compactDefiLogo = '/assets/images/compact-defi-logo.svg'
+      }else{
+        this.logoUrl =  '/assets/images/avaulto-logo-black.png';
+        this.compactDefiLogo = '/assets/images/compact-defi-logo-black.svg'
+      }
+    })
   }
 
 }

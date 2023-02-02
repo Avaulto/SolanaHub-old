@@ -13,26 +13,20 @@
         <app-search-input (search)="searchPool($event)" [placeholder]="'Filter by symbol'"></app-search-input>
       </div>
     </ion-row>
+    <ion-row class="ion-margin-bottom">
+      <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+    </ion-row>
+    <app-loader *ngIf="(orcaPools | async) == null"></app-loader>
     <ion-row>
 
+      <ng-container [ngSwitch]="currentTab">
+        <app-explore *ngSwitchCase="'explore'" [orcaDataset]="orcaPools" [searchTerm]="searchTerm"></app-explore>
+        <app-portfolio *ngSwitchCase="'portfolio'"></app-portfolio>
+        </ng-container>
 
-      <ion-virtual-scroll class="ion-padding-bottom" [items]="(orcaDataset | async)?.whirlpools | filter: 'tokenA.symbol':searchTerm"
-        approxItemHeight="74px" minBufferPx="200" maxBufferPx="500">
-        <div *virtualItem="let item; let i = i" class="data-box ion-padding ion-margin-bottom"  [ngClass]=" false ? '': 'extra-reward'" style="margin-bottom:50px;min-height: auto;" >
-
-          <div *ngIf="true" class="reward-info" tooltip="10 ORCA per week">
-            orca reward
-          </div>
-
-          <ion-col size="12">
-            <app-whirl-pool (poolLoaded)="getPoolReward($event)" [pool]="item" [isConnected]="isReady$ | async"></app-whirl-pool>
-          </ion-col>
-        </div>
-      </ion-virtual-scroll>
 
 
     </ion-row>
-    <app-loader *ngIf="orcaDataset | async"></app-loader>
-    <!-- <app-friktion-info [friktionInfo]="friktionInfo"></app-friktion-info> -->
+  
   </ion-grid>
 </ion-content>

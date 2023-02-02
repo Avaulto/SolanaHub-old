@@ -6,7 +6,7 @@ import { LocalStorageService } from "./local-storage.servic";
 // import * as moment from "moment";
 // import { v4 as uuidv4 } from "uuid";
 
- 
+
 declare global {
   interface Date {
     addDays(): Function;
@@ -15,12 +15,12 @@ declare global {
     toFixedNoRounding: Function;
   }
 }
-Number.prototype.toFixedNoRounding = function(n) {
+Number.prototype.toFixedNoRounding = function (n) {
   const reg = new RegExp("^-?\\d+(?:\\.\\d{0," + n + "})?", "g")
   const a = this.toString().match(reg)[0];
   const dot = a.indexOf(".");
   if (dot === -1) { // integer, insert decimal dot and pad up zeros
-      return a + "." + "0".repeat(n);
+    return a + "." + "0".repeat(n);
   }
   const b = n - (a.length - dot) + 1;
   return b > 0 ? (a + "0".repeat(b)) : a;
@@ -30,74 +30,75 @@ Number.prototype.toFixedNoRounding = function(n) {
   providedIn: "root",
 })
 export class UtilsService {
-  constructor(private factory:RendererFactory2, @Inject(DOCUMENT) private document: Document,private localStore: LocalStorageService) {
-    this.renderer = this.factory.createRenderer(null,null);
-    this.changeTheme(this._systemTheme);
+  constructor(private factory: RendererFactory2, @Inject(DOCUMENT) private document: Document, private localStore: LocalStorageService) {
+    this.renderer = this.factory.createRenderer(null, null);
+    this.changeTheme(this._systemTheme.value);
   }
   private renderer: Renderer2;
   private _systemPair = new BehaviorSubject<string>('USD' as string);
-  private _systemExplorer = new BehaviorSubject<string>( this.localStore.getData('explorer') || 'https://solana.fm' as string);
-  public _systemTheme = this.localStore.getData('theme') || 'dark';
-  
-  private _PriorityFee = PriorityFee.None;
-  
-  public explorer$ = this._systemExplorer.asObservable();
+  private _systemExplorer = new BehaviorSubject<string>(this.localStore.getData('explorer') || 'https://solana.fm' as string);
+  private _systemTheme = new BehaviorSubject<string>(this.localStore.getData('theme') || ' dark' as string);
 
-  public updateSystemPair(pair: string): void{
-    this.localStore.saveData('pair',pair);
+  private _PriorityFee = PriorityFee.None;
+
+  public explorer$ = this._systemExplorer.asObservable();
+  public systemTheme$ = this._systemTheme.asObservable();
+
+  public updateSystemPair(pair: string): void {
+    this.localStore.saveData('pair', pair);
     this._systemPair.next(pair);
   }
 
-  
-  public get priorityFee() : PriorityFee {
+
+  public get priorityFee(): PriorityFee {
     return this._PriorityFee;
   }
-  
-  
-  public set priorityFee(v : PriorityFee) {
+
+
+  public set priorityFee(v: PriorityFee) {
     this._PriorityFee = v;
   }
-  
-  changeTheme(name: string){
-    this._systemTheme = name;
-    this.localStore.saveData('theme',this._systemTheme);
-    if(name.toLocaleLowerCase() == 'light'){
+
+  public changeTheme(name: string) {
+    this.localStore.saveData('theme', name);
+    this._systemTheme.next(name);
+    if (name.toLocaleLowerCase() == 'light') {
       this.enableLightTheme()
-    }else{
+    } else {
       this.enableDarkTheme();
     }
   }
-  public enableLightTheme(){
-    this.renderer.addClass(this.document.body,'light-theme');
+  public enableLightTheme() {
+    this.renderer.addClass(this.document.body, 'light-theme');
   }
-  public enableDarkTheme(){
-    this.renderer.removeClass(this.document.body,'light-theme');
+  public enableDarkTheme() {
+    this.renderer.removeClass(this.document.body, 'light-theme');
   }
-  public changeExplorer(name: string){
-    this.localStore.saveData('explorer',name);
+  public changeExplorer(name: string) {
+    this.localStore.saveData('explorer', name);
     this._systemExplorer.next(name);
   }
-  get explorer(){
+  get explorer() {
     return this._systemExplorer.value;
   }
-  public addrUtil(addr: string): {addr: string, addrShort:string} {
-    return {addr, addrShort: addr?.substring(0, 4) + '...' + addr.substring(addr.length - 4, addr.length[addr.length])}
+  public addrUtil(addr: string): { addr: string, addrShort: string } {
+    return { addr, addrShort: addr?.substring(0, 4) + '...' + addr.substring(addr.length - 4, addr.length[addr.length]) }
   }
-  public calcPair(){
+  public calcPair() {
     this._systemPair.value
   }
-  public getBlockchainAssets(addr: string){
+  public getBlockchainAssets(addr: string) {
     let assets = {};
   }
-  public shortenNum(number,aftetDot = 3): number{
-    if(number){
+  public shortenNum(number, aftetDot = 3): number {
+    if (number) {
       return Number(number).toFixedNoRounding(aftetDot)
-    }else{
+    } else {
       return 0
     }
- 
+
   }
-  public numFormater(number: number): any{
+  public numFormater(number: number): any {
     return Intl.NumberFormat('en-US', {
       notation: "compact",
       maximumFractionDigits: 1

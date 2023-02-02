@@ -1,0 +1,22 @@
+:host{
+    display: block;
+    width: 100%;
+}
+.extra-reward{
+    border: 1px solid gold;
+}
+.virtual-item{
+    margin-bottom:50px;
+    min-height: 73px;
+}
+.reward-info {
+    position: absolute;
+    bottom: -32px;
+    right: 50px;
+    border: 1px solid gold;
+    padding: 5px 9px;
+    border-radius:0 0 4px 4px ;
+    color: gold;
+    font-weight: bold;
+    text-transform: capitalize;
+}

@@ -30,7 +30,6 @@
     "@fortawesome/free-brands-svg-icons": "^6.1.0",
     "@fortawesome/free-regular-svg-icons": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
-    "@frakt-protocol/frakt-sdk": "^0.8.11",
     "@heavy-duty/wallet-adapter": "0.5.0-beta.0",
     "@ionic/angular": "^6.2.4",
     "@jup-ag/core": "^2.0.0-beta.3",

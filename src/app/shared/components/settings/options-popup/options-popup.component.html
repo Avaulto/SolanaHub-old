@@ -114,7 +114,7 @@
       <ion-row id="btn-controls" class=" ion-align-items-center  ion-justify-content-between">
 
 
-        <ion-col size="12" sizeLg="5.9" class="selected-by" [ngClass]="{'selectedBtn': currenTheme == 'dark'}"
+        <ion-col size="12" sizeLg="5.9" class="selected-by" [ngClass]="{'selectedBtn': (currenTheme$ | async) == 'dark'}"
           (click)="setTheme('dark')">
           <div class="select-group">
             <span>Dark</span>
@@ -125,12 +125,12 @@
               <span id="color-4"></span>
               <span id="color-5"></span>
             </div>
-            <ion-checkbox mode="ios" [checked]="currenTheme == 'dark'" color="primary"></ion-checkbox>
+            <ion-checkbox mode="ios" [checked]="(currenTheme$ | async) == 'dark'" color="primary"></ion-checkbox>
           </div>
 
 
         </ion-col>
-        <ion-col size="12" sizeLg="5.9" class="selected-by" [ngClass]="{'selectedBtn':currenTheme == 'light'}"
+        <ion-col size="12" sizeLg="5.9" class="selected-by" [ngClass]="{'selectedBtn':(currenTheme$ | async) == 'light'}"
           (click)="setTheme('light')">
 
           <div class="select-group">
@@ -142,7 +142,7 @@
               <span id="color-4"></span>
               <span id="color-5"></span>
             </div>
-            <ion-checkbox mode="ios" [checked]="currenTheme == 'light'" color="primary">
+            <ion-checkbox mode="ios" [checked]="(currenTheme$ | async) == 'light'" color="primary">
             </ion-checkbox>
           </div>
 

@@ -25,8 +25,8 @@
       <div class="pool-stat-value">{{pool.totalApr?.day * 365 | number : '1.2-2'}}%</div>
     </div>
     <div class="pool-deposit">
-      <ng-container *ngIf="isConnected; else elseTemplate">
-        <ion-button fill="outline">deposit</ion-button>
+      <ng-container *ngIf="isReady$ | async; else elseTemplate">
+        <ion-button (click)="onInitDeposit.emit(pool)" fill="outline">deposit</ion-button>
       </ng-container>
       <ng-template #elseTemplate>
         <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>

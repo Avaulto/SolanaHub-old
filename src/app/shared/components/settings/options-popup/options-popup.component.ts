@@ -16,7 +16,7 @@ export class OptionsPopupComponent implements OnInit {
   public currentRPC = environment.solanaCluster;
   public tritonRPC = 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d';
   public extrNodeRPC = 'https://solana-mainnet.rpc.extrnode.com';
-  public currenTheme: string = this._utilsService._systemTheme;
+  public currenTheme$ = this._utilsService.systemTheme$.pipe(shareReplay(1));
   public currentPrioretyFee = this._utilsService.priorityFee
   readonly currentExplorer$ = this._utilsService.explorer$.pipe(shareReplay(1));
 
@@ -39,7 +39,7 @@ export class OptionsPopupComponent implements OnInit {
     this._toasterService.msg.next(toasterMessage)
   }
   public setTheme(name: string) {
-    this.currenTheme = name
+    console.log(name)
     this._utilsService.changeTheme(name);
     const toasterMessage: toastData = {
       message: 'Theme updated',

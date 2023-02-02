@@ -42,21 +42,21 @@ export class DefiPage implements OnInit {
       status:'pending'
     },
     {
-      name: 'solend',
-      image: 'assets/images/icons/solend-logo.png',
-      description: `Solend is an algorithmic, decentralized protocol for lending and borrowing on Solana.`,
-      learnMoreLink: 'https://docs.solend.fi/',
-      deepLink: 'lending-strategies',
-      status:'pending'
-    },
-    {
       name: 'frakt',
       image: 'assets/images/icons/frakt-logo.jpeg',
       description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
       learnMoreLink: 'https://docs.frakt.xyz/frakt',
       deepLink: 'nft-liquidity',
       status:'pending'
-    }
+    },
+    // {
+    //   name: 'solend',
+    //   image: 'assets/images/icons/solend-logo.png',
+    //   description: `Solend is an algorithmic, decentralized protocol for lending and borrowing on Solana.`,
+    //   learnMoreLink: 'https://docs.solend.fi/',
+    //   deepLink: 'lending-strategies',
+    //   status:'pending'
+    // },
   ]
   
   constructor(private _popoverController: PopoverController) { }

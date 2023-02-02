@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-   <img width="200" src="https://raw.githubusercontent.com/Avaulto/Compact-DeFi/master/src/assets/images/logo-color.png" alt="Avaulto logo"/>
+   <img width="200" src="https://raw.githubusercontent.com/Avaulto/Compact-DeFi/master/src/assets/images/compact-defi-logo.svg" alt="compact defi logo"/>
   <br>
 </h1>
 
