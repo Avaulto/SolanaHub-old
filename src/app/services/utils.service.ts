@@ -37,7 +37,7 @@ export class UtilsService {
   private renderer: Renderer2;
   private _systemPair = new BehaviorSubject<string>('USD' as string);
   private _systemExplorer = new BehaviorSubject<string>(this.localStore.getData('explorer') || 'https://solana.fm' as string);
-  private _systemTheme = new BehaviorSubject<string>(this.localStore.getData('theme') || ' dark' as string);
+  private _systemTheme = new BehaviorSubject<string>(this.localStore.getData('theme') || 'dark' as string);
 
   private _PriorityFee = PriorityFee.None;
 
