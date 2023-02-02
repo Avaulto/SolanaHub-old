@@ -36,7 +36,7 @@ export class DefiPage implements OnInit {
     {
       name: 'orca',
       image: 'assets/images/icons/orca-logo.svg',
-      description: `Orca is a place where you can provide liquidity to a liquidity pools, including concentrated liquidity pools (Whirlpools) to earn trading fees and token emissions.`,
+      description: `Step into the exciting world of Orca, where you can unleash your earning potential by becoming a liquidity provider! Dive into the deep ocean of liquidity pools and swim with the whales in concentrated liquidity pools, known as Whirlpools.`,
       learnMoreLink: 'https://docs.orca.so/',
       deepLink: 'pools',
       status:'pending'
