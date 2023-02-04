@@ -24,8 +24,9 @@ export class HomePage implements OnInit, OnDestroy {
     solData: this._getSOLprice(),
     stakeInfo: this._solanaUtilsService.getStake(),
     TPS: this._solanaUtilsService.getTPS(),
-    epochInfo: this._solanaUtilsService.getEpochInfo()
-  }).pipe(shareReplay(1), tap(async (data:any) => data.supply = await this._solanaUtilsService.getSupply()),map( (data: any) => {
+    epochInfo: this._solanaUtilsService.getEpochInfo(),
+    supply: this._solanaUtilsService.getSupply()
+  }).pipe(shareReplay(),map( (data: any) => {
     
     data.TPS = Math.trunc(data?.TPS)
     return data

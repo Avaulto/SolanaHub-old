@@ -20,8 +20,8 @@
     <ion-row>
 
       <ng-container [ngSwitch]="currentTab">
-        <app-explore *ngSwitchCase="'explore'" [orcaDataset]="orcaPools" [searchTerm]="searchTerm"></app-explore>
-        <app-portfolio *ngSwitchCase="'portfolio'"></app-portfolio>
+        <app-explore *ngSwitchCase="'explore'" [orcaPools]="orcaPools" [searchTerm]="searchTerm"></app-explore>
+        <app-portfolio *ngSwitchCase="'portfolio'"  [orcaPools]="orcaPools"></app-portfolio>
         </ng-container>
 
 

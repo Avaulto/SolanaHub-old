@@ -20,19 +20,22 @@
       <ion-input class="button-text" formControlName="amount" placeholder="Amount"></ion-input>
       <span class="heading-6" (click)="setMaxAmount()">MAX</span>
     </ion-row>
+    <ion-item *ngIf="false" style=" --background: transparent;">
+      <ion-label>private transaction</ion-label>
+      <ion-toggle slot="end"></ion-toggle>
+    </ion-item>
+        <ion-row class="ion-justify-content-center">
+          <!-- <app-loader></app-loader> -->
+          <ng-container *ngIf="wallet; else elseTemplate">
+            <ion-button (click)="send()" [disabled]="formSubmitted || sendCoinForm.invalid" class="ion-text-capitalize">
+              submit
+            </ion-button>
+          </ng-container>
+          <ng-template #elseTemplate>
+            <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+          </ng-template>
 
-    <ion-row class="ion-justify-content-center">
-      <!-- <app-loader></app-loader> -->
-      <ng-container *ngIf="wallet; else elseTemplate">
-        <ion-button (click)="send()" [disabled]="formSubmitted || sendCoinForm.invalid" class="ion-text-capitalize">
-          submit
-        </ion-button>
-      </ng-container>
-      <ng-template #elseTemplate>
-        <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
-      </ng-template>
 
-
-    </ion-row>
+        </ion-row>
   </form>
 </ion-grid>

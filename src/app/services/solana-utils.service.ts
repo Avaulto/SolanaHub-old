@@ -272,25 +272,25 @@ export class SolanaUtilsService {
     );
   }
   async getWalletHistory(walletPubKey: PublicKey) {
-    try {
-      const signatures: ConfirmedSignatureInfo[] = await this.connection.getConfirmedSignaturesForAddress2(walletPubKey);
-      let records: any[] = [];
-      let walletHistory = []
-      signatures.forEach(async signature => {
-        const txInfo = await this.connection.getTransaction(signature.signature);
-        records.push(txInfo);
-      });
-      records.forEach((record, i) => {
-        const from = record?.transaction?.instructions[0]?.keys[0]?.pubkey.toBase58() || null;
-        const to = record.transaction?.instructions[0]?.keys[1]?.pubkey.toBase58() || null;;
-        const amount = (record.meta?.postBalances[1] - record.meta?.preBalances[1]) / LAMPORTS_PER_SOL || null;
-        walletHistory.push({ signature: signatures[i].signature, block: record.slot, amount, from, to } || null)
-      });
-      return walletHistory;
-    } catch (error) {
-      console.error(error)
-      this._toasterService.msg.next({ message: 'failed to retrieve transaction history', icon: '', segmentClass: 'toastError' })
-    }
+    // try {
+    //   const signatures: ConfirmedSignatureInfo[] = await this.connection.getConfirmedSignaturesForAddress2(walletPubKey);
+    //   let records: any[] = [];
+    //   let walletHistory = []
+    //   signatures.forEach(async signature => {
+    //     const txInfo = await this.connection.getTransaction(signature.signature);
+    //     records.push(txInfo);
+    //   });
+    //   records.forEach((record, i) => {
+    //     const from = record?.transaction?.instructions[0]?.keys[0]?.pubkey.toBase58() || null;
+    //     const to = record.transaction?.instructions[0]?.keys[1]?.pubkey.toBase58() || null;;
+    //     const amount = (record.meta?.postBalances[1] - record.meta?.preBalances[1]) / LAMPORTS_PER_SOL || null;
+    //     walletHistory.push({ signature: signatures[i].signature, block: record.slot, amount, from, to } || null)
+    //   });
+    //   return walletHistory;
+    // } catch (error) {
+    //   console.error(error)
+    //   this._toasterService.msg.next({ message: 'failed to retrieve transaction history', icon: '', segmentClass: 'toastError' })
+    // }
   }
 
   public async getTokenAccountsBalance(wallet: string): Promise<TokenBalance[]> {

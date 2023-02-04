@@ -31,6 +31,7 @@ export class PoolsPage {
   public menu: string[] = ['explore', 'portfolio'];
   public currentTab: string = this.menu[0];
   public orcaPools: Observable<OrcaWhirlPool> = this._orcaStoreService.fetchPools().pipe(
+    shareReplay(),
     map((res) => {
       this.whirlPoolsStats = this.calcStats(res.whirlpools);
       return res
@@ -41,7 +42,7 @@ export class PoolsPage {
     weeklyReward: { title: 'Weekly Rewards', value: '' },
     orcaPrice: { title: 'ORCA Price', value: '' }
   };
-  private wallet$: Subscription;
+  public wallet$: Subscription;
 
   ionViewWillEnter(){
     this.wallet$ = this._walletStore.anchorWallet$.pipe(

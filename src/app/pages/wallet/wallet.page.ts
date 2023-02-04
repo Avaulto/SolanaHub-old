@@ -19,7 +19,6 @@ export class WalletPage implements OnInit, OnDestroy {
   )
   public walletExtended: Observable<Asset> = this._walletStore.anchorWallet$.pipe(
     this.utilsService.isNotNull,
-    shareReplay(1),
     mergeMap(async wallet => {
       if (wallet) {
         let asset: Asset = {
@@ -42,8 +41,9 @@ export class WalletPage implements OnInit, OnDestroy {
       } else {
         return null
       }
-    },
-    ), shareReplay(1))
+    }),
+    shareReplay(1)
+    )
 
   public walletTotalValue = { usdValue: 0, solValue: 0 }
   readonly isReady$ = this._walletStore.connected$;

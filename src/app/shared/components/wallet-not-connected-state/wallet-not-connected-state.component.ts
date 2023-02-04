@@ -9,6 +9,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 })
 export class WalletNotConnectedStateComponent implements OnInit {
   @Input() showBtn: boolean = false;
+  @Input() showText: boolean = false;
   public plugWalletIcon = faPlugCircleBolt;
   readonly isReady$ = this._walletStore.connected$;
   constructor(private _walletStore:WalletStore) { }

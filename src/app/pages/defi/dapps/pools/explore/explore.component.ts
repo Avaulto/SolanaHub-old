@@ -14,12 +14,15 @@ import { OrcaWhirlPool, Whirlpool } from '../orca.model';
   styleUrls: ['./explore.component.scss'],
 })
 export class ExploreComponent implements OnInit {
-  @Input() orcaDataset: Observable<OrcaWhirlPool>
+  @Input() orcaPools: Observable<OrcaWhirlPool>
   @Input() searchTerm: string;
   constructor(private _orcaStoreService: OrcaStoreService,) { }
 
   ngOnInit() { }
   public async initDepositSetup(pool: Whirlpool) {
-    this._orcaStoreService.addLiquidity()
+    const tokenA = { mint: new PublicKey(pool.tokenA.mint), decimals: pool.tokenA.decimals };
+    const tokenB = { mint: new PublicKey(pool.tokenB.mint), decimals: pool.tokenB.decimals };
+
+    this._orcaStoreService.addLiquidity(tokenA,tokenB)
      }
 }
