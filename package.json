@@ -52,7 +52,6 @@
     "chart.js": "^3.7.1",
     "copy-to-clipboard": "^3.3.3",
     "decimal.js": "^10.3.1",
-    "elusiv-sdk": "file:elusiv-sdk-react-1.0.0.tgz",
     "jsbi": "^4.3.0",
     "plausible-tracker": "^0.3.8",
     "rxjs": "~7.5.0",
