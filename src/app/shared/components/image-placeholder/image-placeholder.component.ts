@@ -12,5 +12,5 @@ export class ImagePlaceholderComponent implements OnChanges {
 
   ngOnChanges(): void {
   }
-  
+
 }

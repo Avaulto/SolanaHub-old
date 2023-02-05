@@ -1,7 +1,7 @@
 <ion-icon placement="top" *ngIf="!imagePath" name="alert-circle-outline"></ion-icon>
-
-    <ion-skeleton-text style="background-color: white;height: inherit" *ngIf="showSkelaton" animated></ion-skeleton-text>
-    <ion-img (ionImgDidLoad)="showSkelaton = false" #Img (ionError)="showSkelaton = false;
+<ion-skeleton-text  style="background-color: white;height: inherit"
+    *ngIf="showSkelaton" animated></ion-skeleton-text>
+<ion-img (ionImgDidLoad)="showSkelaton = false" #Img  (ionError)="showSkelaton = false;
     Img.src= '/assets/images/nft-not-found.svg' " [src]="imagePath || '/assets/images/nft-not-found.svg'">
 </ion-img>
 

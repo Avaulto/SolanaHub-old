@@ -10,8 +10,9 @@ import {
   SlopeWalletAdapter,
   SolflareWalletAdapter
 } from '@solana/wallet-adapter-wallets';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
