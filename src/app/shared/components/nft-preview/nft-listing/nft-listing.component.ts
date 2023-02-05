@@ -68,7 +68,7 @@ export class NftListingComponent implements OnInit {
     this.listNftForm.controls.auctionHouseAddress.setValue(auctionHouseAddress)
 
   }
-  public async listNft(): Promise<void> {
+  public async listOrUnlistNft(): Promise<void> {
 
     // get walletOwner
     const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
@@ -76,7 +76,7 @@ export class NftListingComponent implements OnInit {
     const listInfo = this.listNftForm.value;
 
     // get transaction instructions buffer
-    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftListing(listInfo)
+    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftSellOrCancel('sell',listInfo)
     // transform from buffer to transaction instructions object
     const txn = Transaction.from(Buffer.from(txIns.txSigned.data));
     txn.instructions[0].keys[0].isSigner= false
@@ -86,11 +86,11 @@ export class NftListingComponent implements OnInit {
     await this._txInterceptService.sendTx([txn], walletOwner)
     trackEvent('list NFT')
   }
-  public async cancelNftListing(): Promise<void> {
-    const listInfo = this.listNftForm.value;
-    const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftListingCancel(listInfo)
-    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
-    this._txInterceptService.sendTx([txn], walletOwner)
-  }
+  // public async cancelNftListing(): Promise<void> {
+  //   const listInfo = this.listNftForm.value;
+  //   const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftSellOrCancel(listInfo)
+  //   const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+  //   const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
+  //   this._txInterceptService.sendTx([txn], walletOwner)
+  // }
 }

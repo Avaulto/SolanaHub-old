@@ -27,7 +27,6 @@ export class PortfolioComponent implements OnInit {
   constructor(private _orcaStoreService: OrcaStoreService, private _wallet: WalletStore, private _utilsService: UtilsService) { }
 
   async ngOnInit() {
-    console.log('port loaded')
 
 
   }

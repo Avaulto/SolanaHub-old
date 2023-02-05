@@ -265,7 +265,6 @@ export class TxInterceptService {
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
 
-      // this._walletStore.signTransaction(transaction);
       const res = await firstValueFrom(this._walletStore.signTransaction(transaction));
 
       if (extraSigners?.length > 0) transaction.partialSign(...extraSigners);

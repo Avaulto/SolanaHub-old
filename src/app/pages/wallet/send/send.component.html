@@ -20,10 +20,12 @@
       <ion-input class="button-text" formControlName="amount" placeholder="Amount"></ion-input>
       <span class="heading-6" (click)="setMaxAmount()">MAX</span>
     </ion-row>
-    <ion-item *ngIf="false" style=" --background: transparent;">
-      <ion-label>private transaction</ion-label>
-      <ion-toggle slot="end"></ion-toggle>
-    </ion-item>
+  
+      <app-label-layout *ngIf="false" [layoutConfig]="{title: 'Private Transaction'}">
+
+        <ion-toggle style="height: 25px;" formControlName="privateTx" ></ion-toggle>
+      </app-label-layout>
+
         <ion-row class="ion-justify-content-center">
           <!-- <app-loader></app-loader> -->
           <ng-container *ngIf="wallet; else elseTemplate">

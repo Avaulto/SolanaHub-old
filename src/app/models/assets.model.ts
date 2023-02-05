@@ -13,8 +13,7 @@ export interface Asset {
     icon?: string;
     coinData?: CoinData;
     tokens?: Asset[]
-    nfts?: Nft[],
-    wallet?;
+    nfts?: Nft[]
   }
 
   export interface CoinData {

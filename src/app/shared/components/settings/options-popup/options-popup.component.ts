@@ -39,7 +39,6 @@ export class OptionsPopupComponent implements OnInit {
     this._toasterService.msg.next(toasterMessage)
   }
   public setTheme(name: string) {
-    console.log(name)
     this._utilsService.changeTheme(name);
     const toasterMessage: toastData = {
       message: 'Theme updated',

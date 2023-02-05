@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { NftStoreService } from 'src/app/services/nft-store.service';
-import { filter, firstValueFrom, map, mergeMap, Observable, switchMap } from 'rxjs';
+import { filter, firstValueFrom, map, mergeMap, Observable, shareReplay, Subscription, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
-import { LoaderService, UtilsService } from 'src/app/services';
+import { LoaderService, UtilsService, NftStoreService, DataAggregatorService } from 'src/app/services';
 
 
 
@@ -12,30 +11,49 @@ import { LoaderService, UtilsService } from 'src/app/services';
   templateUrl: './nft-gallery.page.html',
   styleUrls: ['./nft-gallery.page.scss'],
 })
-export class NftGalleryPage implements OnInit {
+export class NftGalleryPage {
   public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+    this._utilsService.isNotNull, 
+    this._utilsService.isNotUndefined,
     switchMap(async wallet => {
       if (wallet) {
-        return await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())
+        const nfts = await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())
+        const nftsPrices = nfts.map(nft => nft.floorPrice)
+        this.evaluateTotalHolding(nftsPrices)
+        return nfts
       } else {
         return null;
       }
-    }))
+    }),
+    shareReplay(1))
 
   constructor(
+    private _dataAggregator: DataAggregatorService,
     private _walletStore: WalletStore,
     private _nftStore: NftStoreService,
     public loaderService: LoaderService,
     private _utilsService: UtilsService
   ) { }
+  allNft$: Subscription;
+  public totalFloor:{sol:number,usd: number} = {sol:0,usd:0};
+  async ionViewWillEnter() {
 
-  async ngOnInit() {
-    // const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    // this._nftStore.createNft()
-    // this.nfts = await this._nftStore.getAllOnwerNfts(walletOwner.toBase58())
   }
-  setSort(ev) {
+  ionViewDidLeave() {
+  }
 
+  async evaluateTotalHolding(nftsPrices) {
+    this.totalFloor.sol = this.calcTotalFloor(nftsPrices);
+    const solPrice: number = await (await firstValueFrom(this._dataAggregator.getCoinData('solana'))).price.usd;
+    this.totalFloor.usd = this.totalFloor.sol * solPrice
+  }
+  calcTotalFloor(nftsFloor) {
+    const initialValue = 0;
+    const totalValue = nftsFloor.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return totalValue;
   }
 
 }

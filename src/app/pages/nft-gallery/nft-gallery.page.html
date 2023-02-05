@@ -1,12 +1,13 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
     <!-- <app-go-back-btn></app-go-back-btn> -->
-    <!-- <ion-row class="data-box ion-padding ion-align-items-center">
-    <ion-col  size="9">
+    <ion-row class="data-box ion-padding ion-align-items-center">
+    <ion-col  size="12">
       <div class="heading-4 ion-text-uppercase">total value</div>
-      <span class="heading-2">$10.00</span>
+      <span class="heading-2">{{totalFloor.sol | number: '1.2-2'}} ◎</span>
+      <div class="heading-6">{{totalFloor.usd | currency}}</div>
     </ion-col >
-    <ion-col size="3">
+    <!-- <ion-col size="3">
       <ion-radio-group (ionFocus)="setSort($event)"  value="newest">
         <span>filter</span>
        
@@ -16,8 +17,8 @@
         
 
       </ion-radio-group>
-    </ion-col>
-  </ion-row> -->
+    </ion-col> -->
+  </ion-row>
     <ion-row id="gallery-wrapper" class="data-box ion-padding">
       <ion-col size="12">
         <div class="heading-4 ion-margin-bottom">NFTS</div>

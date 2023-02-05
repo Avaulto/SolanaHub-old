@@ -7,7 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
                 <div id="balance" *ngIf="layoutConfig.balance">
                     Balance: {{layoutConfig.balance}}
                     <app-icon-tooltip *ngIf="layoutConfig.toolTip" [tip]="layoutConfig.toolTip"></app-icon-tooltip>
-                </div>
+                  </div>
+                  <ng-content></ng-content>
               </ion-row>
 `,
   styleUrls: ['./label-layout.component.scss'],

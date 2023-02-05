@@ -39,7 +39,7 @@ export class DefiPage implements OnInit {
       description: `Step into the exciting world of Orca, where you can unleash your earning potential by becoming a liquidity provider! Dive into the deep ocean of liquidity pools and swim with the whales in concentrated liquidity pools, known as Whirlpools.`,
       learnMoreLink: 'https://docs.orca.so/',
       deepLink: 'pools',
-      status:'active'
+      status:'pending'
     },
     {
       name: 'frakt',
