@@ -13,7 +13,6 @@ import {
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
