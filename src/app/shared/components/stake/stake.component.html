@@ -9,8 +9,8 @@
     </ion-row>
     <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
       <div id="">stake</div>
-      <div class="aligned">Balance: {{wallet?.balance}} <ion-icon tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee.
-        " placement="top" name="alert-circle-outline"></ion-icon>
+      <div class="aligned">Balance: {{wallet?.balance}} 
+        <app-icon-tooltip tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
       </div>
     </ion-row>
     <ion-row id="stake-amount">
@@ -40,9 +40,8 @@
       </div>
     </ion-row>
     <ion-row class="heading-6 ion-justify-content-between">
-      <div class="aligned">commitment <ion-icon
-          tooltip="feeling bulish? lock your stake account and commit to yourself" placement="top"
-          name="alert-circle-outline"></ion-icon>
+      <div class="aligned">commitment
+        <app-icon-tooltip tooltip="feeling bulish? lock your stake account and commit to yourself"></app-icon-tooltip>
       </div>
       <div>
         months: {{stakeForm.value.monthLockuptime}}

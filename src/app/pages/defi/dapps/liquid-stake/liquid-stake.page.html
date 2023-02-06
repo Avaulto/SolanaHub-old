@@ -52,14 +52,14 @@
                             </ion-col>
                         </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
+                           
                             <div style="display: flex; align-items:center;">
-                                exchange rate
-                                <ion-icon style="margin-inline-start: 5px;" maxWidth="300px"
-                                    tooltip="SOL/xSOL exchange rate is determined by a formula:
-                                    POOL SOL staked / current xSOL supply. Because staked SOL is earning yield, 
-                                    it grows in size vs. xSOL over time. When you swap xSOL back to SOL,
-                                     you receive more SOL than you staked/swapped before."
-                                    placement="top" name="alert-circle-outline"></ion-icon>
+                                <span>exchange rate</span>
+                                <app-icon-tooltip style="margin-inline-start: 5px;" tip="SOL/xSOL exchange rate is determined by a formula:
+                                POOL SOL staked / current xSOL supply. Because staked SOL is earning yield, 
+                                it grows in size vs. xSOL over time. When you swap xSOL back to SOL,
+                                 you receive more SOL than you staked/swapped before."></app-icon-tooltip>
+                               
                             </div>
                             <div>
                                 1 {{provider?.ticker}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}} SOL
@@ -67,9 +67,11 @@
                         </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
                             <div style="display: flex; align-items:center;">
-                                platform fee
-                                <ion-icon style="margin-inline-start: 5px;" maxWidth="300px" tooltip="No platform fee"
-                                    placement="top" name="alert-circle-outline"></ion-icon>
+                                <span>
+
+                                    platform fee
+                                </span>
+                            
                             </div>
                             <div>
                                 0%

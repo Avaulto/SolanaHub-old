@@ -50,8 +50,9 @@ import {
 
   // toop tip
 import { CustomInterceptor } from "../services";
-import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
+// import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
 import { CopyTextDirective } from "./directives/copy-text.directive";
+import { TooltipModule } from "./components/tooltip/tooltip.module";
 @NgModule({
   declarations: [
     FilterPipe,
@@ -95,7 +96,8 @@ import { CopyTextDirective } from "./directives/copy-text.directive";
     RouterModule,
     FontAwesomeModule,
     IonicModule,
-    TooltipModule,
+    TooltipModule
+    // TooltipModule,
     
   ],
   providers:[
@@ -115,7 +117,7 @@ import { CopyTextDirective } from "./directives/copy-text.directive";
     DataBoxComponent,
     LogoComponent,
     GoBackBtnComponent,
-    TooltipModule,
+    // TooltipModule,
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
     WalletConnectedDropdownComponent,

@@ -10,6 +10,7 @@ import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, withdrawSol, withdrawStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { toastData } from 'src/app/models';
+import { TooltipPosition } from 'src/app/shared/components/tooltip/tooltip.enums';
 const { trackEvent } = Plausible();
 
 
@@ -24,6 +25,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   @Input() marinade: Marinade;
   @Input() solBalance: number = 0;
   @Input() wallet;
+  tooltippos = TooltipPosition.LEFT
   public stakeForm: FormGroup;
   formSubmitted: boolean = false;
   withCLS = false;

@@ -1,12 +1,15 @@
 import { Component, Input } from '@angular/core';
+import { TooltipPosition, TooltipTheme } from '../tooltip/tooltip.enums';
 
 @Component({
   selector: 'app-icon-tooltip',
-  template: `<ion-icon [tooltip]="tip" placement="top" name="alert-circle-outline"></ion-icon>`,
+  template: `<ion-icon [tooltip]="tip" [position]="position" [theme]="theme" placement="top" name="alert-circle-outline"></ion-icon>`,
   styleUrls: ['./icon-tooltip.component.scss'],
 })
 export class IconTooltipComponent {
   @Input() tip: string;
+  @Input() position: TooltipPosition = TooltipPosition.DEFAULT;
+  @Input() theme: TooltipTheme = TooltipTheme.DEFAULT;
   constructor() { }
 
 
