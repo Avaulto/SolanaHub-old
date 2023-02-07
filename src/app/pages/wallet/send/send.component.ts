@@ -11,6 +11,9 @@ import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import crypto from 'crypto';
 
 
+// @ts-ignore
+process.browser = true;
+
 @Component({
   selector: 'app-send',
   templateUrl: './send.component.html',
@@ -64,35 +67,73 @@ export class SendComponent implements OnInit {
   async send() {
     this.formSubmitted = true;
     const { amount, targetAddress, privateTx } = this.sendCoinForm.value;
+
+    try {
     const targetPk = new PublicKey(targetAddress);
     const walletOwnerPublicKey = new PublicKey(this.wallet.address)
     // try {
-      if (privateTx) {
-        const randomInput = Math.random().toString(36).slice(2, 7);
-        const toFill = new Uint8Array(10);
-        const buff = crypto.randomFillSync(toFill);
+    if (privateTx) {
+      // amount to send in SOL
+      const SOL = amount * LAMPORTS_PER_SOL;
 
-        // const seed = (new TextEncoder()).encode(Elusiv.hashPw(randomInput)) as Buffer;
-        // const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
-        const elusiv = await Elusiv.getElusivInstance(buff, walletOwnerPublicKey, this._solanaUtilsService.connection); // this line return err
-        console.log(elusiv)
-        // Top up our private balance with 1 SOL
-        // const topupTxData = await elusiv.buildTopUpTx(amount * LAMPORTS_PER_SOL, 'LAMPORTS');
+      // maximum fee payable
+      const maxFee = 5000 * 100;
 
-        // // Since this the topup, the funds still come from our original wallet. This is just
-        // // a regular Solana transaction in this case.
+      // generate random key
+      const randomInput = '123'// Math.random().toString(36).slice(2, 7);
 
-        // const sendPrivatlytX = await elusiv.buildSendTx(amount * LAMPORTS_PER_SOL, targetPk, 'LAMPORTS');
-        // const sendRes = await elusiv.sendElusivTx(sendPrivatlytX);
-        // // Send SOL, privately 😎
-        // const res = await this._txInterceptService.sendTx([topupTxData.tx, ], walletOwnerPublicKey)
+      // generate seed buffer
+      const seed = (new TextEncoder()).encode(Elusiv.hashPw(randomInput)) as Buffer;
 
-      } else {
-        const res = await this._txInterceptService.sendSol(amount * LAMPORTS_PER_SOL, targetAddress, walletOwnerPublicKey)
-      }
+      // sign wallet owner
+      const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
+
+      // init elusiv SDK
+      const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection);
+      
+      // Top up our private balance with 1 SOL
+      const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
+
+      // Since this the topup, the funds still come from our original wallet. This is just
+      // a regular Solana transaction in this case.
+      await firstValueFrom(this._wallet.signTransaction(topupTxData.tx));
+
+      // send http tx Through warden
+      const topupSig = await elusiv.sendElusivTx(topupTxData)
+
+
+      // wait for confimartion for users
+      await this._solanaUtilsService.connection.confirmTransaction({
+        signature: topupSig.sig.signature,
+        lastValidBlockHeight: topupTxData.tx.lastValidBlockHeight!,
+        blockhash: topupTxData.tx.recentBlockhash!
+      }, "finalized")
+      
+      // tx confimed
+      await topupSig.isConfirmed
+
+      // // Send SOL, privately 😎
+      console.log('about to send', SOL / 2 )
+      const sendTx = await elusiv.buildSendTx(SOL / 2 , targetPk, 'LAMPORTS');
+      // send http tx Through warden
+      console.log('send pprivate ')
+      const sendTxSig = await elusiv.sendElusivTx(sendTx);
+      console.log(`Send initiated with sig ${sendTxSig.sig.signature}`);
+
+      // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
+      await sendTxSig.isConfirmed;
+      console.log('Send complete!');
+    } else {
+      const res = await this._txInterceptService.sendSol(amount * LAMPORTS_PER_SOL, targetAddress, walletOwnerPublicKey)
+    }
+  } catch (error) {
+      console.error(error)
+  }
     // } catch (error) {
     //   console.warn(error)
     // }
     this.formSubmitted = false;
   }
+
+
 }
