@@ -36,7 +36,6 @@
     "@marinade.finance/marinade-ts-sdk": "4.0.3",
     "@metaplex-foundation/js": "^0.17.6",
     "@ngrx/component-store": "14.3.2",
-    
     "@orca-so/common-sdk": "^0.1.6",
     "@orca-so/whirlpools-sdk": "^0.8.0",
     "@solana/spl-stake-pool": "^0.6.5",
@@ -52,6 +51,7 @@
     "chart.js": "^3.7.1",
     "copy-to-clipboard": "^3.3.3",
     "decimal.js": "^10.3.1",
+    "elusiv-sdk": "file:elusiv-sdk-1.0.0.tgz",
     "jsbi": "^4.3.0",
     "plausible-tracker": "^0.3.8",
     "rxjs": "~7.5.0",
