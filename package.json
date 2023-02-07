@@ -37,7 +37,6 @@
     "@marinade.finance/marinade-ts-sdk": "4.0.3",
     "@metaplex-foundation/js": "^0.17.6",
     "@ngrx/component-store": "14.3.2",
-    "@noble/ed25519": "^1.7.2",
     "@orca-so/common-sdk": "^0.1.6",
     "@orca-so/whirlpools-sdk": "^0.8.0",
     "@solana/spl-stake-pool": "^0.6.5",
