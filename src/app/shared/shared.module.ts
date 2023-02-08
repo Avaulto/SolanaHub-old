@@ -117,7 +117,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     DataBoxComponent,
     LogoComponent,
     GoBackBtnComponent,
-    // TooltipModule,
+    TooltipModule,
     WalletConnectComponent,
     WalletAdapterOptionsComponent,
     WalletConnectedDropdownComponent,

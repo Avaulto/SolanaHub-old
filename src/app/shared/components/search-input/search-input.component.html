@@ -1,5 +1,5 @@
 <div>
-    <ion-input (ionChange)="onSearch($event.target)" [debounce]="time" type="search"
+    <ion-input (ionChange)="onSearch($event.target)" [value]="value" [debounce]="time" type="search"
     [placeholder]="placeholder" id="search-bar"></ion-input>
     <ion-icon name="search-outline"></ion-icon>
 </div>

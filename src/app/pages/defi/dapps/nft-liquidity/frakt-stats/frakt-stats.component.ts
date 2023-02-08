@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, shareReplay } from 'rxjs';
 import { ApiService, UtilsService } from 'src/app/services';
+import { FraktStoreService } from '../frakt-store.service';
 
 interface FraktStats{
   totalIssued: number,
@@ -14,9 +15,9 @@ interface FraktStats{
   styleUrls: ['./frakt-stats.component.scss'],
 })
 export class FraktStatsComponent implements OnInit {
-  public fraktStats: Observable<FraktStats> = this._apiService.get('https://api.frakt.xyz/stats/total').pipe(this._utilsService.isNotNull,shareReplay(1))
+  public fraktStats: Observable<FraktStats> = this._fraktStore.fetchStats();
 
-  constructor(private _utilsService: UtilsService,private _apiService: ApiService) { }
+  constructor(private _fraktStore: FraktStoreService) { }
 
   ngOnInit() {}
 

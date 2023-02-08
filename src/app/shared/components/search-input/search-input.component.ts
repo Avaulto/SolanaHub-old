@@ -18,6 +18,7 @@ export class SearchInputComponent{
   @Output() search: EventEmitter<string> = new EventEmitter<string>();
   @Input() placeholder: string;
   @Input() time: number = 0;
+  @Input() value: string = ''
   constructor() {}
   onSearch(val) {
     this.search.emit(val);

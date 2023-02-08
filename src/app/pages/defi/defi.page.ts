@@ -47,7 +47,7 @@ export class DefiPage implements OnInit {
       description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
       learnMoreLink: 'https://docs.frakt.xyz/frakt',
       deepLink: 'nft-liquidity',
-      status:'pending'
+      status:'active'
     },
     // {
     //   name: 'solend',
