@@ -1,0 +1,14 @@
+<ion-grid id="loan-params">
+  <ng-container *ngIf="NftMetadata; else elseTemplate">
+    <div>
+      {{NftMetadata[0].name}}
+      {{NftMetadata[0].collaterizationRate}}
+      {{NftMetadata[0].createdAt}}
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <ion-row  style="min-height: 400px;" class="ion-justify-content-center ion-align-items-center">
+      <app-loader></app-loader>
+    </ion-row>
+  </ng-template>
+</ion-grid>

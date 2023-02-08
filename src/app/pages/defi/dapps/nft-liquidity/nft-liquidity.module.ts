@@ -12,6 +12,7 @@ import { FraktStatsComponent } from './frakt-stats/frakt-stats.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LendComponent } from './lend/lend.component';
 import { BorrowComponent } from './borrow/borrow.component';
+import { BoxContentComponent } from './lend/box-content/box-content.component';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { BorrowComponent } from './borrow/borrow.component';
     NftLiquidityPage,
     FraktStatsComponent,
     DashboardComponent,
+    BoxContentComponent,
     LendComponent,
     BorrowComponent]
 })

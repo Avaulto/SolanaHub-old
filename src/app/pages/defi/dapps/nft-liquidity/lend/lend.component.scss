@@ -1,0 +1,63 @@
+:host {
+    width: 100%;
+}
+
+ion-row {
+    width: 100%;
+    display: flex;
+}
+
+ion-item {
+    background: transparent;
+    --background: transparent;
+
+}
+ion-list{
+    min-height: 700px;
+}
+ion-list-header {
+
+    ion-col {
+        cursor: pointer;
+    }
+
+    ion-label {
+        opacity: 0.8;
+        color: #9dff20;
+        font-weight: 600;
+        font-size: 14px;
+        transition: 0.3s ease;
+        &:hover{
+            opacity: 1;
+        }
+    }
+    
+
+}
+
+.loan-avatar {
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    ion-img {
+        margin-inline-end: 5px;
+        width: 40px;
+        border-radius: 14px;
+        overflow: hidden;
+    }
+}
+
+.loan-params-wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+::ng-deep {
+
+    ion-accordion.accordion-animated>[slot=header] .ion-accordion-toggle-icon {
+
+        color: white;
+    }
+}

@@ -3,15 +3,18 @@
     <app-dapp-head name="Frakt" imgPath="/assets/images/icons/frakt-logo.jpeg"></app-dapp-head>
     <app-frakt-stats></app-frakt-stats>
 
-    <ion-row>
-      <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+    <ion-row class="ion-justify-content-between ion-align-items-center">
+      <app-tabs [menu]="menu" (onSelectTab)="tabChange($event)"></app-tabs>
+      <app-search-input (search)="searchItem($event)" [value]="searchTerm" [placeholder]="'Search collection'"></app-search-input>
     </ion-row>
     <ion-row>
       <ng-container [ngSwitch]="currentTab">
         <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
         <app-borrow *ngSwitchCase="'borrow'"></app-borrow>
-        <app-lend *ngSwitchCase="'lend'"></app-lend>
+        <app-lend *ngSwitchCase="'lend'" [searchTerm]="searchTerm"></app-lend>
       </ng-container>
+      
+     
     </ion-row>
   </ion-grid>
 </ion-content>
