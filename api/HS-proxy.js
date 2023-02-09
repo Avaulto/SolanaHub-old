@@ -15,7 +15,7 @@ export default async function HSproxy(request, response) {
         const data = await res.json();
         return response.status(200).json( data );
     } catch (error) {
-        return response.status(200).json( error );
+        return response.status(500).json( error );
     }
 
 }
