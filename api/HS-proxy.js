@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 export default async function HSproxy(request, response) {
-    const {  endpoint, queryParam } = request.query;
+    const {  endpoint } = request.query;
     const {body} = request
-    const queryParamDecode = decodeURIComponent(queryParam);
-    const url = `https://beta.api.solanalysis.com/rest/${endpoint}?${queryParamDecode}`;
+    // const queryParamDecode = decodeURIComponent(queryParam);
+    const url = `https://beta.api.solanalysis.com/rest/${endpoint}`;
     const settings = {
         headers: { 
             'Content-Type': 'application/json',
