@@ -7,10 +7,10 @@ export default async function HSproxy(request, response) {
     const settings = {
         headers: { 
             'Content-Type': 'application/json',
-            Authorization:  process.env.hyperspaceToken
+            'Authorization':  process.env.hyperspaceToken
         },
     }
-    const res = await fetch(url, settings,body);
+    const res = await fetch(url, settings,JSON.stringify(body));
     const data = await res.json();
-    return response.status(200).json( res );
+    return response.status(200).json( data );
 }
