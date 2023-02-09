@@ -12,5 +12,5 @@ export default async function HSproxy(request, response) {
     }
     const res = await fetch(url, settings,body);
     const data = await res.json();
-    return response.status(200).json( data );
+    return response.status(200).json( res );
 }
