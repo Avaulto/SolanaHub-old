@@ -25,7 +25,7 @@
       </ion-col>
       <ng-container *ngIf="nfts | async as nfts; else elseTemplate">
         <ion-row *ngIf="nfts.length">
-          <ion-col size="12" sizeMd="3" *ngFor="let nft of nfts">
+          <ion-col class=" ion-margin-bottom" size="12" sizeMd="3" *ngFor="let nft of nfts">
             <app-nft-preview [nft]="nft"></app-nft-preview>
           </ion-col>
         </ion-row>
