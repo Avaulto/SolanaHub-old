@@ -9,8 +9,8 @@ export const environment = {
   solblazepool:'azFVdHtAJN8BX3sbGAYkXvtdjdrT5U6rj9rovvUFos9',
   orcaWhirlPool: {programId:'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',config:'FcrweFY1G9HJAHG5inkGB6pKg1HZ6x9UC2WioAfWrGkR', poolAPI: 'https://api.devnet.orca.so/v1/whirlpool/list'},
   solanaCluster: 'https://rpc-devnet.helius.xyz/?api-key=fdfa656e-52a7-426c-a92c-7ba543750c52',// 'https://api.devnet.solana.com',//
-  magicEdenProxyAPI: 'https://dev.compact-defi.avaulto.com/api/ME-proxy?env=devnet',
-  metaplexProxyAPI: 'https://dev.compact-defi.avaulto.com/api/MP-proxy',
+  magicEdenProxyAPI: '/api/ME-proxy?env=devnet',
+  metaplexProxyAPI: '/api/MP-proxy',
   HyperspaceKey:'',
 };
 
