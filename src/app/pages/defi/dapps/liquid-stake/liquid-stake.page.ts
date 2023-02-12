@@ -9,7 +9,7 @@ import { StakeAccountExtended } from 'src/app/models';
 import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { StakePoolStoreService } from './stake-pool-store.service';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
 
@@ -99,22 +99,30 @@ export class LiquidStakePage {
   initConfigStartup() {
     this._activeRoute.queryParams
       .subscribe(params => {
-        const { pool, stakingType } = params
+        const _params = this.toLower(params);
+        let { pool, stakingtype } = _params
         const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
         if (provider) {
 
           this.stakePoolStore.selectProvider(provider)
 
         }
-        if(stakingType){
-          if (stakingType.toLowerCase()  == 'sol' || stakingType.toLowerCase() == 'stake-account') {
-            this.selectStakePath(stakingType.toLowerCase())
+        if(stakingtype){
+          if (stakingtype.toLowerCase()  == 'sol' || stakingtype.toLowerCase() == 'stake-account') {
+            this.selectStakePath(stakingtype.toLowerCase())
           }
         }
       }
       );
   }
+   toLower(params: Params): Params {
+    const lowerParams: Params = {};
+    for (const key in params) {
+        lowerParams[key.toLowerCase()] = params[key];
+    }
 
+    return lowerParams;
+}
 
 
   public stakingType: 'sol' | 'stake-account' = 'sol'
