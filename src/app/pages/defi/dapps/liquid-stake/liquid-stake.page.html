@@ -37,13 +37,13 @@
 
                             </ion-col>
                             <ion-col sizeLg="5.8" sizeMd="12" class="stake-by"
-                                [ngClass]="{'selectedstakingType': stakingType == 'stake-account'}"
-                                (click)="selectStakePath('stake-account')">
+                                [ngClass]="{'selectedstakingType': stakingType == 'account'}"
+                                (click)="selectStakePath('account')">
                                 <div class="select-group">
                                     <span>
                                         Deposit Account
                                     </span>
-                                    <ion-checkbox mode="ios" [checked]="stakingType == 'stake-account'" color="primary">
+                                    <ion-checkbox mode="ios" [checked]="stakingType == 'account'" color="primary">
                                     </ion-checkbox>
                                 </div>
                                 <span class="sub">
@@ -94,7 +94,7 @@
                       >
                     </app-stake-sol-box>
                     <app-stake-account-box
-                     *ngIf="stakingType == 'stake-account'" 
+                     *ngIf="stakingType == 'account'" 
                       [selectedProvider]="currentProvider"
                         [stakeAccounts]="stakeAccounts"
                         [marinade]="marinade" 

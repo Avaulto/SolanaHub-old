@@ -100,16 +100,16 @@ export class LiquidStakePage {
     this._activeRoute.queryParams
       .subscribe(params => {
         const _params = this.toLower(params);
-        let { pool, stakingtype } = _params
+        let { pool, type } = _params
         const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
         if (provider) {
 
           this.stakePoolStore.selectProvider(provider)
 
         }
-        if(stakingtype){
-          if (stakingtype.toLowerCase()  == 'sol' || stakingtype.toLowerCase() == 'stake-account') {
-            this.selectStakePath(stakingtype.toLowerCase())
+        if(type){
+          if (type.toLowerCase()  == 'sol' || type.toLowerCase() == 'account') {
+            this.selectStakePath(type.toLowerCase())
           }
         }
       }
@@ -125,8 +125,8 @@ export class LiquidStakePage {
 }
 
 
-  public stakingType: 'sol' | 'stake-account' = 'sol'
-  public selectStakePath(option: 'sol' | 'stake-account'): void {
+  public stakingType: 'sol' | 'account' = 'sol'
+  public selectStakePath(option: 'sol' | 'account'): void {
     this.stakingType = option
   }
 
