@@ -107,10 +107,16 @@ ion-radio label {
 #socials {
     flex-wrap: wrap;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 234px;
     max-width: 100%;
     margin: 0 auto;
+    ion-button{
+        width: 90px;
+    }
+    ion-icon{
+        margin-inline-end: 5px;
+    }
 }
 
 
