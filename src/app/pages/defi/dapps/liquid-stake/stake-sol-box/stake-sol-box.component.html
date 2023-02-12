@@ -5,7 +5,7 @@
 
     <div [ngSwitch]="currentTab" id="liquid-stake-form" class="ion-padding-vertical">
         <form *ngSwitchCase="'stake'" [formGroup]="stakeForm">
-            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance}">
+            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance | number: '1.2-2'}">
                 <app-icon-tooltip [position]="tooltippos"
                     tip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
             </app-label-layout>
@@ -60,7 +60,7 @@
         <form *ngSwitchCase="'unstake'">
 
             <app-label-layout
-                [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-3'}"></app-label-layout>
+                [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-2'}"></app-label-layout>
             <ion-row id="stake-amount" style="margin-bottom:8px;">
                 <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unStakeAmount"
                     placeholder="Amount"></ion-input>
@@ -74,7 +74,7 @@
             </app-label-layout>
 
             <ion-row id="sol-recive-amount" style="margin-bottom:8px;">
-                <ion-input readonly [value]="((unStakeAmount || 0 ) * stakePoolStats?.assetRatio) | number : '1.2-3'">
+                <ion-input readonly [value]="((unStakeAmount || 0 ) * stakePoolStats?.assetRatio) | number : '1.2-2'">
                 </ion-input>
             </ion-row>
             <ion-row class="sub" style="margin-bottom:8px;">

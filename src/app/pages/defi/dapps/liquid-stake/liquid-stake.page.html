@@ -10,7 +10,7 @@
             <app-liquid-staking-stats (onStakePoolStats)="stakePoolStats = $event"
                 [selectedProvider]="currentProvider"></app-liquid-staking-stats>
             <ion-row class="ion-justify-content-between ion-align-items-stretch">
-                <ion-col style="min-height: 345px;" sizeLg="5.9" size="12" 
+                <ion-col style="max-height: 345px;" sizeLg="5.9" size="12" 
                     class="data-box ion-padding">
                     <ion-row class="ion-margin-bottom" id="stake-apr-box">
                         <div>~{{stakePoolStats?.apy | number : '1.2-2'}}% <span>APY</span></div>
@@ -32,7 +32,7 @@
                                         color="primary"></ion-checkbox>
                                 </div>
                                 <span class="sub">
-                                    {{solBalance}} SOL
+                                    {{solBalance | number: '1.2-2'}} SOL
                                 </span>
 
                             </ion-col>

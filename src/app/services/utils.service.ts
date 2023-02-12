@@ -1,5 +1,6 @@
 import { DOCUMENT } from "@angular/common";
 import { Inject, Injectable, Renderer2, RendererFactory2 } from "@angular/core";
+import { Params } from "@angular/router";
 import { BehaviorSubject, filter, Observable } from "rxjs";
 import { PriorityFee } from "../models/priorityFee.model";
 import { LocalStorageService } from "./local-storage.servic";
@@ -68,6 +69,14 @@ export class UtilsService {
       this.enableDarkTheme();
     }
   }
+  public toLower(params: Params): Params {
+    const lowerParams: Params = {};
+    for (const key in params) {
+        lowerParams[key.toLowerCase()] = params[key];
+    }
+
+    return lowerParams;
+}
   public enableLightTheme() {
     this.renderer.addClass(this.document.body, 'light-theme');
   }

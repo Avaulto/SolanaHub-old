@@ -1,11 +1,9 @@
 
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, Observable, shareReplay, Subject, switchMap, throwError } from 'rxjs';
+import { Observable, shareReplay, Subject, throwError } from 'rxjs';
 import { StakePoolProvider } from './stake-pool.model';
-import { UtilsService, TxInterceptService, ApiService, SolanaUtilsService, ToasterService } from 'src/app/services';
-import { ActivatedRoute } from '@angular/router';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+import { UtilsService, SolanaUtilsService, ToasterService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import { PublicKey } from '@solana/web3.js';
 import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk';
@@ -18,10 +16,7 @@ export class StakePoolStoreService {
 
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
-    private _apiService: ApiService,
-    private _walletStore: WalletStore,
     private _utilService: UtilsService,
-    private _activeRoute: ActivatedRoute,
     private _toasterService: ToasterService
   ) { }
   private _formatErrors(error: any) {

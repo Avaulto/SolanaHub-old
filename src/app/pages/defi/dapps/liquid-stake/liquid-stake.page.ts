@@ -99,7 +99,7 @@ export class LiquidStakePage {
   initConfigStartup() {
     this._activeRoute.queryParams
       .subscribe(params => {
-        const _params = this.toLower(params);
+        const _params = this._utilService.toLower(params);
         let { pool, type } = _params
         const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
         if (provider) {
@@ -115,14 +115,7 @@ export class LiquidStakePage {
       }
       );
   }
-   toLower(params: Params): Params {
-    const lowerParams: Params = {};
-    for (const key in params) {
-        lowerParams[key.toLowerCase()] = params[key];
-    }
 
-    return lowerParams;
-}
 
 
   public stakingType: 'sol' | 'account' = 'sol'
