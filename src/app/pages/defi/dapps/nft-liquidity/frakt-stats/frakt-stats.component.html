@@ -1,46 +1,22 @@
 <ion-row class="ion-justify-content-between ion-text-capitalize">
-  <ion-col size="12">
+  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'Total value locked'" [loading]="!(fraktStats | async)"
+      [desc]="((fraktStats | async)?.loansTvl | number)  +'◎'  ">
+    </app-data-box>
   </ion-col>
-  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
-    <div class="heading-3">
-      Total value locked
-    </div>
-    <app-loader *ngIf="!(fraktStats | async)"></app-loader>
-    <div class="heading-2">
-      {{(fraktStats | async)?.loansTvl.toLocaleString()}} ◎
-    </div>
-    <!-- <div class="heading-5">=  ${{(jupInfo?.).toLocaleString()}}</div> -->
+  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'total volume'" [loading]="!(fraktStats | async)"
+      [desc]="((fraktStats | async)?.loansVolumeAllTime | number)  +'◎'  ">
+    </app-data-box>
   </ion-col>
-
-  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
-    <div class="heading-3">
-      active loans 
-    </div>
-    <app-loader *ngIf="!(fraktStats | async)"></app-loader>
-    <div class="heading-2">
-      {{(fraktStats | async)?.activeLoansCount.toLocaleString()}}
-    </div>
-    <!-- <div class="heading-5">=  ${{(jupInfo?.).toLocaleString()}}</div> -->
+  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'active loans'" [loading]="!(fraktStats | async)"
+      [desc]="(fraktStats | async)?.activeLoansCount | number ">
+    </app-data-box>
   </ion-col>
-  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
-    <div class="heading-3">
-      total volume
-    </div>
-    <app-loader *ngIf="!(fraktStats | async)"></app-loader>
-    <div class="heading-2">
-      {{(fraktStats | async)?.loansVolumeAllTime.toLocaleString()}} ◎
-    </div>
-    <!-- <div class="heading-5">=  ${{(jupInfo?.).toLocaleString()}}</div> -->
+  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'total loans issued'" [loading]="!(fraktStats | async)"
+      [desc]="(fraktStats | async)?.totalIssued | number ">
+    </app-data-box>
   </ion-col>
-  <ion-col sizeMd="2.8" sizeSm="5" class="data-box ion-padding">
-    <div class="heading-3">
-      total loans issued
-    </div>
-    <app-loader *ngIf="!(fraktStats | async)"></app-loader>
-    <div class="heading-2">
-      {{(fraktStats | async)?.totalIssued.toLocaleString()}}
-    </div>
-    <!-- <div class="heading-5">=  ${{(jupInfo?.).toLocaleString()}}</div> -->
-  </ion-col>
-
 </ion-row>

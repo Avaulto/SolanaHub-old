@@ -61,13 +61,12 @@
 
             <app-label-layout
                 [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-3'}"></app-label-layout>
-
-
             <ion-row id="stake-amount" style="margin-bottom:8px;">
                 <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unStakeAmount"
                     placeholder="Amount"></ion-input>
                 <span class="heading-6" (click)="setMaxAmountxSOL()">MAX</span>
             </ion-row>
+            
             <app-label-layout
                 [layoutConfig]="{title: 'You will receive'}">
             <app-icon-tooltip [tip]="selectedProvider?.name?.toLowerCase() == 'solblaze' ? '

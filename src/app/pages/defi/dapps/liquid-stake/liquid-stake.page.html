@@ -1,20 +1,20 @@
 <ion-content scroll-y style="--background:transparent;">
-    <ng-container *ngIf="currentProvider | async; else elseTemplate">
+    <ng-container *ngIf="provider$ | async as currentProvider; else elseTemplate">
         <ion-grid class="ion-padding">
             <div id="stake-pool-header">
-
-                <app-dapp-head [name]="provider.name" [imgPath]="provider.image"></app-dapp-head>
-                <app-swap-provider-btn [selectedProvider]="provider" [providers]="providers"
-                    (onProviderSelected)="currentProvider.next($event)"></app-swap-provider-btn>
+                <app-dapp-head [name]="currentProvider.name" [imgPath]="currentProvider.image"></app-dapp-head>
+                <app-swap-provider-btn [selectedProvider]="currentProvider" [providers]="stakePoolStore.providers"
+                    (onProviderSelected)="stakePoolStore.selectProvider($event)"></app-swap-provider-btn>
             </div>
 
             <app-liquid-staking-stats (onStakePoolStats)="stakePoolStats = $event"
-                [selectedProvider]="provider"></app-liquid-staking-stats>
-            <ion-row class="ion-justify-content-between ion-align-items-start">
-                <ion-col style="min-height: 345px;"  sizeLg="5.9" size="12"  style="min-height: 345px;" class="data-box ion-padding">
+                [selectedProvider]="currentProvider"></app-liquid-staking-stats>
+            <ion-row class="ion-justify-content-between ion-align-items-stretch">
+                <ion-col style="min-height: 345px;" sizeLg="5.9" size="12" 
+                    class="data-box ion-padding">
                     <ion-row class="ion-margin-bottom" id="stake-apr-box">
-                        <div>~{{Apy | number : '1.2-2'}}% <span>APY</span></div>
-                        <p id="">Stake SOL and use {{provider?.ticker}} while earning rewards</p>
+                        <div>~{{stakePoolStats?.apy | number : '1.2-2'}}% <span>APY</span></div>
+                        <p id="">Stake SOL and use {{currentProvider?.ticker}} while earning rewards</p>
                     </ion-row>
                     <ion-row class="ion-text-capitalize">
                         <h4 class="heading-4">choose your way to liquid stake</h4>
@@ -22,12 +22,13 @@
                             class=" ion-align-items-center ion-margin-bottom ion-justify-content-between">
 
                             <ion-col sizeLg="5.8" sizeMd="12" class="stake-by"
-                                [ngClass]="{'selectedStakePath': stakePath == 'sol'}" (click)="selectStakePath('sol')">
+                                [ngClass]="{'selectedstakingType': stakingType == 'sol'}"
+                                (click)="selectStakePath('sol')">
                                 <div class="select-group">
                                     <span>
                                         Deposit SOL
                                     </span>
-                                    <ion-checkbox mode="ios" [checked]="stakePath == 'sol'"
+                                    <ion-checkbox mode="ios" [checked]="stakingType == 'sol'"
                                         color="primary"></ion-checkbox>
                                 </div>
                                 <span class="sub">
@@ -36,13 +37,13 @@
 
                             </ion-col>
                             <ion-col sizeLg="5.8" sizeMd="12" class="stake-by"
-                                [ngClass]="{'selectedStakePath': stakePath == 'stakeAcc'}"
-                                (click)="selectStakePath('stakeAcc')">
+                                [ngClass]="{'selectedstakingType': stakingType == 'stake-account'}"
+                                (click)="selectStakePath('stake-account')">
                                 <div class="select-group">
                                     <span>
                                         Deposit Account
                                     </span>
-                                    <ion-checkbox mode="ios" [checked]="stakePath == 'stakeAcc'" color="primary">
+                                    <ion-checkbox mode="ios" [checked]="stakingType == 'stake-account'" color="primary">
                                     </ion-checkbox>
                                 </div>
                                 <span class="sub">
@@ -52,17 +53,17 @@
                             </ion-col>
                         </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
-                           
+
                             <div style="display: flex; align-items:center;">
                                 <span>exchange rate</span>
                                 <app-icon-tooltip style="margin-inline-start: 5px;" tip="SOL/xSOL exchange rate is determined by a formula:
                                 POOL SOL staked / current xSOL supply. Because staked SOL is earning yield, 
                                 it grows in size vs. xSOL over time. When you swap xSOL back to SOL,
                                  you receive more SOL than you staked/swapped before."></app-icon-tooltip>
-                               
+
                             </div>
                             <div>
-                                1 {{provider?.ticker}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}} SOL
+                                1 {{currentProvider.ticker}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}} SOL
                             </div>
                         </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
@@ -71,7 +72,7 @@
 
                                     platform fee
                                 </span>
-                            
+
                             </div>
                             <div>
                                 0%
@@ -80,32 +81,32 @@
                     </ion-row>
                 </ion-col>
 
-                <ion-col style="min-height: 345px;"  sizeLg="5.9" size="12" class="data-box ion-padding">
+                <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
                     <ng-container *ngIf="stakeAccounts | async; else elseTemplate">
-                        
+
                         <app-stake-sol-box 
-                            *ngIf="stakePath == 'sol'"
-                            [selectedProvider]="provider" 
-                            [marinade]="marinade" 
-                            [stakePoolStats]="stakePoolStats"
-                            [solBalance]="solBalance"
-                            [wallet]="wallet"
-                          >
-                        </app-stake-sol-box>
-                        <app-stake-account-box
-                         *ngIf="stakePath == 'stakeAcc'" 
-                          [selectedProvider]="provider"
-                            [stakeAccounts]="stakeAccounts"
-                            [marinade]="marinade" 
-                            [stakePoolStats]="stakePoolStats"
-                            [wallet]="wallet"
-                            >
-                        </app-stake-account-box>
+                        *ngIf="stakingType == 'sol'"
+                        [selectedProvider]="currentProvider" 
+                        [marinade]="marinade" 
+                        [stakePoolStats]="stakePoolStats"
+                        [solBalance]="solBalance"
+                        [wallet]="wallet"
+                      >
+                    </app-stake-sol-box>
+                    <app-stake-account-box
+                     *ngIf="stakingType == 'stake-account'" 
+                      [selectedProvider]="currentProvider"
+                        [stakeAccounts]="stakeAccounts"
+                        [marinade]="marinade" 
+                        [stakePoolStats]="stakePoolStats"
+                        [wallet]="wallet"
+                        >
+                    </app-stake-account-box>
                     </ng-container>
                     <ng-template #elseTemplate>
                         <app-wallet-not-connected-state></app-wallet-not-connected-state>
                     </ng-template>
-    
+
                 </ion-col>
             </ion-row>
         </ion-grid>
@@ -113,14 +114,14 @@
     <ng-template #elseTemplate>
         <div id="liquid-stake-provider">
 
-            <div  class="data-box ion-padding" >
+            <div class="data-box ion-padding">
                 <h3>Stake pool providers</h3>
-                <p class="ion-margin-bottom" >Please select a staking pool u wish to join</p>
-                <ion-button (click)="selectProvider(provider)" color="secondary" *ngFor="let provider of providers">
+                <p class="ion-margin-bottom">Please select a staking pool u wish to join</p>
+                <ion-button (click)="stakePoolStore.selectProvider(provider)" color="secondary" *ngFor="let provider of stakePoolStore.providers">
                     <ion-img [src]="provider.image"></ion-img>
                     <ion-text>{{provider.name}}</ion-text>
                 </ion-button>
-                
+
             </div>
         </div>
     </ng-template>

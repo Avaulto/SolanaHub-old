@@ -19,7 +19,8 @@ export class LiquidStakingStatsComponent implements OnChanges {
     supply: null,
     TVL: null,
     validators: null,
-    userHoldings: null
+    userHoldings: null,
+    apy: null
   };
   constructor(
     private _apiService: ApiService,
@@ -34,7 +35,8 @@ export class LiquidStakingStatsComponent implements OnChanges {
       supply: null,
       TVL: null,
       validators: null,
-      userHoldings: null
+      userHoldings: null,
+      apy: null
     };
     this.fetchProviderStats();
   }
@@ -63,7 +65,8 @@ export class LiquidStakingStatsComponent implements OnChanges {
       const TVL = { staked_usd: solanaAmount / LAMPORTS_PER_SOL * solprice, staked_sol: solanaAmount / LAMPORTS_PER_SOL }
       const validators = (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
       const supply = Number(tokenAmount) / LAMPORTS_PER_SOL
-      this.stakePoolStats = { assetRatio, TVL, validators, supply };
+      const apy = (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/apy'))).apy
+      this.stakePoolStats = { assetRatio, TVL, validators, supply, apy };
     } catch (error) {
       console.error(error)
     }
@@ -77,7 +80,8 @@ export class LiquidStakingStatsComponent implements OnChanges {
       const TVL = { staked_usd: mndeTVL.staked_usd, staked_sol: mndeTVL.staked_sol }
       const validators = (await firstValueFrom(this._apiService.post('https://no-program.marinade.finance/graphql', { query: "\n    query fetchValidators {\n  marinade_validators(use_latest_epoch: true) {\n    vote_address\n    apy\n    name\n    rank\n    avg_active_stake\n    marinade_staked\n  }\n}\n " }))).data.marinade_validators.length
       const supply = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/supply')) / LAMPORTS_PER_SOL
-      this.stakePoolStats = { assetRatio, TVL, validators, supply };
+      const apy = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/apy/30d'))).value * 100;
+      this.stakePoolStats = { assetRatio, TVL, validators, supply, apy };
     } catch (error) {
       console.error(error)
     }

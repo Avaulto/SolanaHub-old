@@ -37,7 +37,7 @@ export class StakeComponent implements OnInit {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
     private _utilsService: UtilsService,
-    private _route: ActivatedRoute
+    private _activeRoute: ActivatedRoute
   ) { }
   async ngOnInit() {
     this.stakeForm = this._fb.group({
@@ -51,7 +51,7 @@ export class StakeComponent implements OnInit {
 
     const validatorData: any = await firstValueFrom(this.validatorsData);
     if (!this.privateValidatorPage) {
-      this._route.queryParams
+      this._activeRoute.queryParams
         .subscribe(params => {
           const validatorIdentity = params.validatorIdentity
           if (validatorIdentity) {

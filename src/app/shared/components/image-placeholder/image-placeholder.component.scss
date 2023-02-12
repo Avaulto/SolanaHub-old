@@ -4,7 +4,7 @@ ion-img,ion-skeleton-text {
     width: 100%;
 }
 ion-skeleton-text{
-    // min-height: 40px ;
+    height: inherit;
 }
 ion-icon{
     position: absolute;

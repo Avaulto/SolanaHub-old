@@ -36,7 +36,8 @@ import {
   IconTooltipComponent,
   SettingsComponent,
   OptionsPopupComponent,
-  TabsComponent
+  TabsComponent,
+  InputGroupControlComponent
 } from "./components";
 
 // // import directives
@@ -86,7 +87,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     SettingsComponent,
     OptionsPopupComponent,
     TabsComponent,
-    
+    InputGroupControlComponent
   ],
   imports: [
     CommonModule,
@@ -142,6 +143,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     SettingsComponent,
     OptionsPopupComponent,
     TabsComponent,
+    InputGroupControlComponent
     
   ]
 })

@@ -2,15 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 
-import { UtilsService, TxInterceptService, ApiService } from 'src/app/services';
-import {  firstValueFrom, Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import { firstValueFrom, map, Observable, shareReplay, Subject, switchMap } from 'rxjs';
 import { StakeAccountExtended } from 'src/app/models';
 
-import {  stakePoolInfo } from '@solana/spl-stake-pool';
+import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { StakePoolStoreService } from './stake-pool-store.service';
+import { SolanaUtilsService, UtilsService } from 'src/app/services';
 
 
 @Component({
@@ -18,38 +19,42 @@ import { environment } from 'src/environments/environment';
   templateUrl: './liquid-stake.page.html',
   styleUrls: ['./liquid-stake.page.scss'],
 })
-export class LiquidStakePage implements OnInit {
+export class LiquidStakePage {
 
-  // avaliable stake pool providers to select
-  protected providers: StakePoolProvider[] = [{
-    name: 'Marinade',
-    image: 'assets/images/icons/marinade-logo-small.svg',
-    mintAddress: 'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So',
-    ticker: 'mSOL'
-  },
-  {
-    name: 'SolBlaze',
-    image: 'assets/images/icons/solblaze-logo.png',
-    poolpubkey: new PublicKey(environment.solblazepool),
-    mintAddress: 'bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1',
-    ticker: 'bSOL'
-  }
-  ]
-  public currentProvider: Subject<StakePoolProvider> = new Subject();
-  public provider: StakePoolProvider = null
-  public marinade: Marinade;
+  constructor(
+    public stakePoolStore: StakePoolStoreService,
+    private _solanaUtilsService: SolanaUtilsService,
+    // private _apiService: ApiService,
+    private _walletStore: WalletStore,
+    private _utilService: UtilsService,
+    private _activeRoute: ActivatedRoute
+  ) { }
+
+  public marinade: Marinade = this.stakePoolStore.marinadeSDK;
   public stakePoolStats: StakePoolStats;
   public wallet;
   public solBalance = 0;
   public Apy: number = null;
+  public currentProvider: StakePoolProvider = null;
+  public provider$ = this.stakePoolStore.provider$.pipe(
+    this._utilService.isNotNull,
+    this._utilService.isNotUndefined,
+    map((provider) => {
+      this.currentProvider = provider
+      if(this.wallet){
+      
+        this.initProviderSDK(this.currentProvider)
+      }
+      return provider
+    }))
   public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
     this._utilService.isNotNull,
     this._utilService.isNotUndefined,
     switchMap(async (wallet) => {
       this.wallet = wallet;
-      this.solBalance = this._utilService.shortenNum(((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL));
-      if (this.provider) {
-        this.initSPProvider(this.provider)
+      this.solBalance = ((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL);
+      if (this.currentProvider) {
+        this.initProviderSDK(this.currentProvider)
       }
       const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
       const extendStakeAccount = await stakeAccounts.map(async (acc) => {
@@ -59,8 +64,8 @@ export class LiquidStakePage implements OnInit {
         if (balance > 1 && state == 'active') {
           selectable = true
         }
-        let extraData: any =  { balance, selectable }
-        if(validatorData){
+        let extraData: any = { balance, selectable }
+        if (validatorData) {
           extraData['validator name'] = validatorData.name;
         }
         return { name: shortAddr, addr, selectable, validatorData, extraData };
@@ -71,64 +76,51 @@ export class LiquidStakePage implements OnInit {
     }),
     shareReplay(1)
   )
-  constructor(
-    private _solanaUtilsService: SolanaUtilsService,
-    private _apiService: ApiService,
-    private _walletStore: WalletStore,
-    private _utilService: UtilsService
-  ) { }
-
-  private updateSolBlazePool(): Promise<void> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let result = await (await fetch(
-          "https://stake.solblaze.org/api/v1/update_pool?network=mainnet-beta"
-        )).json();
-        if (result.success) {
-          resolve();
-        } else {
-          reject();
+  public async initProviderSDK(currentProvider) {
+    try {
+      if (currentProvider.name.toLowerCase() == 'solblaze') {
+        let info = await this.stakePoolStore.stakePoolSDK.stakePoolInfo(this._solanaUtilsService.connection, currentProvider.poolpubkey);
+        if (info.details.updateRequired) {
+          await this.stakePoolStore.updateSolBlazePool();
         }
-      } catch (err) {
-        reject();
+      } else {
+        this.stakePoolStore.initMarinade(this.wallet);
       }
-    });
-  }
-  async ngOnInit() {
-    this.currentProvider.pipe(shareReplay(),this._utilService.isNotNull).subscribe(async(provider: StakePoolProvider) => {
-      this.provider = provider;
-    })
-  }
-  /** @SP = reffer as stake pool */
-  async initSPProvider(selectedProvider: StakePoolProvider) {
-    if (selectedProvider.name.toLowerCase() == 'solblaze') {
-      this.Apy = (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/apy'))).apy
-      let info = await stakePoolInfo(this._solanaUtilsService.connection, selectedProvider.poolpubkey);
-      if (info.details.updateRequired) {
-        await this.updateSolBlazePool();
-      }
-    } else {
-      this.Apy = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/apy/30d'))).value * 100
-      this.initMarinade();
+    } catch (error) {
+      console.warn(error);
     }
   }
-  async initMarinade(): Promise<void> {
-    const config = new MarinadeConfig({
-      connection: this._solanaUtilsService.connection,
-      publicKey: this.wallet.publicKey,
-      // referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
-    })
-    this.marinade = new Marinade(config)
-    const state = await this.marinade.getMarinadeState();
+
+
+  ionViewWillEnter() {
+    this.initConfigStartup();
+  }
+  // setup query params from URL
+  initConfigStartup() {
+    this._activeRoute.queryParams
+      .subscribe(params => {
+        const { pool, stakingType } = params
+        const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
+        if (provider) {
+
+          this.stakePoolStore.selectProvider(provider)
+
+        }
+        if(stakingType){
+          if (stakingType.toLowerCase()  == 'sol' || stakingType.toLowerCase() == 'stake-account') {
+            this.selectStakePath(stakingType.toLowerCase())
+          }
+        }
+      }
+      );
   }
 
 
-  public stakePath: 'sol' | 'stakeAcc' = 'sol'
-  public selectStakePath(option: 'sol' | 'stakeAcc'): void {
-    this.stakePath = option
+
+  public stakingType: 'sol' | 'stake-account' = 'sol'
+  public selectStakePath(option: 'sol' | 'stake-account'): void {
+    this.stakingType = option
   }
 
-  selectProvider(provider: StakePoolProvider) {
-    this.currentProvider.next(provider)
-  }
+
 }

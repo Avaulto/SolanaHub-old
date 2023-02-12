@@ -41,7 +41,21 @@ export class FraktStoreService {
     return throwError((() => error))
   }
   public fetchStats(): Observable<FraktStats> {
-    return this._apiService.get(`${this.fraktApi}/stats/total`).pipe(this._utilsService.isNotNull, shareReplay(1))
+    return this._apiService.get(`${this.fraktApi}/stats/total`).pipe(this._utilsService.isNotNull, map(fraktStats => {
+      const {
+        totalIssued,
+        loansTvl,
+        loansVolumeAllTime,
+        activeLoansCount
+      } = fraktStats;
+      const defaults: FraktStats = {
+        totalIssued: totalIssued || 0,
+        loansTvl: loansTvl || 0,
+        loansVolumeAllTime: loansVolumeAllTime || 0,
+        activeLoansCount:activeLoansCount || 0
+      }
+      return defaults
+    }), shareReplay(1))
   }
   private async _fetchNftListed(): Promise<FraktNftItem[]> {
     let nftWhitelist: FraktNftItem[] = []
@@ -57,10 +71,10 @@ export class FraktStoreService {
   private async _fetchPoolLiquidity(): Promise<FraktLiquidity> {
     let poolsLiquidity: FraktLiquidity = {} as FraktLiquidity
     try {
-      const poolRes:FraktLiquidity = await (await fetch(`${this.fraktApi}/liquidity/full`)).json();
+      const poolRes: FraktLiquidity = await (await fetch(`${this.fraktApi}/liquidity/full`)).json();
       poolsLiquidity = poolRes;
-      poolsLiquidity.priceBasedLiqs = poolRes.priceBasedLiqs.map(pool =>{
-        if(!pool?.activeloansAmount){
+      poolsLiquidity.priceBasedLiqs = poolRes.priceBasedLiqs.map(pool => {
+        if (!pool?.activeloansAmount) {
           pool.activeloansAmount = 0
         }
         return pool
@@ -73,7 +87,7 @@ export class FraktStoreService {
   public async fetchPoolMetadata(nftName: string): Promise<FraktNftMetadata[]> {
     let nftMetadata: FraktNftMetadata[] = {} as FraktNftMetadata[]
     try {
-      const nftMetadataRes:FraktNftMetadata[] = await (await fetch(`${this.fraktApi}/whitelist/${nftName}`)).json();
+      const nftMetadataRes: FraktNftMetadata[] = await (await fetch(`${this.fraktApi}/whitelist/${nftName}`)).json();
       nftMetadata = nftMetadataRes
     } catch (error) {
       console.error(error);
@@ -90,14 +104,13 @@ export class FraktStoreService {
 
         poolsFull = nftWhitelist.map(nft => {
           const findLiquidity = poolsLiquidity.priceBasedLiqs.find(pool => pool.name == nft.name)
-          if(findLiquidity){
+          if (findLiquidity) {
             // console.log(findLiquidity)
-            return {...nft, ...findLiquidity}
+            return { ...nft, ...findLiquidity }
           }
         })
-        .filter(item => item)
-        .sort((a,b) => a.totalLiquidity > b.totalLiquidity ? -1 : 1)
-        console.log(poolsFull)
+          .filter(item => item)
+          .sort((a, b) => a.totalLiquidity > b.totalLiquidity ? -1 : 1)
         return poolsFull
       }),
       catchError(this._formatErrors)
