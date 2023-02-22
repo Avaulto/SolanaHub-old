@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  ga:'G-SDPQV59FL6',
+  ga:'G-5MTRXNJ42D',
   production: false,
   solanaEnv: 'devnet',
   solblazepool:'azFVdHtAJN8BX3sbGAYkXvtdjdrT5U6rj9rovvUFos9',

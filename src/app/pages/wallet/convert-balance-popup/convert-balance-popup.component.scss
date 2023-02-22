@@ -1,0 +1,34 @@
+#popup-body {
+    width: 100%;
+}
+
+#selectable-accounts-list {
+    margin: 16px 0;
+    min-height: auto;
+    max-height: 204px;
+    overflow-y: auto;
+}
+
+#current-account {
+    background: #00000070;
+    padding: 10px;
+}
+
+#tip {
+    display: flex;
+    align-items: center;
+    min-height: 20px;
+    justify-content: space-between;
+    margin-block-end: 10px;
+    ion-icon {
+        font-size: 20px;
+    }
+
+    span {
+        width: 92%;
+    }
+}
+
+ion-button {
+    margin: 0 auto;
+}

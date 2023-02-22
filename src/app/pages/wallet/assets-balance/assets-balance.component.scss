@@ -1,18 +1,25 @@
-#assets-list {
-    max-height: 400px;
-    overflow-y: auto;
+:host{
+    width: 100%;
 }
 .asset {
-    margin-block-start: 2px;
-    margin-block-end: 21px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    height: 50px;
 }
-
-
+#icon-wrapper {
+    display: flex;
+    align-items: center;
+    margin-inline-end: 10px;
+}
+ion-item{
+    --background: transparent;
+}
 ion-img {
     width: 26px;
-    margin-inline-end: 7px;
+    // margin-inline-end: 7px;
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 #balace-number {
@@ -31,6 +38,7 @@ ion-img {
     width: 50%;
     div:first-child{
         margin-inline-end: 18px;
+        width: 40%;
     }
 }
 
@@ -42,7 +50,7 @@ ion-img {
 }
 #bar-wrapper{
     background: var(--deep-background);
-    width: 100%;
+    width: 80%;
     height: 8px;
     border-radius: 8px;
 }

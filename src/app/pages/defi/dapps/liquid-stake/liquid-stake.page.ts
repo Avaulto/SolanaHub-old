@@ -3,12 +3,9 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 
-import { firstValueFrom, map, Observable, shareReplay, Subject, switchMap } from 'rxjs';
+import { firstValueFrom, map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
 import { StakeAccountExtended } from 'src/app/models';
-
-import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
-import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StakePoolStoreService } from './stake-pool-store.service';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
@@ -41,8 +38,8 @@ export class LiquidStakePage {
     this._utilService.isNotUndefined,
     map((provider) => {
       this.currentProvider = provider
-      if(this.wallet){
-      
+      if (this.wallet) {
+
         this.initProviderSDK(this.currentProvider)
       }
       return provider
@@ -91,29 +88,35 @@ export class LiquidStakePage {
     }
   }
 
-
+  private _queryParam$: Subscription;
   ionViewWillEnter() {
-    this.initConfigStartup();
+   this._queryParam$ = this.initConfigStartup();
+  }
+  ionViewWillLeave() {
+    this._queryParam$.unsubscribe();
   }
   // setup query params from URL
   initConfigStartup() {
-    this._activeRoute.queryParams
+    return this._activeRoute.queryParams
       .subscribe(params => {
-        const _params = this._utilService.toLower(params);
-        let { pool, type } = _params
-        const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
-        if (provider) {
+        if (Object.keys(params).length) {
+          const _params = this._utilService.toLower(params);
+          let { pool, type } = _params
+          const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
+          if (provider) {
 
-          this.stakePoolStore.selectProvider(provider)
+            this.stakePoolStore.selectProvider(provider)
 
-        }
-        if(type){
-          if (type.toLowerCase()  == 'sol' || type.toLowerCase() == 'account') {
-            this.selectStakePath(type.toLowerCase())
+          }
+          if (type) {
+            if (type.toLowerCase() == 'sol' || type.toLowerCase() == 'account') {
+              this.selectStakePath(type.toLowerCase())
+            }
           }
         }
       }
       );
+
   }
 
 

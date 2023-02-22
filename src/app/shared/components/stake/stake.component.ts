@@ -17,7 +17,7 @@ const { trackEvent } = Plausible();
   styleUrls: ['./stake.component.scss'],
 })
 export class StakeComponent implements OnInit {
-  @Input() wallet: Asset;
+  @Input() wallet: any;
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
   @Input() avgApy: number;
   @Input() privateValidatorPage: boolean = false;
@@ -40,6 +40,7 @@ export class StakeComponent implements OnInit {
     private _activeRoute: ActivatedRoute
   ) { }
   async ngOnInit() {
+    
     this.stakeForm = this._fb.group({
       amount: ['', [Validators.required]],
       voteAccount: ['', [Validators.required]],
@@ -67,7 +68,7 @@ export class StakeComponent implements OnInit {
   }
 
   public setMaxAmount(): void {
-    const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
+    const fixedAmount = this.wallet.asset.balance - 0.0001
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
 

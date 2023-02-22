@@ -58,28 +58,29 @@
     <div class="divider"></div>
     <div id="socials">
 
-      <a target="_blank" href="https://discord.gg/7SxUZkqa6Q" style="margin-bottom: 5px;">
-        <ion-button  color="secondary">
-          <ion-icon name="logo-discord"></ion-icon> Discord
-        </ion-button>
+      <a target="_blank" href="https://discord.gg/7SxUZkqa6Q">
+
+        <ion-icon name="logo-discord"></ion-icon>
+
       </a>
       <a target="_blank" href="https://twitter.com/CompactDefi">
-        <ion-button color="secondary">
-          <ion-icon name="logo-twitter"></ion-icon> Twitter
-        </ion-button>
+
+        <ion-icon name="logo-twitter"></ion-icon>
+
       </a>
-      <a target="_blank" href="https://github.com/avaulto/Compact-DeFi" style="margin-bottom: 5px;">
-        <ion-button color="secondary">
-          <ion-icon name="logo-github"></ion-icon> github
-        </ion-button>
-      </a>
-      <a target="_blank" href="https://docs.avaulto.com/avaulto/compact-defi/what-is-compact-defi" style="margin-bottom: 5px;">
-        <ion-button color="secondary">
-          <ion-icon name="book-outline"></ion-icon> Docs
-        </ion-button>
+      <a target="_blank" href="https://github.com/avaulto/Compact-DeFi">
+
+        <ion-icon name="logo-github"></ion-icon>
+
       </a>
     </div>
-    <a id="open-tnc" (click)="presentTncPopover()" style="cursor: pointer; text-align: center;"> Terms & Conditions</a>
+    <a id="docs" target="_blank" class="ion-text-center ion-margin-vertical"
+      href="https://docs.avaulto.com/avaulto/compact-defi/what-is-compact-defi">
+
+      View the documentation
+
+    </a>
+    <!-- <a id="open-tnc" (click)="presentTncPopover()" style="cursor: pointer; text-align: center;"> Terms & Conditions</a>
     <ion-popover #popover [isOpen]="isTncOpen" (didDismiss)="isTncOpen = false">
       <ng-template>
         <div id="tnc-popover-wrapper" class="ion-padding">
@@ -107,6 +108,6 @@
           </p>
         </div>
       </ng-template>
-    </ion-popover>
+    </ion-popover> -->
   </div>
 </div>

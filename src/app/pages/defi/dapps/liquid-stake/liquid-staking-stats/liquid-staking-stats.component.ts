@@ -3,7 +3,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
-import { ApiService, SolanaUtilsService, DataAggregatorService } from 'src/app/services';
+import { ApiService, SolanaUtilsService, JupiterStoreService } from 'src/app/services';
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 
 @Component({
@@ -25,7 +25,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
   constructor(
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _dataAggregatorService: DataAggregatorService,
+    private _jupStore: JupiterStoreService,
     private _walletStore: WalletStore
   ) { }
 
@@ -51,7 +51,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
   }
 
   async fetchSolBlazeStats() {
-    const solprice = await (await firstValueFrom(this._dataAggregatorService.getCoinData('solana'))).price.usd;
+    const solprice =await (await this._jupStore.fetchPriceFeed('bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1')).data['bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1'].price;
     let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolpubkey);
 
     let solanaAmount = info.details.reserveStakeLamports;
@@ -90,7 +90,8 @@ export class LiquidStakingStatsComponent implements OnChanges {
     let TVL = { staked_usd: 0, staked_asset: 0 }
     try {
 
-      const solprice = await (await firstValueFrom(this._dataAggregatorService.getCoinData('solana'))).price.usd;
+      const solprice =await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price;
+
       const walletOwner: any = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
       const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(walletOwner) || [];
       const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.mintAddress);

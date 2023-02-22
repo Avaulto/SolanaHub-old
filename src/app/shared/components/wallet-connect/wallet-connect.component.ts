@@ -7,6 +7,7 @@ import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-a
 import { WalletConnectedDropdownComponent } from './wallet-connected-dropdown/wallet-connected-dropdown.component';
 
 import Plausible from 'plausible-tracker'
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 const { trackEvent } = Plausible();
 @Component({
   selector: 'app-wallet-connect',
@@ -19,7 +20,7 @@ export class WalletConnectComponent implements OnInit {
   readonly isReady$ = this._walletStore.connected$.pipe(map(isReady => {
     if (isReady) {
       trackEvent('wallet connected')
-
+      this.gaService.event('generic', 'wallet_connect', 'connected');
       this._toasterService.msg.next({
         message: 'Wallet connected',
         icon: 'information-circle-outline',
@@ -36,6 +37,7 @@ export class WalletConnectComponent implements OnInit {
   )
 
   constructor(
+    private gaService: GoogleAnalyticsService,
     private _utilsService: UtilsService,
     private _walletStore: WalletStore,
     private _toasterService: ToasterService,

@@ -1,28 +1,30 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
-
     <ion-row class=" ion-align-items-center data-box">
 
-      <ng-container *ngIf="walletExtended | async as wallet; else elseTemplate">
+      <ng-container *ngIf="walletExtended$ | async as walletExtended; else elseTemplate">
         <ion-col class="ion-padding">
           <ion-row class="ion-align-items-center">
             <div class="ion-margin-end">
               <div class="walletQR">
-                <qrcode [qrdata]="wallet.address" [allowEmptyString]="true" [width]="78" [errorCorrectionLevel]="'M'">
+                <qrcode [qrdata]="walletExtended.addressUtil.addr" [allowEmptyString]="true" [width]="78"
+                  [errorCorrectionLevel]="'M'">
                 </qrcode>
+
               </div>
             </div>
             <div>
               <ion-row class=" ion-align-items-center">
 
-                <div class="heading-4 ion-margin-end">{{wallet.addrShort}}</div>
-                <ion-icon name="copy-outline" trigger="click" tooltip="coppied" appCopyText [copyText]="wallet.address" class="ion-margin-end"></ion-icon>
-                <a [href]="utilsService.explorer + '/account/'+ wallet.address" target="_blank">
+                <div class="heading-4 ion-margin-end">{{walletExtended.addressUtil.addrShort}}</div>
+                <ion-icon name="copy-outline" appCopyText [copyText]="walletExtended.addressUtil.addr"
+                  class="ion-margin-end"></ion-icon>
+                <a [href]="utilsService.explorer + '/account/'+ walletExtended.addressUtil.addr" target="_blank">
                   <ion-icon name="link-outline"></ion-icon>
                 </a>
               </ion-row>
               <ion-row>
-                <div class="heading-2">{{walletTotalValue.solValue}} ◎</div>
+                <div class="heading-2">{{walletTotalValue.solValue | number: '1.2-2'}} ◎</div>
               </ion-row>
               <ion-row>
                 <div class="heading-6">{{walletTotalValue.usdValue | currency}}</div>
@@ -41,7 +43,10 @@
     <ion-row class="ion-justify-content-between ion-align-items-start">
       <ion-col size="12" sizeLg="7.5">
         <div class="data-box ion-padding">
-          <app-tx [wallet]="walletExtended | async"></app-tx>
+
+          <app-tx [wallet]="walletExtended$ | async"></app-tx>
+
+
         </div>
 
       </ion-col>
@@ -50,10 +55,17 @@
 
       <ion-col size="12" sizeLg="4">
         <div class="data-box ion-padding">
-          <div class="heading-4 ion-margin-bottom ion-text-uppercase">tokens</div>
-          <ng-container *ngIf="walletExtended | async as wallet; else elseTemplate">
-            <app-assets-balance [assets]="wallet.tokens"></app-assets-balance>
-            <!-- {{wallet.tokens}} -->
+          <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{(tokens | async)?.length}} tokens</div>
+          <ng-container *ngIf="tokens | async as tokens; else elseTemplate">
+            <div id="assets-list">
+              <!-- <ion-item button detail="false" *ngFor="let asset of tokens"> -->
+                <app-assets-balance *ngFor="let asset of tokens" [asset]="asset"></app-assets-balance>
+              <!-- </ion-item> -->
+            </div>
+            <ion-row class="ion-justify-content-center ion-margin-top">
+              <ion-button (click)="openSwapSmallBalancePopup()" fill="outline">Convert Small Balance to
+                SOL</ion-button>
+            </ion-row>
           </ng-container>
           <ng-template #elseTemplate>
             <app-wallet-not-connected-state></app-wallet-not-connected-state>
@@ -69,8 +81,8 @@
           <ion-button routerLink="/nft-gallery" routerDirection="forward">view all</ion-button>
         </div>
         <ion-row id="nft-gallery-preview">
-          <ng-container *ngIf="walletExtended | async; else elseTemplate">
-            <ion-col size="12" sizeLg="4" *ngFor="let nft of myNfts | async as nfts">
+          <ng-container *ngIf="myNfts | async as nfts; else elseTemplate">
+            <ion-col size="12" sizeLg="4" *ngFor="let nft of nfts">
               <app-nft-preview [nft]="nft"></app-nft-preview>
             </ion-col>
           </ng-container>

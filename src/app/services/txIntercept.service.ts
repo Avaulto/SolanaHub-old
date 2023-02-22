@@ -22,7 +22,9 @@ import {
   SystemProgram,
   Transaction,
   TransactionBlockhashCtor,
-  TransactionInstruction
+  TransactionInstruction,
+  TransactionMessage,
+  VersionedTransaction
 } from '@solana/web3.js';
 import { firstValueFrom, throwError } from 'rxjs';
 import { StakeAccountExtended, toastData } from '../models';
@@ -262,6 +264,7 @@ export class TxInterceptService {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);
+      console.log(transaction)
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
 
@@ -276,6 +279,56 @@ export class TxInterceptService {
         }
       }
       const rawTransaction = transaction.serialize({ requireAllSignatures: false });
+      const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
+      const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
+      const txSend: toastData = {
+        message: 'click on the icon to view transaction on explorer',
+        icon: 'exit-outline',
+        segmentClass: "toastInfo",
+        duration: 10000,
+        cb: () => window.open(url)
+      }
+      this.toasterService.msg.next(txSend)
+      const config: BlockheightBasedTransactionConfirmationStrategy = {
+        signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
+      }
+      await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
+      const txCompleted: toastData = {
+        message: 'transaction completed',
+        icon: 'information-circle-outline',
+        segmentClass: "toastInfo"
+      }
+      this.toasterService.msg.next(txCompleted)
+
+      return signature
+
+    } catch (error) {
+      console.warn(error)
+      return null
+      // onMsg('transaction failed', 'error')
+    }
+  }
+  public async sendTx2(txParam: VersionedTransaction, walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
+
+    try {
+      const {  blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
+      // const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
+      // if (priorityFeeInst?.length > 0) txParam.push(...priorityFeeInst)
+
+
+      // console.log(txParam.length)
+      // const messageV0 = new TransactionMessage({
+      //   payerKey: walletPk,
+      //   recentBlockhash: blockhash,
+      //   instructions: [...txParam.slice(0,170)],
+      // }).compileToV0Message();
+      // console.log(messageV0)
+      const versionedTransaction:VersionedTransaction = txParam;
+      versionedTransaction.sign(extraSigners);
+
+      const res = await firstValueFrom(this._walletStore.signTransaction(versionedTransaction));
+
+      const rawTransaction = res.serialize()
       const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
       const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
       const txSend: toastData = {

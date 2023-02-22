@@ -95,3 +95,16 @@ export interface FraktNftMetadata {
     volumeWithTiers: number;
     slug: string;
 }
+
+export interface CollectionInfo {
+    lockedNftsInLoans: number;
+    loansVolumeAllTime: number;
+    loansVolume7Days: string;
+    TVL: number;
+    issuedIn24Hours: number;
+    liquidatedIn24Hours: number;
+    paidBackIn24Hours: number;
+    totalIssued: number;
+    utilizationRateInPercent: string;
+    liquidityPoolApr: string;
+}

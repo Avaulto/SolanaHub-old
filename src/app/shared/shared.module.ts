@@ -1,5 +1,5 @@
 import { IonicModule } from "@ionic/angular";
-import { CommonModule } from "@angular/common";
+import { CommonModule, DecimalPipe } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -36,8 +36,7 @@ import {
   IconTooltipComponent,
   SettingsComponent,
   OptionsPopupComponent,
-  TabsComponent,
-  InputGroupControlComponent
+  TabsComponent
 } from "./components";
 
 // // import directives
@@ -86,8 +85,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     IconTooltipComponent,
     SettingsComponent,
     OptionsPopupComponent,
-    TabsComponent,
-    InputGroupControlComponent
+    TabsComponent
   ],
   imports: [
     CommonModule,
@@ -102,6 +100,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     
   ],
   providers:[
+    DecimalPipe,
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
   ],
   exports: [
@@ -142,8 +141,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     IconTooltipComponent,
     SettingsComponent,
     OptionsPopupComponent,
-    TabsComponent,
-    InputGroupControlComponent
+    TabsComponent
     
   ]
 })

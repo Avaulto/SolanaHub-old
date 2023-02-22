@@ -14,7 +14,7 @@ export class AccountsComponent implements OnChanges {
   public stakeAccounts$ = this._solanaUtilsService.stakeAccounts$;
   public stakeAccountStatic = null;
 
-  @Input() wallet: Asset;
+  @Input() wallet: any;
   constructor(
     public loaderService: LoaderService,
     private _solanaUtilsService: SolanaUtilsService,

@@ -36,16 +36,11 @@ export const pages: any = [
           url: "/defi/token-swap",
           icon: 'swap-horizontal',
         },
-        {
-          title: "volt strategies",
-          url: "/defi/volt-strategies",
-          icon: 'flask',
-        },
-        {
-          title: 'nft-liquidity',
-          url: "/defi/nft-liquidity",
-          icon: 'cash-outline',
-        },
+        // {
+        //   title: 'nft-liquidity',
+        //   url: "/defi/nft-liquidity",
+        //   icon: 'cash-outline',
+        // },
       ]
     },
     // {

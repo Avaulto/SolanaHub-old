@@ -234,7 +234,7 @@ export class SolanaUtilsService {
 
 
   public async getSupply(): Promise<{ circulating: any, noneCirculating: any }> {
-    const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true, commitment: "finalized" });
+    const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true });
     const circulating = this._utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)
     const noneCirculating = this._utilService.numFormater(supply.value.nonCirculating / LAMPORTS_PER_SOL)
 
@@ -293,7 +293,7 @@ export class SolanaUtilsService {
     // }
   }
 
-  public async getTokenAccountsBalance(wallet: string): Promise<TokenBalance[]> {
+  public async getTokenAccountsBalance(wallet: string, getType?: 'token' | 'nft'): Promise<TokenBalance[]> {
     const filters: GetProgramAccountsFilter[] = [
       {
         dataSize: 165,    //size of account (bytes)
@@ -309,14 +309,21 @@ export class SolanaUtilsService {
       TOKEN_PROGRAM_ID,   //SPL Token Program, new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA")
       { filters }
     );
-
-    const tokensBalance: TokenBalance[] = accounts.map((account, i) => {
+    let tokensBalance: TokenBalance[] = accounts.map((account, i) => {
       //Parse the account data
       const parsedAccountInfo: any = account.account.data;
       const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];
       const balance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
-      return { tokenPubkey: account.pubkey.toString(), mintAddress, balance }
-    }).filter(token => token.balance > 0.00001);
+      const decimals: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["decimals"];
+      return { tokenPubkey: account.pubkey.toString(), mintAddress, balance, decimals}
+    })
+    if(getType){
+      if(getType == 'nft'){
+        tokensBalance = tokensBalance.filter(token => token.decimals == 0)
+      }else if(getType == 'token'){
+        tokensBalance = tokensBalance.filter(token => token.decimals != 0)
+      }
+    }
     return tokensBalance;
 
   }

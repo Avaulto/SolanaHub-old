@@ -7,4 +7,5 @@ export * from './http.interceptor';
 export * from './txIntercept.service';
 export * from './utils.service';
 export * from './solana-utils.service';
-export * from './nft-store.service'
+export * from './nft-store.service';
+export * from './jupiter-store.service';

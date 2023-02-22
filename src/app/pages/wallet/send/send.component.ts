@@ -15,7 +15,7 @@ import { LoaderService, UtilsService,SolanaUtilsService, TxInterceptService } fr
   styleUrls: ['./send.component.scss'],
 })
 export class SendComponent implements OnInit {
-  @Input() wallet: Asset;
+  @Input() wallet: any;
   public showValidatorList: boolean = false;
   public sendCoinForm: FormGroup;
   public formSubmitted: boolean = false;

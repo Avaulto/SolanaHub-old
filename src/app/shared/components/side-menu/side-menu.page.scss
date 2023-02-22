@@ -111,14 +111,18 @@ ion-radio label {
     width: 234px;
     max-width: 100%;
     margin: 0 auto;
-    ion-button{
-        width: 90px;
-    }
     ion-icon{
         margin-inline-end: 5px;
+        transition: 0.1s ease;
+        &:hover{
+            color: var(--ion-color-primary);
+        }
     }
 }
-
+#docs{
+        color: var(--ion-text-color);
+    
+}
 
 app-wallet-connect {
     width: 90%;

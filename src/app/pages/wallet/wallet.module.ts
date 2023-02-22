@@ -13,6 +13,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { ActionsComponent } from './tx/accounts/actions/actions.component';
 import { MergeAccountsPopupComponent } from './tx/accounts/merge-accounts-popup/merge-accounts-popup.component';
 import { AccountComponent } from './tx/accounts/account/account.component';
+import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-balance-popup.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { AccountComponent } from './tx/accounts/account/account.component';
     SendComponent,
     HistoryComponent,
     MergeAccountsPopupComponent,
-    AccountComponent
+    AccountComponent,
+    ConvertBalancePopupComponent
   ]
 })
 export class WalletPageModule { }

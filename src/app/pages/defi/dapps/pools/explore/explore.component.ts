@@ -1,10 +1,7 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
-import { DecimalUtil, Percentage } from '@orca-so/common-sdk';
-import { buildWhirlpoolClient, increaseLiquidityQuoteByInputToken, increaseLiquidityQuoteByInputTokenWithParams, PDAUtil, PriceMath, TickUtil, WhirlpoolClient, WhirlpoolContext } from '@orca-so/whirlpools-sdk';
 import { PublicKey } from '@solana/web3.js';
-import Decimal from 'decimal.js';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { OrcaStoreService } from '../orca-store.service';
 import { OrcaWhirlPool, Whirlpool } from '../orca.model';
 
@@ -12,11 +9,29 @@ import { OrcaWhirlPool, Whirlpool } from '../orca.model';
   selector: 'app-explore',
   templateUrl: './explore.component.html',
   styleUrls: ['./explore.component.scss'],
+  animations: [
+    // the fade-in/fade-out animation.
+    trigger('simpleFadeAnimation', [
+
+      // the "in" style determines the "resting" state of the element when it is visible.
+      state('in', style({opacity: 1})),
+
+      // fade in when created. this could also be written as transition('void => *')
+      transition(':enter', [
+        style({opacity: 0}),
+        animate(600 )
+      ]),
+
+      // fade out when destroyed. this could also be written as transition('void => *')
+      transition(':leave',
+        animate(600, style({opacity: 0})))
+    ])
+  ]
 })
 export class ExploreComponent implements OnInit {
   @Input() orcaPools: Observable<OrcaWhirlPool>
   @Input() searchTerm: string;
-  constructor(private _orcaStoreService: OrcaStoreService,) { }
+  constructor(private _orcaStoreService: OrcaStoreService) { }
 
   ngOnInit() { }
   public async initDepositSetup(pool: Whirlpool) {

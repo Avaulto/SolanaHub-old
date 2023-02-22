@@ -1,3 +1,25 @@
-#loan-params{
-    min-height: 400px;
+#loan-params {
+    min-height: 230px;
+}
+
+.loan-attr {
+    width: 112px;
+    height: 68px;
+    background: var(--ion-item-background);
+    border-radius: 4px;
+    padding: 8px;
+}
+
+
+#stake-amount {
+    position: relative;
+
+    span {
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
 }

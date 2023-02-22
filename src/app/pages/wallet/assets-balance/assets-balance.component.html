@@ -1,32 +1,37 @@
 
-<div id="assets-list">
-  <div class="asset ion-align-items-center" *ngFor="let asset of assets" (click)="send(asset)">
-    <div id="balace-number">
-      <div id="icon-wrapper">
-        <ion-img [src]="asset.icon"></ion-img>
-      </div>
-      <div>
-        <div class="short-wallet-name ion-text-uppercase">
-          {{asset.name}}
+    <div class="asset ion-align-items-center" (click)="appendAssetData()">
+      <div id="balace-number">
+        <div id="icon-wrapper">
+          <ion-img *ngIf="!mergeCondition" [src]="asset?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
+          <ion-checkbox #checkbox [checked]="isChecked" *ngIf="mergeCondition"></ion-checkbox>
         </div>
-        <div class="button-text">
-          <span class="global-selected-pair">
-            {{asset.totalUsdValue | currency}}
-          </span>
-          <span class="sub">{{asset.balance}}</span>
+        <div>
+          <div class="short-wallet-name ion-text-uppercase">
+            {{asset.name}}
+          </div>
+          <div class="button-text">
+            <span class="global-selected-pair">
+              {{asset.totalUsdValue | currency}}
+            </span>
+            <span class="sub">{{formatNumber(asset.balance)}}</span>
+          </div>
         </div>
+
       </div>
+      <ng-container *ngIf="!mergeCondition; else elseTemplate">
+        <div id="balance-base">
+          <div>{{asset.baseOfPortfolio | number : '1.2-2'}}%</div>
+          <div id="bar-wrapper">
+            <span class="bar" [style]="'width:' + asset.baseOfPortfolio + '%'"></span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #elseTemplate>
+        <span class="sub" *ngIf="totalBalanceLamport > rentAccountSize">{{asset.totalSolValue | number : '1.1'}} ◎</span>
+        <span style="z-index: 11;" class="sub" *ngIf="totalBalanceLamport < rentAccountSize">{{rentAccountSizeInSOL  | number : '1.1'}} ◎  
+          <app-icon-tooltip style="margin-inline-start: 5px;" tip="Rent account have greater balance then token balance"></app-icon-tooltip></span>
+         
+      </ng-template>
+      
 
     </div>
-    <div id="balance-base">
-
-      <div>{{asset.baseOfPortfolio}}%</div>
-      <div id="bar-wrapper">
-
-        <span class="bar" [style]="'width:' + asset.baseOfPortfolio + '%'"></span>
-      </div>
-
-
-    </div>
-  </div>
-</div>

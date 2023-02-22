@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { EpochInfo, LAMPORTS_PER_SOL, RpcResponseAndContext, Supply, VoteAccountStatus } from '@solana/web3.js';
-import { forkJoin, map, Observable, shareReplay, tap } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay, Subject, tap } from 'rxjs';
 import { CoinData } from 'src/app/models';
 import { ApiService, LoaderService, UtilsService } from 'src/app/services';
 import { DataAggregatorService } from 'src/app/services/data-aggregator.service';
@@ -32,6 +32,7 @@ export class HomePage implements OnInit, OnDestroy {
     return data
   }))
 
+  public getSupply: Subject<any> = new Subject();
   constructor(
     private _dataAggregatorService: DataAggregatorService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -39,7 +40,9 @@ export class HomePage implements OnInit, OnDestroy {
   ) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    const getSupply = await this._solanaUtilsService.getSupply();
+    this.getSupply.next(getSupply)
   }
   ngOnDestroy(): void {
   }

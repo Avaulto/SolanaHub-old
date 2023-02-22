@@ -37,7 +37,7 @@
                     <span class="heading-6" (click)="setMaxAmount(swapForm.value.inputToken)">MAX</span>
                 </div>
                 <app-select-box style="width: 100%;" *ngIf="showCoinsListOne"
-                  (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
+                  (onSelectItem)="setSelectedPair($event, 'inputToken')" [filterBy]="'symbol'" [dataset]="tokenList$">
                 </app-select-box>
 
 
@@ -63,7 +63,7 @@
                   <app-loader *ngIf="calcLoader | async"></app-loader>
                 </div>
                 <app-select-box style="width: 100%;" *ngIf="showCoinsListTwo"
-                  (onSelectItem)="setSelectedPair($event,'outputToken')" [filterBy]="'symbol'" [dataset]="tokensList">
+                  (onSelectItem)="setSelectedPair($event,'outputToken')" [filterBy]="'symbol'" [dataset]="tokenList$">
                 </app-select-box>
 
 

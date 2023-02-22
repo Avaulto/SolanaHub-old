@@ -1,7 +1,7 @@
 
 <div class="item-head" (click)="appendAccountData()">
   <div class="flex-item-center">
-    <div class="table-icon">
+    <div class="table-icon" [ngStyle]="{'background': mergeCondition ? 'transparent' : ''}">
       <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
       <ion-checkbox #accCheckbox *ngIf="mergeCondition"></ion-checkbox>
     </div>

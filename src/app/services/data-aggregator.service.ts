@@ -1,10 +1,24 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TOKEN_LIST_URL } from '@jup-ag/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { CoinData } from '../models';
+import { environment } from 'src/environments/environment';
+import { CoinData, JupiterPriceFeed } from '../models';
 import { ApiService } from './api.service';
 import { ToasterService } from './toaster.service';
+
+export interface Token {
+  chainId: number; // 101,
+  address: string; // 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  symbol: string; // 'USDC',
+  name: string; // 'Wrapped USDC',
+  decimals: number; // 6,
+  logoURI: string; // 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW/logo.png',
+  tags: string[]; // [ 'stablecoin' ]
+  token: Token;
+  balance?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +40,7 @@ export class DataAggregatorService {
   public getCoinData(coinName: string, localization: boolean = false): Observable<CoinData> {
     return this.apiService.get(`${this._coinGecoAPI}/coins/${coinName}?localization=${localization}`).pipe(
       map((data) => {
-        const { links, image, market_data, description,contract_address } = data;
+        const { links, image, market_data, description, contract_address } = data;
         const coinInfo: CoinData = {
           name: coinName,
           desc: description.en,
@@ -41,26 +55,7 @@ export class DataAggregatorService {
       catchError((error) => this._formatErrors(error))
     );
   }
-  public async getCoinDataByContract(mintAddress: string, localization: boolean = false): Promise<CoinData> {
-    try {
 
-      const res: any = await fetch(`${this._coinGecoAPI}/coins/solana/contract/${mintAddress}?localization=${localization}`);
-      const data = await res.json();
-      const { links, image, market_data, symbol } = data;
-      const coinData = {
-        symbol,
-        price: { btc: market_data.current_price.btc.toFixed(3), usd: market_data.current_price.usd.toFixed(2) },
-        website: links.homepage[0],
-        image,
-        mintAddress,
-        price_change_percentage_24h_in_currency: { btc: market_data.price_change_percentage_24h_in_currency.btc.toFixed(1), usd: market_data.price_change_percentage_24h_in_currency.usd.toFixed(1) }
-      }
-      return coinData
-
-    } catch (error) {
-      //console.error(error)
-    }
-  }
   public getCoinChartHistory(coinName: string, currency: string, days: any) {
     return this.apiService.get(`${this._coinGecoAPI}/coins/${coinName}/market_chart?vs_currency=${currency}&days=${days}`).pipe(
       map((data) => {

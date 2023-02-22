@@ -1,37 +1,22 @@
 
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder,FormGroup,  Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faArrowUpLong } from '@fortawesome/free-solid-svg-icons';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { Jupiter, RouteInfo, TOKEN_LIST_URL } from '@jup-ag/core'
-import {  LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
-import JSBI from 'jsbi';
-import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, interval, map, of, pipe, ReplaySubject, Subject, switchMap, tap } from 'rxjs';
-import { ApiService, UtilsService } from 'src/app/services';
-import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
+import { RouteInfo } from '@jup-ag/core'
+import { LAMPORTS_PER_SOL, VersionedTransaction, } from '@solana/web3.js';
+import { BehaviorSubject, distinctUntilChanged, filter, firstValueFrom, interval, map, mergeMap, of, pipe, ReplaySubject, Subject, switchMap, tap } from 'rxjs';
+import { SolanaUtilsService, JupiterStoreService, UtilsService, TxInterceptService } from 'src/app/services';
 
-import {  TokenBalance } from '../../../../models';
+import { Token, TokenBalance } from '../../../../models';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
-import { TxInterceptService } from 'src/app/services/txIntercept.service';
 import Decimal from "decimal.js";
 
 
 import Plausible from 'plausible-tracker'
+import { DecimalPipe } from '@angular/common';
 const { trackEvent } = Plausible();
 
-
-
-export interface Token {
-  chainId: number; // 101,
-  address: string; // 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
-  symbol: string; // 'USDC',
-  name: string; // 'Wrapped USDC',
-  decimals: number; // 6,
-  logoURI: string; // 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW/logo.png',
-  tags: string[]; // [ 'stablecoin' ]
-  token: Token;
-  balance?: number;
-}
 
 @Component({
   selector: 'app-token-swap',
@@ -44,15 +29,15 @@ export class TokenSwapPage implements OnInit {
   public wSOL = "So11111111111111111111111111111111111111112";
   public usdc = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
   public wallet;
-  private _jupiter: Jupiter;
+
   private _bestRoute: RouteInfo;
   private _swapDetail$: ReplaySubject<SwapDetail> = new ReplaySubject(1);
   public calcLoader: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean)
   public outputAmount;
   public swapDetailObs$ = this._swapDetail$.asObservable()
   public swapForm: FormGroup = {} as FormGroup;
-  public tokensList = new BehaviorSubject([] as Token[]);
-  public currentTokenList = this.tokensList.asObservable()
+  public tokenList$: BehaviorSubject<Token[]> = new BehaviorSubject([] as Token[]);
+
 
   private _reloadCalcRoutes = this.swapDetailObs$.pipe(
     this._utilService.isNotNull,
@@ -65,9 +50,19 @@ export class TokenSwapPage implements OnInit {
     private _walletStore: WalletStore,
     private _utilService: UtilsService,
     private _fb: FormBuilder,
+    private _jupStore: JupiterStoreService,
     private _txInterceptService: TxInterceptService,
+    private _decimalPipe: DecimalPipe,
   ) { }
-  ngOnInit() {
+  async ionViewWillEnter() {
+    const tokens = await this._jupStore.fetchTokenList();
+    const tokensListPrep: any = await this._prepTokenItem(tokens)
+    this.tokenList$.next(tokensListPrep);
+    this._setDefualtSwapPairs(tokensListPrep)
+  }
+
+  async ngOnInit() {
+
     this.swapForm = this._fb.group({
       inputToken: ['', [Validators.required]],
       outputToken: ['', [Validators.required]],
@@ -75,42 +70,27 @@ export class TokenSwapPage implements OnInit {
       slippage: [0.5, [Validators.required]],
     })
 
-    this._walletStore.anchorWallet$.pipe(this._utilService.isNotNull).subscribe(wallet => {
-      if(wallet){
+    this._walletStore.anchorWallet$.pipe(this._utilService.isNotNull).subscribe(async wallet => {
+      if (wallet) {
 
         this.wallet = wallet
-        this._initJup()
-        this._fetchTokenList()
-      }else{
+        this._jupStore.initJup(wallet)
+        // add balance
+        const tokensListPrep: any = await this._prepTokenItem(this.tokenList$.value)
+        this.tokenList$.next(tokensListPrep);
+        this._setDefualtSwapPairs(tokensListPrep)
+      } else {
         this.wallet = null;
+        const tokensListPrep: any = await this._prepTokenItem(this.tokenList$.value)
+        this.tokenList$.next(tokensListPrep);
+        this._setDefualtSwapPairs(tokensListPrep)
       }
     })
   }
 
-  private async _initJup() {
-    const connection = this._solanaUtilService.connection;
-    const pk = this.wallet.publicKey// this._walletStore.anchorWallet$.pipe(switchMap(wallet => wallet.publicKey))
-    try {
-      this._jupiter = await Jupiter.load({
-        connection,
-        cluster: 'mainnet-beta',
-        user: pk, // or public key
-        // platformFeeAndAccounts:  NO_PLATFORM_FEE,
-        routeCacheDuration: 10_000, // Will not refetch data on computeRoutes for up to 10 seconds
-      });
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
-  private async _fetchTokenList() {
-    const tokens: Token[] = await (await fetch(TOKEN_LIST_URL['mainnet-beta'])).json();
-    // const tokensWithOwnerBalance = await this.getTokenBalance(tokens);
-    const tokensListPrep = await this._prepTokenList(tokens);
-    this.tokensList.next(tokensListPrep);
-    this._setDefualtSwapPairs(tokensListPrep)
 
-  }
+
   public pairOne: string = 'solana';
   public pairTwo: string = 'usd-coin';
   private _setDefualtSwapPairs(tokensList) {
@@ -135,31 +115,33 @@ export class TokenSwapPage implements OnInit {
   }
 
   private async _getTokenBalance(token: Token): Promise<TokenBalance[]> {
-    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-    const walletBalance = await this._solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
-    const solTokenBalance = {tokenPubkey:walletOwner.toBase58(), mintAddress: this.wSOL, balance: walletBalance}
-    const accountsBalance = await this._solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58());
-    accountsBalance.push(solTokenBalance)
-    return accountsBalance
+    try {
+      const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+      const walletBalance = await this._solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
+      const solTokenBalance = { tokenPubkey: walletOwner.toBase58(), mintAddress: this.wSOL, balance: walletBalance }
+      const accountsBalance = await this._solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58(), 'token');
+      accountsBalance.push(solTokenBalance)
+      return accountsBalance
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-  private async _prepTokenList(tokens): Promise<Token[]> {
-    const tokensWithOwnerBalance = await this._getTokenBalance(tokens);
+  private async _prepTokenItem(tokens): Promise<Token[]> {
+    const tokensWithOwnerBalance = this.wallet ? await this._getTokenBalance(tokens) : [];
     return tokens.map((token: Token) => {
-      let tokenBalance =  tokensWithOwnerBalance.find(account => account.mintAddress == token.address)?.balance || 0;
-      const tokenExtended = {...token, balance: this._utilService.shortenNum(tokenBalance) }
-      return this._prepTokenData(tokenExtended)
+      let tokenBalance = this.wallet ? tokensWithOwnerBalance.find(account => account.mintAddress == token.address)?.balance || 0 : 0;
+      console.log(tokenBalance)
+      // let { name, logoURI, symbol, balance } = token
+      // const tokenExtended = {...token, balance: this._utilService.shortenNum(tokenBalance) }
+      // return this._prepTokenData(tokenExtended)
+      const name = token.name == 'Wrapped SOL' ? 'Solana' : token.name;
+      const tokenListItem: any = { ...token, name, selectable: true, image: token.logoURI, extraData: { symbol: token.symbol } }
+      this.wallet ? tokenListItem.extraData.balance = this._decimalPipe.transform(tokenBalance, '1.2-2') : delete tokenListItem.extraData.balance;
+      console.log(tokenListItem)
+      return tokenListItem
     })
   }
-  private _prepTokenData(token) {
-
-    let { name, logoURI, symbol, balance } = token
-
-    name = name == 'Wrapped SOL' ? 'Solana' : name;
-
-    return { ...token, name, selectable: true, symbol, image: logoURI, extraData: { symbol, balance } }
-  }
-
 
   public showCoinsListOne: boolean = false;
   public showCoinsListTwo: boolean = false;
@@ -210,27 +192,15 @@ export class TokenSwapPage implements OnInit {
     this.outputAmount = null
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
-    const inputAmountInSmallestUnits = inputToken
-      ? Math.round(Number(inputAmount) * 10 ** inputToken.decimals)
-      : 0;
+
     try {
-      const routes = await this._jupiter.computeRoutes({
-        inputMint: new PublicKey(inputToken.address),
-        outputMint: new PublicKey(outputToken.address),
-        amount: JSBI.BigInt(inputAmountInSmallestUnits),
-        slippage: 1, // 1 = 1%
-        forceFetch: true, // (optional) to force fetching routes and not use the cache
-        // intermediateTokens, if provided will only find routes that use the intermediate tokens
-        // feeBps
-      });
-      //stare best route
-      this._bestRoute = routes.routesInfos[0]
+      this._bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken)
 
       // hide the loader
       this.calcLoader.next(false)
 
       // prep output amount on UI
-      this.outputAmount = new Decimal(routes.routesInfos[0].outAmount.toString())
+      this.outputAmount = new Decimal(this._bestRoute.outAmount.toString())
         .div(10 ** outputToken.decimals).toFixed(3)
     } catch (error) {
       console.error(error)
@@ -239,32 +209,31 @@ export class TokenSwapPage implements OnInit {
     this._swapDetail$.next(swapDetails);
   }
   public setMaxAmount(token: Token): void {
-    // const fixedAmount = this._utilsService.shortenNum(this.wallet.balance - 0.0001)
     this.swapForm.controls.inputAmount.setValue(token.balance);
   }
   public async submitSwap(): Promise<void> {
 
-    const { transactions } = await this._jupiter.exchange({
-      routeInfo: this._bestRoute
-    });
-
+    const transaction: VersionedTransaction = await this._jupStore.swapTx(this._bestRoute);
+    console.log(transaction)
+    // this.wallet.signTransaction(transaction)
     // Execute the transactions
-    const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
-    const arrayOfTx: Transaction[] = []
-    for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
-      if (!transaction) {
-        continue;
-      }
-      arrayOfTx.push(transaction)
-    }
-     await this._txInterceptService.sendTx(arrayOfTx, this.wallet.publicKey);
-     trackEvent('jupiter swap')
+    // const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
+    // const arrayOfTx: Transaction[] = []
+    // for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
+    //   if (!transaction) {
+    //     continue;
+    //   }
+    //   arrayOfTx.push(transaction)
+    // }
+    await this._txInterceptService.sendTx2(transaction, this.wallet.publicKey);
+    //  await this._txInterceptService.sendTx([transaction], this.wallet.publicKey);
+    trackEvent('jupiter swap')
   }
   private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
     const { marketInfos } = routeInfo
     try {
       const txFees = await routeInfo.getDepositAndFee();
-      const feesByToken: Token = this.tokensList.value.filter(token => token.address == marketInfos[0].lpFee.mint)[0] || null;
+      const feesByToken: Token = this.tokenList$.value.filter(token => token.address == marketInfos[0].lpFee.mint)[0] || null;
 
       const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) * -1;
       const minimumRecived: any = (outputAmount * slippagePercentage).toFixedNoRounding(3)//  / (10 ** outputToken.decimals)

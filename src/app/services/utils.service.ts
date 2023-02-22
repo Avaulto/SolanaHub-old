@@ -1,4 +1,4 @@
-import { DOCUMENT } from "@angular/common";
+import { DecimalPipe, DOCUMENT } from "@angular/common";
 import { Inject, Injectable, Renderer2, RendererFactory2 } from "@angular/core";
 import { Params } from "@angular/router";
 import { BehaviorSubject, filter, Observable } from "rxjs";
@@ -31,7 +31,10 @@ Number.prototype.toFixedNoRounding = function (n) {
   providedIn: "root",
 })
 export class UtilsService {
-  constructor(private factory: RendererFactory2, @Inject(DOCUMENT) private document: Document, private localStore: LocalStorageService) {
+  constructor(private factory: RendererFactory2, 
+    private _decimalPipe: DecimalPipe,
+    @Inject(DOCUMENT) private document: Document, 
+    private localStore: LocalStorageService) {
     this.renderer = this.factory.createRenderer(null, null);
     this.changeTheme(this._systemTheme.value);
   }
@@ -72,11 +75,18 @@ export class UtilsService {
   public toLower(params: Params): Params {
     const lowerParams: Params = {};
     for (const key in params) {
-        lowerParams[key.toLowerCase()] = params[key];
+      lowerParams[key.toLowerCase()] = params[key];
     }
 
     return lowerParams;
-}
+  }
+  public formatBigNumbers = n => {
+    if (n < 1e3) return this._decimalPipe.transform(n, '1.2-2');
+    if (n >= 1e3 && n < 1e6) return +(n / 1e3).toFixed(1) + "K";
+    if (n >= 1e6 && n < 1e9) return +(n / 1e6).toFixed(1) + "M";
+    if (n >= 1e9 && n < 1e12) return +(n / 1e9).toFixed(1) + "B";
+    if (n >= 1e12) return +(n / 1e12).toFixed(1) + "T";
+  };
   public enableLightTheme() {
     this.renderer.addClass(this.document.body, 'light-theme');
   }

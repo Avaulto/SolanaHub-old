@@ -1,0 +1,38 @@
+<ion-row class="ion-padding">
+  <div id="popup-header">
+    <ion-row id="tip" class="data-box ion-padding">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span>You can convert balances with a value of 2% or below your total portfolio in USD<br>
+        <span class="sub">If your account rent size is bigger than your token holdings, the account will be closed instead of using the swap method.</span>
+      </span>
+    </ion-row>
+  </div>
+  <div id="popup-body" class="ion-margin-bottom">
+    <ng-container *ngIf="assetsListCanSwap.length > 0; else elseTemplate">
+      <ion-row class="ion-text-capitalize ion-justify-content-between ion-align-items-center">
+        <h4 class="heading-4 ion-text-capitalize">select assets to swap</h4>
+        <div style="display: flex;align-items: center;">
+          <ion-checkbox style="margin-inline-end: 5px;" [checked]="true" (click)="toggleCheck()"></ion-checkbox>
+          <ion-label>select all</ion-label> 
+        </div>
+      </ion-row>
+      <div id="selectable-accounts-list" class="data-box">
+        <ion-item button  *ngFor="let asset of assetsListCanSwap" >
+          <app-assets-balance [mergeCondition]="true" [isChecked]="checkAll"
+          (onClickAsset)="storeSelection($event)" [asset]="asset"></app-assets-balance>
+        </ion-item>
+      </div>
+      <div id="swap-result">
+        {{selectedAssets.length}} token(s) selected<br>
+        you will get appromixtly: {{totalSOLConvert | number : '1.1'}} ◎ <br>
+       <span class="sub">up to 1% slipage</span> 
+      </div>
+   
+    </ng-container>
+    <ng-template #elseTemplate class="ion-text-capitalize">
+      no available small balance tokens
+    </ng-template>
+  </div>
+
+  <ion-button (click)="convert()" [disabled]="selectedAssets.length == 0">convert to SOL</ion-button>
+</ion-row>

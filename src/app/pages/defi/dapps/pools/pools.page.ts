@@ -124,4 +124,8 @@ export class PoolsPage {
   public searchPool(term: any): void {
     this.searchTerm = term.value.toLowerCase();
   }
+  tabChange(ev){
+    this.currentTab = ev
+    this.searchTerm = ''
+  }
 }

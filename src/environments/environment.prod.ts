@@ -1,5 +1,5 @@
 export const environment = {
-  ga:'G-SDPQV59FL6',
+  ga:'G-5MTRXNJ42D',
   production: true,
   solanaEnv: 'mainnet-beta',
   solblazepool:'stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi',

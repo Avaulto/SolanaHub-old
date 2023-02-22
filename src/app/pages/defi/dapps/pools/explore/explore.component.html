@@ -1,6 +1,6 @@
 <ion-virtual-scroll class="ion-padding-bottom"
   [items]="(orcaPools | async)?.whirlpools | filter: 'tokenA.symbol':searchTerm" approxItemHeight="100px">
-  <div *virtualItem="let item; let i = i" class="data-box ion-padding" [ngClass]=" false ? '': 'extra-reward'">
+  <div [@simpleFadeAnimation] *virtualItem="let item; let i = i" class="data-box ion-padding" [ngClass]=" false ? '': 'extra-reward'">
 
     <div *ngIf="true" class="reward-info" tooltip="10 ORCA per week">
       orca reward

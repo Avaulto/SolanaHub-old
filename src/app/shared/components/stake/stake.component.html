@@ -7,12 +7,15 @@
       </div>
       <p id="">Earn passive income from your crypto by staking it.</p>
     </ion-row>
-    <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
+    <app-label-layout [layoutConfig]="{title: 'stake', balance:wallet?.asset.balance | number: '1.2-2'}">
+      <app-icon-tooltip tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+    </app-label-layout>
+    <!-- <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">
       <div id="">stake</div>
-      <div class="aligned">Balance: {{wallet?.balance}} 
+      <div class="aligned">Balance: {{wallet?.asset.balance | number: '1.2-2'}} 
         <app-icon-tooltip tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
       </div>
-    </ion-row>
+    </ion-row> -->
     <ion-row id="stake-amount">
       <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
       <span class="heading-6" (click)="setMaxAmount()">MAX</span>

@@ -67,7 +67,7 @@
             </ion-col> -->
           </ion-row>
         </ion-item>
-        <app-box-content slot="content" [accordionOpen]="currentBoxOpen == i"
+        <app-box-content slot="content" [activeLoans]="loan.activeloansAmount" [accordionOpen]="currentBoxOpen == i"
           [collectionName]="loan.slug"></app-box-content>
 
       </ion-accordion>

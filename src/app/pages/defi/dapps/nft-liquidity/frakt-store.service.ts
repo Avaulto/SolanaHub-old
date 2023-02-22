@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
+import { depositLiquidity } from '@frakt-protocol/frakt-sdk/lib/loans';
 import { DecimalUtil, Percentage, TokenUtil } from '@orca-so/common-sdk';
 import { buildWhirlpoolClient, increaseLiquidityQuoteByInputTokenWithParams, PDAUtil, PriceMath, WhirlpoolClient, WhirlpoolContext } from '@orca-so/whirlpools-sdk';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { PublicKey } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import BN from 'bn.js';
 import Decimal from 'decimal.js';
 import { catchError, map, observable, Observable, shareReplay, switchMap, throwError } from 'rxjs';
 import { toastData } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
-import { FraktLiquidity, FraktNftItem, FraktNftItemWithLiquidity, FraktNftMetadata, FraktStats } from './frakt.model';
+import { CollectionInfo, FraktLiquidity, FraktNftItem, FraktNftItemWithLiquidity, FraktNftMetadata, FraktStats } from './frakt.model';
 
 
 
@@ -52,7 +53,7 @@ export class FraktStoreService {
         totalIssued: totalIssued || 0,
         loansTvl: loansTvl || 0,
         loansVolumeAllTime: loansVolumeAllTime || 0,
-        activeLoansCount:activeLoansCount || 0
+        activeLoansCount: activeLoansCount || 0
       }
       return defaults
     }), shareReplay(1))
@@ -88,11 +89,27 @@ export class FraktStoreService {
     let nftMetadata: FraktNftMetadata[] = {} as FraktNftMetadata[]
     try {
       const nftMetadataRes: FraktNftMetadata[] = await (await fetch(`${this.fraktApi}/whitelist/${nftName}`)).json();
+      // nftMetadata[0].price = nftMetadata[0].price / LAMPORTS_PER_SOL
+      // nftMetadata[0].liquidityPool = this._utilsService.addrUtil(nftMetadata[0].liquidityPool).addrShort
       nftMetadata = nftMetadataRes
+
     } catch (error) {
       console.error(error);
     }
     return nftMetadata
+  }
+  public async fetchCollectionInfo(collectionName: string): Promise<CollectionInfo> {
+    let collectionInfo: CollectionInfo = {} as CollectionInfo
+    try {
+      const collectionRes: CollectionInfo = await (await fetch(`${this.fraktApi}/stats/collections/${collectionName}`)).json();
+      // nftMetadata[0].price = nftMetadata[0].price / LAMPORTS_PER_SOL
+      // nftMetadata[0].liquidityPool = this._utilsService.addrUtil(nftMetadata[0].liquidityPool).addrShort
+      collectionInfo = collectionRes
+
+    } catch (error) {
+      console.error(error);
+    }
+    return collectionInfo
   }
   public getPoolsListFull(): Observable<FraktNftItemWithLiquidity[]> {
     // priceBasedLiqs
@@ -115,5 +132,8 @@ export class FraktStoreService {
       }),
       catchError(this._formatErrors)
     )
+  }
+  addLiquidity(){
+    depositLiquidity
   }
 }

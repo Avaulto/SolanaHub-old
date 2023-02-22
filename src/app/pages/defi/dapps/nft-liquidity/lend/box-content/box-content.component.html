@@ -1,13 +1,77 @@
-<ion-grid id="loan-params">
+<ion-grid >
   <ng-container *ngIf="NftMetadata; else elseTemplate">
-    <div>
-      {{NftMetadata[0].name}}
-      {{NftMetadata[0].collaterizationRate}}
-      {{NftMetadata[0].createdAt}}
-    </div>
+    
+    <ion-row id="loan-params" class="ion-justify-content-between ion-align-items-stretch data-box ion-padding">
+      <ion-col sizeLg="5.9" size="12">
+        <ion-row class="ion-justify-content-between">
+          <div class="loan-attr ion-margin-bottom">
+            <div class="attr-label ion-text-capitalize sub-strong ">
+              liquidity pool address
+            </div>
+            <div class="attr-value sub">
+              {{NftMetadata[0].liquidityPool}}
+            </div>
+          </div>
+          <div class="loan-attr ion-margin-bottom">
+            <div class="attr-label ion-text-capitalize sub-strong">
+              collaterization rate
+            </div>
+            <div class="attr-value ion-text-capitalize sub">
+              {{NftMetadata[0].collaterizationRate | percent }}
+            </div>
+          </div>
+          <div class="loan-attr ion-margin-bottom">
+            <div class="attr-label ion-text-capitalize sub-strong">
+              price
+            </div>
+            <div class="attr-value ion-text-capitalize sub">
+              {{NftMetadata[0].price | number }} ◎
+            </div>
+          </div>
+          <div class="loan-attr ion-margin-bottom">
+            <div class="attr-label ion-text-capitalize sub-strong">
+              active loans
+            </div>
+            <div class="attr-value ion-text-capitalize sub">
+              {{activeLoans | number }}
+            </div>
+          </div>
+          <div class="loan-attr ion-margin-bottom">
+            <div class="attr-label ion-text-capitalize sub-strong">
+              created at
+            </div>
+            <div class="attr-value sub">
+              {{NftMetadata[0].createdAt | date }}
+            </div>
+          </div>
+        </ion-row>
+      </ion-col>
+      <ion-col sizeLg="5.9" size="12">
+        <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+        <div [ngSwitch]="currentTab" id="liquid-stake-form" class="ion-padding-vertical">
+          <form *ngSwitchCase="'deposit'">
+            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:1 | number: '1.2-2'}">
+              <app-icon-tooltip 
+                tip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+            </app-label-layout>
+            <ion-row id="stake-amount">
+              <ion-input class="button-text" placeholder="Amount"></ion-input>
+              <span class="heading-6" >MAX</span>
+            </ion-row>
+            <ion-button
+              class="ion-text-capitalize">
+              deposit
+            </ion-button>
+          </form>
+
+        </div>
+      </ion-col>
+
+    </ion-row>
+
   </ng-container>
   <ng-template #elseTemplate>
-    <ion-row  style="min-height: 400px;" class="ion-justify-content-center ion-align-items-center">
+    <ion-row style="min-height: 400px;" class="ion-justify-content-center ion-align-items-center">
       <app-loader></app-loader>
     </ion-row>
   </ng-template>

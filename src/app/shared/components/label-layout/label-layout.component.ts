@@ -6,7 +6,9 @@ import { Component, Input, OnInit } from '@angular/core';
                 <div id="label"><span>{{layoutConfig.title}} </span>
               </div>
                 <div id="balance" *ngIf="layoutConfig.balance">
-                    Balance: {{layoutConfig.balance}}
+                    <span>
+                      Balance: {{layoutConfig.balance}}
+                    </span>
                     <ng-content></ng-content>
                   </div>
               </ion-row>

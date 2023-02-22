@@ -8,14 +8,11 @@
         </app-data-box>
       </ion-col>
     </ion-row>
-    <ion-row id="tool-box" class="ion-margin-bottom ion-justify-content-between ion-align-items-center">
-      <div id="search-box">
-        <app-search-input (search)="searchPool($event)" [placeholder]="'Search pool by symbol'"></app-search-input>
-      </div>
+    <ion-row class="ion-justify-content-between ion-margin-bottom ion-align-items-center">
+      <app-tabs [menu]="menu" (onSelectTab)="tabChange($event)"></app-tabs>
+      <app-search-input (search)="searchPool($event)" [value]="searchTerm" [placeholder]="'Search collection'"></app-search-input>
     </ion-row>
-    <ion-row class="ion-margin-bottom">
-      <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
-    </ion-row>
+
     <app-loader *ngIf="(orcaPools | async) == null"></app-loader>
     <ion-row>
 
