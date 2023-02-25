@@ -308,7 +308,7 @@ export class TxInterceptService {
       // onMsg('transaction failed', 'error')
     }
   }
-  public async sendTx2(txParam: VersionedTransaction, walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
+  public async sendTx2(vtx: VersionedTransaction, walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
 
     try {
       const {  blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
@@ -320,13 +320,14 @@ export class TxInterceptService {
       // const messageV0 = new TransactionMessage({
       //   payerKey: walletPk,
       //   recentBlockhash: blockhash,
-      //   instructions: [...txParam.slice(0,170)],
+      //   instructions: instructions,
       // }).compileToV0Message();
       // console.log(messageV0)
-      const versionedTransaction:VersionedTransaction = txParam;
-      versionedTransaction.sign(extraSigners);
+      // const versionedTransaction:VersionedTransaction = new VersionedTransaction(messageV0);
+      // if (extraSigners?.length > 0) versionedTransaction.sign(extraSigners);
 
-      const res = await firstValueFrom(this._walletStore.signTransaction(versionedTransaction));
+      
+      const res = await firstValueFrom(this._walletStore.signTransaction(vtx));
 
       const rawTransaction = res.serialize()
       const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
@@ -342,7 +343,7 @@ export class TxInterceptService {
       const config: BlockheightBasedTransactionConfirmationStrategy = {
         signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
       }
-      await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
+      await this.solanaUtilsService.connection.confirmTransaction(config, 'confirmed') //.confirmTransaction(txid, 'confirmed');
       const txCompleted: toastData = {
         message: 'transaction completed',
         icon: 'information-circle-outline',

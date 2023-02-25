@@ -32,7 +32,7 @@
                     [showDropDownIcon]="true">
 
                   </app-select-item>
-                  <ion-input type="number" placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount"
+                  <ion-input type="text" placeholder="0.0" id="inputAmountEl" debounce="500" name="input amount"
                     #inAmount formControlName="inputAmount"></ion-input>
                     <span class="heading-6" (click)="setMaxAmount(swapForm.value.inputToken)">MAX</span>
                 </div>
@@ -71,8 +71,8 @@
             </ion-row>
           </div>
           <ion-row class="ion-justify-content-center" id="swap-btn">
-            <ng-container *ngIf="wallet; else elseTemplate">
-              <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid">Swap
+            <ng-container *ngIf="wallet$ | async; else elseTemplate">
+              <ion-button id="swap-btn" (click)="submitSwap()" [disabled]="(calcLoader | async) || swapForm.invalid || !bestRoute">Swap
               </ion-button>
             </ng-container>
             <ng-template #elseTemplate>
@@ -82,7 +82,8 @@
           
           </ion-row>
         </form>
-        <app-swap-info *ngIf="(swapDetailObs$ | async) != null" [swapDetail]="swapDetailObs$"></app-swap-info>
+        <div id="no-route" *ngIf="!bestRoute && swapForm.valid && !(calcLoader | async)">no available route</div>
+        <app-swap-info *ngIf="bestRoute && (swapDetailObs$ | async) != null && !(calcLoader | async)" [swapDetail]="swapDetailObs$"></app-swap-info>
       </ion-col>
       <ion-col size="12" sizeLg="5.8" id="chart-wrapper" class="data-box ion-padding">
         <app-chart [pairOne]="pairOne" [pairTwo]="pairTwo"></app-chart>

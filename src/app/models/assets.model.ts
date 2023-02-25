@@ -9,7 +9,7 @@ export interface Asset {
   totalUsdValue: number,
   totalSolValue: number,
   baseOfPortfolio?: any;
-  mintAddress?: string;
+  address?: string;
   decimals?: number;
 }
 export interface CoinData {

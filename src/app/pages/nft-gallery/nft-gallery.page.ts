@@ -55,5 +55,7 @@ export class NftGalleryPage {
     );
     return totalValue;
   }
-
+public openME(): void{
+  window.open('https://magiceden.io/','_blank')
+}
 }

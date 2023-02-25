@@ -4,7 +4,7 @@ ion-item{
     background: transparent;
 }
 #gallery-wrapper{
-    min-height: 600px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
 }
@@ -19,4 +19,21 @@ ion-radio-group{
 app-collection{
     margin-bottom: 40px;
     display: block;
+}
+
+#no-nfts{
+    #icon-placeholder{
+        font-size: 140px;
+    }
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    ion-button{
+        ion-icon{
+            margin-inline-start: 5px;
+        }
+    }
 }

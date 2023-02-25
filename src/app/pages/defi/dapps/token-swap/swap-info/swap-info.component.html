@@ -8,7 +8,7 @@
     <span [ngClass]="{
       'excelent-price-impact': (swapDetail | async)?.priceImpact < 0.005,
       'ok-price-impact': (swapDetail | async)?.priceImpact <  0.01,
-      'severe-price-impact': (swapDetail | async)?.priceImpact > 0.05
+      'severe-price-impact': (swapDetail | async)?.priceImpact > 0.01
       }">
       {{this.priceImpactScore}}
     </span>

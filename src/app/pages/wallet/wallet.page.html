@@ -55,11 +55,11 @@
 
       <ion-col size="12" sizeLg="4">
         <div class="data-box ion-padding">
-          <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{(tokens | async)?.length}} tokens</div>
-          <ng-container *ngIf="tokens | async as tokens; else elseTemplate">
+          <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{(assets | async)?.length}} tokens</div>
+          <ng-container *ngIf="assets | async as assets; else elseTemplate">
             <div id="assets-list">
               <!-- <ion-item button detail="false" *ngFor="let asset of tokens"> -->
-                <app-assets-balance *ngFor="let asset of tokens" [asset]="asset"></app-assets-balance>
+                <app-assets-balance *ngFor="let asset of assets" [asset]="asset"></app-assets-balance>
               <!-- </ion-item> -->
             </div>
             <ion-row class="ion-justify-content-center ion-margin-top">

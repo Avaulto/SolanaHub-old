@@ -29,9 +29,12 @@
             <app-nft-preview [nft]="nft"></app-nft-preview>
           </ion-col>
         </ion-row>
-        <p *ngIf="nfts.length == 0">
-          No Nfts found
-        </p>
+        <div id="no-nfts" *ngIf="nfts.length == 0">
+          <ion-icon id="icon-placeholder" name="image-outline"></ion-icon>
+          <h1 class="headings">No NFTs</h1>
+          <p class="sub ion-margin-bottom">Get started with your first NFT</p>
+          <ion-button (click)="openME()" class="ion-text-capitalize">browse magic eden<ion-icon slot="end" name="log-out-outline"></ion-icon></ion-button>
+        </div>
       </ng-container>
       <ng-template #elseTemplate>
         <app-wallet-not-connected-state></app-wallet-not-connected-state>

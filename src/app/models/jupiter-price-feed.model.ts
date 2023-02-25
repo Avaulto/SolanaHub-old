@@ -19,6 +19,6 @@ export interface Token {
     decimals: number; // 6,
     logoURI: string; // 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/BXXkv6z8ykpG1yuvUDPgh732wzVHB69RnB9YgSYh3itW/logo.png',
     tags: string[]; // [ 'stablecoin' ]
-    token: Token;
+    extraData?: {balance?: string}
     balance?: number;
   }

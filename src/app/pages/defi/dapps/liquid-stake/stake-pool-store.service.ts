@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable, shareReplay, Subject, throwError } from 'rxjs';
 import { StakePoolProvider } from './stake-pool.model';
 import { UtilsService, SolanaUtilsService, ToasterService } from 'src/app/services';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { PublicKey } from '@solana/web3.js';
 import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk';
 import * as StakePoolSDK from '@solana/spl-stake-pool';

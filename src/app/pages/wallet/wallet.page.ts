@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { PopoverController } from '@ionic/angular';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
-import { filter, first, firstValueFrom, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
-import { Asset, CoinData, NFTGroup, Nft, TokenBalance } from 'src/app/models';
+import { combineLatestWith, distinctUntilChanged, filter, first, firstValueFrom, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap } from 'rxjs';
+import { Asset, CoinData, NFTGroup, Nft, TokenBalance, Token } from 'src/app/models';
 import { ApiService, UtilsService, DataAggregatorService, SolanaUtilsService, NftStoreService, LoaderService } from 'src/app/services';
 import { JupiterStoreService } from 'src/app/services/jupiter-store.service';
 import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-balance-popup.component';
@@ -15,7 +15,7 @@ import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-ba
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit, OnDestroy {
-  private _tokens:Asset[] = []
+  private _assets:Asset[] = []
   private wallet: {
     publicKey: PublicKey;
     signTransaction: (transaction: Transaction) => Promise<Transaction>;
@@ -33,21 +33,22 @@ export class WalletPage implements OnInit, OnDestroy {
 
   public walletExtended$: Observable<any> = this._walletStore.anchorWallet$.pipe(
     switchMap(async wallet => {
-      this._tokens = []
+      console.log(wallet)
+      this._assets = []
       if(wallet){
         this.wallet = wallet;
       const solData = await this._jupStore.fetchPriceFeed('SOL');
       const balance = (await this._solanaUtilsService.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL;
       const totalUsdValue = balance * solData.data['SOL'].price
       let asset: Asset = {
-        name: 'solana',
+        name: 'SOL',
         balance,
         icon: 'assets/images/icons/solana-logo.webp',
         totalUsdValue,
         totalSolValue: balance,
         price: solData.data['SOL'].price
       }
-      this._tokens.push(asset)
+      this._assets.push(asset)
       // this.initWalletEval(asset, wallet)
       const walletExtended = {...wallet, asset, addressUtil: this.utilsService.addrUtil(wallet.publicKey.toBase58())}
       return walletExtended;
@@ -56,17 +57,20 @@ export class WalletPage implements OnInit, OnDestroy {
       return null
     }
     
-    }),
-    shareReplay(1)
+    }),shareReplay(),
   )
 
-  public tokens: Observable<Asset[]> = this._walletStore.anchorWallet$.pipe(
-    switchMap(async wallet => {
+  public assets: Observable<Asset[]> = this._jupStore.fetchTokenList().pipe(
+    combineLatestWith(this.walletExtended$),
+    distinctUntilChanged(),
+    switchMap(async ([jupTokens, wallet]: any) => {
+      console.log(jupTokens, wallet)
+  
       if(wallet){
-        this._tokens = await this._getTokens(wallet.publicKey)
-        const tokens = this._evalutePortfolio();
+        this._assets = await this._prepTokenList(jupTokens, wallet.publicKey)
+        const assets = this._evalutePortfolio();
         
-        return tokens;
+        return assets;
       }else{
         return null
       }
@@ -84,7 +88,7 @@ export class WalletPage implements OnInit, OnDestroy {
   async openSwapSmallBalancePopup() {
       const popover = await this._popoverController.create({
         component: ConvertBalancePopupComponent,
-        componentProps: { asset: this._tokens[0], assets: this._tokens, wallet:this.wallet },
+        componentProps: { asset: this._assets[0], assets: this._assets, wallet:this.wallet },
         // event: e,
         alignment: 'start',
         // showBackdrop:false,
@@ -98,8 +102,8 @@ export class WalletPage implements OnInit, OnDestroy {
   public ngOnInit() {
   }
 
-  private async _getTokens(publicKey: PublicKey): Promise<Asset[]> {
-    let tokens: Asset[] = this._tokens;
+  private async _prepTokenList(tokens: Token[], publicKey: PublicKey): Promise<Asset[]> {
+    let assets: Asset[] = this._assets;
     // fetch tokens by owner
     const tokensByOwner = await this._solanaUtilsService.getTokenAccountsBalance(publicKey.toBase58(), 'token')
     // concat all mint address for jupiter price feed
@@ -110,7 +114,7 @@ export class WalletPage implements OnInit, OnDestroy {
     // console.log(tokensByOwner)
     // get token prices & image
     const tokensPrices = await this._jupStore.fetchPriceFeed(mintAddress);
-    const getTokensList = await this._jupStore.fetchTokenList();
+    const getTokensList = await firstValueFrom(this._jupStore.fetchTokenList());
     const attachTokenImage = getTokensList.map(token => {
       if (tokensPrices.data[token.address]) {
         return { ...tokensPrices.data[token.address], logo: token.logoURI, decimals: token.decimals }
@@ -122,10 +126,10 @@ export class WalletPage implements OnInit, OnDestroy {
     attachTokenImage.forEach(coinData => {
       const findToken = tokensByOwner.find(token => token.mintAddress == coinData.id)
       const token = this._prepAsset(coinData, findToken)
-      tokens.push(token);
+      assets.push(token);
     })
 
-    return tokens;
+    return assets;
   }
   private _prepAsset(coinData: any, token: TokenBalance): Asset {
     const totalUsdValue = token.balance * coinData.price;
@@ -134,23 +138,23 @@ export class WalletPage implements OnInit, OnDestroy {
       balance: token.balance,
       icon: coinData.logo,
       totalUsdValue,
-      totalSolValue: totalUsdValue / this._tokens[0].price,
+      totalSolValue: totalUsdValue / this._assets[0].price,
       price: coinData.price,
       decimals: coinData.decimals,
-      mintAddress: token.mintAddress
+      address: token.mintAddress
     }
   }
   private _evalutePortfolio(): Asset[] {
-    this.walletTotalValue.usdValue = this._tokens.reduce(
+    this.walletTotalValue.usdValue = this._assets.reduce(
       (previousValue, currentValue: Asset) => previousValue + currentValue.totalUsdValue,
       0
     );
-    this.walletTotalValue.solValue = this.walletTotalValue.usdValue / this._tokens[0].price;
-    this._tokens.map(token => {
+    this.walletTotalValue.solValue = this.walletTotalValue.usdValue / this._assets[0].price;
+    this._assets.map(token => {
       token.baseOfPortfolio = token.totalUsdValue / this.walletTotalValue.usdValue * 100, 1
     })
-    this._tokens = this._tokens.sort((a, b) => b.totalUsdValue - a.totalUsdValue);
-    return this._tokens;
+    this._assets = this._assets.sort((a, b) => b.totalUsdValue - a.totalUsdValue);
+    return this._assets;
   }
 
 
