@@ -326,7 +326,7 @@ export class TxInterceptService {
       // const versionedTransaction:VersionedTransaction = new VersionedTransaction(messageV0);
       // if (extraSigners?.length > 0) versionedTransaction.sign(extraSigners);
 
-      
+      // @ts-ignore
       const res = await firstValueFrom(this._walletStore.signTransaction(vtx));
 
       const rawTransaction = res.serialize()
