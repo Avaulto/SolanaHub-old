@@ -86,6 +86,48 @@ export class NftStoreService {
 
     return floorPrice
   }
+  public async getNfts(walletAdress){
+    const _metaplex = new Metaplex(this._solanaUtilsService.connection);
+    async function getMetaData(uri){
+      let metaData = {}
+      try {
+        metaData = await (await fetch(uri)).json();
+        // metaDataRes = await metaDataReq.json();
+      } catch (error) {
+        // console.error(error)
+        return metaData
+      }
+      return metaData
+    }
+    // const wallet =  await (await firstValueFrom(this._walletStore.anchorWallet$));
+    // _metaplex.use(walletAdapterIdentity(wallet));
+    const myNfts: any = await _metaplex
+      .nfts()
+      .findAllByOwner({ owner: new PublicKey(walletAdress) })
+      
+  
+    const myNftsExtended = await Promise.all(myNfts.map(async (metaplexItem) => {
+      try {
+        const metaData: any= await getMetaData(metaplexItem.uri);
+        const nft= {
+          image: metaData.image,
+          description: metaData.description,
+          attributes: metaData.attributes,
+          websiteURL: metaData.external_url,
+          name: metaplexItem.name,
+          mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
+          collectionName: metaplexItem.collection?.name,
+          explorerURL: metaplexItem.address,
+          symbol: metaplexItem.symbol
+        }
+        return nft
+      } catch (error) {
+        return {};
+        console.warn(error)
+      }
+    }))
+    return myNftsExtended;
+  }
   public async getAllOnwerNfts(walletOwnerAddress): Promise<Nft[]> {
     let extendedNfts: Nft[] = [] as Nft[]
     // debugger
@@ -93,12 +135,27 @@ export class NftStoreService {
 
       const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
       const getNFTsReq = await fetch(uri)
-      const nfts: Nft[] = await getNFTsReq.json();
+      const metaPlexNfts: Nft[] = await getNFTsReq.json();
 
       const magicEdenNfts: Nft[] = await this.getMagicEdenOwnerNFTS(walletOwnerAddress);
+
+
       // merge both data source
+      const allSourcesNfts = [];
+    //   magicEdenNfts.forEach((nft,i) =>{
+    //     const extendNFT = metaPlexNfts.map(mpNFT => mpNFT.mintAddress == nft.mintAddress);
+    //     if(extendNFT){
+    //       allSourcesNfts.push(extendNFT)
+    //     }else{
+    //       allSourcesNfts.push(nft,metaPlexNfts[i])
+    //     }
+    //   }
+    // );
+
+    const local = await this.getNfts(walletOwnerAddress)
+console.log(metaPlexNfts, local)
       const extendNFTdata = magicEdenNfts.map(async nft => {
-        const extendNFT = nfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
+        const extendNFT = metaPlexNfts.find(mpNFT => mpNFT.mintAddress == nft.mintAddress);
         const floorPrice = nft.collection ? await this._getFloorPrice(nft.collection) : 0;
         nft.floorPrice = floorPrice
         if (extendNFT) {

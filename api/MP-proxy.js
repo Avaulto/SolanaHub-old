@@ -44,5 +44,5 @@ export default async function GETAllOnwerNfts(request, response){
       console.warn(error)
     }
   }))
-  return response.status(200).json(myNftsExtended);
+  return await response.status(200).json(myNftsExtended);
 }
