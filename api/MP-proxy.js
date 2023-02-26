@@ -1,7 +1,7 @@
 import { Metaplex } from "@metaplex-foundation/js";
 import { PublicKey } from "@solana/web3.js";
 import { Connection } from '@solana/web3.js';
-export default async function GETAllOnwerNfts(request, response){
+export default async function MPproxy(request, response){
   const { env, walletAdress } = request.query;
   const cluster = env == 'devnet' ? 'https://api.devnet.solana.com' : 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d'
   const connection = new Connection(cluster)
@@ -44,5 +44,5 @@ export default async function GETAllOnwerNfts(request, response){
       console.warn(error)
     }
   }))
-  return await response.status(200).json(myNftsExtended);
+  return response.status(200).json(myNftsExtended);
 }
