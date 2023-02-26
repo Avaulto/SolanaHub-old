@@ -8,11 +8,11 @@ export default async function MPproxy(request, response){
   const _metaplex = new Metaplex(connection);
   async function getMetaData(uri){
     let metaData = {}
-    // try {
-    //   metaData = await (await fetch(uri)).json();
-    // } catch (error) {
-    //   return metaData
-    // }
+    try {
+      metaData = await (await fetch(uri)).json();
+    } catch (error) {
+      return metaData
+    }
     return metaData
   }
   const myNfts = await _metaplex
@@ -22,9 +22,7 @@ export default async function MPproxy(request, response){
 
   const myNftsExtended = await Promise.all(myNfts.map(async (metaplexItem) => {
     try {
-      // const metaData = await getMetaData(metaplexItem.uri);
-      const res = await fetch(metaplexItem.uri, settings);
-      const metaData = await res.json();
+      const metaData = await getMetaData(metaplexItem.uri);
       const nft= {
         image: metaData.image,
         description: metaData.description,
