@@ -264,7 +264,6 @@ export class TxInterceptService {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);
-      console.log(transaction)
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
 
@@ -312,10 +311,10 @@ export class TxInterceptService {
 
     try {
       const {  blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
-      // const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
+      const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       // if (priorityFeeInst?.length > 0) txParam.push(...priorityFeeInst)
 
-
+      
       // console.log(txParam.length)
       // const messageV0 = new TransactionMessage({
       //   payerKey: walletPk,

@@ -6,6 +6,7 @@ import { PublicKey, Signer, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
 import { Nft } from 'src/app/models';
 import { NftStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
+import { environment } from 'src/environments/environment';
 import { NftListingComponent } from './nft-listing/nft-listing.component';
 import { NftSendComponent } from './nft-send/nft-send.component';
 
@@ -16,6 +17,7 @@ import { NftSendComponent } from './nft-send/nft-send.component';
   styleUrls: ['./nft-preview.component.scss'],
 })
 export class NftPreviewComponent implements OnInit {
+  public env = environment.solanaEnv
   @Input() nft: Nft;
   public walletOwner: PublicKey;
   public mintAddressPK: PublicKey;

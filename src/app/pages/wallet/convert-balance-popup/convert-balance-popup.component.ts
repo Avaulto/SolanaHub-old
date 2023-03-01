@@ -1,13 +1,10 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { IonCheckbox, PopoverController } from '@ionic/angular';
-import { Jupiter } from '@jup-ag/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 import { AddressLookupTableAccount, TransactionBlockhashCtor } from '@solana/web3.js';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js';
-import JSBI from 'jsbi';
 import { Asset } from 'src/app/models';
 import { JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import {
-  createBurnInstruction,
   createCloseAccountInstruction,
 } from "../../../../../node_modules/@solana/spl-token";
 @Component({
@@ -17,7 +14,7 @@ import {
 })
 export class ConvertBalancePopupComponent implements OnInit {
   // set all low balance asset to true
-  public wSOL = {address:"So11111111111111111111111111111111111111112"};
+  public wSOL = { address: "So11111111111111111111111111111111111111112" };
   public checkAll: boolean = true
   @Input() assets: Asset[];
   @Input() wallet: {
@@ -40,7 +37,7 @@ export class ConvertBalancePopupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     // prep list of asset to swap/burn ATA
     this.assetsListCanSwap = this._avaliableToSwap()
     // set all assets by default
@@ -48,22 +45,7 @@ export class ConvertBalancePopupComponent implements OnInit {
     // calc how much SOL you will recevie 
     this.calcTotalConvert();
   }
-  // private _jupiter: Jupiter;
-  // private async _initJup() {
-  //   const connection = this._solanaUtilsService.connection;
-  //   const pk = this.wallet.publicKey// this._walletStore.anchorWallet$.pipe(switchMap(wallet => wallet.publicKey))
-  //   try {
-  //     this._jupiter = await Jupiter.load({
-  //       connection,
-  //       cluster: 'mainnet-beta',
-  //       user: pk, // or public key
-  //       // platformFeeAndAccounts:  NO_PLATFORM_FEE,
-  //       routeCacheDuration: 10_000, // Will not refetch data on computeRoutes for up to 10 seconds
-  //     });
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
+
   private _avaliableToSwap() {
     //  filter tokens for merge conditions(maximum 2% of wallet portfolio)
     const filterTokens = this.assets.filter(token => {
@@ -104,41 +86,9 @@ export class ConvertBalancePopupComponent implements OnInit {
     );
     this.totalSOLConvert = totalSol
   }
-  // private async calcSwapRoute(inputToken: Asset): Promise<VersionedTransaction> {
-  //   const inputAmountInSmallestUnits = inputToken
-  //     ? Math.round(Number(inputToken.balance) * 10 ** inputToken.decimals)
-  //     : 0;
 
-  //   const routes = await this._jupiter.computeRoutes({
-  //     inputMint: new PublicKey(inputToken.mintAddress),
-  //     outputMint: new PublicKey(this.wSOL),
-  //     amount: JSBI.BigInt(inputAmountInSmallestUnits),
-  //     slippageBps: 1, // 1 = 1%
-  //     forceFetch: true,
-  //   });
-
-  //   const { swapTransaction } = await this._jupiter.exchange({
-  //     routeInfo: routes.routesInfos[0]
-  //   });
-  //   return swapTransaction as VersionedTransaction
-  //   // const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
-  //   // const arrayOfTx = []
-  //   // for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
-  //   //   if (!transaction) {
-  //   //     continue;
-  //   //   }
-  //   //   arrayOfTx.push(transaction)
-  //   // }
-  //   // console.log(arrayOfTx.flat())
-  //   // return arrayOfTx.flat()
-  //   // const ins = await this.extractTxInstruction(swapTransaction as VersionedTransaction);
-  //   // return arrayOfTx;
-  //   // console.log('tx ins:', ins)
-  //   // return arrayOfTx
-  //   //  return arrayOfTx;
-  // }
   private async extractTxInstruction(transaction: VersionedTransaction) {
-  
+
 
     const addressLookupTableAccounts = await Promise.all(
       transaction.message.addressTableLookups.map(async (lookup) => {
@@ -168,45 +118,49 @@ export class ConvertBalancePopupComponent implements OnInit {
     return jupiterInstruction
   }
   public async convert(): Promise<void> {
+    // init jupiter
     await this._jupStore.initJup(this.wallet)
-    // const verTxs: VersionedTransaction[] = []
-    const swapTxs: TransactionInstruction[] =[]
-    const convertInstructions:  TransactionInstruction[] = await Promise.all(
+    // create array of TXS
+    const swapTxs: VersionedTransaction[] = []
+    const closeAtaIns: TransactionInstruction[] = [];
+
+    // calc & store tx
+    await Promise.all(
       this.selectedAssets.map(async inputToken => {
         if (inputToken.totalSolValue > this.rentAccountSize) {
           // calc best route on jupiter
-           const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, this.wSOL, 1);
-           // built transaction instance
-          //  const transaction: TransactionInstruction = await this._jupStore.swapTx(bestRoute);
-           // append to array of VersionedTransactions
-          //  swapTxs.push(transaction)
+          const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, this.wSOL, 1);
+          // built transaction instance
+          const transaction: VersionedTransaction = await this._jupStore.swapTx(bestRoute);
+          // append to array of VersionedTransactions
+          swapTxs.push(transaction)
         } else {
-          return await this.closeATA(inputToken)
-          //  convertInstructions.push(ins)
+          const instruction = await this.closeATA(inputToken)
+          closeAtaIns.push(instruction)
         }
       })
     )
-    
-    // console.log(instructions)
-    const { lastValidBlockHeight, blockhash } = await this._solanaUtilsService.connection.getLatestBlockhash();
-    // // let transaction = new Transaction(txArgs).add(...convertInstructions)//.serialize();
-    // // let transaction2 = new Transaction(txArgs).add(swapTxs)//.serialize();
-    // // console.log(transaction2)
-    // // console.log(transaction)
-    // // const txArgs: TransactionBlockhashCtor = { feePayer: this.wallet.publicKey, blockhash, lastValidBlockHeight: lastValidBlockHeight }
-    const messageV0 = new TransactionMessage({
-      payerKey: this.wallet.publicKey,
-      recentBlockhash: blockhash,
-      instructions: [...convertInstructions],
-    }).compileToV0Message();
-    // const vt2 = swapTxs
-    const closeATAtxs = new VersionedTransaction(messageV0)
-    // const mergeTxsTypes = [closeATAtxs,...swapTxs ];
-    console.log(closeATAtxs.serialize().length)
-    this.wallet.signAllTransactions([closeATAtxs])
-    // await this.wallet.signTransaction(convertTransaction);
 
-    //  await this._txInterceptService.sendTx([...convertInstructions], this.wallet.publicKey)
+    let closeATAMass: VersionedTransaction[] 
+
+
+    if (closeAtaIns.length > 0) {
+      const txInsChunks: Array<TransactionInstruction[]> = this._prepCloseATAinsArrays(closeAtaIns)
+      const { blockhash } = await this._solanaUtilsService.connection.getLatestBlockhash();
+      closeATAMass = txInsChunks.map((txIns: TransactionInstruction[]) => {
+        const messageV0 = new TransactionMessage({
+          payerKey: this.wallet.publicKey,
+          recentBlockhash: blockhash,
+          instructions: [...txIns],
+        }).compileToV0Message();
+        return new VersionedTransaction(messageV0);
+      });
+    }
+    const allSourcesTxs = [...closeATAMass, ...swapTxs]
+    // this.wallet.signAllTransactions(allSourcesTxs)
+    await Promise.all(closeATAMass.map(async tx =>{
+      await this._txInterceptService.sendTx2(tx, this.wallet.publicKey)
+    }))
 
 
   }
@@ -224,5 +178,15 @@ export class ConvertBalancePopupComponent implements OnInit {
     )
     const closeATA: TransactionInstruction = closeAccountIns
     return closeATA;
+  }
+  private _prepCloseATAinsArrays(closeAtaInsArr: TransactionInstruction[]): Array<TransactionInstruction[]> {
+    const capArrayIns: Array<TransactionInstruction[]> = []
+    const chunkSize = 25;
+    for (let i = 0; i < closeAtaInsArr.length; i += chunkSize) {
+      const chunk = closeAtaInsArr.slice(i, i + chunkSize);
+      capArrayIns.push(chunk);
+      // do whatever
+    }
+    return capArrayIns
   }
 }

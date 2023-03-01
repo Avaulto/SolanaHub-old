@@ -33,7 +33,6 @@ export class WalletPage implements OnInit, OnDestroy {
 
   public walletExtended$: Observable<any> = this._walletStore.anchorWallet$.pipe(
     switchMap(async wallet => {
-      console.log(wallet)
       this._assets = []
       if(wallet){
         this.wallet = wallet;
@@ -64,7 +63,6 @@ export class WalletPage implements OnInit, OnDestroy {
     combineLatestWith(this.walletExtended$),
     distinctUntilChanged(),
     switchMap(async ([jupTokens, wallet]: any) => {
-      console.log(jupTokens, wallet)
   
       if(wallet){
         this._assets = await this._prepTokenList(jupTokens, wallet.publicKey)

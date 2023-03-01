@@ -177,15 +177,12 @@ export class TokenSwapPage implements OnInit {
     this.outputAmount = null
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
-    console.log(inputAmount)
-    const fixinputAmount = inputAmount.split(",").join();
     try {
-      this.bestRoute = await this._jupStore.computeBestRoute(fixinputAmount, inputToken, outputToken, slippage);
+      this.bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken, slippage);
       if (this.bestRoute) {
         // prep output amount on UI
         const calcOutputDecimal = new Decimal(this.bestRoute.outAmount.toString()).div(10 ** outputToken.decimals).toString()
         this.outputAmount = Number(calcOutputDecimal).toFixedNoRounding(2);
-        console.log(this.outputAmount)
         const swapDetails = await this._prepSwapDetails(this.bestRoute, this.outputAmount);
         this._swapDetail$.next(swapDetails);
       }
@@ -196,29 +193,14 @@ export class TokenSwapPage implements OnInit {
     this.calcLoader.next(false)
   }
   public setMaxAmount(token: Token): void {
-    const balance = this._decimalPipe.transform(token.balance.toFixedNoRounding(0), '1.0-0');
-    console.log(balance)
+    const balance = token.balance
     this.swapForm.controls.inputAmount.setValue(balance);
   }
   public async submitSwap(): Promise<void> {
 
     const transaction: VersionedTransaction = await this._jupStore.swapTx(this.bestRoute);
-    console.log(transaction)
-    // this.wallet.signTransaction(transaction)
-    // Execute the transactions
-    // const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
-    // const arrayOfTx: Transaction[] = []
-    // for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
-    //   if (!transaction) {
-    //     continue;
-    //   }
-    //   arrayOfTx.push(transaction)
-    // }
-    // const res = await firstValueFrom(this._walletStore.signTransaction(transaction));
-    
-    // console.log(res)
+
     await this._txInterceptService.sendTx2(transaction, this.wallet.publicKey);
-    //  await this._txInterceptService.sendTx([transaction], this.wallet.publicKey);
     trackEvent('jupiter swap')
   }
   private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
