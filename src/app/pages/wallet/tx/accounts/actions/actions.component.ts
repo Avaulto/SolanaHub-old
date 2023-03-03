@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { PopoverController } from '@ionic/angular';
 import { PublicKey, TransactionInstruction, WithdrawStakeParams } from '@solana/web3.js';
 import { StakeAccountExtended, toastData } from 'src/app/models';
@@ -14,6 +15,7 @@ export class ActionsComponent implements OnInit {
   @Input() account: StakeAccountExtended;
   @Input() accounts: StakeAccountExtended[];
   @Input() wallet;
+  public infoIcon = faInfoCircle
   constructor(
     private _txInterceptService: TxInterceptService,
     private _popoverController: PopoverController,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faCog } from '@fortawesome/free-solid-svg-icons';
 import { PopoverController } from '@ionic/angular';
 import { OptionsPopupComponent } from './options-popup/options-popup.component';
 
@@ -9,7 +10,7 @@ import { OptionsPopupComponent } from './options-popup/options-popup.component';
 })
 export class SettingsComponent implements OnInit {
 
-
+  public cogIcon = faCog;
   constructor(private _popoverController: PopoverController) { }
 
   ngOnInit() {}

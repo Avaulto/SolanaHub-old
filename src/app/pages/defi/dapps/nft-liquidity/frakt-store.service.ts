@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { depositLiquidity } from '@frakt-protocol/frakt-sdk/lib/loans';
+// import { depositLiquidity } from '@frakt-protocol/frakt-sdk/lib/loans';
 import { DecimalUtil, Percentage, TokenUtil } from '@orca-so/common-sdk';
 import { buildWhirlpoolClient, increaseLiquidityQuoteByInputTokenWithParams, PDAUtil, PriceMath, WhirlpoolClient, WhirlpoolContext } from '@orca-so/whirlpools-sdk';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import BN from 'bn.js';
-import Decimal from 'decimal.js';
+
 import { catchError, map, observable, Observable, shareReplay, switchMap, throwError } from 'rxjs';
 import { toastData } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
@@ -134,6 +133,5 @@ export class FraktStoreService {
     )
   }
   addLiquidity(){
-    depositLiquidity
   }
 }

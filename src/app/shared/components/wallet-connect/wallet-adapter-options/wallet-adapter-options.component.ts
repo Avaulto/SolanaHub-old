@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { IonModal, PopoverController } from '@ionic/angular';
 import { WalletName } from '@solana/wallet-adapter-base';
@@ -11,6 +12,7 @@ import { Observable, shareReplay } from 'rxjs';
 })
 export class WalletAdapterOptionsComponent implements OnInit {
   @ViewChild('modal', {static:true}) selectAdapter:IonModal;
+  public closeIcon = faClose;
   public walletsOptions$: Observable<Wallet[]> = this._walletStore.wallets$.pipe(shareReplay(1));
   constructor(private _walletStore: WalletStore,public popoverController: PopoverController) { }
 

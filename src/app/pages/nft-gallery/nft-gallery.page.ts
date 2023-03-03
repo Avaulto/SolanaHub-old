@@ -3,6 +3,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { filter, firstValueFrom, map, mergeMap, Observable, shareReplay, Subscription, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
 import { LoaderService, UtilsService, NftStoreService, DataAggregatorService } from 'src/app/services';
+import { faArrowUpRightFromSquare, faImage, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 
 
 
@@ -12,6 +13,8 @@ import { LoaderService, UtilsService, NftStoreService, DataAggregatorService } f
   styleUrls: ['./nft-gallery.page.scss'],
 })
 export class NftGalleryPage {
+  public outLinkIcon = faArrowUpRightFromSquare;
+  public imgPlaceHolder =faImage;
   public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
     this._utilsService.isNotNull, 
     this._utilsService.isNotUndefined,

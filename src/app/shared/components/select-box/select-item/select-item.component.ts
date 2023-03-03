@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-select-item',
@@ -11,6 +12,7 @@ export class SelectItemComponent implements OnChanges {
   @Input() isDropDownOpen: boolean = false;
   @Input() showDropDownIcon: boolean = false;
   @Output() onSelect = new EventEmitter();
+  public dropDownIcon = faAngleDown;
   constructor() { }
 
   ngOnChanges(changes): void {

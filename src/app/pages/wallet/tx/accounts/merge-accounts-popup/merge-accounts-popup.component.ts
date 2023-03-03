@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { IonCheckbox, PopoverController } from '@ionic/angular';
 import { PublicKey } from '@solana/web3.js';
 import { StakeAccountExtended } from 'src/app/models';
@@ -13,6 +14,7 @@ export class MergeAccountsPopupComponent implements OnInit {
   @Input() account: StakeAccountExtended;
   @Input() accounts: StakeAccountExtended[];
   @Input() wallet
+  public infoIcon = faCircleInfo;
   public accountsToMerge: StakeAccountExtended[]
   public selectedAccounts =[]
   constructor(

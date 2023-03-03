@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NavController, PopoverController } from '@ionic/angular';
 import { PublicKey, Signer, Transaction } from '@solana/web3.js';
@@ -18,6 +19,7 @@ import { NftSendComponent } from './nft-send/nft-send.component';
 })
 export class NftPreviewComponent implements OnInit {
   public env = environment.solanaEnv
+  public outLinkIcon = faArrowUpRightFromSquare;
   @Input() nft: Nft;
   public walletOwner: PublicKey;
   public mintAddressPK: PublicKey;

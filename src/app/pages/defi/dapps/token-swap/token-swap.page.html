@@ -12,7 +12,7 @@
           <div id="swap-setting" class="ion-margin-bottom">
             <button id="swap-reload" [disabled]="(calcLoader | async) || !swapForm.value.inputAmount"
               (click)="calcRoutes()">
-              <ion-icon name="reload-circle"></ion-icon>
+              <fa-icon [icon]="reloadIcon" ></fa-icon>
             </button>
 
             <app-slippage [form]="swapForm"></app-slippage>
@@ -45,7 +45,7 @@
             </ion-row>
           </div>
           <ion-row class="ion-margin-vertical ion-justify-content-center" id="flip-swap-pair">
-            <ion-icon (click)="flipPairs()" name="swap-vertical-outline"></ion-icon>
+            <fa-icon (click)="flipPairs()" [icon]="swapIcon"></fa-icon>
           </ion-row>
           <div id="swap-pair-two">
             <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between">

@@ -22,9 +22,6 @@ app-collection{
 }
 
 #no-nfts{
-    #icon-placeholder{
-        font-size: 140px;
-    }
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -32,7 +29,7 @@ app-collection{
     justify-content: center;
     height: 400px;
     ion-button{
-        ion-icon{
+        fa-icon{
             margin-inline-start: 5px;
         }
     }

@@ -1,7 +1,4 @@
-// :host{
-//     height: 100vh;
-//     display: block;
-// }
+
 #side-menu {
     height: 100%;
     color: white;
@@ -61,10 +58,7 @@ div>ion-item.menu-item:nth-child(1) {
 .menu-item.active{
     background-color: var(--menu-item-bg);
 }
-ion-icon {
-    font-size: 16px;
-    color: var(--icon-color);
-}
+
 
 ion-list,
 ion-item {
@@ -111,9 +105,12 @@ ion-radio label {
     width: 234px;
     max-width: 100%;
     margin: 0 auto;
-    ion-icon{
+    fa-icon{
         margin-inline-end: 5px;
         transition: 0.1s ease;
+        svg{
+            font-size: 25px;
+        }
         &:hover{
             color: var(--ion-color-primary);
         }

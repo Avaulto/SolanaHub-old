@@ -3,7 +3,6 @@ import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
 import { MarinadeResult } from '@marinade.finance/marinade-ts-sdk/dist/src/marinade.types';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
-import bn from 'bn.js'
 import { SolanaUtilsService, TxInterceptService, ToasterService, UtilsService } from 'src/app/services';
 import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
 import { toastData, StakeAccountExtended, ValidatorData } from 'src/app/models';

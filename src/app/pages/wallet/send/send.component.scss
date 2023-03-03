@@ -10,14 +10,6 @@
         top: 12px;
     }
 }
-#balance {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    ion-icon{
-        margin-inline-start: 6px;
-    }
-}
 
 .input-error{
     border-color: var(--ion-color-danger);

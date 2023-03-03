@@ -1,7 +1,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faArrowUpLong } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightArrowLeft, faArrowUpLong, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { RouteInfo } from '@jup-ag/core'
 import { LAMPORTS_PER_SOL, TransactionInstruction, VersionedTransaction, } from '@solana/web3.js';
@@ -33,8 +33,8 @@ export class TokenSwapPage implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _decimalPipe: DecimalPipe,
   ) { }
-
-  public arrowUpIcon = faArrowUpLong;
+  public reloadIcon = faRotateRight
+  public swapIcon = faArrowRightArrowLeft;
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet
 

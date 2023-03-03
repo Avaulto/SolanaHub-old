@@ -6,6 +6,7 @@ import {
   Input,
   ViewChild,
 } from "@angular/core";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import { IonSearchbar } from "@ionic/angular";
 @Component({
@@ -19,6 +20,7 @@ export class SearchInputComponent{
   @Input() placeholder: string;
   @Input() time: number = 0;
   @Input() value: string = ''
+  public searchIcon = faMagnifyingGlass;
   constructor() {}
   onSearch(val) {
     this.search.emit(val);

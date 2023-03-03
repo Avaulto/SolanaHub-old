@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { faKickstarterK } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRightArrowLeft, faBox, faBoxOpen, faCoins, faDroplet, faHandHoldingDroplet, faHome, faImage, faPalette, faPlus, faScrewdriverWrench, faSeedling, faShieldHeart, faSwimmingPool, faWallet } from '@fortawesome/free-solid-svg-icons';
+import { faDiscord, faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+
 import { IonPopover, MenuController } from '@ionic/angular';
 import { pages } from '../../helpers/menu';
 
@@ -12,11 +13,11 @@ import { pages } from '../../helpers/menu';
 })
 export class SideMenuPage implements OnInit {
   @ViewChild('popover') popover:IonPopover;
-  public profileIcon = faScrewdriverWrench;
-  public boxOpen = faBoxOpen
-  constructor(private _menu: MenuController,
-
-    ) {
+  public discordIcon = faDiscord;
+  public twitterIcon = faTwitter; 
+  public githubIcon = faGithub;
+  public dropDownIcon = faAngleDown;
+  constructor(private _menu: MenuController) {
     this.openFirst()
   }
   openFirst() {

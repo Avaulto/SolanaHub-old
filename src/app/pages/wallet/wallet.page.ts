@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { faArrowUpRightFromSquare, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { PopoverController } from '@ionic/angular';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
@@ -15,6 +16,8 @@ import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-ba
   styleUrls: ['./wallet.page.scss'],
 })
 export class WalletPage implements OnInit, OnDestroy {
+  public copyIcon = faCopy;
+  public outLinkIcon = faArrowUpRightFromSquare;
   private _assets:Asset[] = []
   private wallet: {
     publicKey: PublicKey;

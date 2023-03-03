@@ -4,22 +4,16 @@
   </div>
   <div class="list-item-info">
     <div class="list-item-name ButtonText">{{item?.name || 'select here'}}</div>
-    <ion-icon *ngIf="showDropDownIcon" name="chevron-down-outline" [ngClass]="{'selected-item': isDropDownOpen}">
-    </ion-icon>
+    <fa-icon *ngIf="showDropDownIcon" [icon]="dropDownIcon" [ngClass]="{'selected-item': isDropDownOpen}">
+    </fa-icon>
     <div *ngIf="item" class="list-item-sub" id="extra-data">
       <span class="sub" 
        *ngFor="let extra of item.extraData | keyvalue ;
        let i = index" 
        class="sub" 
        >
-       
          {{extra.key}}: {{extra.value}}
-        
        </span>
     </div>
-    <!-- <div *ngIf="item?.commission" id="validator-extra-data" class="list-item-sub">
-      <span class="sub">fee: {{item?.commission}}% </span>
-      <span class="sub">estimated APY: {{item?.apy_estimate}}% </span>
-    </div> -->
   </div>
 </div>

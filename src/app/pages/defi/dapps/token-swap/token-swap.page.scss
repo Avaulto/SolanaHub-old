@@ -7,12 +7,14 @@
         margin-inline-end: 8px;
     }
 }
+
 #no-route {
     height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 #swap-content {
     max-width: 100%;
     margin: 0 auto;
@@ -26,9 +28,10 @@
     font-weight: 800;
 }
 
-#swap-input{
+#swap-input {
     position: relative;
-    span{
+
+    span {
         cursor: pointer;
         position: absolute;
         color: var(--ion-color-primary);
@@ -39,32 +42,31 @@
 }
 
 
-    #swap-setting {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        justify-content: space-between;
-    }
+#swap-setting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
 
-    #swap-reload {
-        width: 30px;
-        height: 30px;
-        background: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
+#swap-reload {
+    width: 30px;
+    height: 30px;
+    background: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 
-        ion-icon {
-            font-size: 20px;
-            color: var(--icon-color);
-            transition: 0.5s ease;
+    fa-icon {
+        color: var(--icon-color);
+        transition: 0.5s ease;
 
-            &:hover {
-                transform: rotate(180deg);
-            }
+        &:hover {
+            transform: rotate(180deg);
         }
     }
+}
 
 .swap-box {
     width: 100%;
@@ -99,12 +101,11 @@
     }
 }
 
-#flip-swap-pair {
-    ion-icon {
-        font-size: 20px;
-        cursor: pointer;
-    }
+#flip-swap-pair fa-icon {
+    transform: rotate(90deg);
+    cursor: pointer;
 }
+
 
 #swap-btn {
     --background: linear-gradient(96.8deg, #fcc00a 4.71%, #4ebae9 87.84%);

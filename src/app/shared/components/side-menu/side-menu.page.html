@@ -7,20 +7,18 @@
     <div *ngFor="let p of pages">
       <ion-item class="menu-item" button [routerLink]="p.url" [routerLinkActiveOptions]="{exact: true}"
         routerLinkActive="active">
-        <ion-icon [name]="p.icon"></ion-icon>
-        <!-- <fa-icon [icon]="boxOpen" *ngIf="p.open"></fa-icon> -->
+        <fa-icon [icon]="p.icon"></fa-icon>
         <ion-label>
           {{ p.title }}
         </ion-label>
-        <ion-icon name="chevron-down-outline" *ngIf="p?.children"
-          [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
+        <fa-icon [icon]="dropDownIcon" *ngIf="p?.children"
+          [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></fa-icon>
       </ion-item>
       <ion-list *ngIf="p.open">
         <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
           routerLinkActive="active">
           <div class="menu-icon">
-
-            <ion-icon [name]="sub.icon"></ion-icon>
+            <fa-icon [icon]="sub.icon"></fa-icon>
           </div>
           <div class="wallet-info">
             <ion-label>
@@ -37,21 +35,6 @@
 
     </div>
 
-    <!-- <div id="footer-menu"> -->
-    <!-- <ion-item>
-            <ion-radio-group (ionFocus)="selectCurrency($event)" class="menu-item" id="currency-switch" value="BTC">
-              <span>Currency</span>
-             
-                <ion-radio  value="BTC"></ion-radio> BTC
-           
-                <ion-radio value="USD"></ion-radio> USD
-              
-
-            </ion-radio-group>
-          </ion-item> -->
-
-
-    <!-- </div> -->
   </div>
   <div id="footer-menu">
     <app-wallet-connect></app-wallet-connect>
@@ -60,17 +43,15 @@
 
       <a target="_blank" href="https://discord.gg/7SxUZkqa6Q">
 
-        <ion-icon name="logo-discord"></ion-icon>
-
+        <fa-icon [icon]="discordIcon" size="lg"></fa-icon>
       </a>
       <a target="_blank" href="https://twitter.com/CompactDefi">
 
-        <ion-icon name="logo-twitter"></ion-icon>
-
+        <fa-icon [icon]="twitterIcon" size="lg"></fa-icon>
       </a>
       <a target="_blank" href="https://github.com/avaulto/Compact-DeFi">
 
-        <ion-icon name="logo-github"></ion-icon>
+        <fa-icon [icon]="githubIcon" size="lg"></fa-icon>
 
       </a>
     </div>

@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { PopoverController } from '@ionic/angular';
 import { Asset, StakeAccountExtended } from 'src/app/models';
@@ -10,7 +11,7 @@ import { ActionsComponent } from './actions/actions.component';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnChanges {
- 
+  public copyIcon = faCopy
   public stakeAccounts$ = this._solanaUtilsService.stakeAccounts$;
   public stakeAccountStatic = null;
 

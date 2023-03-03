@@ -1,15 +1,14 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { PublicKey, Signer, Transaction } from '@solana/web3.js';
+import { PublicKey, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
-import { Nft } from 'src/app/models';
+
 import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { NftStoreService } from 'src/app/services/nft-store.service';
 
 import Plausible from 'plausible-tracker'
+import { faCalendar } from '@fortawesome/free-solid-svg-icons';
 const { trackEvent } = Plausible();
 
 @Component({
@@ -20,7 +19,7 @@ const { trackEvent } = Plausible();
 export class NftListingComponent implements OnInit {
   @Input() walletOwner: PublicKey;
   @Input() mintAddressPK: PublicKey;
-
+  public calendarIcon = faCalendar;
   public listNftForm: FormGroup = {} as FormGroup;
   public formSubmitted: boolean = false;
   public showDates: boolean = false;

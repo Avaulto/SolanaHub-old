@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { faPlugCircleExclamation, faPlugCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import Chart  from 'chart.js/auto';
 import { firstValueFrom } from 'rxjs';
 import { UtilsService } from 'src/app/services';
@@ -17,6 +18,7 @@ export class ChartComponent implements OnChanges {
   currentPricePair: number;
   lines: any;
   colorArray: any;
+  public chartUnavailableIcon = faPlugCircleXmark
   public hasPairData: boolean = true;
   constructor(private dataAggregator: DataAggregatorService, private utilsService:UtilsService) { }
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,6 +46,7 @@ export class ChartComponent implements OnChanges {
          this.currentPricePair =  this.utilsService.shortenNum(ratio[ratio.length - 1])
          this.createLineChart(chartDataOne[0],ratio);
     } catch (error) {
+      this.hasPairData = false
       console.warn(error)
     }
     // .subscribe({

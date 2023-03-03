@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';

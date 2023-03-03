@@ -9,7 +9,7 @@
   <ion-row class="tx-record ion-text-capitalize ion-align-items-start" *ngFor="let record of txHistory">
     <ion-col size="2" class="type">
       <span class="table-icon ion-margin-end">
-        <ion-icon [class.sent]="record.type == 'sent'" name="arrow-forward-outline"></ion-icon>
+        <fa-icon [class.sent]="record.type == 'sent'" icon="arrow-alt-left"></fa-icon>
       </span>
       <span>{{record.type}}</span>
 

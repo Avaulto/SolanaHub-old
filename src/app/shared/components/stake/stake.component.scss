@@ -53,51 +53,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    ion-icon{
-        margin-inline-start: 6px;
-    }
+
 }
 
 #node-selection {
     width: 100%;
-
-    ion-icon {
-        font-size: 16px;
-    }
-
-    #node-options {
-        margin-top: 6px;
-        background: var(--deep-background);
-        border-radius: 4px;
-        ion-icon{
-            display: none;
-        }
-    }
-
-    #search-box {
-        position: relative;
-        width: 92%;
-        margin: 0 auto;
-        padding: 10px 0 ;
-        ion-input {
-            border: 1px solid var(--ion-color-primary);
-            border-radius: 4px;
-            height: 38px;
-            margin: 0 auto;
-        }
-
-        ion-icon {
-            position: absolute;
-            right: 18px;
-            top: 18px;
-        }
-    }
-    #node-list {
-        --background: transparent;
-        height: 154px;
-    }
-
-
 }
 
 

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { PopoverController } from '@ionic/angular';
 import { AddressLookupTableAccount, TransactionBlockhashCtor } from '@solana/web3.js';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js';
@@ -13,6 +14,7 @@ import {
   styleUrls: ['./convert-balance-popup.component.scss'],
 })
 export class ConvertBalancePopupComponent implements OnInit {
+  public infoIcon = faCircleInfo;
   // set all low balance asset to true
   public wSOL = { address: "So11111111111111111111111111111111111111112" };
   public checkAll: boolean = true
