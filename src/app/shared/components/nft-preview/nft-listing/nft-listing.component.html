@@ -11,7 +11,7 @@
         </ion-input>
         <app-label-layout [layoutConfig]="{title:'Expiry'}"></app-label-layout>
         <ion-input class="button-text" readonly [placeholder]="expiryPlaceholder" (click)="showDates = !showDates">
-          <fa-icon [icon]="calendarIcon"></fa-icon>
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
         </ion-input>
         <ion-datetime
         [showDefaultButtons]="true"  

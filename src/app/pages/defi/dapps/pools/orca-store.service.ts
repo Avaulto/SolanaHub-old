@@ -31,7 +31,6 @@ export class OrcaStoreService {
   private _formatErrors(error: any) {
     const toastData: toastData = {
       message: error.message,
-      icon: 'alert-circle-outline',
       segmentClass: "toastError",
 
     }

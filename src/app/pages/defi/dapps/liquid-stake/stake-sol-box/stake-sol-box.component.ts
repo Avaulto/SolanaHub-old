@@ -136,7 +136,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
 
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
-        icon: 'alert-circle-outline',
         segmentClass: "merinadeErr"
       }
       this._toasterService.msg.next(toasterMessage)

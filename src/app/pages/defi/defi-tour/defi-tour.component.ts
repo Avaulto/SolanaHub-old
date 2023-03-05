@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
@@ -8,7 +7,6 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./defi-tour.component.scss'],
 })
 export class DefiTourComponent implements OnInit {
-  public closeIcon = faClose;
   defiTour = [{
     title: 'welcome to decentralized finance',
     description: `Decentralized finance (DeFi) is a new type of finance that can be created,

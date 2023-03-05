@@ -48,7 +48,6 @@ export class TxInterceptService {
   private _formatErrors(error: any) {
     const toastData: toastData = {
       message: error.message,
-      icon: 'alert-circle-outline',
       segmentClass: "toastError",
 
     }
@@ -258,8 +257,7 @@ export class TxInterceptService {
     }
     return null
   }
-  public async sendTx(txParam: TransactionInstruction[] | Transaction[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
-
+  public async sendTx(txParam: (TransactionInstruction | Transaction)[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
     try {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
@@ -267,8 +265,8 @@ export class TxInterceptService {
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
 
+      console.log(transaction)
       const res = await firstValueFrom(this._walletStore.signTransaction(transaction));
-
       if (extraSigners?.length > 0) transaction.partialSign(...extraSigners);
 
       //LMT: check null signatures
@@ -281,8 +279,8 @@ export class TxInterceptService {
       const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
       const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
       const txSend: toastData = {
-        message: 'click on the icon to view transaction on explorer',
-        icon: 'exit-outline',
+        message: `Transaction Subbmitted`,
+        btnText: `view on explorer`,
         segmentClass: "toastInfo",
         duration: 10000,
         cb: () => window.open(url)
@@ -294,58 +292,6 @@ export class TxInterceptService {
       await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
       const txCompleted: toastData = {
         message: 'transaction completed',
-        icon: 'information-circle-outline',
-        segmentClass: "toastInfo"
-      }
-      this.toasterService.msg.next(txCompleted)
-
-      return signature
-
-    } catch (error) {
-      console.warn(error)
-      return null
-      // onMsg('transaction failed', 'error')
-    }
-  }
-  public async sendTx2(vtx: VersionedTransaction, walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
-
-    try {
-      const {  blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
-      const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
-      // if (priorityFeeInst?.length > 0) txParam.push(...priorityFeeInst)
-
-      
-      // console.log(txParam.length)
-      // const messageV0 = new TransactionMessage({
-      //   payerKey: walletPk,
-      //   recentBlockhash: blockhash,
-      //   instructions: instructions,
-      // }).compileToV0Message();
-      // console.log(messageV0)
-      // const versionedTransaction:VersionedTransaction = new VersionedTransaction(messageV0);
-      // if (extraSigners?.length > 0) versionedTransaction.sign(extraSigners);
-
-      // @ts-ignore
-      const res = await firstValueFrom(this._walletStore.signTransaction(vtx));
-
-      const rawTransaction = res.serialize()
-      const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
-      const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
-      const txSend: toastData = {
-        message: 'click on the icon to view transaction on explorer',
-        icon: 'exit-outline',
-        segmentClass: "toastInfo",
-        duration: 10000,
-        cb: () => window.open(url)
-      }
-      this.toasterService.msg.next(txSend)
-      const config: BlockheightBasedTransactionConfirmationStrategy = {
-        signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
-      }
-      await this.solanaUtilsService.connection.confirmTransaction(config, 'confirmed') //.confirmTransaction(txid, 'confirmed');
-      const txCompleted: toastData = {
-        message: 'transaction completed',
-        icon: 'information-circle-outline',
         segmentClass: "toastInfo"
       }
       this.toasterService.msg.next(txCompleted)

@@ -34,7 +34,8 @@ export class SolanaUtilsService {
   public connection: Connection;
   private validatorsData: ValidatorData[];
   private _stakeAccounts$: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject(null as StakeAccountExtended[]);
-  public stakeAccounts$ = this._stakeAccounts$.asObservable()
+  public stakeAccounts$ = this._stakeAccounts$.asObservable();
+  public accountChange$ = new BehaviorSubject({});
   constructor(
     private _apiService: ApiService,
     private _toasterService: ToasterService,
@@ -45,8 +46,8 @@ export class SolanaUtilsService {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
   }
   public onAccountChangeCB(walletOwnerPk: PublicKey): void {
-    this.connection.onAccountChange(walletOwnerPk, async () => {
-      await this.fetchAndUpdateStakeAccount(walletOwnerPk);
+     this.connection.onAccountChange(walletOwnerPk, async (ev) => {
+      this.accountChange$.next(ev);
     });
   }
   public getStakeAccountsExtended() {
@@ -57,7 +58,6 @@ export class SolanaUtilsService {
     console.warn('my err', this._toasterService)
     this._toasterService.msg.next({
       message: error.message,
-      icon: 'alert-circle-outline',
       segmentClass: "toastError",
     });
     return throwError((() => error))

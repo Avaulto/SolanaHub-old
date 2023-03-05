@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+
 import { PopoverController } from '@ionic/angular';
 import { PublicKey, TransactionInstruction, WithdrawStakeParams } from '@solana/web3.js';
 import { StakeAccountExtended, toastData } from 'src/app/models';
@@ -15,7 +15,6 @@ export class ActionsComponent implements OnInit {
   @Input() account: StakeAccountExtended;
   @Input() accounts: StakeAccountExtended[];
   @Input() wallet;
-  public infoIcon = faInfoCircle
   constructor(
     private _txInterceptService: TxInterceptService,
     private _popoverController: PopoverController,
@@ -26,6 +25,7 @@ export class ActionsComponent implements OnInit {
   ngOnInit() {
 
   }
+
   public async deactiveStake(stakeAccount: StakeAccountExtended): Promise<void> {
     await this._txInterceptService.deactivateStakeAccount(stakeAccount.addr, this.wallet.publicKey);
   }
@@ -43,7 +43,6 @@ export class ActionsComponent implements OnInit {
     }else {
       const toast: toastData ={
         message: 'No excess lamport',
-        icon: 'alert-circle-outline',
         segmentClass: 'toastError'
       }
       this._toasterService.msg.next(toast)
@@ -68,7 +67,6 @@ export class ActionsComponent implements OnInit {
     } else {
       const toast: toastData ={
         message: 'Available for active stake accounts only',
-        icon: 'alert-circle-outline',
         segmentClass: 'toastError'
       }
       this._toasterService.msg.next(toast)

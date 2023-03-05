@@ -3,27 +3,27 @@
 
     <!-- <ion-tab-button #tabBtn (click)="scroll(tabBtn)" [id]="'tab-' +p.url" *ngFor="let p of pages" routerLinkActive="active-tab" routerDirection="forward" [routerLink]="p.url"
         [tab]="p.url">
-        <fa-icon size="lg"  [icon]="p.icon" ></fa-icon>
+        <ion-icon  [name]="p.icon" ></ion-icon>
       </ion-tab-button>
        -->
     <ion-tab-button #tabBtn  routerLinkActive="active-tab"
       routerDirection="forward" [routerLink]="pages[0].url" >
-      <fa-icon size="lg" [icon]="pages[0].icon"></fa-icon>
+      <ion-icon [name]="pages[0].icon"></ion-icon>
     </ion-tab-button>
     <ion-tab-button #tabBtn routerLinkActive="active-tab"
       routerDirection="forward" [routerLink]="pages[1].url" [tab]="pages[1].url">
-      <fa-icon size="lg" [icon]="pages[1].icon"></fa-icon>
+      <ion-icon [name]="pages[1].icon"></ion-icon>
     </ion-tab-button>
     <app-wallet-connect></app-wallet-connect>
 
 
     <ion-tab-button #tabBtn routerLinkActive="active-tab"
       routerDirection="forward" [routerLink]="pages[3].url" >
-      <fa-icon size="lg" [icon]="pages[3].icon"></fa-icon>
+      <ion-icon [name]="pages[3].icon"></ion-icon>
     </ion-tab-button>
     <ion-tab-button #tabBtn routerLinkActive="active-tab"
       routerDirection="forward" [routerLink]="pages[4].url">
-      <fa-icon size="lg" [icon]="pages[4].icon"></fa-icon>
+      <ion-icon [name]="pages[4].icon"></ion-icon>
     </ion-tab-button>
   </div>
 </ion-tab-bar>

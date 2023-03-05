@@ -34,7 +34,6 @@ export class StakeAccountBoxComponent implements OnInit {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
     private _toasterService: ToasterService,
-    private toasterService: ToasterService,
     private _fb: FormBuilder,
   ) { }
 
@@ -101,10 +100,9 @@ export class StakeAccountBoxComponent implements OnInit {
 
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
-        icon: 'alert-circle-outline',
         segmentClass: "merinadeErr"
       }
-      this.toasterService.msg.next(toasterMessage)
+      this._toasterService.msg.next(toasterMessage)
     }
   }
   public async stakeCLS(stakeAccount:StakeAccountExtended, targetValidatorVoteAccount: string) {
@@ -148,7 +146,6 @@ export class StakeAccountBoxComponent implements OnInit {
 
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
-        icon: 'alert-circle-outline',
         segmentClass: "merinadeErr"
       }
       this._toasterService.msg.next(toasterMessage)

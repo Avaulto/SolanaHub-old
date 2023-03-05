@@ -1,4 +1,4 @@
-ion-button{
+ion-button,ion-icon{
     display: block;
     position: absolute;
     top: 0;
@@ -8,6 +8,8 @@ ion-button{
     width: 35px;
     height: 35px;
 }
-fa-icon{
-    color: white;
+ion-icon{
+    top: 9px;
+    right: 9px;
+    font-size: 16px;
 }

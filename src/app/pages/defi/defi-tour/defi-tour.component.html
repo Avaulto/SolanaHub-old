@@ -1,6 +1,6 @@
 <ion-slides  pager="true" [options]="slideOpts">
   <ion-slide class="intro-slide" *ngFor="let page of defiTour">
-    <fa-icon [icon]="closeIcon" (click)="closePopup()"></fa-icon>
+    <ion-icon name="close-outline" (click)="closePopup()"></ion-icon>
     <span class="title">{{page.title}}</span>
       <p>
         {{page.description}}

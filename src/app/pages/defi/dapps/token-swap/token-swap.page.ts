@@ -1,11 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { faArrowRightArrowLeft, faArrowUpLong, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { RouteInfo } from '@jup-ag/core'
-import { LAMPORTS_PER_SOL, TransactionInstruction, VersionedTransaction, } from '@solana/web3.js';
-import { BehaviorSubject, combineLatestWith, distinctUntilChanged, filter, firstValueFrom, interval, map, mergeMap, Observable, of, pipe, ReplaySubject, shareReplay, Subject, switchMap, tap } from 'rxjs';
+import { LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js';
+import { BehaviorSubject, combineLatestWith, distinctUntilChanged, filter, firstValueFrom, interval, Observable, ReplaySubject, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { SolanaUtilsService, JupiterStoreService, UtilsService, TxInterceptService } from 'src/app/services';
 
 import { Token, TokenBalance } from '../../../../models';
@@ -33,8 +32,6 @@ export class TokenSwapPage implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _decimalPipe: DecimalPipe,
   ) { }
-  public reloadIcon = faRotateRight
-  public swapIcon = faArrowRightArrowLeft;
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet
 
@@ -198,9 +195,9 @@ export class TokenSwapPage implements OnInit {
   }
   public async submitSwap(): Promise<void> {
 
-    const transaction: VersionedTransaction = await this._jupStore.swapTx(this.bestRoute);
+    const transactions: Transaction[] = await this._jupStore.swapTx(this.bestRoute);
 
-    await this._txInterceptService.sendTx2(transaction, this.wallet.publicKey);
+    await this._txInterceptService.sendTx(transactions, this.wallet.publicKey);
     trackEvent('jupiter swap')
   }
   private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {

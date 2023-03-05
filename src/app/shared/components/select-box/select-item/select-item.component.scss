@@ -27,8 +27,9 @@
     padding-inline-end: 16px;
     flex-wrap: wrap;
     position: relative;
-    fa-icon {
+    ion-icon {
         transition: 0.3s ease;
+        font-size: 22px;
         color: var(--ion-color-primary);
         position: absolute;
         right: 15px;

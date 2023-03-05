@@ -8,7 +8,7 @@ import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/se
 import { NftStoreService } from 'src/app/services/nft-store.service';
 
 import Plausible from 'plausible-tracker'
-import { faCalendar } from '@fortawesome/free-solid-svg-icons';
+
 const { trackEvent } = Plausible();
 
 @Component({
@@ -19,7 +19,6 @@ const { trackEvent } = Plausible();
 export class NftListingComponent implements OnInit {
   @Input() walletOwner: PublicKey;
   @Input() mintAddressPK: PublicKey;
-  public calendarIcon = faCalendar;
   public listNftForm: FormGroup = {} as FormGroup;
   public formSubmitted: boolean = false;
   public showDates: boolean = false;

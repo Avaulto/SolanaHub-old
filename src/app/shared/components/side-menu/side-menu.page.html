@@ -7,18 +7,19 @@
     <div *ngFor="let p of pages">
       <ion-item class="menu-item" button [routerLink]="p.url" [routerLinkActiveOptions]="{exact: true}"
         routerLinkActive="active">
-        <fa-icon [icon]="p.icon"></fa-icon>
+        <ion-icon [name]="p.icon"></ion-icon>
         <ion-label>
           {{ p.title }}
         </ion-label>
-        <fa-icon [icon]="dropDownIcon" *ngIf="p?.children"
-          [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></fa-icon>
+        <ion-icon name="chevron-down-outline" *ngIf="p?.children"
+          [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
       </ion-item>
       <ion-list *ngIf="p.open">
         <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
           routerLinkActive="active">
           <div class="menu-icon">
-            <fa-icon [icon]="sub.icon"></fa-icon>
+
+            <ion-icon [name]="sub.icon"></ion-icon>
           </div>
           <div class="wallet-info">
             <ion-label>
@@ -43,15 +44,17 @@
 
       <a target="_blank" href="https://discord.gg/7SxUZkqa6Q">
 
-        <fa-icon [icon]="discordIcon" size="lg"></fa-icon>
+        <ion-icon name="logo-discord"></ion-icon>
+
       </a>
       <a target="_blank" href="https://twitter.com/CompactDefi">
 
-        <fa-icon [icon]="twitterIcon" size="lg"></fa-icon>
+        <ion-icon name="logo-twitter"></ion-icon>
+
       </a>
       <a target="_blank" href="https://github.com/avaulto/Compact-DeFi">
 
-        <fa-icon [icon]="githubIcon" size="lg"></fa-icon>
+        <ion-icon name="logo-github"></ion-icon>
 
       </a>
     </div>

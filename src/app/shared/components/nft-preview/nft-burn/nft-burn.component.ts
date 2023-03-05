@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { faFire } from '@fortawesome/free-solid-svg-icons';
 import { PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import {
@@ -17,7 +16,6 @@ import {
 export class NftBurnComponent implements OnInit {
   @Input() walletOwner: PublicKey;
   @Input() mintAddressPK: PublicKey;
-  public fireIcon = faFire;
   constructor(
     private solanaUtilsService: SolanaUtilsService,
     private txInterceptService: TxInterceptService) { }

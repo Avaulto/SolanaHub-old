@@ -1,10 +1,9 @@
-import { faHouseChimney, faBullseye, faPalette, faStore, faDroplet, faRightLeft, faShieldHeart } from "@fortawesome/free-solid-svg-icons";
 
 export const pages: any = [
     {
       title: "overview",
       url: "home",
-      icon: faHouseChimney,
+      icon: 'home',
     },
     // {
     //   title: "learning center",
@@ -14,27 +13,27 @@ export const pages: any = [
     {
       title: "dashboard",
       url: "dashboard",
-      icon: faBullseye
+      icon: 'grid-outline'
     },
     {
       title: "NFT",
       url: "nft-gallery",
-      icon: faPalette
+      icon: 'color-palette'
     },
     {
       title: "DeFi",
+      icon: "cube-outline",
       url: "/defi",
-      icon: faStore,
       children: [
         {
           title: "liquid staking",
           url: "/defi/liquid-stake",
-          icon: faDroplet,
+          icon: 'water',
         },
         {
           title: "swap",
           url: "/defi/token-swap",
-          icon: faRightLeft,
+          icon: 'swap-horizontal',
         },
         // {
         //   title: 'nft-liquidity',
@@ -52,6 +51,6 @@ export const pages: any = [
     {
       title: "stake with us",
       url: "stake-with-us",
-      icon: faShieldHeart
+      icon: 'heart-circle',
     }
   ];

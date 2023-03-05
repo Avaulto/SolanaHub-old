@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Jupiter, RouteInfo } from '@jup-ag/core';
-import {  PublicKey,  VersionedTransaction } from '@solana/web3.js';
+import {  PublicKey,  Transaction } from '@solana/web3.js';
 import JSBI from 'jsbi';
 
-import { catchError, Observable, shareReplay, throwError } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { JupiterPriceFeed, Token } from '../models';
 import { ApiService, SolanaUtilsService, ToasterService } from './';
 
@@ -16,7 +16,6 @@ export class JupiterStoreService {
     console.warn('my err',error)
     this._toasterService.msg.next({
       message: error.message,
-      icon: 'alert-circle-outline',
       segmentClass: "toastError",
     });
     return throwError((() => error))
@@ -58,11 +57,10 @@ export class JupiterStoreService {
         outputMint: new PublicKey(outputToken.address),
         amount: JSBI.BigInt(inputAmountInSmallestUnits),
         onlyDirectRoutes: false,
-        slippageBps: slippage, // 1 = 1%
+        slippage: slippage, // 1 = 1%
         forceFetch: true, // (optional) to force fetching routes and not use the cache
-        asLegacyTransaction: LegacyTx
         // intermediateTokens, if provided will only find routes that use the intermediate tokens
-        // feeBps
+        feeBps: 0
       });
       bestRoute = routes.routesInfos[0]
     } catch (error) {
@@ -72,12 +70,22 @@ export class JupiterStoreService {
     //return best route
     return bestRoute
   }
-  public async swapTx(routeInfo: RouteInfo): Promise<VersionedTransaction> {
+  public async swapTx(routeInfo: RouteInfo): Promise<Transaction[]> {
 
-      const {swapTransaction} = await this._jupiter.exchange({
-        routeInfo
-      });
-      return swapTransaction as VersionedTransaction;
+    const { transactions } = await this._jupiter.exchange({
+      routeInfo
+    });
+
+    // Execute the transactions
+    const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
+    const arrayOfTx: Transaction[] = []
+    for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
+      if (!transaction) {
+        continue;
+      }
+      arrayOfTx.push(transaction)
+    }
+      return arrayOfTx
   }
   public fetchTokenList(): Observable<Token[]> {
     //const env = TOKEN_LIST_URL[environment.solanaEnv]//environment.solanaEnv

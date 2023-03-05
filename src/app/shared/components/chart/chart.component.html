@@ -1,7 +1,8 @@
 <ng-container *ngIf="hasPairData; else elseTemplate">
   <ion-row class="ion-justify-content-between">
     <ion-col size="5" class="heading-4 ion-margin-bottom ion-text-uppercase">
-      <span>{{(pairOne == 'wrapped-solana' ? 'S0L' : pairOne) +'/'+(pairTwo == 'wrapped-solana' ? 'S0L' : pairTwo)}}</span><br>
+      <span>{{(pairOne == 'wrapped-solana' ? 'S0L' : pairOne) +'/'+(pairTwo == 'wrapped-solana' ? 'S0L' :
+        pairTwo)}}</span><br>
       <span class="sub">{{currentPricePair}}</span>
     </ion-col>
     <ion-col size="6">
@@ -16,12 +17,13 @@
   </ion-row>
   <ion-row>
     <canvas #lineChart></canvas>
-    <span id="power-by-coingeco" class="sub">Powered by <a href="https://www.coingecko.com/" target="_blank">CoinGecko</a></span>
+    <span id="power-by-coingeco" class="sub">Powered by <a href="https://www.coingecko.com/"
+        target="_blank">CoinGecko</a></span>
   </ion-row>
 </ng-container>
 <ng-template #elseTemplate>
   <div id="chart-unavailable">
-    <fa-icon class="ion-margin-bottom" size="6x" [icon]="chartUnavailableIcon"></fa-icon>
+    <ion-icon name="bar-chart"></ion-icon>
     <p class="sub">Chart Unavailable</p>
   </div>
 </ng-template>

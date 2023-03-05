@@ -17,8 +17,6 @@ import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 
 
 import Plausible from 'plausible-tracker';
-import { environment } from 'src/environments/environment';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @NgModule({
     declarations: [
         AppComponent,
@@ -31,8 +29,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         BrowserAnimationsModule,
         IonicModule.forRoot(),
         AppRoutingModule,
-        HdWalletAdapterModule.forRoot({ autoConnect: true }),
-        FontAwesomeModule
+        HdWalletAdapterModule.forRoot({ autoConnect: true })
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

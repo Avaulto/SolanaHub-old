@@ -45,8 +45,6 @@ import {
   // } from "./directives";
   
 
-  // font awesome
-  import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
   // toop tip
 import { CustomInterceptor } from "../services";
@@ -93,7 +91,6 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule,
-    FontAwesomeModule,
     IonicModule,
     TooltipModule
     // TooltipModule,
@@ -104,7 +101,6 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
   ],
   exports: [
-    FontAwesomeModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

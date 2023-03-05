@@ -33,7 +33,6 @@ export class OptionsPopupComponent implements OnInit {
     this._connectionStore.setEndpoint(url);
     const toasterMessage: toastData = {
       message: 'RPC updated',
-      icon: 'information-circle-outline',
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)
@@ -42,7 +41,6 @@ export class OptionsPopupComponent implements OnInit {
     this._utilsService.changeTheme(name);
     const toasterMessage: toastData = {
       message: 'Theme updated',
-      icon: 'information-circle-outline',
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)
@@ -51,7 +49,6 @@ export class OptionsPopupComponent implements OnInit {
     this._utilsService.changeExplorer(name)
     const toasterMessage: toastData = {
       message: 'Explorer updated',
-      icon: 'information-circle-outline',
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)
@@ -63,7 +60,6 @@ export class OptionsPopupComponent implements OnInit {
 
     const toasterMessage: toastData = {
       message: 'Priority fee updated',
-      icon: 'information-circle-outline',
       segmentClass: "toastInfo"
     }
     this._toasterService.msg.next(toasterMessage)

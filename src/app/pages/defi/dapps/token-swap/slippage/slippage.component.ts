@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { faSliders } from '@fortawesome/free-solid-svg-icons';
+
 import {
   trigger,
   state,
@@ -26,7 +26,6 @@ import {
   ]
 })
 export class SlippageComponent implements OnInit {
-  public slideIcon = faSliders;
   public showSlippageOptions: boolean = false;
   @Input() form: FormGroup = {} as FormGroup;
   public currentSlippage: number = 0.5

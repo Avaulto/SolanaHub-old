@@ -12,6 +12,8 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { distinctUntilChanged } from 'rxjs';
+import { SolanaUtilsService, UtilsService } from './services';
 
 
 @Component({
@@ -26,8 +28,17 @@ export class AppComponent {
     public router: Router,
     private _connectionStore: ConnectionStore,
     private _walletStore: WalletStore,
+    private _utilsService: UtilsService,
+    private _solanaUtilsService: SolanaUtilsService
   ) { }
   async ngOnInit(): Promise<void> {
+    this._walletStore.anchorWallet$.pipe(
+      this._utilsService.isNotNull,
+      this._utilsService.isNotUndefined,
+      distinctUntilChanged(),
+    ).subscribe(wallet => {
+      this._solanaUtilsService.onAccountChangeCB(wallet.publicKey)
+    })
     connectionConfigProviderFactory({
       commitment: "confirmed",
     })
