@@ -82,6 +82,7 @@ export class LiquidStakePage {
         }
       } else {
         this.stakePoolStore.initMarinade(this.wallet);
+        this.marinade = this.stakePoolStore.marinadeSDK
       }
     } catch (error) {
       console.warn(error);

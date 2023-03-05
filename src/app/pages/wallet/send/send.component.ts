@@ -117,16 +117,12 @@ export class SendComponent implements OnInit {
     // await topupSig.isConfirmed
 
     // // // Send SOL, privately 😎
-    // console.log('about to send', SOL / 2 )
     // const sendTx = await elusiv.buildSendTx(SOL / 2 , targetPk, 'LAMPORTS');
     // // send http tx Through warden
-    // console.log('send pprivate ')
     // const sendTxSig = await elusiv.sendElusivTx(sendTx);
-    // console.log(`Send initiated with sig ${sendTxSig.sig.signature}`);
 
     // // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
     // await sendTxSig.isConfirmed;
-    // console.log('Send complete!');
   }
 
 }

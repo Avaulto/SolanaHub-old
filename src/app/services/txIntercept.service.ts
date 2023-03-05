@@ -264,8 +264,7 @@ export class TxInterceptService {
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
-
-      console.log(transaction)
+      
       const res = await firstValueFrom(this._walletStore.signTransaction(transaction));
       if (extraSigners?.length > 0) transaction.partialSign(...extraSigners);
 
@@ -279,7 +278,7 @@ export class TxInterceptService {
       const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
       const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
       const txSend: toastData = {
-        message: `Transaction Subbmitted`,
+        message: `Transaction Submitted`,
         btnText: `view on explorer`,
         segmentClass: "toastInfo",
         duration: 10000,
@@ -291,7 +290,7 @@ export class TxInterceptService {
       }
       await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
       const txCompleted: toastData = {
-        message: 'transaction completed',
+        message: 'Transaction Completed',
         segmentClass: "toastInfo"
       }
       this.toasterService.msg.next(txCompleted)

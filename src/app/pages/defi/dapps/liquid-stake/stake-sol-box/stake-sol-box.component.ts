@@ -54,7 +54,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   }
 
   setMaxAmountSOL() {
-    this.stakeForm.controls.stakeAmount.setValue(this._utilsService.shortenNum(this.solBalance - 0.0001));
+    this.stakeForm.controls.stakeAmount.setValue(this._utilsService.shortenNum(this.solBalance -  0.01));
   }
   setMaxAmountxSOL() {
     this.unStakeAmount = this.stakePoolStats.userHoldings.staked_asset
@@ -74,8 +74,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   }
   async liquidStake() {
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
-    // const amount: number = Number(stakeAmount);
-    const sol = new bn(stakeAmount * LAMPORTS_PER_SOL);
+    const sol = new bn((stakeAmount - 0.01) * LAMPORTS_PER_SOL);
     if (this.selectedProvider.name.toLowerCase() == 'marinade') {
       const { transaction } = await this.marinade.deposit(sol);
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)

@@ -174,7 +174,7 @@ export class SolanaUtilsService {
     const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID: PublicKey = new PublicKey(
       'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
     );
-    return (await PublicKey.findProgramAddress(
+    return (await PublicKey.findProgramAddressSync(
       [
         walletAddress.toBuffer(),
         TOKEN_PROGRAM_ID.toBuffer(),

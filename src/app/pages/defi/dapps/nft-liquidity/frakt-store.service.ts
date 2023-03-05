@@ -120,7 +120,6 @@ export class FraktStoreService {
         poolsFull = nftWhitelist.map(nft => {
           const findLiquidity = poolsLiquidity.priceBasedLiqs.find(pool => pool.name == nft.name)
           if (findLiquidity) {
-            // console.log(findLiquidity)
             return { ...nft, ...findLiquidity }
           }
         })

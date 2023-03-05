@@ -35,6 +35,7 @@ export class JupiterStoreService {
       try {
         this._jupiter = await Jupiter.load({
           connection,
+          wrapUnwrapSOL: true,
           cluster: 'mainnet-beta',
           user: pk, // or public key
           // platformFeeAndAccounts:  NO_PLATFORM_FEE,

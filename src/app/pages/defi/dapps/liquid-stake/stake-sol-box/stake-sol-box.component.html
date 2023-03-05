@@ -7,7 +7,7 @@
         <form *ngSwitchCase="'stake'" [formGroup]="stakeForm">
             <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance | number: '1.2-2'}">
                 <app-icon-tooltip [position]="tooltippos"
-                    tip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+                    tip="A 0.01 ◎ is reduced from maximum balance to prevent transaction failure."></app-icon-tooltip>
             </app-label-layout>
             <ion-row id="stake-amount">
                 <ion-input class="button-text" formControlName="stakeAmount" placeholder="Amount"></ion-input>

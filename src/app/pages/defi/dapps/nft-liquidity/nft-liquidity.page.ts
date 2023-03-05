@@ -24,7 +24,6 @@ export class NftLiquidityPage implements OnInit {
     //     connection: this._solanaUtilsService.connection,
     //     tokensMap: new Map<string, TokenInfo>(),
     // });
-    // console.log(poolDataByMint)
   }
 
 }

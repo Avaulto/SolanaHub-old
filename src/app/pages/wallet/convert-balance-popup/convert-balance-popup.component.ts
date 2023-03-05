@@ -104,7 +104,7 @@ export class ConvertBalancePopupComponent implements OnInit {
           // append to array of VersionedTransactions
           swapTxs.push(...transactions)
         } else {
-          const instruction = await this.closeATA(inputToken)
+          const instruction: TransactionInstruction = await this.closeATA(inputToken)
           closeAtaIns.push(instruction)
         }
       })
@@ -123,9 +123,17 @@ export class ConvertBalancePopupComponent implements OnInit {
     }
 
     if (closeATAMass.length) {
-      await Promise.all(closeATAMass.map(async tx => {
-        return await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
-      }))
+      await closeATAMass.reduce(async (promise, tx) => {
+        // This line will wait for the last async function to finish.
+        // The first iteration uses an already resolved Promise
+        // so, it will immediately continue.
+        await promise;
+        await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
+      }, Promise.resolve());
+
+      // await Promise.all(closeATAMass.map(async tx => {
+      //   return await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
+      // }))
     }
 
 

@@ -69,7 +69,6 @@ export class LendComponent implements OnInit {
     // this.icon.get(iconIndex).name == 'arrow-up-outline' ? this.icon.get(iconIndex).name = 'arrow-down-outline' : this.icon.get(iconIndex).name = 'arrow-up-outline'
     
     // this.sortOrder = this.sortOrder == 'asc' ? 'desc' : 'asc';
-    // // console.log(icon)
     // const sortedData = this._fraktNfts$.value.sort((a, b) => {
     //   if (this.sortOrder == 'asc') {
     //     return a[type] > b[type] ? -1 : 1

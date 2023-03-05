@@ -110,7 +110,6 @@ export class WalletPage implements OnInit, OnDestroy {
       (previousValue, currentValue) => previousValue + currentValue.mintAddress + ",",
       ''
     );
-    // console.log(tokensByOwner)
     // get token prices & image
     const tokensPrices = await this._jupStore.fetchPriceFeed(mintAddress);
     const getTokensList = await firstValueFrom(this._jupStore.fetchTokenList());
