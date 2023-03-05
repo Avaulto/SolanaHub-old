@@ -20,10 +20,7 @@ export class NftLiquidityPage implements OnInit {
     this.searchTerm = ''
   }
   async ngOnInit() {
-    // const poolDataByMint = await pools.fetchPoolDataByMint({
-    //     connection: this._solanaUtilsService.connection,
-    //     tokensMap: new Map<string, TokenInfo>(),
-    // });
+
   }
 
 }

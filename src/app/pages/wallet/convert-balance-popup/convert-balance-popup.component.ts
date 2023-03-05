@@ -112,6 +112,7 @@ export class ConvertBalancePopupComponent implements OnInit {
 
     let closeATAMass: Array<Transaction[] | TransactionInstruction[]> = this._splitTxToChunks(closeAtaIns)
 
+    this._popoverController.dismiss()
     if (swapTxs.length) {
       await swapTxs.reduce(async (promise, tx) => {
         // This line will wait for the last async function to finish.
