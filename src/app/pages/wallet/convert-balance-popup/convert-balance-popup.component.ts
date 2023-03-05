@@ -7,6 +7,10 @@ import { JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsServi
 import {
   createCloseAccountInstruction,
 } from "../../../../../node_modules/@solana/spl-token";
+
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
+
 @Component({
   selector: 'app-convert-balance-popup',
   templateUrl: './convert-balance-popup.component.html',
@@ -131,13 +135,9 @@ export class ConvertBalancePopupComponent implements OnInit {
         await promise;
         await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
       }, Promise.resolve());
-
-      // await Promise.all(closeATAMass.map(async tx => {
-      //   return await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
-      // }))
     }
-
-
+    
+    trackEvent('bulk swap/close ATA')
   }
 
   async closeATA(asset: Asset): Promise<TransactionInstruction> {
