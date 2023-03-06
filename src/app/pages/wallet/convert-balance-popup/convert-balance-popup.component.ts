@@ -5,6 +5,7 @@ import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction, Trans
 import { Asset } from 'src/app/models';
 import { JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import {
+  createBurnInstruction,
   createCloseAccountInstruction,
 } from "../../../../../node_modules/@solana/spl-token";
 
@@ -108,8 +109,8 @@ export class ConvertBalancePopupComponent implements OnInit {
           // append to array of VersionedTransactions
           swapTxs.push(...transactions)
         } else {
-          const instruction: TransactionInstruction = await this.closeATA(inputToken)
-          closeAtaIns.push(instruction)
+          const instruction: TransactionInstruction[] = await this.closeATA(inputToken)
+          closeAtaIns.push(...instruction)
         }
       })
     )
@@ -140,18 +141,27 @@ export class ConvertBalancePopupComponent implements OnInit {
     trackEvent('bulk swap/close ATA')
   }
 
-  async closeATA(asset: Asset): Promise<TransactionInstruction> {
+  async closeATA(asset: Asset): Promise<TransactionInstruction[]> {
 
     const mintAddressPK = new PublicKey(asset.address);
     const walletOwner = this.wallet.publicKey;
     const tokenAccountPubkey = await this._solanaUtilsService.findAssociatedTokenAddress(walletOwner, mintAddressPK);
+    const inputAmountInSmallestUnits = asset
+    ? Math.round(Number(asset.balance) * 10 ** asset.decimals)
+    : 0;
+    let burnInstructions = createBurnInstruction(
+      tokenAccountPubkey, // token account
+      mintAddressPK, // mint
+      walletOwner, // owner of token account
+      inputAmountInSmallestUnits, // amount, if your deciamls is 8, 10^8 for 1 token
+    )
 
     let closeAccountIns = createCloseAccountInstruction(
       tokenAccountPubkey, // token account which you want to close
       walletOwner, // destination
       walletOwner // owner of token account
     )
-    const closeATA: TransactionInstruction = closeAccountIns
+    const closeATA: TransactionInstruction[] = [burnInstructions, closeAccountIns]
     return closeATA;
   }
   private _splitTxToChunks(txs: Transaction[] | TransactionInstruction[]): Array<Transaction[] | TransactionInstruction[]> {
