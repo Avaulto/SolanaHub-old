@@ -96,14 +96,20 @@ export class TxInterceptService {
   }
 
   public async transferStakeAccountAuth(stakePubkey: PublicKey, walletOwnerPk: PublicKey,newAuthorizedPubkey: PublicKey){
-    const transferAsset: AuthorizeStakeParams = {
+    const authWithdraw: AuthorizeStakeParams = {
       stakePubkey,
       authorizedPubkey: walletOwnerPk,
       newAuthorizedPubkey,
       stakeAuthorizationType: { index: 0 },
     }
-    const transferAuthTx = StakeProgram.authorize(transferAsset);
-    return await this.sendTx([transferAuthTx], walletOwnerPk)
+    const authStake: AuthorizeStakeParams = {
+      stakePubkey,
+      authorizedPubkey: walletOwnerPk,
+      newAuthorizedPubkey,
+      stakeAuthorizationType: { index: 1 },
+    }
+    const transferAuthTx = [StakeProgram.authorize(authWithdraw), StakeProgram.authorize(authStake)];
+    return await this.sendTx(transferAuthTx, walletOwnerPk)
   }
 
   public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey) {
