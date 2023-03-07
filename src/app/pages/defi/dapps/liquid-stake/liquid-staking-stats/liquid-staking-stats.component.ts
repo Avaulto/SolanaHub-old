@@ -54,7 +54,6 @@ export class LiquidStakingStatsComponent implements OnChanges {
   async fetchPoolProviderStatus() {
     let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolPublicKey);
     const solprice = await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
-    console.log(info)
     let solanaAmount = info.details.reserveStakeLamports;
     for (let i = 0; i < info.details.stakeAccounts.length; i++) {
       solanaAmount += parseInt(info.details.stakeAccounts[i].validatorLamports);
