@@ -11,7 +11,7 @@ import { AccountsComponent } from './tx/accounts/accounts.component';
 import { AssetsBalanceComponent } from './assets-balance/assets-balance.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { ActionsComponent } from './tx/accounts/actions/actions.component';
-import { MergeAccountsPopupComponent } from './tx/accounts/merge-accounts-popup/merge-accounts-popup.component';
+import { AccountsPopupComponent } from './tx/accounts/accounts-popup/accounts-popup.component';
 import { AccountComponent } from './tx/accounts/account/account.component';
 import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-balance-popup.component';
 
@@ -31,7 +31,7 @@ import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-ba
     ActionsComponent,
     SendComponent,
     HistoryComponent,
-    MergeAccountsPopupComponent,
+    AccountsPopupComponent,
     AccountComponent,
     ConvertBalancePopupComponent
   ]

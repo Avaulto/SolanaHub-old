@@ -1,28 +1,41 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonCheckbox, PopoverController } from '@ionic/angular';
-import { PublicKey } from '@solana/web3.js';
+import { AuthorizeStakeParams, PublicKey, StakeProgram } from '@solana/web3.js';
 import { StakeAccountExtended } from 'src/app/models';
 import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
 
 @Component({
-  selector: 'app-merge-accounts-popup',
-  templateUrl: './merge-accounts-popup.component.html',
-  styleUrls: ['./merge-accounts-popup.component.scss'],
+  selector: 'app-accounts-popup',
+  templateUrl: './accounts-popup.component.html',
+  styleUrls: ['./accounts-popup.component.scss'],
 })
-export class MergeAccountsPopupComponent implements OnInit {
+export class AccountsPopupComponent implements OnInit {
   @Input() account: StakeAccountExtended;
   @Input() accounts: StakeAccountExtended[];
   @Input() wallet
+  @Input() actionType: 'merge' | 'transferAuth';
   public accountsToMerge: StakeAccountExtended[]
   public selectedAccounts =[]
+  public transferAssetForm: FormGroup;
   constructor(
     private _txInterceptService: TxInterceptService,
      private _popoverController:PopoverController,
-     private _solanaUtilsService: SolanaUtilsService,
+     private _fb: FormBuilder,
      ) { }
 
   ngOnInit() {
-    this.accountsToMerge = this._avaliableToMerge()
+    // merge setup
+    if(this.actionType == 'merge'){
+      this.accountsToMerge = this._avaliableToMerge()
+    }
+
+    // transfer stake account auth setup
+    if(this.actionType == 'transferAuth'){
+      this.transferAssetForm = this._fb.group({
+        authrizedPubkey: ['', [Validators.required]]
+      })
+    }
   }
   private _avaliableToMerge(): StakeAccountExtended[]{
     // filter account for merge conditions(active stake & same validator)
@@ -41,12 +54,19 @@ export class MergeAccountsPopupComponent implements OnInit {
       this.selectedAccounts = filterAcc;
     }
   }
-  public async mergeAccounts(): Promise<void> {
+  public async submit(): Promise<void> {
     const walletOwner = this.wallet.publicKey
-    const stakeAccountsSource: PublicKey[] = this.selectedAccounts.map(account => new PublicKey(account.addr));
     const accountTarget = new PublicKey(this.account.addr)
     this._popoverController.dismiss();
-    await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
-    this._solanaUtilsService.fetchAndUpdateStakeAccount(this.wallet.publicKey);
+    if(this.actionType == 'merge'){
+      const stakeAccountsSource: PublicKey[] = this.selectedAccounts.map(account => new PublicKey(account.addr));
+      await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
+    }
+    if(this.actionType == 'transferAuth'){
+      const authrizedPubkey = new PublicKey(this.transferAssetForm.value.authrizedPubkey)
+      await this._txInterceptService.transferStakeAccountAuth(accountTarget ,walletOwner, authrizedPubkey);
+
+    }
   }
+
 }

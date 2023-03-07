@@ -4,7 +4,7 @@ import { PopoverController } from '@ionic/angular';
 import { PublicKey, TransactionInstruction, WithdrawStakeParams } from '@solana/web3.js';
 import { StakeAccountExtended, toastData } from 'src/app/models';
 import { SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
-import { MergeAccountsPopupComponent } from '../merge-accounts-popup/merge-accounts-popup.component';
+import { AccountsPopupComponent } from '../accounts-popup/accounts-popup.component';
 
 @Component({
   selector: 'app-actions',
@@ -54,8 +54,8 @@ export class ActionsComponent implements OnInit {
     if (this.account.state == 'active') {
 
       const popover = await this._popoverController.create({
-        component: MergeAccountsPopupComponent,
-        componentProps: { account: this.account, wallet: this.wallet, accounts: this.accounts },
+        component: AccountsPopupComponent,
+        componentProps: { actionType:'merge', account: this.account, wallet: this.wallet, accounts: this.accounts },
         // event: e,
         alignment: 'start',
         // showBackdrop:false,
@@ -71,5 +71,18 @@ export class ActionsComponent implements OnInit {
       }
       this._toasterService.msg.next(toast)
     }
+  }
+  async openTransferStakeAccount() {
+    const popover = await this._popoverController.create({
+      component: AccountsPopupComponent,
+      componentProps: {actionType:'transferAuth',  account:this.account, wallet: this.wallet, assetType: 'stake account' },
+      // event: e,
+      alignment: 'start',
+      // showBackdrop:false,
+      backdropDismiss: true,
+      // dismissOnSelect: true,
+      cssClass: 'merge-accounts-popup',
+    });
+    await popover.present();
   }
 }

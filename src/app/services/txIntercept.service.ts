@@ -9,6 +9,7 @@ import {
 } from '../../../node_modules/@solana/spl-token';;
 import {
   Authorized,
+  AuthorizeStakeParams,
   BlockheightBasedTransactionConfirmationStrategy,
   ComputeBudgetProgram,
   CreateStakeAccountParams,
@@ -93,7 +94,19 @@ export class TxInterceptService {
 
 
   }
-  public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey,) {
+
+  public async transferStakeAccountAuth(stakePubkey: PublicKey, walletOwnerPk: PublicKey,newAuthorizedPubkey: PublicKey){
+    const transferAsset: AuthorizeStakeParams = {
+      stakePubkey,
+      authorizedPubkey: walletOwnerPk,
+      newAuthorizedPubkey,
+      stakeAuthorizationType: { index: 0 },
+    }
+    const transferAuthTx = StakeProgram.authorize(transferAsset);
+    return await this.sendTx([transferAuthTx], walletOwnerPk)
+  }
+
+  public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey) {
 
 
     const mergeAccounts: Transaction[] = sourceStakePubKey.map(sourceAcc => {
@@ -104,7 +117,7 @@ export class TxInterceptService {
       });
     })
 
-    await this.sendTx(mergeAccounts, walletOwnerPk)
+   return await this.sendTx(mergeAccounts, walletOwnerPk)
   }
 
   public async withdrawFromStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {

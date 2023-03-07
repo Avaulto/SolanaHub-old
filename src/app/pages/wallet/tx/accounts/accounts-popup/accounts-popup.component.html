@@ -1,0 +1,53 @@
+<ion-row class="ion-padding">
+  <div id="popup-header">
+
+    <h4 class="heading-4 ion-text-capitalize">target account</h4>
+    <div id="current-account">
+      <app-account [account]="account"></app-account>
+    </div>
+
+    <ion-row id="tip" class="data-box ion-margin-vertical ion-padding">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <span *ngIf="actionType == 'merge'">only stake accounts with active status & the same validator can be
+        merged</span>
+      <span *ngIf="actionType == 'transferAuth'">once you transfer your stake account you will completely loss the
+        autority on it</span>
+
+    </ion-row>
+    <h4 *ngIf="actionType == 'merge' && accountsToMerge.length > 0" class="heading-4 ion-text-capitalize">select
+      accounts to merge</h4>
+  </div>
+  <div id="popup-body" class="ion-margin-bottom">
+    <ng-container [ngSwitch]="actionType">
+      <div *ngSwitchCase="'merge'">
+        <ng-container *ngIf="accountsToMerge.length > 0; else elseTemplate">
+          <div id="selectable-accounts-list" class="data-box">
+            <ion-item *ngFor="let account of accountsToMerge" slot="header" button style="--background:transparent;">
+              <app-account [mergeCondition]="true" (onClickAccount)="storeSelection($event)"
+                [account]="account"></app-account>
+            </ion-item>
+          </div>
+        </ng-container>
+        <ng-template #elseTemplate class="ion-text-capitalize">
+          No available stake accounts to merge
+        </ng-template>
+      </div>
+      <div *ngSwitchCase="'transferAuth'">
+        <form [formGroup]="transferAssetForm">
+          <app-label-layout [layoutConfig]="{title: 'Wallet Address'}">
+
+          </app-label-layout>
+          <ion-input formControlName="authrizedPubkey" type="text"></ion-input>
+        </form>
+      </div>
+    </ng-container>
+
+  </div>
+  <ion-button *ngIf="actionType == 'merge'" (click)="submit()" [disabled]="selectedAccounts.length == 0">
+    Merge selected accounts
+  </ion-button>
+  <ion-button *ngIf="actionType == 'transferAuth'" (click)="submit()" [disabled]="transferAssetForm.invalid">
+    Transfer
+  </ion-button>
+
+</ion-row>

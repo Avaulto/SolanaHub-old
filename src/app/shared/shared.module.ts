@@ -36,7 +36,7 @@ import {
   IconTooltipComponent,
   SettingsComponent,
   OptionsPopupComponent,
-  TabsComponent
+  TabsComponent,
 } from "./components";
 
 // // import directives
