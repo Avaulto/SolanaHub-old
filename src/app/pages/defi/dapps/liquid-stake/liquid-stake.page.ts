@@ -3,7 +3,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk'
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 
-import { firstValueFrom, map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
+import { combineLatestWith, firstValueFrom, map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
 import { StakeAccountExtended } from 'src/app/models';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -45,9 +45,11 @@ export class LiquidStakePage {
       return provider
     }))
   public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
+    combineLatestWith(this._solanaUtilsService.accountChange$),
     this._utilService.isNotNull,
     this._utilService.isNotUndefined,
-    switchMap(async (wallet) => {
+    // accountStateChange used as trigger for re-render wallet related context
+    switchMap(async ([wallet, accountStateChange]: any) => {
       this.wallet = wallet;
       this.solBalance = ((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL);
       if (this.currentProvider) {

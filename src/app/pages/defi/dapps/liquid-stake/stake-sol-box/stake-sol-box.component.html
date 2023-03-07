@@ -60,7 +60,7 @@
         <form *ngSwitchCase="'unstake'">
 
             <app-label-layout
-                [layoutConfig]="{title: selectedProvider.tokenSymbol + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-2'}"></app-label-layout>
+                [layoutConfig]="{title: selectedProvider.tokenSymbol + ' Amount', balance: stakePoolStats?.userHoldings?.staked_asset | number  : '1.2-2'}"></app-label-layout>
             <ion-row id="stake-amount" style="margin-bottom:8px;">
                 <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unStakeAmount"
                     placeholder="Amount"></ion-input>
