@@ -74,7 +74,7 @@ export class StakePoolStoreService {
     exchangeRate: null,
     tokenSymbol: "cgntSOL",
     tokenMint: new PublicKey("CgnTSoL3DgY9SFHxcLj6CgCgKKoTBr6tp4CPAEWy25DE"),
-    tokenImageURL: "https://cogent-cogs.s3.us-west-2.amazonaws.com/cgntSOL.png",
+    tokenImageURL: "assets/images/icons/cgntSOL.png",
     poolPublicKey: new PublicKey("CgntPoLka5pD5fesJYhGmUCF8KU1QS1ZmZiuAuMZr2az"),
     MEVDelegation: true,
     website: "https://cogentcrypto.io/app"
