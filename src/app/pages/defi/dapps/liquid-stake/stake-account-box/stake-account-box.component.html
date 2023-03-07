@@ -21,7 +21,7 @@
               reward from staking pool
               and will receive
               <b>{{stakeForm.controls.stakeAccount.value?.extraData?.balance / stakePoolStats.assetRatio | number : '1.2-3'}}</b>
-              {{selectedProvider.ticker}}
+              {{selectedProvider.tokenSymbol}}
             </p>
           </div>
         </div>
@@ -43,7 +43,7 @@
 
         </ng-container>
         <ng-template #elseTemplate>
-          <ion-button *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'" class="cls-btn" fill="clear"
+          <ion-button *ngIf="selectedProvider?.poolName == 'SolBlaze'" class="cls-btn" fill="clear"
             (click)="addValidatorControl()"
             tooltip="stake with custom validator will give you the benefit to support your favorite validator while join liquid staking pool">
             <div>

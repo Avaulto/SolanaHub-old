@@ -1,6 +1,6 @@
 <ion-row class="ion-justify-content-between ion-text-capitalize">
     <ion-col class="data-box ion-padding" sizeMd="2.3" sizeSm="5">
-        <app-data-box [title]="'Your stake ' + selectedProvider?.ticker" [loading]="!stakePoolStats?.TVL"
+        <app-data-box [title]="'Your stake ' + selectedProvider?.tokenSymbol" [loading]="!stakePoolStats?.TVL"
             [desc]="stakePoolStats?.userHoldings?.staked_asset| number : '1.2-2'">
             <div class="heading-5">= ${{stakePoolStats?.userHoldings?.staked_usd|  number : '1.2-2'}}</div>
         </app-data-box>
@@ -14,7 +14,7 @@
     </ion-col>
 
     <ion-col sizeMd="2.3" sizeSm="5" class="data-box ion-padding">
-        <app-data-box [title]="''+selectedProvider?.ticker+'/SOL ratio'" [loading]="!stakePoolStats?.assetRatio"
+        <app-data-box [title]="''+selectedProvider?.tokenSymbol+'/SOL ratio'" [loading]="!stakePoolStats?.assetRatio"
             [desc]="stakePoolStats?.assetRatio  | number : '1.2-3' ">
         </app-data-box>
     </ion-col>
@@ -25,7 +25,7 @@
         </app-data-box>
     </ion-col>
     <ion-col sizeMd="2.3" sizeSm="5" class="data-box ion-padding">
-        <app-data-box [title]="''+selectedProvider?.ticker+' supply'" [loading]="!stakePoolStats?.supply"
+        <app-data-box [title]="''+selectedProvider?.tokenSymbol+' supply'" [loading]="!stakePoolStats?.supply"
             [desc]="stakePoolStats?.supply  | number : '1.2-2'">
         </app-data-box>
     </ion-col>

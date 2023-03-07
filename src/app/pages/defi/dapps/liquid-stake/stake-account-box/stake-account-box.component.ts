@@ -46,7 +46,7 @@ export class StakeAccountBoxComponent implements OnInit {
     })
   }
   async ngOnChanges() {
-    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+    if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
       this.removeValidatorControl()
     }
   }
@@ -75,7 +75,7 @@ export class StakeAccountBoxComponent implements OnInit {
     const stakeAccountPK = new PublicKey(stakeAccount.addr);
 
     try {
-      if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+      if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
         const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(stakeAccountPK);
         const txIns: Transaction = depositAccount.transaction
         await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
@@ -86,7 +86,7 @@ export class StakeAccountBoxComponent implements OnInit {
           const validator_vote_key = new PublicKey(stakeAccount.validatorData.vote_identity);
           let depositTx = await depositStake(
             this._solanaUtilsService.connection,
-            this.selectedProvider.poolpubkey,
+            this.selectedProvider.poolPublicKey,
             this.wallet.publicKey,
             validator_vote_key,
             stakeAccountPK
@@ -118,7 +118,7 @@ export class StakeAccountBoxComponent implements OnInit {
     try {
       let depositTx = await depositStake(
         this._solanaUtilsService.connection,
-        this.selectedProvider.poolpubkey,
+        this.selectedProvider.poolPublicKey,
         wallet,
         currentValidator,
         stakeAccountPK

@@ -73,10 +73,10 @@ export class LiquidStakePage {
     }),
     shareReplay(1)
   )
-  public async initProviderSDK(currentProvider) {
+  public async initProviderSDK(currentProvider:StakePoolProvider) {
     try {
-      if (currentProvider.name.toLowerCase() == 'solblaze') {
-        let info = await this.stakePoolStore.stakePoolSDK.stakePoolInfo(this._solanaUtilsService.connection, currentProvider.poolpubkey);
+      if (currentProvider.poolName.toLowerCase() != 'marinade') {
+        let info = await this.stakePoolStore.stakePoolSDK.stakePoolInfo(this._solanaUtilsService.connection, currentProvider.poolPublicKey);
         if (info.details.updateRequired) {
           await this.stakePoolStore.updateSolBlazePool();
         }
@@ -103,7 +103,7 @@ export class LiquidStakePage {
         if (Object.keys(params).length) {
           const _params = this._utilService.toLower(params);
           let { pool, type } = _params
-          const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.name.toLowerCase() === pool.toLowerCase())
+          const provider = this.stakePoolStore.providers.find(avaiablePool => avaiablePool.poolName.toLowerCase() === pool.toLowerCase())
           if (provider) {
 
             this.stakePoolStore.selectProvider(provider)

@@ -1,14 +1,14 @@
 <ion-button class="ion-hide-lg-down" fill="outline" expand="block" id="click-trigger">
-  <ion-img [src]="selectedProvider?.image"></ion-img>
-  <span> {{selectedProvider?.name}} </span>
+  <ion-img [src]="selectedProvider?.tokenImageURL"></ion-img>
+  <span> {{selectedProvider?.poolName}} </span>
 </ion-button>
 
 <ion-popover trigger="click-trigger" triggerAction="click" [dismissOnSelect]="true">
   <ng-template>
       <ul>
         <li class="sub" *ngFor="let provider of providers" (click)="onProviderSelected.emit(provider)">
-          <ion-img [src]="provider.image"></ion-img>
-          <span> {{provider.name}} </span>
+          <ion-img [src]="provider.tokenImageURL"></ion-img>
+          <span> {{provider.poolName}} </span>
         </li>
       </ul>
   </ng-template>

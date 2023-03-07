@@ -2,7 +2,7 @@
     <ng-container *ngIf="provider$ | async as currentProvider; else elseTemplate">
         <ion-grid class="ion-padding">
             <div id="stake-pool-header">
-                <app-dapp-head [name]="currentProvider.name" [imgPath]="currentProvider.image"></app-dapp-head>
+                <app-dapp-head [name]="currentProvider.poolName" [imgPath]="currentProvider.tokenImageURL"></app-dapp-head>
                 <app-swap-provider-btn [selectedProvider]="currentProvider" [providers]="stakePoolStore.providers"
                     (onProviderSelected)="stakePoolStore.selectProvider($event)"></app-swap-provider-btn>
             </div>
@@ -14,7 +14,7 @@
                     class="data-box ion-padding">
                     <ion-row class="ion-margin-bottom" id="stake-apr-box">
                         <div>~{{stakePoolStats?.apy | number : '1.2-2'}}% <span>APY</span></div>
-                        <p id="">Stake SOL and use {{currentProvider?.ticker}} while earning rewards</p>
+                        <p id="">Stake SOL and use {{currentProvider?.tokenSymbol}} while earning rewards</p>
                     </ion-row>
                     <ion-row class="ion-text-capitalize">
                         <h4 class="heading-4">choose your way to liquid stake</h4>
@@ -63,7 +63,7 @@
 
                             </div>
                             <div>
-                                1 {{currentProvider.ticker}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}} SOL
+                                1 {{currentProvider.tokenSymbol}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}} SOL
                             </div>
                         </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
@@ -118,8 +118,8 @@
                 <h3>Stake pool providers</h3>
                 <p class="ion-margin-bottom">Please select a staking pool u wish to join</p>
                 <ion-button (click)="stakePoolStore.selectProvider(provider)" color="secondary" *ngFor="let provider of stakePoolStore.providers">
-                    <ion-img [src]="provider.image"></ion-img>
-                    <ion-text>{{provider.name}}</ion-text>
+                    <ion-img [src]="provider.tokenImageURL"></ion-img>
+                    <ion-text>{{provider.poolName}}</ion-text>
                 </ion-button>
 
             </div>

@@ -23,7 +23,7 @@
                     [value]="((stakeForm.controls.stakeAmount.value || 0) / stakePoolStats?.assetRatio) | number : '1.2-3'">
                 </ion-input>
                 <span>
-                    {{selectedProvider.ticker}}
+                    {{selectedProvider.tokenSymbol}}
                 </span>
             </ion-row>
 
@@ -41,7 +41,7 @@
 
             </ng-container>
             <ng-template #elseTemplate>
-                <ion-button *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'" class="cls-btn" fill="clear"
+                <ion-button  *ngIf="selectedProvider?.poolName == 'SolBlaze'" class="cls-btn" fill="clear"
                     (click)="addValidatorControl()"
                     tooltip="stake with custom validator will give you the benefit to support your favorite validator while join liquid staking pool">
                     <div>
@@ -60,7 +60,7 @@
         <form *ngSwitchCase="'unstake'">
 
             <app-label-layout
-                [layoutConfig]="{title: selectedProvider.ticker + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-2'}"></app-label-layout>
+                [layoutConfig]="{title: selectedProvider.tokenSymbol + ' Amount', balance: stakePoolStats.userHoldings.staked_asset| number  : '1.2-2'}"></app-label-layout>
             <ion-row id="stake-amount" style="margin-bottom:8px;">
                 <ion-input class="button-text" [ngModelOptions]="{standalone: true}" [(ngModel)]="unStakeAmount"
                     placeholder="Amount"></ion-input>
@@ -69,7 +69,7 @@
             
             <app-label-layout
                 [layoutConfig]="{title: 'You will receive'}">
-            <app-icon-tooltip [tip]="selectedProvider?.name?.toLowerCase() == 'solblaze' ? '
+            <app-icon-tooltip [tip]="selectedProvider?.poolName?.toLowerCase() != 'marinade' ? '
             You will receive a stake account that you need to deactivate in your wallet' : ''"></app-icon-tooltip>
             </app-label-layout>
 
@@ -85,7 +85,7 @@
                     Withdraw SOL
                 </ion-button>
             </ion-row>
-            <span class="sub" *ngIf="selectedProvider?.name?.toLowerCase() == 'solblaze'" id="unstake-it">looking for
+            <span class="sub" *ngIf="selectedProvider?.poolName?.toLowerCase() != 'marinade'" id="unstake-it">looking for
                 Instantly unstake your SOL? Check <a target="_blank" href="https://www.unstake.it">unstake.it</a></span>
 
         </form>

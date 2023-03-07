@@ -41,19 +41,20 @@ export class LiquidStakingStatsComponent implements OnChanges {
     this.fetchProviderStats();
   }
   async fetchProviderStats() {
-    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+
+    if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
       await this.fetchMarinadeStats()
     } else {
-      await this.fetchSolBlazeStats()
+      await this.fetchPoolProviderStatus()
     }
     await this.fetchUserHoldings();
     this.onStakePoolStats.emit(this.stakePoolStats);
   }
 
-  async fetchSolBlazeStats() {
-    const solprice =await (await this._jupStore.fetchPriceFeed('bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1')).data['bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1'].price;
-    let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolpubkey);
-
+  async fetchPoolProviderStatus() {
+    let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolPublicKey);
+    const solprice =await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
+    console.log(info)
     let solanaAmount = info.details.reserveStakeLamports;
     for (let i = 0; i < info.details.stakeAccounts.length; i++) {
       solanaAmount += parseInt(info.details.stakeAccounts[i].validatorLamports);
@@ -63,9 +64,9 @@ export class LiquidStakingStatsComponent implements OnChanges {
     try {
       const assetRatio = conversion
       const TVL = { staked_usd: solanaAmount / LAMPORTS_PER_SOL * solprice, staked_sol: solanaAmount / LAMPORTS_PER_SOL }
-      const validators = (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
+      const validators = info.details.currentNumberOfValidators//(await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
       const supply = Number(tokenAmount) / LAMPORTS_PER_SOL
-      const apy = (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/apy'))).apy
+      const apy = (await firstValueFrom(this._apiService.get('https://dev.compact-defi.xyz/api/SPI-proxy'))).find(pool => pool.poolName == this.selectedProvider.poolName).apy
       this.stakePoolStats = { assetRatio, TVL, validators, supply, apy };
     } catch (error) {
       console.error(error)
@@ -94,7 +95,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
 
       const walletOwner: any = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
       const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(walletOwner) || [];
-      const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.mintAddress);
+      const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.tokenMint.toBase58());
       TVL = { staked_usd: splAccount?.balance * solprice || 0, staked_asset: splAccount?.balance || 0 }
     } catch (error) {
       console.warn(error);

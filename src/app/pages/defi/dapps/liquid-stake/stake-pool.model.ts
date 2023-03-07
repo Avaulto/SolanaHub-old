@@ -11,9 +11,13 @@ export interface StakePoolStats {
   }
 
   export interface StakePoolProvider {
-    name: string;
-    image: string;
-    poolpubkey?: PublicKey;
-    mintAddress: string;
-    ticker: 'mSOL' | 'bSOL'
+    poolName: string;
+    apy:number | null;
+    exchangeRate: number | null;
+    tokenSymbol: string | null; 
+    tokenMint:PublicKey;
+    tokenImageURL: string;
+    poolPublicKey: PublicKey;
+    MEVDelegation: boolean;
+    website: string;
   }

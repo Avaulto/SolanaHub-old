@@ -48,7 +48,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     })
   }
   async ngOnChanges() {
-    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+    if (this.selectedProvider.poolName.toLowerCase() != 'solblaze') {
       this.removeValidatorControl()
     }
   }
@@ -75,7 +75,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   async liquidStake() {
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     const sol = new bn((stakeAmount - 0.01) * LAMPORTS_PER_SOL);
-    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+    if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
       const { transaction } = await this.marinade.deposit(sol);
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {
@@ -86,7 +86,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
 
         let depositTx = await depositSol(
           this._solanaUtilsService.connection,
-          this.selectedProvider.poolpubkey,
+          this.selectedProvider.poolPublicKey,
           this.wallet.publicKey,
           Number(sol)
         );
@@ -108,7 +108,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     try {
       let depositTx = await depositSol(
         this._solanaUtilsService.connection,
-        this.selectedProvider.poolpubkey,
+        this.selectedProvider.poolPublicKey,
         wallet,
         sol
       );
@@ -143,7 +143,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   public async liquidUnstake() {
 
     const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
-    if (this.selectedProvider.name.toLowerCase() == 'marinade') {
+    if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
       const { transaction } = await this.marinade.liquidUnstake(sol)
 
       // sign and send the `transaction`
@@ -151,7 +151,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     } else {
       let withdrawTx = await withdrawStake(
         this._solanaUtilsService.connection,
-        this.selectedProvider.poolpubkey,
+        this.selectedProvider.poolPublicKey,
         this.wallet.publicKey,
         Number(this.unStakeAmount),
         false
