@@ -66,7 +66,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
       const TVL = { staked_usd: solanaAmount / LAMPORTS_PER_SOL * solprice, staked_sol: solanaAmount / LAMPORTS_PER_SOL }
       const validators = info.details.currentNumberOfValidators//(await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
       const supply = Number(tokenAmount) / LAMPORTS_PER_SOL
-      const apy = (await firstValueFrom(this._apiService.get('https://dev.compact-defi.xyz/api/SPI-proxy'))).find(pool => pool.poolName == this.selectedProvider.poolName).apy
+      const apy = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.find(pool => pool.poolName == this.selectedProvider.poolName).apy
       this.stakePoolStats = { assetRatio, TVL, validators, supply, apy };
     } catch (error) {
       console.error(error)
