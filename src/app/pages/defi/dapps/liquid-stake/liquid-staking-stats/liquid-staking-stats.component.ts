@@ -53,7 +53,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
 
   async fetchPoolProviderStatus() {
     let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolPublicKey);
-    const solprice =await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
+    const solprice = await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
     console.log(info)
     let solanaAmount = info.details.reserveStakeLamports;
     for (let i = 0; i < info.details.stakeAccounts.length; i++) {
@@ -66,7 +66,15 @@ export class LiquidStakingStatsComponent implements OnChanges {
       const TVL = { staked_usd: solanaAmount / LAMPORTS_PER_SOL * solprice, staked_sol: solanaAmount / LAMPORTS_PER_SOL }
       const validators = info.details.currentNumberOfValidators//(await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
       const supply = Number(tokenAmount) / LAMPORTS_PER_SOL
-      const apy = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.find(pool => pool.poolName == this.selectedProvider.poolName).apy
+      // change blazestake name to solblaze as per solblaze request
+      const stake_pool_data: any[] = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo')))
+        .stake_pool_data.map(pool => {
+          pool.poolName == 'BlazeStake' ? pool.poolName = 'SolBlaze' : null
+          return pool
+        }
+        )
+
+      const apy = stake_pool_data.find(pool => pool.poolName == this.selectedProvider.poolName).apy
       this.stakePoolStats = { assetRatio, TVL, validators, supply, apy };
     } catch (error) {
       console.error(error)
@@ -91,7 +99,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
     let TVL = { staked_usd: 0, staked_asset: 0 }
     try {
 
-      const solprice =await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price;
+      const solprice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price;
 
       const walletOwner: any = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
       const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(walletOwner) || [];
