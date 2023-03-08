@@ -57,6 +57,39 @@ export class StakePoolStoreService {
     MEVDelegation: true,
     website: "https://stake.solblaze.org/"
   },
+  {
+    poolName: "Cogent",
+    apy: null,
+    exchangeRate: null,
+    tokenSymbol: "cgntSOL",
+    tokenMint: new PublicKey("CgnTSoL3DgY9SFHxcLj6CgCgKKoTBr6tp4CPAEWy25DE"),
+    tokenImageURL: "assets/images/icons/cgntSOL.png",
+    poolPublicKey: new PublicKey("CgntPoLka5pD5fesJYhGmUCF8KU1QS1ZmZiuAuMZr2az"),
+    MEVDelegation: true,
+    website: "https://cogentcrypto.io/app"
+  },
+  {
+    poolName: "Laine",
+    apy: null,
+    exchangeRate: null,
+    tokenSymbol: "laineSOL",
+    tokenMint: new PublicKey("LAinEtNLgpmCP9Rvsf5Hn8W6EhNiKLZQti1xfWMLy6X"),
+    tokenImageURL: "https://shdw-drive.genesysgo.net/4DUkKJB966oMk8zq57KkAUxqg9HpuWtZ3BKobhmYph39/laineSOL.webp",
+    poolPublicKey: new PublicKey("2qyEeSAWKfU18AFthrF7JA8z8ZCi1yt76Tqs917vwQTV"),
+    MEVDelegation: true,
+    website: "https://stake.laine.one/"
+  },
+  // {
+  //   poolName: "JPOOL",
+  //   apy: null,
+  //   exchangeRate: null,
+  //   tokenSymbol: "jSOL",
+  //   tokenMint: new PublicKey("7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn"),
+  //   tokenImageURL: "https://raw.githubusercontent.com/mfactory-lab/jpool-pub/main/assets/images/jsol.png",
+  //   poolPublicKey: new PublicKey("CtMyWsrUtAwXWiGr9WjHT5fC3p3fgV8cyGpLTo2LJzG1"),
+  //   MEVDelegation: false,
+  //   website: "https://jpool.one/"
+  // },
   // {
   //   poolName: "Jito",
   //   apy: null,
@@ -68,17 +101,6 @@ export class StakePoolStoreService {
   //   MEVDelegation: true,
   //   website: "https://www.jito.network/"
   // },
-  {
-    poolName: "Cogent",
-    apy: null,
-    exchangeRate: null,
-    tokenSymbol: "cgntSOL",
-    tokenMint: new PublicKey("CgnTSoL3DgY9SFHxcLj6CgCgKKoTBr6tp4CPAEWy25DE"),
-    tokenImageURL: "assets/images/icons/cgntSOL.png",
-    poolPublicKey: new PublicKey("CgntPoLka5pD5fesJYhGmUCF8KU1QS1ZmZiuAuMZr2az"),
-    MEVDelegation: true,
-    website: "https://cogentcrypto.io/app"
-  }
   ]
   // public getCurrentPorvider(): StakePoolProvider{
   //   return this._provider$.value;
