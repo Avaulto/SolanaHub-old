@@ -41,7 +41,7 @@ export class StakePoolStoreService {
     exchangeRate: null,
     tokenSymbol: "mSOL",
     tokenMint: new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"),
-    tokenImageURL: 'assets/images/icons/marinade-logo-small.svg',
+    tokenImageURL: 'assets/images/icons/marinade-logo.png',
     poolPublicKey: new PublicKey("stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi"),
     MEVDelegation: false,
     website: "https://stake.solblaze.org/"
@@ -74,7 +74,7 @@ export class StakePoolStoreService {
     exchangeRate: null,
     tokenSymbol: "laineSOL",
     tokenMint: new PublicKey("LAinEtNLgpmCP9Rvsf5Hn8W6EhNiKLZQti1xfWMLy6X"),
-    tokenImageURL: "https://shdw-drive.genesysgo.net/4DUkKJB966oMk8zq57KkAUxqg9HpuWtZ3BKobhmYph39/laineSOL.webp",
+    tokenImageURL: "assets/images/icons/laineSOL.webp",
     poolPublicKey: new PublicKey("2qyEeSAWKfU18AFthrF7JA8z8ZCi1yt76Tqs917vwQTV"),
     MEVDelegation: true,
     website: "https://stake.laine.one/"
