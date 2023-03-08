@@ -14,6 +14,7 @@ import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 export class LiquidStakingStatsComponent implements OnChanges {
   @Output() onStakePoolStats: EventEmitter<StakePoolStats> = new EventEmitter();
   @Input() selectedProvider: StakePoolProvider;
+  @Input() wallet
   public stakePoolStats: StakePoolStats = {
     assetRatio: null,
     supply: null,
@@ -99,9 +100,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
     try {
 
       const solprice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price;
-
-      const walletOwner: any = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
-      const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(walletOwner) || [];
+      const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
       const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.tokenMint.toBase58());
       TVL = { staked_usd: splAccount?.balance * solprice || 0, staked_asset: splAccount?.balance || 0 }
     } catch (error) {

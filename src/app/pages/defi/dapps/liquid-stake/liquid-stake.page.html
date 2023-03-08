@@ -7,7 +7,9 @@
                     (onProviderSelected)="stakePoolStore.selectProvider($event)"></app-swap-provider-btn>
             </div>
 
-            <app-liquid-staking-stats (onStakePoolStats)="stakePoolStats = $event"
+            <app-liquid-staking-stats 
+            [wallet]="wallet"
+            (onStakePoolStats)="stakePoolStats = $event"
                 [selectedProvider]="currentProvider"></app-liquid-staking-stats>
             <ion-row class="ion-justify-content-between ion-align-items-stretch">
                 <ion-col style="max-height: 345px;" sizeLg="5.9" size="12" 
