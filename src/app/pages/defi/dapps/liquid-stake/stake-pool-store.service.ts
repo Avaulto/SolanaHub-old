@@ -1,9 +1,9 @@
 
 
 import { Injectable } from '@angular/core';
-import { Observable, shareReplay, Subject, throwError } from 'rxjs';
+import { firstValueFrom, Observable, shareReplay, Subject, throwError } from 'rxjs';
 import { StakePoolProvider } from './stake-pool.model';
-import { UtilsService, SolanaUtilsService, ToasterService } from 'src/app/services';
+import { UtilsService, SolanaUtilsService, ToasterService, ApiService } from 'src/app/services';
 import { PublicKey } from '@solana/web3.js';
 import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk';
 import * as StakePoolSDK from '@solana/spl-stake-pool';
@@ -20,8 +20,9 @@ export class StakePoolStoreService {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _utilService: UtilsService,
-    private _toasterService: ToasterService
-  ) { 
+    private _toasterService: ToasterService,
+    private _apiService: ApiService
+  ) {
 
   }
   private _formatErrors(error: any) {
@@ -45,6 +46,39 @@ export class StakePoolStoreService {
     poolPublicKey: new PublicKey("stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi"),
     MEVDelegation: false,
     website: "https://stake.solblaze.org/"
+  },
+  {
+    poolName: "JPOOL",
+    apy: null,
+    exchangeRate: null,
+    tokenSymbol: "jSOL",
+    tokenMint: new PublicKey("7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn"),
+    tokenImageURL: "https://raw.githubusercontent.com/mfactory-lab/jpool-pub/main/assets/images/jsol.png",
+    poolPublicKey: new PublicKey("CtMyWsrUtAwXWiGr9WjHT5fC3p3fgV8cyGpLTo2LJzG1"),
+    MEVDelegation: false,
+    website: "https://jpool.one/"
+  },
+  {
+    poolName: "Jito",
+    apy: null,
+    exchangeRate: null,
+    tokenSymbol: "JitoSOL",
+    tokenMint: new PublicKey("J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn"),
+    tokenImageURL: "https://storage.googleapis.com/token-metadata/JitoSOL-256.png",
+    poolPublicKey: new PublicKey("Jito4APyf642JPZPx3hGc6WWJ8zPKtRbRs4P815Awbb"),
+    MEVDelegation: true,
+    website: "https://www.jito.network/"
+  },
+  {
+    poolName: "Socean",
+    apy: null,
+    exchangeRate: null,
+    tokenSymbol: "scnSOL",
+    tokenMint: new PublicKey("7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn"),
+    tokenImageURL: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm/logo.png",
+    poolPublicKey: new PublicKey("5oc4nmbNTda9fx8Tw57ShLD132aqDK65vuHH4RU1K4LZ"),
+    MEVDelegation: false,
+    website: "https://socean.fi/"
   },
   {
     poolName: "SolBlaze",
@@ -79,28 +113,6 @@ export class StakePoolStoreService {
     MEVDelegation: true,
     website: "https://stake.laine.one/"
   },
-  // {
-  //   poolName: "JPOOL",
-  //   apy: null,
-  //   exchangeRate: null,
-  //   tokenSymbol: "jSOL",
-  //   tokenMint: new PublicKey("7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn"),
-  //   tokenImageURL: "https://raw.githubusercontent.com/mfactory-lab/jpool-pub/main/assets/images/jsol.png",
-  //   poolPublicKey: new PublicKey("CtMyWsrUtAwXWiGr9WjHT5fC3p3fgV8cyGpLTo2LJzG1"),
-  //   MEVDelegation: false,
-  //   website: "https://jpool.one/"
-  // },
-  // {
-  //   poolName: "Jito",
-  //   apy: null,
-  //   exchangeRate: null,
-  //   tokenSymbol: "JitoSOL",
-  //   tokenMint: new PublicKey("J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn"),
-  //   tokenImageURL: "https://storage.googleapis.com/token-metadata/JitoSOL-256.png",
-  //   poolPublicKey: new PublicKey("Jito4APyf642JPZPx3hGc6WWJ8zPKtRbRs4P815Awbb"),
-  //   MEVDelegation: true,
-  //   website: "https://www.jito.network/"
-  // },
   ]
   // public getCurrentPorvider(): StakePoolProvider{
   //   return this._provider$.value;
@@ -135,5 +147,18 @@ export class StakePoolStoreService {
     this.marinadeSDK = new Marinade(config)
     const state = await this.marinadeSDK.getMarinadeState();
   }
-
+  public async getStakePoolsInfo(): Promise<void> {
+    try {
+      this.providers = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.map((provider: StakePoolProvider) => {
+        provider.poolName == 'BlazeStake' ? provider.poolName = 'SolBlaze' : provider.poolName
+        provider.poolPublicKey = new PublicKey(provider.poolPublicKey)
+        provider.tokenMint = new PublicKey(provider.tokenMint)
+        return provider
+      })
+      .filter(provider => provider.poolName != "DAO Pool")
+      .sort((a, b) => a.tokenMintSupply > b.tokenMintSupply ? -1 : 1)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }

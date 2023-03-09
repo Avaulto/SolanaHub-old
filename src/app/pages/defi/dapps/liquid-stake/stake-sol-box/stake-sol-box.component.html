@@ -49,6 +49,9 @@
                     </div>
                 </ion-button>
             </ng-template>
+            <ion-row class="sub" style="margin-bottom:8px;">
+                stake fee: from {{selectedProvider.solDepositFee}}%
+            </ion-row>
             <ion-row class="ion-justify-content-center">
                 <!-- <app-loader></app-loader> -->
                 <ion-button (click)="liquidStake()" [disabled]="formSubmitted || stakeForm.invalid"
@@ -78,7 +81,7 @@
                 </ion-input>
             </ion-row>
             <ion-row class="sub" style="margin-bottom:8px;">
-                Unstake fee: from 0.1%
+                Unstake fee: from {{selectedProvider.solWithdrawalFee}}%
             </ion-row>
             <ion-row class="ion-justify-content-center" style="margin-bottom:8px;">
                 <ion-button (click)="liquidUnstake()" [disabled]="!unStakeAmount" class="ion-text-capitalize">

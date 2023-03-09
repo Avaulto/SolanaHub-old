@@ -28,16 +28,24 @@ export class LiquidStakePage {
   ) { }
 
   public marinade: Marinade = this.stakePoolStore.marinadeSDK;
+  public stakePoolsInfo: StakePoolProvider[] = [];
   public stakePoolStats: StakePoolStats;
   public wallet;
   public solBalance = 0;
   public Apy: number = null;
   public currentProvider: StakePoolProvider = null;
+  public tip: string;
   public provider$ = this.stakePoolStore.provider$.pipe(
     this._utilService.isNotNull,
     this._utilService.isNotUndefined,
     map((provider) => {
       this.currentProvider = provider
+      this.tip = `
+      SOL/${provider.tokenSymbol} exchange rate is determined by a formula:
+                                POOL SOL staked / current ${provider.tokenSymbol} supply. Because staked SOL is earning yield, 
+                                it grows in size vs. ${provider.tokenSymbol} over time. When you swap ${provider.tokenSymbol} back to SOL,
+                                 you receive more SOL than you staked/swapped before.
+                                 `
       if (this.wallet) {
 
         this.initProviderSDK(this.currentProvider)
@@ -96,8 +104,9 @@ export class LiquidStakePage {
   }
 
   private _queryParam$: Subscription;
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this._queryParam$ = this.initConfigStartup();
+    await this.stakePoolStore.getStakePoolsInfo()
   }
   ionViewWillLeave() {
     this._queryParam$.unsubscribe();

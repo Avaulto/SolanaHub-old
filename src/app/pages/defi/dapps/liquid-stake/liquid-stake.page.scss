@@ -7,13 +7,15 @@
         margin-inline-end: 8px;
     }
 }
-#stake-pool-header{
+
+#stake-pool-header {
     display: flex;
     justify-content: space-between;
 }
+
 #stake-apr-box {
     height: 99px;
-    background:var( --apr-box);
+    background: var(--apr-box);
     border-radius: 6px;
     display: flex;
     flex-direction: column;
@@ -53,20 +55,23 @@
     cursor: pointer;
     justify-content: space-evenly;
     border: 1px solid transparent;
+
     &.selectedStakePath {
         border: 1px solid var(--ion-color-primary);
     }
+
     .select-group {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
         ion-checkbox {
             --size: 14px;
         }
     }
 }
 
-#exchange-rate{
+#exchange-rate {
     width: 100%;
 }
 
@@ -77,24 +82,41 @@ app-wallet-not-connected-state {
 }
 
 // select provider UI
-#liquid-stake-provider{
+#liquid-stake-provider {
     display: flex;
     height: 100%;
     align-items: center;
-    justify-content: center;    
-
-ion-button {
-    width: 100%;
-    letter-spacing: 1.5px;
-    margin-block-end: 8px;
-    height: 50px;
-    ion-text {
-        min-width: 80px;
+    justify-content: center;
+    .data-box{
+        min-height: 0;
+        margin-bottom: 16px;
     }
-    ion-img {
-        margin-inline-end: 8px;
-        width: 30px;
+    .pool-provider {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: revert;
+        width: 500px;
+        max-width: 100%;
     }
-}
+    .pool-provider-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        div{
+            display: flex;
+            flex-direction: column;
+        }
+        ion-img {
+            margin-inline-end: 8px;
+            height: 30px;
+        }
+    }
+    ion-button {
+        width: 130px;
+        letter-spacing: 1.5px;
+        margin-block-end: 8px;
+        height: 35px;
+    }
 
 }

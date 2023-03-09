@@ -4,6 +4,7 @@ import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
 import { ApiService, SolanaUtilsService, JupiterStoreService } from 'src/app/services';
+import { StakePoolStoreService } from '../stake-pool-store.service';
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 
 @Component({
@@ -27,7 +28,8 @@ export class LiquidStakingStatsComponent implements OnChanges {
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
     private _jupStore: JupiterStoreService,
-    private _walletStore: WalletStore
+    private _walletStore: WalletStore,
+    private _stakePoolStore: StakePoolStoreService,
   ) { }
 
   ngOnChanges(): void {
@@ -46,13 +48,13 @@ export class LiquidStakingStatsComponent implements OnChanges {
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
       await this.fetchMarinadeStats()
     } else {
-      await this.fetchPoolProviderStatus()
+      await this.fetchPoolProviderStats()
     }
     await this.fetchUserHoldings();
     this.onStakePoolStats.emit(this.stakePoolStats);
   }
 
-  async fetchPoolProviderStatus() {
+  async fetchPoolProviderStats() {
     let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolPublicKey);
     const solprice = await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
     let solanaAmount = info.details.reserveStakeLamports;
@@ -61,18 +63,18 @@ export class LiquidStakingStatsComponent implements OnChanges {
     }
     let tokenAmount = info.poolTokenSupply;
     let conversion = solanaAmount / Number(tokenAmount);
+
     try {
       const assetRatio = conversion
       const TVL = { staked_usd: solanaAmount / LAMPORTS_PER_SOL * solprice, staked_sol: solanaAmount / LAMPORTS_PER_SOL }
-      const validators = info.details.currentNumberOfValidators//(await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
+      const validators = info.validatorList.filter(validator => Number(validator.activeStakeLamports) / LAMPORTS_PER_SOL > 10).length//(await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/validator_set'))).vote_accounts.length
       const supply = Number(tokenAmount) / LAMPORTS_PER_SOL
       // change blazestake name to solblaze as per solblaze request
-      const stake_pool_data: any[] = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo')))
-        .stake_pool_data.map(pool => {
-          pool.poolName == 'BlazeStake' ? pool.poolName = 'SolBlaze' : null
-          return pool
-        }
-        )
+      const stake_pool_data: any[] = this._stakePoolStore.providers.map(pool => {
+        pool.poolName == 'BlazeStake' ? pool.poolName = 'SolBlaze' : null
+        return pool
+      }
+      )
 
       const apy = stake_pool_data.find(pool => pool.poolName == this.selectedProvider.poolName).apy
       this.stakePoolStats = { assetRatio, TVL, validators, supply, apy };
@@ -107,6 +109,5 @@ export class LiquidStakingStatsComponent implements OnChanges {
       console.warn(error);
     }
     this.stakePoolStats.userHoldings = TVL
-
   }
 }

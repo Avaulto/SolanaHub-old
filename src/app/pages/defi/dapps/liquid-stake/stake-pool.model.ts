@@ -7,17 +7,23 @@ export interface StakePoolStats {
     TVL: {staked_usd: number, staked_sol: number};
     validators: number;
     userHoldings?: {staked_usd: number, staked_asset: number};
-    ticker?: 'mSOL' | 'bSOL'
+    ticker?: string
   }
 
   export interface StakePoolProvider {
     poolName: string;
-    apy:number | null;
-    exchangeRate: number | null;
-    tokenSymbol: string | null; 
-    tokenMint:PublicKey;
+    apy: any;
+    exchangeRate: number;
+    tokenSymbol: string;
+    tokenMint: PublicKey;
     tokenImageURL: string;
     poolPublicKey: PublicKey;
     MEVDelegation: boolean;
     website: string;
+    tokenMintSupply?: number;
+    commission?: number;
+    solDepositFee?: number;
+    solWithdrawalFee?: number;
+    totalStakedSol?: number;
+    reserveSol?: number;
   }

@@ -2,18 +2,16 @@
     <ng-container *ngIf="provider$ | async as currentProvider; else elseTemplate">
         <ion-grid class="ion-padding">
             <div id="stake-pool-header">
-                <app-dapp-head [name]="currentProvider.poolName" [imgPath]="currentProvider.tokenImageURL"></app-dapp-head>
+                <app-dapp-head [name]="currentProvider.poolName"
+                    [imgPath]="currentProvider.tokenImageURL"></app-dapp-head>
                 <app-swap-provider-btn [selectedProvider]="currentProvider" [providers]="stakePoolStore.providers"
                     (onProviderSelected)="stakePoolStore.selectProvider($event)"></app-swap-provider-btn>
             </div>
 
-            <app-liquid-staking-stats 
-            [wallet]="wallet"
-            (onStakePoolStats)="stakePoolStats = $event"
+            <app-liquid-staking-stats [wallet]="wallet" (onStakePoolStats)="stakePoolStats = $event"
                 [selectedProvider]="currentProvider"></app-liquid-staking-stats>
             <ion-row class="ion-justify-content-between ion-align-items-stretch">
-                <ion-col style="max-height: 345px;" sizeLg="5.9" size="12" 
-                    class="data-box ion-padding">
+                <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
                     <ion-row class="ion-margin-bottom" id="stake-apr-box">
                         <div>~{{stakePoolStats?.apy | number : '1.2-2'}}% <span>APY</span></div>
                         <p id="">Stake SOL and use {{currentProvider?.tokenSymbol}} while earning rewards</p>
@@ -58,20 +56,39 @@
 
                             <div style="display: flex; align-items:center;">
                                 <span>exchange rate</span>
-                                <app-icon-tooltip style="margin-inline-start: 5px;" tip="SOL/xSOL exchange rate is determined by a formula:
-                                POOL SOL staked / current xSOL supply. Because staked SOL is earning yield, 
-                                it grows in size vs. xSOL over time. When you swap xSOL back to SOL,
-                                 you receive more SOL than you staked/swapped before."></app-icon-tooltip>
+                                <app-icon-tooltip style="margin-inline-start: 5px;" [tip]="tip"></app-icon-tooltip>
 
                             </div>
                             <div>
-                                1 {{currentProvider.tokenSymbol}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}} SOL
+                                1 {{currentProvider.tokenSymbol}} = {{stakePoolStats?.assetRatio | number : '1.2-3'}}
+                                SOL
                             </div>
                         </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
                             <div style="display: flex; align-items:center;">
                                 <span>
+                                    pool management fee
+                                </span>
 
+                            </div>
+                            <div>
+                                {{currentProvider.commission}}%
+                            </div>
+                        </ion-row>
+                        <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
+                            <div style="display: flex; align-items:center;">
+                                <span>
+                                    support MEV rewards
+                                </span>
+
+                            </div>
+                            <div>
+                                {{currentProvider.MEVDelegation}}
+                            </div>
+                        </ion-row>
+                        <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
+                            <div style="display: flex; align-items:center;">
+                                <span>
                                     platform fee
                                 </span>
 
@@ -86,24 +103,14 @@
                 <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
                     <ng-container *ngIf="stakeAccounts | async; else elseTemplate">
 
-                        <app-stake-sol-box 
-                        *ngIf="stakingType == 'sol'"
-                        [selectedProvider]="currentProvider" 
-                        [marinade]="marinade" 
-                        [stakePoolStats]="stakePoolStats"
-                        [solBalance]="solBalance"
-                        [wallet]="wallet"
-                      >
-                    </app-stake-sol-box>
-                    <app-stake-account-box
-                     *ngIf="stakingType == 'account'" 
-                      [selectedProvider]="currentProvider"
-                        [stakeAccounts]="stakeAccounts"
-                        [marinade]="marinade" 
-                        [stakePoolStats]="stakePoolStats"
-                        [wallet]="wallet"
-                        >
-                    </app-stake-account-box>
+                        <app-stake-sol-box *ngIf="stakingType == 'sol'" [selectedProvider]="currentProvider"
+                            [marinade]="marinade" [stakePoolStats]="stakePoolStats" [solBalance]="solBalance"
+                            [wallet]="wallet">
+                        </app-stake-sol-box>
+                        <app-stake-account-box *ngIf="stakingType == 'account'" [selectedProvider]="currentProvider"
+                            [stakeAccounts]="stakeAccounts" [marinade]="marinade" [stakePoolStats]="stakePoolStats"
+                            [wallet]="wallet">
+                        </app-stake-account-box>
                     </ng-container>
                     <ng-template #elseTemplate>
                         <app-wallet-not-connected-state></app-wallet-not-connected-state>
@@ -119,11 +126,20 @@
             <div class="data-box ion-padding">
                 <h3>Stake pool providers</h3>
                 <p class="ion-margin-bottom">Please select a staking pool u wish to join</p>
-                <ion-button (click)="stakePoolStore.selectProvider(provider)" color="secondary" *ngFor="let provider of stakePoolStore.providers">
+                <div class="pool-provider data-box ion-padding" *ngFor="let provider of stakePoolStore.providers">
+                    <div class="pool-provider-info">
                     <ion-img [src]="provider.tokenImageURL"></ion-img>
-                    <ion-text>{{provider.poolName}}</ion-text>
-                </ion-button>
+                    <div>
+                        <ion-text>{{provider.poolName}}</ion-text>
+                        <a class="sub" [href]="provider.website">learn more</a>
+                    </div>
+                    </div>
+                    
 
+                    <ion-button (click)="stakePoolStore.selectProvider(provider)" fill="outline" color="secondary">
+                        select
+                    </ion-button>
+                </div>
             </div>
         </div>
     </ng-template>
