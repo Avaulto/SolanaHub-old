@@ -33,22 +33,22 @@ export class DefiPage implements OnInit {
       deepLink: 'token-swap',
       status:'active'
     },
-    // {
-    //   name: 'frakt',
-    //   image: 'assets/images/icons/frakt-logo.jpeg',
-    //   description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
-    //   learnMoreLink: 'https://docs.frakt.xyz/frakt',
-    //   deepLink: 'nft-liquidity',
-    //   status:'pending'
-    // },
     {
-      name: 'orca',
-      image: 'assets/images/icons/orca-logo.svg',
-      description: `Step into the exciting world of Orca, where you can unleash your earning potential by becoming a liquidity provider! Dive into the deep ocean of liquidity pools and swim with the whales in concentrated liquidity pools, known as Whirlpools.`,
-      learnMoreLink: 'https://docs.orca.so/',
-      deepLink: 'pools',
+      name: 'frakt',
+      image: 'assets/images/icons/frakt-logo.jpeg',
+      description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
+      learnMoreLink: 'https://docs.frakt.xyz/frakt',
+      deepLink: 'nft-liquidity',
       status:'pending'
     },
+    // {
+    //   name: 'orca',
+    //   image: 'assets/images/icons/orca-logo.svg',
+    //   description: `Step into the exciting world of Orca, where you can unleash your earning potential by becoming a liquidity provider! Dive into the deep ocean of liquidity pools and swim with the whales in concentrated liquidity pools, known as Whirlpools.`,
+    //   learnMoreLink: 'https://docs.orca.so/',
+    //   deepLink: 'pools',
+    //   status:'pending'
+    // },
     // {
     //   name: 'solend',
     //   image: 'assets/images/icons/solend-logo.png',

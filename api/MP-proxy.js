@@ -3,7 +3,7 @@ import { PublicKey, Connection } from "@solana/web3.js";
 import fetch from 'node-fetch';
 export default async function MPproxy(request, response){
   const { env, walletAdress } = request.query;
-  const cluster = env == 'devnet' ? 'https://api.devnet.solana.com' : 'https://mb-avaulto-cc28.mainnet.rpcpool.com/f72a3ed2-f282-4523-95a0-d4acfcd40f4d'
+  const cluster = env == 'devnet' ? 'https://api.devnet.solana.com' : 'https://mb-avaulto-cc28.mainnet.rpcpool.com'
   const connection = new Connection(cluster)
   const _metaplex = new Metaplex(connection);
   async function getMetaData(uri){

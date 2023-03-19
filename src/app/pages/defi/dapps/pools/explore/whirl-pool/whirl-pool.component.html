@@ -1,5 +1,10 @@
 <div class="pool">
+  <!-- <div class="reward-wrapper" *ngIf="poolRewrad.length">
 
+    <div  *ngFor="let reward of poolRewrad" class="reward-info" [tooltip]="reward.toolTip">
+      <ion-img [src]="reward.icon"></ion-img> {{reward.symbol}} rewards
+    </div>
+  </div> -->
   <div class="pool-logo-name">
     <div class="pool-logo">
       <app-image-placeholder [imagePath]="pool.tokenA.logoURI"></app-image-placeholder>

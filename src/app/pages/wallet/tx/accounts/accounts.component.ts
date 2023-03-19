@@ -17,8 +17,7 @@ export class AccountsComponent implements OnChanges {
   constructor(
     public loaderService: LoaderService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _txInterceptService: TxInterceptService,
-    private _walletStore: WalletStore,
+
     private _popoverController: PopoverController
   ) { }
 

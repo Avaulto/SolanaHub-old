@@ -21,22 +21,20 @@ export class WalletPage implements OnInit, OnDestroy {
     signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>;
   };
 
-  public walletExtended$: Observable<any> = this._walletStore.anchorWallet$.pipe(
-    combineLatestWith(this._solanaUtilsService.accountChange$),
+  public walletExtended$: Observable<any> = this._solanaUtilsService.walletExtended$.pipe(
     // accountStateChange used as trigger for re-render wallet related context
-    switchMap(async ([wallet, accountStateChange]: any) => {
+    switchMap(async (wallet) => {
       this._assets = []
       if (wallet) {
         this.wallet = wallet;
         const solData = await this._jupStore.fetchPriceFeed('SOL');
-        const balance = (await this._solanaUtilsService.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL;
-        const totalUsdValue = balance * solData.data['SOL'].price
+        const totalUsdValue = wallet.balance * solData.data['SOL'].price
         let asset: Asset = {
           name: 'SOL',
-          balance,
+          balance: wallet.balance,
           icon: 'assets/images/icons/solana-logo.webp',
           totalUsdValue,
-          totalSolValue: balance,
+          totalSolValue:  wallet.balance,
           price: solData.data['SOL'].price
         }
         this._assets.push(asset)
@@ -64,7 +62,7 @@ export class WalletPage implements OnInit, OnDestroy {
         return null
       }
     }), shareReplay())
-  public myNfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+  public myNfts: Observable<Nft[]> = this._solanaUtilsService.walletExtended$.pipe(
     switchMap(async wallet => {
       if (wallet) {
         return (await this._nftStore.getAllOnwerNfts(wallet.publicKey.toBase58())).splice(0, 3)
@@ -79,7 +77,6 @@ export class WalletPage implements OnInit, OnDestroy {
     private _nftStore: NftStoreService,
     private _jupStore: JupiterStoreService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _walletStore: WalletStore,
     private _popoverController: PopoverController
 
   ) { }

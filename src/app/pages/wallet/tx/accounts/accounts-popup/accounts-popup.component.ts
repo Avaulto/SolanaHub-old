@@ -4,7 +4,8 @@ import { IonCheckbox, PopoverController } from '@ionic/angular';
 import { AuthorizeStakeParams, PublicKey, StakeProgram } from '@solana/web3.js';
 import { StakeAccountExtended } from 'src/app/models';
 import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
-
+import Plausible from 'plausible-tracker'
+const { trackEvent } = Plausible();
 @Component({
   selector: 'app-accounts-popup',
   templateUrl: './accounts-popup.component.html',
@@ -61,11 +62,12 @@ export class AccountsPopupComponent implements OnInit {
     if(this.actionType == 'merge'){
       const stakeAccountsSource: PublicKey[] = this.selectedAccounts.map(account => new PublicKey(account.addr));
       await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
+      trackEvent('merge stake accounts')
     }
     if(this.actionType == 'transferAuth'){
       const authrizedPubkey = new PublicKey(this.transferAssetForm.value.authrizedPubkey)
       await this._txInterceptService.transferStakeAccountAuth(accountTarget ,walletOwner, authrizedPubkey);
-
+      trackEvent('transfer auth account')
     }
   }
 

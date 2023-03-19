@@ -11,7 +11,7 @@
       <ng-container [ngSwitch]="currentTab">
         <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
         <app-borrow *ngSwitchCase="'borrow'"></app-borrow>
-        <app-lend *ngSwitchCase="'lend'" [searchTerm]="searchTerm"></app-lend>
+        <app-lend *ngSwitchCase="'lend'" [wallet]="wallet$ | async" [solBalance]="solBalance" [searchTerm]="searchTerm"></app-lend>
       </ng-container>
       
      

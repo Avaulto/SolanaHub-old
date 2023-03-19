@@ -17,7 +17,7 @@ const { trackEvent } = Plausible();
   styleUrls: ['./stake.component.scss'],
 })
 export class StakeComponent implements OnInit {
-  @Input() wallet: any;
+  public wallet$ = this._solanaUtilsService.walletExtended$;
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
   @Input() avgApy: number;
   @Input() privateValidatorPage: boolean = false;
@@ -62,13 +62,13 @@ export class StakeComponent implements OnInit {
         );
     } else {
       const myValidatorIdentity =validatorData.vote_identity
-      validatorData.extraData['support MEV reward'] = true;
+      validatorData.extraData['Support MEV'] = true;
       this._preSelectValidator([validatorData], myValidatorIdentity);
     }
   }
 
   public setMaxAmount(): void {
-    const fixedAmount = this.wallet.asset.balance - 0.0001
+    const fixedAmount = this._solanaUtilsService.getCurrentWallet().balance - 0.0001
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
 
@@ -89,7 +89,7 @@ export class StakeComponent implements OnInit {
 
 
     let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
-    const walletOwnerPublicKey = this.wallet.publicKey;
+    const walletOwnerPublicKey = this._solanaUtilsService.getCurrentWallet().publicKey;
     // const testnetvoteAccount = '87QuuzX6cCuWcKQUFZFm7vP9uJ72ayQD5nr6ycwWYWBG'
     if(monthLockuptime){  
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);

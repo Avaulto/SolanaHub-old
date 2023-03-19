@@ -50,7 +50,8 @@ export class LendComponent implements OnInit {
 
   private _fraktNfts$: BehaviorSubject<FraktNftItemWithLiquidity[]> = new BehaviorSubject(null)
   public fraktNfts$ = this._fraktNfts$.asObservable().pipe(shareReplay(1));
-
+  @Input() solBalance: number = 0;
+  @Input() wallet;
   @Input() searchTerm: string;
   constructor(private _fraktStore: FraktStoreService) { }
 

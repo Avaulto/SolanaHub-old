@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ConnectionStore } from '@heavy-duty/wallet-adapter';
+import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, firstValueFrom, Observable, Subject, throwError } from 'rxjs';
-import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { catchError, combineLatestWith, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
-import { ValidatorData, StakeAccountExtended, TokenBalance } from '../models';
+import { ValidatorData, StakeAccountExtended, TokenBalance, WalletExtended } from '../models';
 import { PopoverController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
 
@@ -32,21 +32,43 @@ interface StakeWizEpochInfo {
 })
 export class SolanaUtilsService {
   public connection: Connection;
+  public accountChange$ = new BehaviorSubject({});
   private validatorsData: ValidatorData[];
   private _stakeAccounts$: BehaviorSubject<StakeAccountExtended[]> = new BehaviorSubject(null as StakeAccountExtended[]);
   public stakeAccounts$ = this._stakeAccounts$.asObservable();
-  public accountChange$ = new BehaviorSubject({});
+
+  // create a single source of trute for wallet adapter
+  private _walletExtended$: BehaviorSubject<WalletExtended> = new BehaviorSubject(null as WalletExtended);
+
+  // add balance utility
+  public walletExtended$ = this._walletExtended$.asObservable().pipe(
+    shareReplay(1),
+    combineLatestWith(this.accountChange$),
+    // accountStateChange used as trigger for re-render wallet related context
+    switchMap(async ([wallet, accountStateChange]: any) => {
+      if (wallet) {
+        wallet.balance = ((await this.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
+      }
+      return wallet;
+    }),
+  )
+
   constructor(
     private _apiService: ApiService,
     private _toasterService: ToasterService,
     private _connectionStore: ConnectionStore,
     private _utilService: UtilsService,
     public popoverController: PopoverController,
+    private _walletStore: WalletStore
   ) {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
+    this._walletStore.anchorWallet$.subscribe(wallet => this._walletExtended$.next(wallet));
+  }
+  public getCurrentWallet() {
+    return this._walletExtended$.value
   }
   public onAccountChangeCB(walletOwnerPk: PublicKey): void {
-     this.connection.onAccountChange(walletOwnerPk, async (ev) => {
+    this.connection.onAccountChange(walletOwnerPk, async (ev) => {
       this.accountChange$.next(ev);
     });
   }
@@ -75,10 +97,10 @@ export class SolanaUtilsService {
     }
   }
   public getValidatorData(vote_identity?: string): Observable<ValidatorData | ValidatorData[]> {
-    const prefixPath = vote_identity ? `/validator/${vote_identity}` : '/validators'
+    const prefixPath = vote_identity ? `validator/${vote_identity}` : 'validators'
     const stakewizeAPI = 'https://api.stakewiz.com/' + prefixPath
     return this._apiService.get(stakewizeAPI).pipe(
-      map( data => { 
+      map(data => {
         let result;
         if (vote_identity) {
           result = {
@@ -98,9 +120,9 @@ export class SolanaUtilsService {
             },
           }
         } else {
- 
+
           result = data.map(validator => {
- 
+
             return {
               name: validator.name || '',
               image: validator.image || '/assets/images/icons/node-placeholder.svg',
@@ -315,12 +337,12 @@ export class SolanaUtilsService {
       const mintAddress: string = parsedAccountInfo["parsed"]["info"]["mint"];
       const balance: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["uiAmount"];
       const decimals: number = parsedAccountInfo["parsed"]["info"]["tokenAmount"]["decimals"];
-      return { tokenPubkey: account.pubkey.toString(), mintAddress, balance, decimals}
+      return { tokenPubkey: account.pubkey.toString(), mintAddress, balance, decimals }
     })
-    if(getType){
-      if(getType == 'nft'){
+    if (getType) {
+      if (getType == 'nft') {
         tokensBalance = tokensBalance.filter(token => token.decimals == 0)
-      }else if(getType == 'token'){
+      } else if (getType == 'token') {
         tokensBalance = tokensBalance.filter(token => token.decimals != 0)
       }
     }

@@ -1,6 +1,11 @@
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, Transaction } from "@solana/web3.js";
 import { Nft } from "./nftData.model";
-
+export interface WalletExtended {
+  balance?: number,
+  publicKey: PublicKey,
+  signTransaction: (transaction: Transaction) => Promise<Transaction>,
+  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
+}
 export interface Asset {
   name: string,
   balance: number,

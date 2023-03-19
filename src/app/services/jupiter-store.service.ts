@@ -90,7 +90,7 @@ export class JupiterStoreService {
   }
   public fetchTokenList(): Observable<Token[]> {
     //const env = TOKEN_LIST_URL[environment.solanaEnv]//environment.solanaEnv
-    return this._apiService.get('https://token.jup.ag/strict').pipe(
+    return this._apiService.get('https://token.jup.ag/all').pipe(
       catchError(this._formatErrors)
     )
   }

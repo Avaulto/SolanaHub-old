@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { WhirlPoolComponent } from './explore/whirl-pool/whirl-pool.component';
 import { ExploreComponent } from './explore/explore.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
+import { DepositPopupComponent } from './explore/deposit-popup/deposit-popup.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { PortfolioComponent } from './portfolio/portfolio.component';
     PoolsPage,    
     ExploreComponent,
     PortfolioComponent,
-    WhirlPoolComponent
+    WhirlPoolComponent,
+    DepositPopupComponent
   ]
 })
 export class PoolsPageModule {}

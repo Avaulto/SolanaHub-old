@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-// import { depositLiquidity } from '@frakt-protocol/frakt-sdk/lib/loans';
-import { DecimalUtil, Percentage, TokenUtil } from '@orca-so/common-sdk';
-import { buildWhirlpoolClient, increaseLiquidityQuoteByInputTokenWithParams, PDAUtil, PriceMath, WhirlpoolClient, WhirlpoolContext } from '@orca-so/whirlpools-sdk';
-import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
+import { depositLiquidity } from '@frakt-protocol/frakt-sdk/lib/loans';
+
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 
 import { catchError, map, observable, Observable, shareReplay, switchMap, throwError } from 'rxjs';
 import { toastData } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
-import { CollectionInfo, FraktLiquidity, FraktNftItem, FraktNftItemWithLiquidity, FraktNftMetadata, FraktStats } from './frakt.model';
+import { BestBorrowSuggtion, CollectionInfo, FraktLiquidity, FraktNftItem, FraktNftItemWithLiquidity, FraktNftMetadata, FraktStats } from './frakt.model';
 
 
 
@@ -25,10 +23,11 @@ export class FraktStoreService {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService
   ) { }
-  public orcaContext: WhirlpoolContext;
-  public orcaClient: WhirlpoolClient;
-  public orcaProgramId = new PublicKey(environment.orcaWhirlPool.programId);
-  public orcaConfig = new PublicKey(environment.orcaWhirlPool.config);
+  protected _lendingAndBorrowingProgramId= new PublicKey("A66HabVL3DzNzeJgcHYtRRNW1ZRMKwBfrdSR4kLsZ9DJ")
+  // protected _
+  // public orcaContext: WhirlpoolContext;
+  // public orcaClient: WhirlpoolClient;
+
   // catch error
   private _formatErrors(error: any) {
     const toastData: toastData = {
@@ -109,6 +108,18 @@ export class FraktStoreService {
     }
     return collectionInfo
   }
+  // available to borrow SOL agains user nfts
+  public async borrowSuggetion(user:string): Promise<BestBorrowSuggtion> {
+
+    let collateralNfts: BestBorrowSuggtion;
+    try {
+      const listRes = await (await fetch(`${this.fraktApi}/nft/suggest2/${user}`)).json();
+      collateralNfts = listRes
+    } catch (error) {
+      console.error(error);
+    }
+    return collateralNfts
+  }
   public getPoolsListFull(): Observable<FraktNftItemWithLiquidity[]> {
     // priceBasedLiqs
     let poolsFull = []
@@ -130,6 +141,15 @@ export class FraktStoreService {
       catchError(this._formatErrors)
     )
   }
-  addLiquidity(){
+  async addLiquidity(walletOwner: PublicKey, liquidityPool: PublicKey, amount: any) {
+    const depositTx = await depositLiquidity({
+      programId: this._lendingAndBorrowingProgramId,
+      liquidityPool,
+      connection: this._solanaUtilsService.connection,
+      user: walletOwner,
+      amount
+    })
+
+    return await this._txInterceptService.sendTx([depositTx.ix], walletOwner)
   }
 }

@@ -13,6 +13,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LendComponent } from './lend/lend.component';
 import { BorrowComponent } from './borrow/borrow.component';
 import { BoxContentComponent } from './lend/box-content/box-content.component';
+import { SuggestedNftComponent } from './borrow/suggested-nft/suggested-nft.component';
 
 @NgModule({
   imports: [
@@ -26,6 +27,8 @@ import { BoxContentComponent } from './lend/box-content/box-content.component';
     DashboardComponent,
     BoxContentComponent,
     LendComponent,
-    BorrowComponent]
+    BorrowComponent,
+    SuggestedNftComponent
+  ]
 })
 export class NftLiquidityPageModule { }

@@ -1,3 +1,4 @@
-<p>
-  borrow works!
-</p>
+{{(collateralNfts | async | json)}}
+<app-suggested-nft [nft]="collateral" *ngFor="let collateral of (collateralNfts | async).orders"></app-suggested-nft>
+
+

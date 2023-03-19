@@ -1,6 +1,6 @@
-<ion-grid >
+<ion-grid>
   <ng-container *ngIf="NftMetadata; else elseTemplate">
-    
+
     <ion-row id="loan-params" class="ion-justify-content-between ion-align-items-stretch data-box ion-padding">
       <ion-col sizeLg="5.9" size="12">
         <ion-row class="ion-justify-content-between">
@@ -9,7 +9,7 @@
               liquidity pool address
             </div>
             <div class="attr-value sub">
-              {{NftMetadata[0].liquidityPool}}
+              {{this.utilsService.addrUtil(NftMetadata[0].liquidityPool).addrShort}}
             </div>
           </div>
           <div class="loan-attr ion-margin-bottom">
@@ -17,7 +17,7 @@
               collaterization rate
             </div>
             <div class="attr-value ion-text-capitalize sub">
-              {{NftMetadata[0].collaterizationRate | percent }}
+              {{NftMetadata[0].collaterizationRate }} %
             </div>
           </div>
           <div class="loan-attr ion-margin-bottom">
@@ -49,19 +49,23 @@
       <ion-col sizeLg="5.9" size="12">
         <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
         <div [ngSwitch]="currentTab" id="liquid-stake-form" class="ion-padding-vertical">
-          <form *ngSwitchCase="'deposit'">
-            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:1 | number: '1.2-2'}">
-              <app-icon-tooltip 
-                tip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+          <form *ngSwitchCase="'deposit'" [formGroup]="lendForm">
+            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:solBalance | number: '1.2-2'}">
+              <app-icon-tooltip
+                tip="A ◎ 0.001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
             </app-label-layout>
             <ion-row id="stake-amount">
-              <ion-input class="button-text" placeholder="Amount"></ion-input>
-              <span class="heading-6" >MAX</span>
+              <ion-input class="button-text" formControlName="amount" placeholder="Amount"></ion-input>
+              <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
             </ion-row>
-            <ion-button
-              class="ion-text-capitalize">
-              deposit
-            </ion-button>
+            <ng-container *ngIf="wallet; else elseTemplate">
+              <ion-button (click)="deposit()" [disabled]="formSubmitted || lendForm.invalid" class="ion-text-capitalize">
+                deposit
+              </ion-button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+            </ng-template>
           </form>
 
         </div>

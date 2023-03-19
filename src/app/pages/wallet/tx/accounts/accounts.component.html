@@ -1,5 +1,4 @@
 <ion-grid>
-  <ng-container *ngIf="wallet; else elseTemplate">
     <ng-container *ngIf="stakeAccounts$ | async as stakeAccounts; else loaderTemplate">
       <ion-accordion-group multiple>
         <ion-accordion [value]="i" *ngFor="let account of stakeAccounts; let i = index">
@@ -43,14 +42,14 @@
       </ion-accordion-group>
     </ng-container>
     <ng-template #loaderTemplate>
-      <app-loader></app-loader>
-
+      <!-- <app-loader></app-loader> -->
+      <app-wallet-not-connected-state></app-wallet-not-connected-state>
     </ng-template>
 
 
-  </ng-container>
-  <ng-template #elseTemplate>
+  <!-- </ng-container> -->
+  <!-- <ng-template #elseTemplate>
     <app-wallet-not-connected-state></app-wallet-not-connected-state>
-  </ng-template>
+  </ng-template> -->
 
 </ion-grid>

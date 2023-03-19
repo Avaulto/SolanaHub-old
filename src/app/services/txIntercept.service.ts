@@ -284,7 +284,7 @@ export class TxInterceptService {
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
       
-      const res = await firstValueFrom(this._walletStore.signTransaction(transaction));
+      await firstValueFrom(this._walletStore.signTransaction(transaction));
       if (extraSigners?.length > 0) transaction.partialSign(...extraSigners);
 
       //LMT: check null signatures
@@ -305,7 +305,7 @@ export class TxInterceptService {
       }
       this.toasterService.msg.next(txSend)
       const config: BlockheightBasedTransactionConfirmationStrategy = {
-        signature, blockhash, lastValidBlockHeight: res.lastValidBlockHeight//.lastValidBlockHeight
+        signature, blockhash, lastValidBlockHeight//.lastValidBlockHeight
       }
       await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
       const txCompleted: toastData = {

@@ -2,12 +2,9 @@
   [items]="(orcaPools | async)?.whirlpools | filter: 'tokenA.symbol':searchTerm" approxItemHeight="100px">
   <div [@simpleFadeAnimation] *virtualItem="let item; let i = i" class="data-box ion-padding" [ngClass]=" false ? '': 'extra-reward'">
 
-    <div *ngIf="true" class="reward-info" tooltip="10 ORCA per week">
-      orca reward
-    </div>
 
     <ion-col size="12">
-      <app-whirl-pool [pool]="item" (onInitDeposit)="initDepositSetup($event)" ></app-whirl-pool>
+      <app-whirl-pool [pool]="item" [tokenList]="tokenList" (onInitDeposit)="initDepositSetup($event)" ></app-whirl-pool>
     </ion-col>
   </div>
 </ion-virtual-scroll>
