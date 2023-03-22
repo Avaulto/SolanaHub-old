@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
-import { MenuController, PopoverController } from '@ionic/angular';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
+import { PopoverController } from '@ionic/angular';
 import { distinctUntilChanged, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { SolanaUtilsService, ToasterService, UtilsService } from 'src/app/services';
 import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-adapter-options.component';

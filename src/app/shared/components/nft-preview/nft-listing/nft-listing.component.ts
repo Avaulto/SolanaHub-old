@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { PublicKey, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
 
@@ -26,7 +25,6 @@ export class NftListingComponent implements OnInit {
   public minimumExpiry = new Date().toISOString()
 
   constructor(
-    private _walletStore: WalletStore,
     private _nftStoreService: NftStoreService,
     private _txInterceptService: TxInterceptService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -69,7 +67,7 @@ export class NftListingComponent implements OnInit {
   public async listOrUnlistNft(): Promise<void> {
 
     // get walletOwner
-    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+    const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     // assign form values
     const listInfo = this.listNftForm.value;
 
@@ -87,7 +85,7 @@ export class NftListingComponent implements OnInit {
   // public async cancelNftListing(): Promise<void> {
   //   const listInfo = this.listNftForm.value;
   //   const txIns: { tx: any, txSigned: any } = await this._nftStoreService.nftSellOrCancel(listInfo)
-  //   const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+  //   const walletOwner = await (await firstValueFrom(this._solanaUtilsService.anchorWallet$)).publicKey;
   //   const txn = Transaction.from(Buffer.from(txIns.txSigned.data))
   //   this._txInterceptService.sendTx([txn], walletOwner)
   // }

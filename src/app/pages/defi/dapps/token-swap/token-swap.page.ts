@@ -1,7 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { RouteInfo } from '@jup-ag/core'
 import { LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, combineLatestWith, distinctUntilChanged, filter, firstValueFrom, interval, Observable, ReplaySubject, shareReplay, Subject, switchMap, tap } from 'rxjs';
@@ -13,7 +12,6 @@ import Decimal from "decimal.js";
 
 
 import Plausible from 'plausible-tracker'
-import { DecimalPipe } from '@angular/common';
 const { trackEvent } = Plausible();
 
 
@@ -25,12 +23,11 @@ const { trackEvent } = Plausible();
 export class TokenSwapPage implements OnInit {
   constructor(
     private _solanaUtilService: SolanaUtilsService,
-    private _walletStore: WalletStore,
     private _utilService: UtilsService,
     private _fb: FormBuilder,
     private _jupStore: JupiterStoreService,
     private _txInterceptService: TxInterceptService,
-    private _decimalPipe: DecimalPipe,
+    private _solanaUtilsService: SolanaUtilsService,
   ) { }
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet
@@ -41,7 +38,7 @@ export class TokenSwapPage implements OnInit {
   public outputAmount: number;
   public swapDetailObs$ = this._swapDetail$.asObservable()
   public swapForm: FormGroup = {} as FormGroup;
-  public wallet$ = this._walletStore.anchorWallet$;
+  public wallet$ = this._solanaUtilsService.walletExtended$
   public tokenList$: Observable<Token[]> = this._jupStore.fetchTokenList().pipe(
     combineLatestWith(this.wallet$),
     distinctUntilChanged(),
@@ -97,7 +94,7 @@ export class TokenSwapPage implements OnInit {
 
   private async _getTokenBalance(token: Token): Promise<TokenBalance[]> {
     try {
-      const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+      const walletOwner =this._solanaUtilService.getCurrentWallet().publicKey;
       const walletBalance = await this._solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
       const solTokenBalance = { tokenPubkey: walletOwner.toBase58(), mintAddress: this.wSOL, balance: walletBalance }
       const accountsBalance = await this._solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58(), 'token');

@@ -1,10 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
-import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk'
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { Component } from '@angular/core';
 
-import { combineLatestWith, firstValueFrom, map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
-import { StakeAccountExtended } from 'src/app/models';
+import {  map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
+import { StakeAccountExtended, WalletExtended } from 'src/app/models';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StakePoolStoreService } from './stake-pool-store.service';
@@ -22,12 +19,10 @@ export class LiquidStakePage {
     public stakePoolStore: StakePoolStoreService,
     private _solanaUtilsService: SolanaUtilsService,
     // private _apiService: ApiService,
-    private _walletStore: WalletStore,
     private _utilService: UtilsService,
     private _activeRoute: ActivatedRoute
   ) { }
 
-  public marinade: Marinade = this.stakePoolStore.marinadeSDK;
   public stakePoolsInfo: StakePoolProvider[] = [];
   public stakePoolStats: StakePoolStats;
   public wallet;
@@ -52,16 +47,15 @@ export class LiquidStakePage {
       }
       return provider
     }))
-  public stakeAccounts: Observable<StakeAccountExtended[]> = this._walletStore.anchorWallet$.pipe(
-    this._utilService.isNotNull,
-    this._utilService.isNotUndefined,
-    combineLatestWith(this._solanaUtilsService.accountChange$),
+  public stakeAccounts$: Observable<StakeAccountExtended[]> = this._solanaUtilsService.walletExtended$.pipe(
+   
     // accountStateChange used as trigger for re-render wallet related context
-    switchMap(async ([wallet, accountStateChange]: any) => {
+    switchMap(async (wallet: WalletExtended) => {
+      console.log(wallet)
       if (wallet) {
 
         this.wallet = wallet;
-        this.solBalance = ((await this._solanaUtilsService.connection.getBalance(this.wallet.publicKey)) / LAMPORTS_PER_SOL);
+        this.solBalance = wallet.balance
         if (this.currentProvider) {
           this.initProviderSDK(this.currentProvider)
         }
@@ -96,7 +90,6 @@ export class LiquidStakePage {
         }
       } else {
         this.stakePoolStore.initMarinade(this.wallet);
-        this.marinade = this.stakePoolStore.marinadeSDK
       }
     } catch (error) {
       console.warn(error);

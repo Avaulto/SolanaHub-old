@@ -1,9 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { NavController, PopoverController } from '@ionic/angular';
 import { PublicKey, Signer, Transaction } from '@solana/web3.js';
-import { firstValueFrom } from 'rxjs';
 import { Nft } from 'src/app/models';
 import { NftStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
@@ -22,8 +19,8 @@ export class NftPreviewComponent implements OnInit {
   public walletOwner: PublicKey;
   public mintAddressPK: PublicKey;
   constructor(
-    private solanaUtilsService: SolanaUtilsService,
-    private _walletStore: WalletStore,
+    private _solanaUtilsService: SolanaUtilsService,
+
     private _nftStoreService: NftStoreService,
     private popoverController: PopoverController,
     private _txInterceptService: TxInterceptService,
@@ -31,7 +28,7 @@ export class NftPreviewComponent implements OnInit {
   ) { }
   hideSkelaton: boolean = false;
   async ngOnInit() {
-    this.walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$)).publicKey;
+    this.walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey 
 
     this.mintAddressPK = new PublicKey(this.nft.mintAddress)
   }
@@ -49,9 +46,9 @@ export class NftPreviewComponent implements OnInit {
     // this.roleMsg = `Popover dismissed with role: ${role}`;
   }
   public async nftListingCancel() {
-    const walletOwner = await (await firstValueFrom(this._walletStore.anchorWallet$));
+    const walletOwner = this._solanaUtilsService.getCurrentWallet()
     const auctionHouseAddress = 'E8cU1WiRWjanGxmn96ewBgk9vPTcL6AEZ1t6F6fkgUWe';
-    const tokenAccount:any = await this.solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK);
+    const tokenAccount:any = await this._solanaUtilsService.findAssociatedTokenAddress(this.walletOwner, this.mintAddressPK);
     const sol = (await this._nftStoreService.listStatus(this.mintAddressPK.toBase58()))[0].price
     const sellerAddress = walletOwner.publicKey.toBase58()
     const tokenMint = this.mintAddressPK.toBase58()

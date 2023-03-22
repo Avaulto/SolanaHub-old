@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { ContactInfo, GetProgramAccountsConfig, GetProgramAccountsFilter, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { map, mergeMap, Observable, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
@@ -30,11 +29,10 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   )
   constructor(
     private _utilsService: UtilsService,
-    private _walletStore: WalletStore,
     private _solanaUtilsService: SolanaUtilsService) { }
 
   async ngOnInit() {
-    this.anchorWallet$ = this._walletStore.anchorWallet$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(
+    this.anchorWallet$ = this._solanaUtilsService.walletExtended$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(
       (async wallet => {
         this.wallet = wallet;
         const balance = (await this._solanaUtilsService.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL;

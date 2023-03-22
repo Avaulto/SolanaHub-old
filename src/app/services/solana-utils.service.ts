@@ -46,6 +46,7 @@ export class SolanaUtilsService {
     combineLatestWith(this.accountChange$),
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async ([wallet, accountStateChange]: any) => {
+      console.log(wallet, accountStateChange)
       if (wallet) {
         wallet.balance = ((await this.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
       }
@@ -249,6 +250,7 @@ export class SolanaUtilsService {
     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
       return await this.extendStakeAccount(acc)
     })
+    console.log(stakeAccounts)
     const extendStakeAccountRes = await Promise.all(extendStakeAccount);
     this._stakeAccounts$.next(extendStakeAccountRes);
   }

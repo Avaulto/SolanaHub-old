@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+
 import { SolanaUtilsService } from './solana-utils.service';
 
 import { collectionStats, ListInstuction, Nft, NFTGroup } from '../models';
@@ -19,13 +19,13 @@ export class NftStoreService {
   // private myNfts: Subject<Nft[]> = new Subject();
   // public myNft$ = this.myNfts.asObservable();
   constructor(
-    private _walletStore: WalletStore,
+
     private _solanaUtilsService: SolanaUtilsService,
   ) {
 
   }
   public async createNft() {
-    const wallet = await (await firstValueFrom(this._walletStore.anchorWallet$));
+    const wallet = this._solanaUtilsService.getCurrentWallet()
     this._metaplex.use(walletAdapterIdentity(wallet));
     const { nft } = await this._metaplex
       .nfts()

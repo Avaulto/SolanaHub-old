@@ -47,7 +47,7 @@
                                     </ion-checkbox>
                                 </div>
                                 <span class="sub">
-                                    {{(stakeAccounts | async)?.length || 0}} stake accounts
+                                    {{(stakeAccounts$ | async)?.length || 0}} stake accounts
                                 </span>
 
                             </ion-col>
@@ -101,14 +101,14 @@
                 </ion-col>
 
                 <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
-                    <ng-container *ngIf="stakeAccounts | async; else elseTemplate">
+                    <ng-container *ngIf="stakeAccounts$ | async; else elseTemplate">
 
                         <app-stake-sol-box *ngIf="stakingType == 'sol'" [selectedProvider]="currentProvider"
-                            [marinade]="marinade" [stakePoolStats]="stakePoolStats" [solBalance]="solBalance"
+                            [stakePoolStats]="stakePoolStats" [solBalance]="solBalance"
                             [wallet]="wallet">
                         </app-stake-sol-box>
                         <app-stake-account-box *ngIf="stakingType == 'account'" [selectedProvider]="currentProvider"
-                            [stakeAccounts]="stakeAccounts" [marinade]="marinade" [stakePoolStats]="stakePoolStats"
+                            [stakeAccounts]="stakeAccounts$" [stakePoolStats]="stakePoolStats"
                             [wallet]="wallet">
                         </app-stake-account-box>
                     </ng-container>

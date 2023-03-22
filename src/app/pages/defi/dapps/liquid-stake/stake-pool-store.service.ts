@@ -138,14 +138,13 @@ export class StakePoolStoreService {
   }
 
   async initMarinade(wallet): Promise<void> {
-
+    console.log('init mariande')
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
       publicKey: wallet.publicKey,
       // referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
     })
     this.marinadeSDK = new Marinade(config)
-    const state = await this.marinadeSDK.getMarinadeState();
   }
   public async getStakePoolsInfo(): Promise<void> {
     try {

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { PopoverController } from '@ionic/angular';
+import { of, switchMap } from 'rxjs';
 import { Asset, StakeAccountExtended } from 'src/app/models';
 import { LoaderService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import { ActionsComponent } from './actions/actions.component';
@@ -10,10 +10,18 @@ import { ActionsComponent } from './actions/actions.component';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnChanges {
-  public stakeAccounts$ = this._solanaUtilsService.stakeAccounts$;
+  public stakeAccounts$ = this._solanaUtilsService.walletExtended$.pipe(
+    switchMap(async wallet =>{
+      if(wallet){
+        await this._solanaUtilsService.fetchAndUpdateStakeAccount(wallet.publicKey);
+        return this._solanaUtilsService.getStakeAccountsExtended()
+      }else{
+        return null
+      }
+    }))
+    
   public stakeAccountStatic = null;
 
-  @Input() wallet: any;
   constructor(
     public loaderService: LoaderService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -23,8 +31,8 @@ export class AccountsComponent implements OnChanges {
 
   public async ngOnChanges(){
     // automatic update when account has change
-    if (this.wallet) {
-      this._solanaUtilsService.fetchAndUpdateStakeAccount(this.wallet.publicKey);
+    if (this._solanaUtilsService.getCurrentWallet()) {
+      this._solanaUtilsService.fetchAndUpdateStakeAccount(this._solanaUtilsService.getCurrentWallet().publicKey);
     }
 
   }
@@ -49,7 +57,7 @@ export class AccountsComponent implements OnChanges {
   async openStakeAccountActions(e: Event, account: StakeAccountExtended, accounts:StakeAccountExtended[]) {
     const popover = await this._popoverController.create({
       component: ActionsComponent,
-      componentProps:{account,wallet:this.wallet, accounts},
+      componentProps:{account,wallet:this._solanaUtilsService.getCurrentWallet(), accounts},
       event: e,
       alignment: 'start',
       showBackdrop:false,

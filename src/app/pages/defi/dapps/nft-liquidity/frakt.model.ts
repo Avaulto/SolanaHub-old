@@ -111,45 +111,29 @@ export interface CollectionInfo {
 
 
 
-    export interface TimeBased {
-        returnPeriodDays: number;
-        loanValue: number;
-        ltvPercent: number;
-        fee: number;
-        feeDiscountPercent: number;
-        repayValue: number;
-        liquidityPoolPubkey: string;
-        isBest: boolean;
-    }
-
-    export interface ClassicParams {
-        maxLoanValue: number;
-        timeBased: TimeBased;
-    }
-
-    export interface BondParams {
-    }
-
-    export interface BorrowNft {
-        mint: string;
-        name: string;
-        collectionName: string;
-        imageUrl: string;
-        valuation: number;
-        freezable: boolean;
-        classicParams: ClassicParams;
-        bondParams: BondParams;
-    }
-
-    export interface Order {
-        loanType: string;
-        loanValue: number;
-        borrowNft: BorrowNft;
-    }
-
-    export interface BestBorrowSuggtion {
-        orders: Order[];
-    }
-
-
-
+export interface BestBorrowSuggtion {
+    mint: string
+    name: string
+    imageUrl: string
+    collectionName: string
+    valuation: number
+    freezable: boolean
+    classicParams: ClassicParams
+  }
+  
+   interface ClassicParams {
+    maxLoanValue: any
+    isLimitExceeded: boolean
+    timeBased: TimeBased
+  }
+  
+   interface TimeBased {
+    liquidityPoolPubkey: string
+    returnPeriodDays: number
+    ltvPercent: number
+    fee: any
+    feeDiscountPercent: number
+    loanValue: any
+    repayValue: any
+  }
+  

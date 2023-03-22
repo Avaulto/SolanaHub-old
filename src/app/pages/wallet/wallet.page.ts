@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { PopoverController } from '@ionic/angular';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { combineLatestWith, distinctUntilChanged, firstValueFrom, Observable, shareReplay, switchMap } from 'rxjs';

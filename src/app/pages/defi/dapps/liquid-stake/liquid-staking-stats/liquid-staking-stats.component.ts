@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
@@ -28,7 +27,6 @@ export class LiquidStakingStatsComponent implements OnChanges {
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
     private _jupStore: JupiterStoreService,
-    private _walletStore: WalletStore,
     private _stakePoolStore: StakePoolStoreService,
   ) { }
 

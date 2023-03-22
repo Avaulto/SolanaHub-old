@@ -1,16 +1,16 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { WalletConfig, WalletStore, Wallet } from '@heavy-duty/wallet-adapter';
-import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
+
 import { MarinadeResult } from '@marinade.finance/marinade-ts-sdk/dist/src/marinade.types';
-import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
+import {  PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, TxInterceptService, ToasterService, UtilsService } from 'src/app/services';
-import { distinctUntilChanged, filter, firstValueFrom, map, Observable, switchMap, tap } from 'rxjs';
-import { toastData, StakeAccountExtended, ValidatorData } from 'src/app/models';
+import {  Observable} from 'rxjs';
+import { toastData, StakeAccountExtended } from 'src/app/models';
 
 import Plausible from 'plausible-tracker'
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, depositStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { StakePoolStoreService } from '../stake-pool-store.service';
 const { trackEvent } = Plausible();
 
 
@@ -22,7 +22,6 @@ const { trackEvent } = Plausible();
 export class StakeAccountBoxComponent implements OnInit {
   @Input() selectedProvider: StakePoolProvider;
   @Input() stakePoolStats: StakePoolStats;
-  @Input() marinade: Marinade;
   @Input() stakeAccounts: Observable<StakeAccountExtended[]>
   @Input() wallet;
   public stakeForm: FormGroup;
@@ -35,6 +34,7 @@ export class StakeAccountBoxComponent implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _toasterService: ToasterService,
     private _fb: FormBuilder,
+    private _stakePoolStore: StakePoolStoreService
   ) { }
 
 
@@ -76,7 +76,7 @@ export class StakeAccountBoxComponent implements OnInit {
 
     try {
       if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-        const depositAccount: MarinadeResult.DepositStakeAccount = await this.marinade.depositStakeAccount(stakeAccountPK);
+        const depositAccount: MarinadeResult.DepositStakeAccount = await  this._stakePoolStore.marinadeSDK.depositStakeAccount(stakeAccountPK);
         const txIns: Transaction = depositAccount.transaction
         await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
       } else {

@@ -10,6 +10,7 @@ import { depositSol, withdrawSol, withdrawStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { toastData } from 'src/app/models';
 import { TooltipPosition } from 'src/app/shared/components/tooltip/tooltip.enums';
+import { StakePoolStoreService } from '../stake-pool-store.service';
 const { trackEvent } = Plausible();
 
 
@@ -21,7 +22,6 @@ const { trackEvent } = Plausible();
 export class StakeSolBoxComponent implements OnInit, OnChanges {
   @Input() selectedProvider: StakePoolProvider;
   @Input() stakePoolStats: StakePoolStats;
-  @Input() marinade: Marinade;
   @Input() solBalance: number = 0;
   @Input() wallet;
   tooltippos = TooltipPosition.LEFT
@@ -37,7 +37,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     private _txInterceptService: TxInterceptService,
     private _fb: FormBuilder,
     private _utilsService: UtilsService,
-    private _toasterService: ToasterService
+    private _toasterService: ToasterService,
+    private _stakePoolStore: StakePoolStoreService
   ) { }
 
   ngOnInit(): void {
@@ -76,7 +77,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     const sol = new bn((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-      const { transaction } = await this.marinade.deposit(sol);
+      const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol);
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {
       // custom stake to a validator using solblaze pool
@@ -144,7 +145,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
 
     const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-      const { transaction } = await this.marinade.liquidUnstake(sol)
+      const { transaction } = await this._stakePoolStore.marinadeSDK.liquidUnstake(sol)
 
       // sign and send the `transaction`
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)

@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+
 import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 // import { Elusiv, TokenType } from "elusiv-sdk";
 import { Asset } from 'src/app/models';
@@ -15,7 +15,7 @@ import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } f
   styleUrls: ['./send.component.scss'],
 })
 export class SendComponent implements OnInit {
-  @Input() wallet: any;
+  public wallet$ = this._solanaUtilsService.walletExtended$;
   public showValidatorList: boolean = false;
   public sendCoinForm: FormGroup;
   public formSubmitted: boolean = false;
@@ -27,7 +27,6 @@ export class SendComponent implements OnInit {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
     private _utilsService: UtilsService,
-    private _wallet: WalletStore
   ) { }
   ngOnInit() {
     this.sendCoinForm = this._fb.group({
@@ -54,7 +53,7 @@ export class SendComponent implements OnInit {
     }
   }
   setMaxAmount() {
-    const fixedAmount = this._utilsService.shortenNum(this.wallet.asset.balance - 0.0001)
+    const fixedAmount = this._utilsService.shortenNum(this._solanaUtilsService.getCurrentWallet().balance - 0.0001)
     this.sendCoinForm.controls.amount.setValue(fixedAmount);
   }
 
@@ -69,7 +68,7 @@ export class SendComponent implements OnInit {
       if (privateTx) {
         // this._sendPrivateTx(SOL, walletOwnerPublicKey, targetPk)
       } else {
-        await this._txInterceptService.sendSol(SOL, targetPk, this.wallet.publicKey)
+        await this._txInterceptService.sendSol(SOL, targetPk, this._solanaUtilsService.getCurrentWallet().publicKey)
       }
     } catch (error) {
       console.error(error)

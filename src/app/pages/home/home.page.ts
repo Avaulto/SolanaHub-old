@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { EpochInfo, LAMPORTS_PER_SOL, RpcResponseAndContext, Supply, VoteAccountStatus } from '@solana/web3.js';
 import { forkJoin, map, Observable, shareReplay, Subject, tap } from 'rxjs';
 import { CoinData } from 'src/app/models';

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
 import { map, Observable, shareReplay, Subscription, switchMap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
@@ -10,7 +9,6 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
   styleUrls: ['./tx.component.scss'],
 })
 export class TxComponent implements OnInit {
-  @Input() wallet:Asset;
   public validatorsData: Observable<ValidatorData[] | any> = this._solanaUtilsService.getValidatorData().pipe(
     switchMap(async (validators: ValidatorData | ValidatorData[] | any)=>{
       const fetchMevValidators = await this._solanaUtilsService.fetchMevValidators()

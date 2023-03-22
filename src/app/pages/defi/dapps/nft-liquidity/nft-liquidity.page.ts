@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { Subscription, switchMap, tap } from 'rxjs';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
@@ -11,11 +11,10 @@ import { SolanaUtilsService, UtilsService } from 'src/app/services';
 export class NftLiquidityPage implements OnInit {
   public menu: string[] = ['dashboard', 'borrow', 'lend'];
   public currentTab: string = this.menu[0];
-  readonly isReady$ = this._walletStore.connected$
   public searchTerm: string;
-  constructor(private _walletStore:WalletStore,private _solanaUtilsService: SolanaUtilsService, private _utilsService:UtilsService) { }
+  constructor(private _solanaUtilsService: SolanaUtilsService, private _utilsService:UtilsService) { }
   public solBalance: number = 0;
-  public wallet$ = this._walletStore.anchorWallet$.pipe(
+  public wallet$ = this._solanaUtilsService.walletExtended$.pipe(
     this._utilsService.isNotUndefined,
     this._utilsService.isNotNull,
     tap(async wallet =>{

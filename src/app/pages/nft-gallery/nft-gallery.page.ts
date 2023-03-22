@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+
 import { filter, firstValueFrom, map, mergeMap, Observable, shareReplay, Subscription, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
-import { LoaderService, UtilsService, NftStoreService, DataAggregatorService } from 'src/app/services';
+import { LoaderService, UtilsService, NftStoreService, DataAggregatorService, SolanaUtilsService } from 'src/app/services';
 
 
 
@@ -12,7 +12,7 @@ import { LoaderService, UtilsService, NftStoreService, DataAggregatorService } f
   styleUrls: ['./nft-gallery.page.scss'],
 })
 export class NftGalleryPage {
-  public nfts: Observable<Nft[]> = this._walletStore.anchorWallet$.pipe(
+  public nfts: Observable<Nft[]> = this._solanaUtilsService.walletExtended$.pipe(
     this._utilsService.isNotNull, 
     this._utilsService.isNotUndefined,
     switchMap(async wallet => {
@@ -29,9 +29,9 @@ export class NftGalleryPage {
 
   constructor(
     private _dataAggregator: DataAggregatorService,
-    private _walletStore: WalletStore,
     private _nftStore: NftStoreService,
     public loaderService: LoaderService,
+    private _solanaUtilsService:SolanaUtilsService,
     private _utilsService: UtilsService
   ) { }
   allNft$: Subscription;

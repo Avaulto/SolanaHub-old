@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { depositLiquidity } from '@frakt-protocol/frakt-sdk/lib/loans';
+import { depositLiquidity, proposeLoanIx } from '@frakt-protocol/frakt-sdk/lib/loans';
 
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 
@@ -23,7 +23,7 @@ export class FraktStoreService {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService
   ) { }
-  protected _lendingAndBorrowingProgramId= new PublicKey("A66HabVL3DzNzeJgcHYtRRNW1ZRMKwBfrdSR4kLsZ9DJ")
+  protected _lendingAndBorrowingProgramId = new PublicKey("A66HabVL3DzNzeJgcHYtRRNW1ZRMKwBfrdSR4kLsZ9DJ")
   // protected _
   // public orcaContext: WhirlpoolContext;
   // public orcaClient: WhirlpoolClient;
@@ -109,17 +109,29 @@ export class FraktStoreService {
     return collectionInfo
   }
   // available to borrow SOL agains user nfts
-  public async borrowSuggetion(user:string): Promise<BestBorrowSuggtion> {
+  public async borrowSuggetion(user: string): Promise<BestBorrowSuggtion[]> {
 
-    let collateralNfts: BestBorrowSuggtion;
+    let collateralNfts: BestBorrowSuggtion[];
     try {
-      const listRes = await (await fetch(`${this.fraktApi}/nft/suggest2/${user}`)).json();
+      const listRes = await (await fetch(`${this.fraktApi}/nft/meta2/${user}?isPrivate=false&sortBy=maxLoanValue&sort=desc&skip=0`)).json();
       collateralNfts = listRes
     } catch (error) {
       console.error(error);
     }
     return collateralNfts
   }
+  public async getMaxBorrow(user: string): Promise<number> {
+
+    let maxBorrow: number;
+    try {
+      const res = await (await fetch(`${this.fraktApi}/nft/max-borrow/${user}`)).json();
+      maxBorrow = res.maxBorrow
+    } catch (error) {
+      console.error(error);
+    }
+    return maxBorrow
+  }
+
   public getPoolsListFull(): Observable<FraktNftItemWithLiquidity[]> {
     // priceBasedLiqs
     let poolsFull = []
@@ -151,5 +163,15 @@ export class FraktStoreService {
     })
 
     return await this._txInterceptService.sendTx([depositTx.ix], walletOwner)
+  }
+  async borrowSolUsingNft(walletOwner: PublicKey, liquidityPool: PublicKey, amount: any) {
+    // const borrowTx = await proposeLoanIx({
+    //   programId: this._lendingAndBorrowingProgramId,
+    //   liquidityPool,
+    //   connection: this._solanaUtilsService.connection,
+    //   user: walletOwner,
+    //   amount
+    // })
+
   }
 }

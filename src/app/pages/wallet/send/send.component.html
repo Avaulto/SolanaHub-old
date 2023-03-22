@@ -10,7 +10,7 @@
     </ion-row>
 
 
-    <app-label-layout [layoutConfig]="{title: 'Amount', balance: wallet?.asset?.balance | number: '1.2-2'}">
+    <app-label-layout [layoutConfig]="{title: 'Amount', balance: (wallet$ | async)?.balance | number: '1.2-2'}">
       <app-icon-tooltip tip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
     </app-label-layout>
 
@@ -27,7 +27,7 @@
     <!-- <ion-toggle style="height: 25px;" formControlName="privateTx"></ion-toggle> -->
 
     <ion-row class="ion-justify-content-center">
-      <ng-container *ngIf="wallet; else elseTemplate">
+      <ng-container *ngIf="wallet$; else elseTemplate">
         <ion-button (click)="send()" [disabled]="formSubmitted || sendCoinForm.invalid" class="ion-text-capitalize">
           submit
         </ion-button>

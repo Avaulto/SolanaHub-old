@@ -1,4 +1,86 @@
-{{(collateralNfts | async | json)}}
-<app-suggested-nft [nft]="collateral" *ngFor="let collateral of (collateralNfts | async).orders"></app-suggested-nft>
+<ion-row id="gallery-wrapper" class="data-box ion-padding ion-justify-content-between">
+    <ion-col sizeLg="5.9" size="12">
+        <form [formGroup]="borrowForm" id="stake-box" class="ion-text-capitalize">
+            <ion-row class="ion-margin-bottom" id="stake-apr-box">
+              <div id="">Borrow SOL by collateralize your NFTs.</div>
+            </ion-row>
+            <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between" id="node-select">
+               <span>
+                   Avaliable to borrow
+               </span>
+               <span>
+                {{maxBorrow | number: '1.2-2'}}
+               </span>
+              </ion-row>
+
+        
+            <ion-row id="stake-amount">
+              <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
+              <span class="heading-6" (click)="setMaxAmount()">MAX</span>
+            </ion-row>
+            <ion-row style="margin-bottom:8px" class="heading-6" id="node-select">
+              Choose Duration
+            </ion-row>
+            <ion-input style="display:none;" formControlName="duration" readonly></ion-input>
+            <ion-row class="ion-margin-bottom">
+        
+              <div id="node-selection">
+        
+                <app-select-item [item]="selectedDuration" (click)="showDurationDropDown = !showDurationDropDown"
+                  [isDropDownOpen]="showDurationDropDown" >
+                </app-select-item>
+                <app-select-box 
+                *ngIf="showDurationDropDown"
+                  [dataset]="borrowDuration" 
+                  [filterBy]="'name'"
+                  (onSelectItem)="setSelectedDuration($event);">
+                </app-select-box>
+        
+              </div>
+            </ion-row>
+            <!-- <ion-row class="heading-6 ion-justify-content-between">
+              <div class="aligned">commitment
+                <app-icon-tooltip tooltip="feeling bulish? lock your stake account and commit to yourself"></app-icon-tooltip>
+              </div>
+              <div>
+                months: {{borrowForm.value.monthLockuptime}}
+              </div>
+            </ion-row>
+            <ion-row id="commitment-amount">
+              <ion-range formControlName="monthLockuptime" [min]="0" [max]="32" [pin]="true" [ticks]="true" [snaps]="true">
+              </ion-range>
+            </ion-row> -->
+            <ion-row class="ion-justify-content-center">
+              <ng-container *ngIf="collateralNfts$ | async; else elseTemplate">
+                <ion-button [disabled]="formSubmitted || borrowForm.invalid" (click)="submitBorrowForm()" type="button"
+                  class="ion-text-capitalize">stake</ion-button>
+                <!-- {{wallet.tokens}} -->
+              </ng-container>
+              <ng-template #elseTemplate>
+                <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+              </ng-template>
+        
+            </ion-row>
+          </form>
+          <!-- <app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc> -->
+    </ion-col>
+    <ion-col sizeLg="5.9" size="12">
+    <ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
+        <ion-row class="nft-list" *ngIf="collateralNfts.length">
+            <div class="nft-wrapper ion-margin-bottom ion-margin-end" *ngFor="let collateral of collateralNfts | filter:'name':searchTerm;">
+                <app-suggested-nft [nft]="collateral"></app-suggested-nft>
+                
+            </div>
+        </ion-row>
+        <div id="no-nfts" *ngIf="collateralNfts.length == 0">
+            <ion-icon id="icon-placeholder" name="image-outline"></ion-icon>
+            <h1 class="headings">No NFTs to borrow on</h1>
+        </div>
+    </ng-container>
+    <ng-template #elseTemplate>
+        <app-wallet-not-connected-state></app-wallet-not-connected-state>
+    </ng-template>
+</ion-col>
 
 
+</ion-row>
