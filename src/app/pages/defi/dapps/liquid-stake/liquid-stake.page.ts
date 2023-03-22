@@ -51,7 +51,6 @@ export class LiquidStakePage {
    
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async (wallet: WalletExtended) => {
-      console.log(wallet)
       if (wallet) {
 
         this.wallet = wallet;

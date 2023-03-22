@@ -138,7 +138,6 @@ export class StakePoolStoreService {
   }
 
   async initMarinade(wallet): Promise<void> {
-    console.log('init mariande')
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
       publicKey: wallet.publicKey,
