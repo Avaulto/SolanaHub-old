@@ -5,7 +5,6 @@ import { SolanaUtilsService } from './solana-utils.service';
 import { collectionStats, ListInstuction, Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { firstValueFrom, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 

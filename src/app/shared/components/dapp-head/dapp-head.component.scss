@@ -5,5 +5,7 @@
     ion-img {
         width: 50px;
         margin-inline-end: 8px;
+        overflow: hidden;
+        border-radius: 50%;
     }
 }
