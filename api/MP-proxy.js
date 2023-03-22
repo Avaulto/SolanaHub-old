@@ -38,12 +38,13 @@ export default async function MPproxy(request, response){
         }
         return nft
       } catch (error) {
-        return {};
         console.warn(error)
+        return {};
       }
     }))
   } catch (error) {
-    
+    console.error(error)
+    return []
   }
   return response.status(200).json(myNftsExtended);
 }
