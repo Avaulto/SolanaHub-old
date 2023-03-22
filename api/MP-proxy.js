@@ -20,25 +20,30 @@ export default async function MPproxy(request, response){
     .findAllByOwner({ owner: new PublicKey(walletAdress) })
     
 
-  const myNftsExtended = await Promise.all(myNfts.map(async (metaplexItem) => {
-    try {
-      const metaData = await getMetaData(metaplexItem.uri);
-      const nft= {
-        image: metaData.image,
-        description: metaData.description,
-        attributes: metaData.attributes,
-        websiteURL: metaData.external_url,
-        name: metaplexItem.name,
-        mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
-        collectionName: metaplexItem.collection?.name,
-        explorerURL: metaplexItem.address,
-        symbol: metaplexItem.symbol
+  let myNftsExtended = []
+  try {
+    myNftsExtended = await Promise.all(myNfts.map(async (metaplexItem) => {
+      try {
+        const metaData = await getMetaData(metaplexItem.uri);
+        const nft= {
+          image: metaData.image,
+          description: metaData.description,
+          attributes: metaData.attributes,
+          websiteURL: metaData.external_url,
+          name: metaplexItem.name,
+          mintAddress: metaplexItem?.mintAddress || metaplexItem.mint.address,
+          collectionName: metaplexItem.collection?.name,
+          explorerURL: metaplexItem.address,
+          symbol: metaplexItem.symbol
+        }
+        return nft
+      } catch (error) {
+        return {};
+        console.warn(error)
       }
-      return nft
-    } catch (error) {
-      return {};
-      console.warn(error)
-    }
-  }))
+    }))
+  } catch (error) {
+    
+  }
   return response.status(200).json(myNftsExtended);
 }
