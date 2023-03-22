@@ -15,13 +15,14 @@ export default async function MPproxy(request, response){
     }
     return metaData
   }
-  const myNfts = await _metaplex
-    .nfts()
-    .findAllByOwner({ owner: new PublicKey(walletAdress) })
+  
     
 
   let myNftsExtended = []
   try {
+    const myNfts = await _metaplex
+    .nfts()
+    .findAllByOwner({ owner: new PublicKey(walletAdress) })
     myNftsExtended = await Promise.all(myNfts.map(async (metaplexItem) => {
       try {
         const metaData = await getMetaData(metaplexItem.uri);
