@@ -13,6 +13,8 @@ export class WalletNotConnectedStateComponent implements OnInit {
   readonly isReady$ = this._walletStore.connected$;
   constructor(private _walletStore:WalletStore) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.showBtn)
+  }
 
 }

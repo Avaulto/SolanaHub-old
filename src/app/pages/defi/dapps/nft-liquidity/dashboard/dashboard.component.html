@@ -1,3 +1,8 @@
-<p>
-  dashboard works!
-</p>
+<ion-row class="ion-justify-content-between">
+  <ion-col sizeLg="8" size="12" style="min-height: 200px;" class="data-box ion-padding">
+    <app-active-borrows (onSelectTab)="onSelectTab.emit($event)"></app-active-borrows>
+  </ion-col>
+  <ion-col sizeLg="3.5" size="12" class="data-box ion-padding">
+    <app-active-loans (onSelectTab)="onSelectTab.emit($event)"></app-active-loans>
+  </ion-col>
+</ion-row>

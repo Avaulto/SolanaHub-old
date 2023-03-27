@@ -1,14 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PublicKey, Transaction } from '@solana/web3.js';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { firstValueFrom } from 'rxjs';
 
 import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { NftStoreService } from 'src/app/services/nft-store.service';
 
-import Plausible from 'plausible-tracker'
-
-const { trackEvent } = Plausible();
 
 @Component({
   selector: 'app-nft-listing',
@@ -28,7 +26,8 @@ export class NftListingComponent implements OnInit {
     private _nftStoreService: NftStoreService,
     private _txInterceptService: TxInterceptService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private $gaService: GoogleAnalyticsService
   ) {
 
     this.listNftForm = this._fb.group({
@@ -80,7 +79,7 @@ export class NftListingComponent implements OnInit {
     
     // submit transaction using wallet adapter
     await this._txInterceptService.sendTx([txn], walletOwner)
-    trackEvent('list NFT')
+    this.$gaService.event('NFT', 'list on MagicEden');
   }
   // public async cancelNftListing(): Promise<void> {
   //   const listInfo = this.listNftForm.value;

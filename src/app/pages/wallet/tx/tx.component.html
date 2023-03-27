@@ -2,7 +2,7 @@
 
   <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
 
-  <div [ngSwitch]="currentTab" class="ion-padding-vertical">
+  <div [ngSwitch]="currentTab" class="ion-padding-top">
 
     <app-stake *ngSwitchCase="'stake'" [validatorsData]="validatorsData" [avgApy]="avgApy" ></app-stake>
     <app-accounts *ngSwitchCase="'accounts'"></app-accounts>

@@ -6,12 +6,13 @@ import { SolanaUtilsService, TxInterceptService, ToasterService, UtilsService } 
 import {  Observable} from 'rxjs';
 import { toastData, StakeAccountExtended } from 'src/app/models';
 
-import Plausible from 'plausible-tracker'
+
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, depositStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakePoolStoreService } from '../stake-pool-store.service';
-const { trackEvent } = Plausible();
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
+
 
 
 @Component({
@@ -34,7 +35,8 @@ export class StakeAccountBoxComponent implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _toasterService: ToasterService,
     private _fb: FormBuilder,
-    private _stakePoolStore: StakePoolStoreService
+    private _stakePoolStore: StakePoolStoreService,
+    private $gaService: GoogleAnalyticsService
   ) { }
 
 
@@ -92,7 +94,7 @@ export class StakeAccountBoxComponent implements OnInit {
             stakeAccountPK
           );
           await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
-          trackEvent('delegate stake account')
+          this.$gaService.event('liquid staking', 'stake', 'stake account');
         }
 
       }
@@ -141,7 +143,8 @@ export class StakeAccountBoxComponent implements OnInit {
 
       const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
-      trackEvent('custom validator stake')
+      this.$gaService.event('liquid staking', 'custom validator stake account', targetValidatorVoteAccount);
+
     } catch (error) {
 
       const toasterMessage: toastData = {

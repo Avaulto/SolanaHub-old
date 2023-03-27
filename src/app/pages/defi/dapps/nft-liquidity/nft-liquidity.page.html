@@ -9,7 +9,7 @@
     </ion-row>
     <ion-row>
       <ng-container [ngSwitch]="currentTab">
-        <app-dashboard *ngSwitchCase="'dashboard'"></app-dashboard>
+        <app-dashboard *ngSwitchCase="'dashboard'" (onSelectTab)="tabChange($event)"></app-dashboard>
         <app-borrow *ngSwitchCase="'borrow'" [wallet]="wallet$ | async" [searchTerm]="searchTerm"></app-borrow>
         <app-lend *ngSwitchCase="'lend'" [wallet]="wallet$ | async" [solBalance]="solBalance" [searchTerm]="searchTerm"></app-lend>
       </ng-container>

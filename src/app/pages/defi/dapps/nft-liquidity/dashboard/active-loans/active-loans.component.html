@@ -1,0 +1,58 @@
+
+  <ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
+    <ion-row id="active-loans-wrapper" *ngIf="collateralNfts.length">
+      <h2 class="heading-3 ion-text-capitalize">my loans</h2>
+      <div id="loans-meta">
+        <div class="loans-meta-group">
+          <div class="heading-4">0.1 SOL</div>
+          <div class="sub">total borrowed</div>
+        </div>
+        <div class="loans-meta-group">
+          <div class="heading-4">0.1 SOL</div>
+          <div class="sub">total debt</div>
+        </div>
+      </div>
+      <ion-slides class="" id="loans-carusel" [options]="slideOpts">
+        <ion-slide class="intro-slide" *ngFor="let collateral of collateralNfts">
+          <app-collateral-nft [nft]="collateral">
+            <div id="repay-due">
+              <div>
+                expired by
+              </div>
+              <ion-icon name="hourglass-outline"></ion-icon> {{calcExpiry(1680289695)}}
+            </div>
+            <ion-button expand="block" color="secondary">repay</ion-button>
+          </app-collateral-nft>
+        </ion-slide>
+      </ion-slides>
+
+      <div id="loans-stats">
+        <div class="loan-stat">
+          <div class="heading-5"><span id="flip-bullet"></span>flip</div>
+          <div class="sub">{{loanHoldingsByType.flip}}</div>
+        </div>
+        <div class="loan-stat">
+          <div class="heading-5"><span id="prep-bullet"></span>perpetual</div>
+          <div class="sub">{{loanHoldingsByType.perpetual}}</div>
+        </div>
+        <div class="loan-stat">
+          <div class="heading-5"><span id="grace-bullet"></span>on grace</div>
+          <div class="sub">{{loanHoldingsByType.onGrace}}</div>
+        </div>
+        <div class="loan-stat">
+          <div class="heading-5"><span id="bond-bullet"></span>bond</div>
+          <div class="sub">{{loanHoldingsByType.bond}}</div>
+        </div>
+      </div>
+      </ion-row>
+      <div id="no-loans" *ngIf="collateralNfts.length == 0">
+        <h2 class="heading-3 ion-text-capitalize">No Open loans</h2>
+        <p class="heading-5 ion-margin-bottom">Access a loan with a minimum loan-to-value ratio of 20%, utilizing your NFT as collateral.</p>
+        <ion-button expand="block" fill="outline" (click)="onSelectTab.emit('borrow')" >Collateralize now</ion-button>
+      </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <h2 class="heading-3 ion-text-capitalize">Borrowing</h2>
+    <p class="heading-5 ion-margin-bottom">Select NFTs as collateral to secure a loan through Frakt Protocol, receiving SOL in exchange.</p>
+    <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+  </ng-template>

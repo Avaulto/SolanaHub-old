@@ -13,7 +13,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LendComponent } from './lend/lend.component';
 import { BorrowComponent } from './borrow/borrow.component';
 import { BoxContentComponent } from './lend/box-content/box-content.component';
-import { SuggestedNftComponent } from './borrow/suggested-nft/suggested-nft.component';
+import { CollateralNftComponent } from './collateral-nft/collateral-nft.component';
+import { ActiveLoansComponent } from './dashboard/active-loans/active-loans.component';
+import { ActiveBorrowsComponent } from './dashboard/active-borrows/active-borrows.component';
 
 @NgModule({
   imports: [
@@ -28,7 +30,9 @@ import { SuggestedNftComponent } from './borrow/suggested-nft/suggested-nft.comp
     BoxContentComponent,
     LendComponent,
     BorrowComponent,
-    SuggestedNftComponent
+    CollateralNftComponent,
+    ActiveLoansComponent,
+    ActiveBorrowsComponent,
   ]
 })
 export class NftLiquidityPageModule { }

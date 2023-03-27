@@ -137,3 +137,31 @@ export interface BestBorrowSuggtion {
     repayValue: any
   }
   
+
+
+  export interface OpenLoan {
+    _id: string
+    loanPubkey: string
+    alreadyPaidBack: number
+    amountToGet: number
+    borrowedAtCumulative: number
+    collectionInfo: string
+    createdAt: string
+    expiredAt: number
+    feeAmount: number
+    finishedAt: number
+    liquidityPool: string
+    loanStatus: string
+    loanType: string
+    nftMint: string
+    nftUserTokenAccount: string
+    originalPrice: number
+    rewardAmount: number
+    royaltyAmount: number
+    startedAt: number
+    updatedAt: string
+    user: string
+    nftName: string
+    nftImage: string
+  }
+  

@@ -9,10 +9,7 @@ import { SolanaUtilsService, JupiterStoreService, UtilsService, TxInterceptServi
 import { Token, TokenBalance } from '../../../../models';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
 import Decimal from "decimal.js";
-
-
-import Plausible from 'plausible-tracker'
-const { trackEvent } = Plausible();
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 
 @Component({
@@ -28,6 +25,7 @@ export class TokenSwapPage implements OnInit {
     private _jupStore: JupiterStoreService,
     private _txInterceptService: TxInterceptService,
     private _solanaUtilsService: SolanaUtilsService,
+    private $gaService: GoogleAnalyticsService
   ) { }
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet
@@ -195,7 +193,9 @@ export class TokenSwapPage implements OnInit {
     const transactions: Transaction[] = await this._jupStore.swapTx(this.bestRoute);
 
     await this._txInterceptService.sendTx(transactions, this.wallet.publicKey);
-    trackEvent('jupiter swap')
+
+    this.$gaService.event('jupiter', 'swap', this.swapForm.value.inputToken?.extensions?.coingeckoId +'-'+ this.swapForm.value.outputToken?.extensions?.coingeckoId);
+
   }
   private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
     const { marketInfos } = routeInfo

@@ -14,3 +14,16 @@
 .input-error{
     border-color: var(--ion-color-danger);
 }
+#private-tx-wrapper{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+#power-by{
+    margin-block-start: 16px;
+    display: flex;
+    justify-content: center;
+    a{
+        margin: 0 5px;
+    }
+}

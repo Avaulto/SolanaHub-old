@@ -1,18 +1,15 @@
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { Marinade, MarinadeConfig, Provider } from '@marinade.finance/marinade-ts-sdk'
-import { LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction, TransactionInstruction } from '@solana/web3.js';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { LAMPORTS_PER_SOL, PublicKey,  TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
 import bn from 'bn.js'
 
-import Plausible from 'plausible-tracker'
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
-import { depositSol, withdrawSol, withdrawStake } from '@solana/spl-stake-pool';
+import { depositSol, withdrawStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { toastData } from 'src/app/models';
 import { TooltipPosition } from 'src/app/shared/components/tooltip/tooltip.enums';
 import { StakePoolStoreService } from '../stake-pool-store.service';
-const { trackEvent } = Plausible();
-
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 @Component({
   selector: 'app-stake-sol-box',
@@ -38,7 +35,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     private _fb: FormBuilder,
     private _utilsService: UtilsService,
     private _toasterService: ToasterService,
-    private _stakePoolStore: StakePoolStoreService
+    private _stakePoolStore: StakePoolStoreService,
+    private $gaService: GoogleAnalyticsService
   ) { }
 
   ngOnInit(): void {
@@ -92,7 +90,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
           Number(sol)
         );
         await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
-        trackEvent('liquid stake')
+        this.$gaService.event('liquid staking', 'stake', 'stake SOL');
       }
     }
 
@@ -100,7 +98,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   // stake custom validator
   public async stakeCLS(sol: number) {
     let { validatorVoteAccount } = this.stakeForm.value;
-    trackEvent('custom validator stake')
 
     const validator = new PublicKey(validatorVoteAccount);
 
@@ -132,6 +129,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
 
       const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
+
+      this.$gaService.event('liquid staking', 'custom validator stake SOL', validatorVoteAccount);
     } catch (error) {
 
       const toasterMessage: toastData = {

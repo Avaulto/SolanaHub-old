@@ -11,14 +11,14 @@
     width: 250px;
 }
 
-#stake-box {
+#yield-box {
     display: block;
     width: 450px;
     max-width: 100%;
     margin: 8px auto;
 }
 
-#stake-apr-box {
+#yield-apr-box {
     height: 99px;
     background:var( --apr-box);
     border-radius: 6px;
@@ -50,7 +50,7 @@
     }
 }
 
-#stake-amount {
+#yield-amount {
     position: relative;
 
     span {

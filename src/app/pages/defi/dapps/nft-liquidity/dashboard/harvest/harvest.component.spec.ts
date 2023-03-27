@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SuggestedNftComponent } from './suggested-nft.component';
+import { HarvestComponent } from './harvest.component';
 
-describe('SuggestedNftComponent', () => {
-  let component: SuggestedNftComponent;
-  let fixture: ComponentFixture<SuggestedNftComponent>;
+describe('HarvestComponent', () => {
+  let component: HarvestComponent;
+  let fixture: ComponentFixture<HarvestComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SuggestedNftComponent ],
+      declarations: [ HarvestComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SuggestedNftComponent);
+    fixture = TestBed.createComponent(HarvestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

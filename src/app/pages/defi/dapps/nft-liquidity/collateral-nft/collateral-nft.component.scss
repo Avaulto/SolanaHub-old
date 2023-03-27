@@ -1,8 +1,10 @@
 :host {
-    max-width: 95%;
     display: block;
+    padding: 15px 0px;
     margin: 5px auto;
     height: 100%;
+    width: 220px;
+    max-width: 100%;
 }
 
 .nft-item {
@@ -60,7 +62,7 @@ ion-card-title{
     display: flex;
     justify-content: space-between;
     text-transform: uppercase;
-    color: white;
+    color: var(--ion-text-color);
     :first-child{
         width: 100px;
     }

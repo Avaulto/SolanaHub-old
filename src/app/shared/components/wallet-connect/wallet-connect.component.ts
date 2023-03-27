@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { PopoverController } from '@ionic/angular';
 import { distinctUntilChanged, map, Observable, of, shareReplay, switchMap } from 'rxjs';
 import { SolanaUtilsService, ToasterService, UtilsService } from 'src/app/services';
 import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-adapter-options.component';
 import { WalletConnectedDropdownComponent } from './wallet-connected-dropdown/wallet-connected-dropdown.component';
 
-import Plausible from 'plausible-tracker'
-const { trackEvent } = Plausible();
+
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
+
 @Component({
   selector: 'app-wallet-connect',
   templateUrl: './wallet-connect.component.html',
@@ -20,13 +21,16 @@ export class WalletConnectComponent implements OnInit {
     private _walletStore: WalletStore,
     private _toasterService: ToasterService,
     public popoverController: PopoverController,
-    private _solanaUtilsService:SolanaUtilsService
+    private _solanaUtilsService:SolanaUtilsService,
+    private $gaService: GoogleAnalyticsService,
+    private conne:ConnectionStore
   ) { }
   readonly wallets$ = this._walletStore.wallets$.pipe(shareReplay(1));
   readonly wallet$ = this._walletStore.wallet$.pipe(shareReplay(1));
   readonly isReady$ = this._walletStore.connected$.pipe(map(isReady => {
     if (isReady) {
-      trackEvent('wallet connected')
+      //trackEvent('wallet connected')
+      this.$gaService.event('wallet', 'connected')
       this._toasterService.msg.next({
         message: `Wallet connected`,
         segmentClass: "toastInfo",
@@ -45,7 +49,6 @@ export class WalletConnectComponent implements OnInit {
   )
 
   ngOnInit() {
-    
 
   }
 

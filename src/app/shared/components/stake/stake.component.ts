@@ -5,9 +5,8 @@ import { firstValueFrom, lastValueFrom, map, observable, Observable, Subscriber,
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 
-import Plausible from 'plausible-tracker'
 import { ActivatedRoute } from '@angular/router';
-const { trackEvent } = Plausible();
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
 
 
@@ -36,11 +35,11 @@ export class StakeComponent implements OnInit {
     private _fb: FormBuilder,
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
-    private _utilsService: UtilsService,
+    private $gaService: GoogleAnalyticsService,
     private _activeRoute: ActivatedRoute
   ) { }
   async ngOnInit() {
-    
+
     this.stakeForm = this._fb.group({
       amount: ['', [Validators.required]],
       voteAccount: ['', [Validators.required]],
@@ -61,7 +60,7 @@ export class StakeComponent implements OnInit {
         }
         );
     } else {
-      const myValidatorIdentity =validatorData.vote_identity
+      const myValidatorIdentity = validatorData.vote_identity
       validatorData.extraData['Support MEV'] = true;
       this._preSelectValidator([validatorData], myValidatorIdentity);
     }
@@ -72,7 +71,7 @@ export class StakeComponent implements OnInit {
     this.stakeForm.controls.amount.setValue(fixedAmount);
   }
 
-  private async _preSelectValidator(validators:ValidatorData[],validatorVoteKey: string) {
+  private async _preSelectValidator(validators: ValidatorData[], validatorVoteKey: string) {
     // const validatorsList: ValidatorData[] | any = await firstValueFrom(this.validatorsData);
     const getSelectedValidator = validators.filter(validator => validator.vote_identity == validatorVoteKey)[0];
     this.setSelectedValidator(getSelectedValidator);
@@ -91,14 +90,14 @@ export class StakeComponent implements OnInit {
     let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
     const walletOwnerPublicKey = this._solanaUtilsService.getCurrentWallet().publicKey;
     // const testnetvoteAccount = '87QuuzX6cCuWcKQUFZFm7vP9uJ72ayQD5nr6ycwWYWBG'
-    if(monthLockuptime){  
+    if (monthLockuptime) {
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
     await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
-    if(this.privateValidatorPage){
-      trackEvent('regular stake')
-    }else{
-      trackEvent('stake with avaulto')
+    if (this.privateValidatorPage) {
+      this.$gaService.event('stake', 'stake with Avaulto');
+    } else {
+      this.$gaService.event('stake', 'regular');
     }
   }
   private _getLockuptimeMilisecond(months: number): number {

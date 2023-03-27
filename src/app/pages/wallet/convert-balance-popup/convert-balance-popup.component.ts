@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { AddressLookupTableAccount, TransactionBlockhashCtor } from '@solana/web3.js';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { Asset } from 'src/app/models';
 import { JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import {
@@ -9,8 +10,6 @@ import {
   createCloseAccountInstruction,
 } from "../../../../../node_modules/@solana/spl-token";
 
-import Plausible from 'plausible-tracker'
-const { trackEvent } = Plausible();
 
 @Component({
   selector: 'app-convert-balance-popup',
@@ -38,7 +37,7 @@ export class ConvertBalancePopupComponent implements OnInit {
     private _popoverController: PopoverController,
     private _solanaUtilsService: SolanaUtilsService,
     private _jupStore: JupiterStoreService,
-    private _utilsService: UtilsService
+    private $gaService: GoogleAnalyticsService
   ) { }
 
   ngOnInit() {
@@ -137,8 +136,7 @@ export class ConvertBalancePopupComponent implements OnInit {
         await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
       }, Promise.resolve());
     }
-    
-    trackEvent('bulk swap/close ATA')
+    this.$gaService.event('bulk event', 'swap/close ATA');
   }
 
   async closeATA(asset: Asset): Promise<TransactionInstruction[]> {

@@ -16,7 +16,9 @@ import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 
 
-import Plausible from 'plausible-tracker';
+
+import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
+import { environment } from 'src/environments/environment.prod';
 @NgModule({
     declarations: [
         AppComponent,
@@ -29,7 +31,9 @@ import Plausible from 'plausible-tracker';
         BrowserAnimationsModule,
         IonicModule.forRoot(),
         AppRoutingModule,
-        HdWalletAdapterModule.forRoot({ autoConnect: true })
+        HdWalletAdapterModule.forRoot({ autoConnect: true }),
+        NgxGoogleAnalyticsModule.forRoot(environment.ga),
+        NgxGoogleAnalyticsRouterModule
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -38,10 +42,6 @@ import Plausible from 'plausible-tracker';
 })
 export class AppModule {
     constructor() {
-        const { trackPageview, enableAutoPageviews } = Plausible({
-            hashMode: true,
-        })
-        trackPageview()
-        enableAutoPageviews()
+     
     }
 }

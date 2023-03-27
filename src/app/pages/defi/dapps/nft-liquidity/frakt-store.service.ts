@@ -7,7 +7,16 @@ import { catchError, map, observable, Observable, shareReplay, switchMap, throwE
 import { toastData } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
-import { BestBorrowSuggtion, CollectionInfo, FraktLiquidity, FraktNftItem, FraktNftItemWithLiquidity, FraktNftMetadata, FraktStats } from './frakt.model';
+import {
+  BestBorrowSuggtion,
+  CollectionInfo,
+  FraktLiquidity,
+  FraktNftItem,
+  FraktNftItemWithLiquidity,
+  FraktNftMetadata,
+  FraktStats,
+  OpenLoan
+} from './frakt.model';
 
 
 
@@ -132,6 +141,17 @@ export class FraktStoreService {
     return maxBorrow
   }
 
+  public async getOpenLoans(user: string): Promise<OpenLoan[]> {
+
+    let openLoans: OpenLoan[] = [];
+    try {
+      const res = await (await fetch(`${this.fraktApi}/nft/loan?user=${user}&loanStatus=activated`)).json();
+      openLoans = res
+    } catch (error) {
+      console.error(error);
+    }
+    return openLoans
+  }
   public getPoolsListFull(): Observable<FraktNftItemWithLiquidity[]> {
     // priceBasedLiqs
     let poolsFull = []

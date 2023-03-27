@@ -1,0 +1,49 @@
+.heading-2{
+    width: 100%;
+}
+#active-loans-wrapper{
+    // display: flex;
+    // flex-direction: column;
+}
+#loans-stats {
+    width: 100%;
+    text-transform: capitalize;
+}
+.loan-stat {
+    display: flex;
+    justify-content: space-between;
+    span {
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        border-radius: 50%;
+        margin-inline-end: 5px;
+   
+    }
+}
+#flip-bullet{
+    background: rgb(255, 192, 31);
+}
+#prep-bullet{
+    background: rgb(31, 174, 255);
+}
+#grace-bullet{
+    background: rgb(255, 112, 31);
+}
+#bond-bullet{
+    background: rgb(31, 255, 80);
+}
+#loans-meta {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+#no-loans{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    height: 100%;
+}

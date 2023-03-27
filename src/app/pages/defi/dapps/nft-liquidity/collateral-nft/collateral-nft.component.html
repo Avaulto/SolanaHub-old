@@ -20,7 +20,7 @@
       <ion-accordion-group >
         <ion-accordion value="first">
           <ion-item id="attr-header" slot="header">
-            <ion-label>Attributes</ion-label>
+            <ion-label>Properties</ion-label>
           </ion-item>
           <div slot="content">
             <div class="nft-attr ion-margin-bottom" *ngFor="let attr of nft?.classicParams.timeBased | keyvalue">
@@ -30,14 +30,10 @@
           </div>
         </ion-accordion>
       </ion-accordion-group>
-      <ion-row class="ion-justify-content-between">
+     
   
-        
-        <ion-col size="12" >
-          <ion-button fill="outline" (click)="selectToBorrow()">select</ion-button>
+          <ng-content></ng-content>
           
- 
-      </ion-col>
-    </ion-row>
+
     </ion-card-content>
   </ion-card>

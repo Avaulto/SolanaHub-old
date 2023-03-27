@@ -48,6 +48,7 @@ export class BorrowComponent implements OnInit {
     this.showDurationDropDown = false
     this.selectedDuration = duration
   }
+  selectToBorrow(){}
   submitBorrowForm(){
 
   }

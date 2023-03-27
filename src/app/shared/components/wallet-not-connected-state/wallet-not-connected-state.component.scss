@@ -8,6 +8,10 @@ ion-row{
 p{
     font-size: 14px;
     text-transform: capitalize;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 app-wallet-connect{
     width: 165px;
