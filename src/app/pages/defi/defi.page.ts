@@ -20,7 +20,7 @@ export class DefiPage implements OnInit {
     {
       name: 'Liquid staking',
       image: 'assets/images/icons/liquid-stake-logo.gif',
-      description: `Liquid staking is a non-custodial protocol built on Solana. You can stake your SOL tokens with Pool provider using automated staking strategies and receive equivilant tokens (mSOL/bSOL) that you can use in decentralized finance (DeFi). `,
+      description: `Liquid staking is a non-custodial protocol built on Solana. You can stake your SOL tokens with Pool provider using automated staking strategies and receive equivilant tokens (xSOL) that you can use in decentralized finance (DeFi). `,
       learnMoreLink: 'https://solana.org/stake-pools',
       deepLink: 'liquid-stake',
       status:'active'

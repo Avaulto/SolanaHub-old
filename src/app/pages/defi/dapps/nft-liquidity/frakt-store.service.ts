@@ -145,7 +145,7 @@ export class FraktStoreService {
 
     let openLoans: OpenLoan[] = [];
     try {
-      const res = await (await fetch(`${this.fraktApi}/nft/loan?user=${user}&loanStatus=activated`)).json();
+      const res = await (await fetch(`${this.fraktApi}/nft/loan/all?user=${user}&loanStatus=activated`)).json();
       openLoans = res
     } catch (error) {
       console.error(error);

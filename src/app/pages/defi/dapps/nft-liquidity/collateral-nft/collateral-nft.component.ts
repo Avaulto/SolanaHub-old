@@ -7,7 +7,7 @@ interface AggrigateNft {
   name:string;
   imgUrl: string;
   mint:string;
-  extraData: any 
+  extraData: any;
 }
 @Component({
   selector: 'app-collateral-nft',

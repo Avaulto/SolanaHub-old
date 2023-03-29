@@ -18,7 +18,7 @@ import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 
 
 import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 @NgModule({
     declarations: [
         AppComponent,
