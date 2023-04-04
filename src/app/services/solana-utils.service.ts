@@ -212,7 +212,7 @@ export class SolanaUtilsService {
     const parsedData = account.account.data.parsed.info.stake || null//.delegation.stake
     const validatorVoteKey = parsedData?.delegation?.voter
     const stake = Number(parsedData?.delegation?.stake) || 0;
-    const startEpoch = parsedData.delegation.activationEpoch;
+    const startEpoch = parsedData?.delegation.activationEpoch;
     const rentReseve = Number(account.account.data.parsed.info.meta.rentExemptReserve);
     const accountLamport = Number(account.account.lamports);
     const excessLamport = accountLamport - stake - rentReseve

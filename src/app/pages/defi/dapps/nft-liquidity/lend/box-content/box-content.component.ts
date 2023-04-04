@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { BN } from 'bn.js';
+import  BN  from 'bn.js';
 import { UtilsService } from 'src/app/services';
 import { FraktStoreService } from '../../frakt-store.service';
 import { FraktNftMetadata } from '../../frakt.model';
