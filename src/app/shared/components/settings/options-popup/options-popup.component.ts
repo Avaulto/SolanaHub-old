@@ -14,11 +14,44 @@ import { environment } from 'src/environments/environment';
 export class OptionsPopupComponent implements OnInit {
 
   public currentRPC = environment.solanaCluster;
-  public tritonRPC = 'https://mb-avaulto-cc28.mainnet.rpcpool.com';
-  public extrNodeRPC = 'https://solana-mainnet.rpc.extrnode.com';
   public currenTheme$ = this._utilsService.systemTheme$.pipe(shareReplay(1));
   public currentPrioretyFee = this._utilsService.priorityFee
   readonly currentExplorer$ = this._utilsService.explorer$.pipe(shareReplay(1));
+
+  public RPC_list = [{
+    name:'triton',
+    imageUrl: 'assets/images/icons/triton-logo.svg',
+    url:'https://mb-avaulto-cc28.mainnet.rpcpool.com'
+  },
+  {
+    name:'extrnode',
+    imageUrl: 'assets/images/icons/extrnode.svg',
+    url:'https://solana-mainnet.rpc.extrnode.com'
+
+  },
+
+]
+  public explorerList = [
+    {
+      name:'solanafm',
+      imageUrl: 'assets/images/icons/solana-fm.svg',
+      url:'https://solana.fm'
+    },
+    {
+      name:'xRay',
+      imageUrl: 'assets/images/icons/xray-logo.png',
+      url:'https://xray.helius.xyz/'
+    },
+    {
+      name:'solscan',
+      imageUrl: 'assets/images/icons/solscan.svg',
+      url:'https://solscan.io'
+    },
+    {
+    name:'offical',
+    imageUrl: 'assets/images/icons/solana-explorer2.png',
+    url:'https://explorer.solana.com'
+  }]
 
   constructor(
     private _connectionStore: ConnectionStore,

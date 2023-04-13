@@ -24,7 +24,7 @@ ion-text{
     text-transform: capitalize;
 }
 .setting-section {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     padding-bottom: 25px;
     border-bottom: 1px solid #ffffff40;
     &:last-child{
@@ -34,6 +34,7 @@ ion-text{
     }
 }
 .selected-by {
+    margin-bottom: 5px;
     transition: 0.3s ease;
     height: 45px;
     display: flex;
@@ -51,7 +52,7 @@ ion-text{
     }
 
     ion-img {
-        width: 70px;
+        width: 90px;
     }
 
     .select-group {

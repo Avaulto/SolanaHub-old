@@ -1,0 +1,4 @@
+<div id="harvest-rewards"  [tooltip]="'Harvest is available from 0.001 ◎'">
+  <div class="ion-text-capitalize sub">your rewards <span >{{this.harvestReward | number: '1.3'}} ◎</span></div>
+  <ion-button color="secondary" fill="clear" [disabled]="this.harvestReward < 0.001" (click)="harvest()">Harvest</ion-button>
+</div>

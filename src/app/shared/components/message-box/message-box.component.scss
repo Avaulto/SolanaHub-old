@@ -1,0 +1,29 @@
+:host{
+    width: 100%;
+}
+ion-row{
+    height: 50px;
+    align-items: center;
+    // justify-content: center;
+    border-radius: 4px;
+}
+
+div{
+    display: flex;
+    margin-right: 8px;
+    margin-left: 16px;
+}
+p{
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.success-border{
+    border: 1px solid var(--ion-color-primary);
+}
+.error-border{
+    border: 1px solid var(--ion-color-error);
+}
+.warning-border{
+    border: 1px solid var(--ion-color-warning);
+}

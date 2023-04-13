@@ -42,7 +42,7 @@ export class SolanaUtilsService {
 
   // add balance utility
   public walletExtended$ = this._walletExtended$.asObservable().pipe(
-    shareReplay(1),
+    
     combineLatestWith(this.accountChange$),
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async ([wallet, accountStateChange]: any) => {
@@ -51,6 +51,7 @@ export class SolanaUtilsService {
       }
       return wallet;
     }),
+    shareReplay(1),
   )
 
   constructor(
@@ -256,10 +257,9 @@ export class SolanaUtilsService {
 
 
   public async getSupply(): Promise<{ circulating: any, noneCirculating: any }> {
-    const supply = await this.connection.getSupply({ excludeNonCirculatingAccountsList: true });
+    const supply = await this.connection.getSupply();
     const circulating = this._utilService.numFormater(supply.value.circulating / LAMPORTS_PER_SOL)
     const noneCirculating = this._utilService.numFormater(supply.value.nonCirculating / LAMPORTS_PER_SOL)
-
     return { circulating, noneCirculating }
   }
   public async getStake(): Promise<{ activeStake, delinquentStake }> {

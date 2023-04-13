@@ -1,65 +1,22 @@
-<ion-row id="gallery-wrapper" class=" ion-justify-content-between">
-  <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
-    <form [formGroup]="borrowForm" id="yield-box" class="ion-text-capitalize">
-      <ion-row class="ion-margin-bottom" id="yield-apr-box">
-        <div id="">Borrow SOL by collateralize your NFTs.</div>
-      </ion-row>
-      <ion-row style="margin-bottom:8px" class="heading-6 ion-justify-content-between" id="node-select">
-        <span>
-          Avaliable to borrow
-        </span>
-        <span>
-          {{maxBorrow | number: '1.2-2'}}
-        </span>
-      </ion-row>
-
-
-      <ion-row id="yield-amount">
-        <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
-        <span class="heading-6" (click)="setMaxAmount()">MAX</span>
-      </ion-row>
-      <ion-row style="margin-bottom:8px" class="heading-6" id="node-select">
-        Choose Duration
-      </ion-row>
-      <ion-input style="display:none;" formControlName="duration" readonly></ion-input>
-      <ion-row class="ion-margin-bottom">
-
-        <div id="node-selection">
-
-          <app-select-item [item]="selectedDuration" (click)="showDurationDropDown = !showDurationDropDown"
-            [isDropDownOpen]="showDurationDropDown">
-          </app-select-item>
-          <app-select-box *ngIf="showDurationDropDown" [dataset]="borrowDuration" [filterBy]="'name'"
-            (onSelectItem)="setSelectedDuration($event);">
-          </app-select-box>
-
-        </div>
-      </ion-row>
-
-      <ion-row class="ion-justify-content-center">
-        <ng-container *ngIf="collateralNfts$ | async; else notLogged">
-          <ion-button [disabled]="formSubmitted || borrowForm.invalid" (click)="submitBorrowForm()" type="button"
-            class="ion-text-capitalize">Borrow</ion-button>
-          <!-- {{wallet.tokens}} -->
-        </ng-container>
-        <ng-template #notLogged>
-          <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
-        </ng-template>
-
-      </ion-row>
-    </form>
-    <!-- <app-apy-calc class="ion-margin-top" *ngIf="selectedValidator" [rewardInfo]="rewardInfo"></app-apy-calc> -->
-  </ion-col>
+<ion-row id="gallery-wrapper" class="ion-justify-content-between ion-align-items-start">
   <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
     <ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
-      <ion-row class="nft-list " *ngIf="collateralNfts.length">
-        <div class="nft-wrapper ion-margin-bottom ion-margin-end"
-          *ngFor="let collateral of collateralNfts | filter:'name':searchTerm;">
-          <app-collateral-nft [nft]="collateral">
-            <ion-button fill="outline" expand="block" (click)="selectToBorrow()">select</ion-button>
-          </app-collateral-nft>
+      <ion-row *ngIf="collateralNfts.length">
+        <ion-slides [options]="slideOpts">
+          <ion-slide class="nft-wrapper" *ngFor="let collateral of collateralNfts | filter:'name':searchTerm;">
 
-        </div>
+            <app-collateral-nft [nft]="collateral" type="borrow"
+              [ngClass]="{'selected-nft': collateral == selectedCollateral}">
+              <ion-button fill="outline" expand="block"
+                [color]="collateral == selectedCollateral ? 'secondary' : 'primary'" (click)="toggleBorrow(collateral)">
+                <span *ngIf="collateral != selectedCollateral">select</span>
+                <span *ngIf="collateral == selectedCollateral">selected</span>
+              </ion-button>
+            </app-collateral-nft>
+
+          </ion-slide>
+        </ion-slides>
+
       </ion-row>
       <div id="no-nfts" *ngIf="collateralNfts.length == 0">
         <ion-icon id="icon-placeholder" name="image-outline"></ion-icon>
@@ -67,9 +24,61 @@
       </div>
     </ng-container>
     <ng-template #elseTemplate>
-      <app-wallet-not-connected-state ></app-wallet-not-connected-state>
+      <app-wallet-not-connected-state></app-wallet-not-connected-state>
     </ng-template>
   </ion-col>
+  <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
+    <ion-text *ngIf="!selectedCollateral">
+      select collateral NFT to start borrow
+    </ion-text>
+    <form [formGroup]="borrowForm" id="yield-box" class="ion-text-capitalize"
+      [ngClass]="{'blur-overlay': !selectedCollateral}">
+      <ion-row class="ion-margin-bottom" id="yield-apr-box">
+        <div id="">Borrow SOL by collateralize your NFTs.</div>
+      </ion-row>
 
+
+   
+        <app-label-layout [layoutConfig]="{title: 'Choose Duration'}"> </app-label-layout>
+        <div class="ion-margin-bottom">
+
+          <app-select-item [item]="selectedDuration" (click)="showDurationDropDown = !showDurationDropDown"
+            [isDropDownOpen]="showDurationDropDown">
+          </app-select-item>
+          <app-select-box *ngIf="showDurationDropDown" [dataset]="durationOptions" [filterBy]="'name'"
+            (onSelectItem)="setSelectedDuration($event);">
+          </app-select-box>
+
+        </div>
+   
+  
+        <span *ngIf="selectedDuration" class="ion-margin-bottom">
+
+          <app-label-layout [layoutConfig]="{title: 'Avaliable to borrow', balance:getMaxBorrow()  + '◎'}">
+          </app-label-layout>
+          <ion-row id="yield-amount">
+            <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
+            <span class="heading-6"
+            (click)="setMaxAmount(getMaxBorrow())">MAX</span>
+          </ion-row>
+
+          <app-message-box type="warning" message="It may take a few minutes for your loan to become active"></app-message-box>
+        </span>
+   
+        <ion-row class="ion-justify-content-center ">
+          <ng-container *ngIf="collateralNfts$ | async; else notLogged">
+            <ion-button [disabled]="formSubmitted || borrowForm.invalid" (click)="submitBorrowForm()" type="button"
+            class="ion-text-capitalize">Borrow</ion-button>
+            
+            
+          </ng-container>
+          <ng-template #notLogged>
+            <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+          </ng-template>
+          
+      </ion-row>
+    </form>
+
+  </ion-col>
 
 </ion-row>

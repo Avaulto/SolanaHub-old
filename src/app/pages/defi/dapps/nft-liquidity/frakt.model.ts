@@ -116,52 +116,141 @@ export interface BestBorrowSuggtion {
     name: string
     imageUrl: string
     collectionName: string
+    maxLoanValue: number;
     valuation: number
     freezable: boolean
     classicParams: ClassicParams
-  }
-  
-   interface ClassicParams {
+}
+
+interface ClassicParams {
     maxLoanValue: any
     isLimitExceeded: boolean
     timeBased: TimeBased
-  }
-  
-   interface TimeBased {
+    priceBased: PriceBased
+}
+interface PriceBased {
+    liquidityPoolPubkey: string,
+    ltvPercent: number,
+    borrowAPRPercent: number,
+    collaterizationRate: number
+}
+interface TimeBased {
     liquidityPoolPubkey: string
     returnPeriodDays: number
     ltvPercent: number
     fee: any
     feeDiscountPercent: number
-    loanValue: any
-    repayValue: any
-  }
-  
+    loanValue: number
+    repayValue: number
+}
 
 
-  export interface OpenLoan {
-    _id: string
-    loanPubkey: string
-    alreadyPaidBack: number
-    amountToGet: number
-    borrowedAtCumulative: number
-    collectionInfo: string
-    createdAt: string
-    expiredAt: number
-    feeAmount: number
-    finishedAt: number
-    liquidityPool: string
-    loanStatus: string
-    loanType: string
-    nftMint: string
-    nftUserTokenAccount: string
-    originalPrice: number
-    rewardAmount: number
-    royaltyAmount: number
-    startedAt: number
-    updatedAt: string
-    user: string
-    nftName: string
-    nftImage: string
-  }
-  
+
+export interface OpenLoan {
+    user: string;
+    pubkey: string;
+    loanType: string;
+    loanValue: number;
+    repayValue: number;
+    startedAt: number;
+    nft: {
+        mint: string;
+        name: string;
+        imageUrl: string;
+        collectionName: string;
+    }
+
+    classicParams: {
+        liquidityPool: string;
+        collectionInfo: string;
+        royaltyAddress: string;
+        nftUserTokenAccount: string;
+        timeBased?: {
+            expiredAt: number;
+        };
+        priceBased?: {
+            borrowAPRPercent: number;
+            health: number,
+            liquidationPrice: number,
+            realLiquidationPrice: number,
+            nftOriginalPrice: number
+        }
+    }
+
+}
+
+
+export interface AllUserStats {
+    bonds: Bonds;
+    totalStats: TotalStats;
+    dailyActivity: DailyActivity;
+    lastLoans: LastLoan[];
+    lendingPools: LendingPool[];
+}
+
+export interface Bonds {
+    activeUserLoans: number;
+    bondUserAmount: number;
+    userOffers: number;
+    userOffersAmount: number;
+}
+
+export interface DailyActivity {
+    dailyVolume: number;
+    issuedIn24Hours: number;
+    paidBackIn24Hours: number;
+    liquidatedIn24Hours: number;
+    grace: number;
+    lockedNftsInLoans: number;
+}
+
+export interface LastLoan {
+    loanValue: number;
+    startedAt: number;
+    image: string;
+    nftName: string;
+}
+
+export interface LendingPool {
+    image: string[];
+    nftName: string;
+    apr: number;
+    tvl: number;
+    collectionsCount?: number;
+}
+
+export interface TotalStats {
+    totalIssued: number;
+    loansTvl: number;
+    loansVolumeAllTime: number;
+    activeLoansCount: number;
+    userTotalLiquidity: number;
+}
+
+export interface UserRewards {
+    lenders: [],
+    borrowers: []
+}
+
+export interface PoolIO {
+    pubkey:                string;
+    isPriceBased:          boolean;
+    name:                  string;
+    imageUrl:              string[];
+    totalLiquidity:        number;
+    totalBorrowed:         number;
+    utilizationRate:       number;
+    depositApr:            number;
+    borrowApr:             number;
+    activeloansAmount:     number;
+    collectionsAmount:     number;
+    userDeposit:           UserDeposit;
+    userActiveLoansAmount: number;
+}
+
+export interface UserDeposit {
+    pubkey:                string;
+    harvestAmount:         number;
+    depositAmount:         number;
+    depositAmountLamports: string;
+}

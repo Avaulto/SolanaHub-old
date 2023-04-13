@@ -6,6 +6,7 @@ import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StakePoolStoreService } from './stake-pool-store.service';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -18,10 +19,11 @@ export class LiquidStakePage {
   constructor(
     public stakePoolStore: StakePoolStoreService,
     private _solanaUtilsService: SolanaUtilsService,
-    // private _apiService: ApiService,
+    private _titleService: Title,  
     private _utilService: UtilsService,
     private _activeRoute: ActivatedRoute
-  ) { }
+  ) { 
+  }
 
   public stakePoolsInfo: StakePoolProvider[] = [];
   public stakePoolStats: StakePoolStats;
@@ -52,7 +54,6 @@ export class LiquidStakePage {
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async (wallet: WalletExtended) => {
       if (wallet) {
-
         this.wallet = wallet;
         this.solBalance = wallet.balance
         if (this.currentProvider) {
@@ -97,6 +98,7 @@ export class LiquidStakePage {
 
   private _queryParam$: Subscription;
   async ionViewWillEnter() {
+    this._titleService.setTitle('CompactDeFi - Liquid staking')
     this._queryParam$ = this.initConfigStartup();
     await this.stakePoolStore.getStakePoolsInfo()
   }

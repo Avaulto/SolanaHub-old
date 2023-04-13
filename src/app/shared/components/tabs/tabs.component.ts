@@ -7,8 +7,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class TabsComponent implements OnInit {
   @Input() menu: string[] = [];
+  @Input() currentTab: string;
   @Output() onSelectTab = new EventEmitter();
-  public currentTab: string;
+  // public currentTab: string;
   constructor() { }
 
   ngOnInit() {

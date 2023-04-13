@@ -1,58 +1,75 @@
-
-  <ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
-    <ion-row id="active-loans-wrapper" *ngIf="collateralNfts.length">
-      <h2 class="heading-3 ion-text-capitalize">my loans</h2>
-      <div id="loans-meta">
-        <div class="loans-meta-group">
-          <div class="heading-4">0.1 SOL</div>
-          <div class="sub">total borrowed</div>
-        </div>
-        <div class="loans-meta-group">
-          <div class="heading-4">0.1 SOL</div>
-          <div class="sub">total debt</div>
-        </div>
+<ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
+  <ion-row id="active-loans-wrapper" *ngIf="collateralNfts.length">
+    <!-- {{calcLoanTypes(collateralNfts)}} -->
+    <h2 class="heading-3 ion-text-capitalize">my loans</h2>
+    <div id="loans-meta">
+      <div class="loans-meta-group">
+        <div class="heading-4">{{loansInfo.totalBorrowed}} ◎</div>
+        <div class="sub">Total Borrowed</div>
       </div>
-      <ion-slides class="" id="loans-carusel" [options]="slideOpts">
-        <ion-slide class="intro-slide" *ngFor="let collateral of collateralNfts">
-          <app-collateral-nft [nft]="collateral">
-            <div id="repay-due">
-              <div>
-                expired by
+      <div class="loans-meta-group">
+        <div class="heading-4">{{loansInfo.totalDebt}} ◎</div>
+        <div class="sub">Total Debt</div>
+      </div>
+    </div>
+
+
+    <ion-slides [options]="slideOpts">
+      <ion-slide *ngFor="let collateral of collateralNfts">
+        <app-collateral-nft style="width:220px" [nft]="collateral" type="openLoan">
+         
+            <ion-row id="repay-due" class="ion-align-items-center ion-justify-content-between">
+              <div class="ion-text-capitalize">
+                <span *ngIf="collateral.classicParams.timeBased">Expired by</span>
+                <span *ngIf="collateral.classicParams.priceBased">Liquidation price</span>
               </div>
-              <ion-icon name="hourglass-outline"></ion-icon> {{calcExpiry(1680289695)}}
-            </div>
-            <ion-button expand="block" color="secondary">repay</ion-button>
-          </app-collateral-nft>
-        </ion-slide>
-      </ion-slides>
+              <div>
+                <span *ngIf="collateral.classicParams.timeBased">
+                  <ion-icon name="hourglass-outline"></ion-icon>
+                  {{calcExpiry(collateral.classicParams.timeBased.expiredAt)}}
+                </span>
+                <span *ngIf="collateral.classicParams.priceBased">
+                  <ion-icon name="pricetag-outline"></ion-icon>
+                  {{calcLiquidationPrice(collateral.classicParams.priceBased.liquidationPrice)}}
+                </span>
+              </div>
+            </ion-row>
 
-      <div id="loans-stats">
-        <div class="loan-stat">
-          <div class="heading-5"><span id="flip-bullet"></span>flip</div>
-          <div class="sub">{{loanHoldingsByType.flip}}</div>
-        </div>
-        <div class="loan-stat">
-          <div class="heading-5"><span id="prep-bullet"></span>perpetual</div>
-          <div class="sub">{{loanHoldingsByType.perpetual}}</div>
-        </div>
-        <div class="loan-stat">
-          <div class="heading-5"><span id="grace-bullet"></span>on grace</div>
-          <div class="sub">{{loanHoldingsByType.onGrace}}</div>
-        </div>
-        <div class="loan-stat">
-          <div class="heading-5"><span id="bond-bullet"></span>bond</div>
-          <div class="sub">{{loanHoldingsByType.bond}}</div>
-        </div>
+
+          
+
+          <ion-button expand="block" color="secondary" (click)="repayLoan(collateral)">Repay</ion-button>
+        </app-collateral-nft>
+      </ion-slide>
+    </ion-slides>
+
+
+    <div id="loans-stats">
+      <div class="loan-stat">
+        <div class="heading-5"><span id="flip-bullet"></span>Flip</div>
+        <div class="sub">{{loansInfo.totalFlip}} ◎</div>
       </div>
-      </ion-row>
-      <div id="no-loans" *ngIf="collateralNfts.length == 0">
-        <h2 class="heading-3 ion-text-capitalize">No Open loans</h2>
-        <p class="heading-5 ion-margin-bottom">Access a loan with a minimum loan-to-value ratio of 20%, utilizing your NFT as collateral.</p>
-        <ion-button expand="block" fill="outline" (click)="onSelectTab.emit('borrow')" >Collateralize now</ion-button>
+      <div class="loan-stat">
+        <div class="heading-5"><span id="prep-bullet"></span>Perpetual</div>
+        <div class="sub">{{loansInfo.totalPerpetual}} ◎</div>
       </div>
-  </ng-container>
-  <ng-template #elseTemplate>
+    </div>
+  </ion-row>
+  <div id="no-loans" *ngIf="collateralNfts.length == 0">
+    <span>
+      <h2 class="heading-3 ion-text-capitalize">No Open loans</h2>
+      <p class="heading-5 ion-margin-bottom">Access a loan with a minimum loan-to-value ratio of 20%, utilizing your NFT
+        as collateral.</p>
+    </span>
+    <ion-button expand="block" fill="outline" (click)="onSelectTab.emit('borrow')">Collateralize now</ion-button>
+  </div>
+</ng-container>
+<ng-template #elseTemplate>
+  <span>
+
     <h2 class="heading-3 ion-text-capitalize">Borrowing</h2>
-    <p class="heading-5 ion-margin-bottom">Select NFTs as collateral to secure a loan through Frakt Protocol, receiving SOL in exchange.</p>
-    <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
-  </ng-template>
+    <p class="heading-5 ion-margin-bottom">Select NFTs as collateral to secure a loan through Frakt Protocol, receiving
+      SOL in exchange.</p>
+  </span>
+  <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+</ng-template>

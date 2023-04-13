@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { Subscription, switchMap, tap } from 'rxjs';
@@ -12,7 +13,12 @@ export class NftLiquidityPage implements OnInit {
   public menu: string[] = ['dashboard', 'borrow', 'lend'];
   public currentTab: string = this.menu[0];
   public searchTerm: string;
-  constructor(private _solanaUtilsService: SolanaUtilsService, private _utilsService:UtilsService) { }
+  constructor(
+    private _titleService: Title,  
+    private _solanaUtilsService: SolanaUtilsService, 
+    private _utilsService:UtilsService) {
+      
+     }
   public solBalance: number = 0;
   public wallet$ = this._solanaUtilsService.walletExtended$.pipe(
     this._utilsService.isNotUndefined,
@@ -24,7 +30,7 @@ export class NftLiquidityPage implements OnInit {
     )
 
   ionViewWillEnter(){
-
+    this._titleService.setTitle('CompactDeFi - NFT Liquidity')
   }
   searchItem(term: any) {
     this.searchTerm = term.value;

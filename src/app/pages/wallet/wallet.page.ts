@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { PopoverController } from '@ionic/angular';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { combineLatestWith, distinctUntilChanged, firstValueFrom, Observable, shareReplay, switchMap } from 'rxjs';
@@ -76,9 +77,13 @@ export class WalletPage implements OnInit, OnDestroy {
     private _nftStore: NftStoreService,
     private _jupStore: JupiterStoreService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _popoverController: PopoverController
-
-  ) { }
+    private _popoverController: PopoverController,
+    private _titleService: Title,  
+  ) { 
+  }
+  ionViewWillEnter(){
+    this._titleService.setTitle('CompactDeFi - dashboard')
+  }
   async openSwapSmallBalancePopup() {
     const popover = await this._popoverController.create({
       component: ConvertBalancePopupComponent,

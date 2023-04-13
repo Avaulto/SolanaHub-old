@@ -4,7 +4,7 @@
     <app-frakt-stats></app-frakt-stats>
 
     <ion-row class="ion-justify-content-between ion-align-items-center">
-      <app-tabs [menu]="menu" (onSelectTab)="tabChange($event)"></app-tabs>
+      <app-tabs [menu]="menu" [currentTab]="currentTab" (onSelectTab)="tabChange($event)"></app-tabs>
       <app-search-input (search)="searchItem($event)" [value]="searchTerm" [placeholder]="'Search collection'"></app-search-input>
     </ion-row>
     <ion-row>

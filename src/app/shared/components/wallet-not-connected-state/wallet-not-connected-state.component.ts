@@ -14,7 +14,6 @@ export class WalletNotConnectedStateComponent implements OnInit {
   constructor(private _walletStore:WalletStore) { }
 
   ngOnInit() {
-    console.log(this.showBtn)
   }
 
 }

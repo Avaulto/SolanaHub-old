@@ -48,16 +48,14 @@ export class LendComponent implements OnInit {
   // @ViewChildren('icon') icon:QueryList<IonIcon>;
   // sortOrder: 'asc' | 'desc' = 'asc';
 
-  private _fraktNfts$: BehaviorSubject<FraktNftItemWithLiquidity[]> = new BehaviorSubject(null)
-  public fraktNfts$ = this._fraktNfts$.asObservable().pipe(shareReplay(1));
+  public fraktLendPools$ = this._fraktStore.getPoolsListFull().pipe(shareReplay())
   @Input() solBalance: number = 0;
   @Input() wallet;
   @Input() searchTerm: string;
   constructor(private _fraktStore: FraktStoreService) { }
 
   async ngOnInit() {
-    const _fetchNftListed = await firstValueFrom(this._fraktStore.getPoolsListFull());
-    this._fraktNfts$.next(_fetchNftListed)
+
   }
 
   currentBoxOpen: number = null;

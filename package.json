@@ -44,11 +44,12 @@
     "ngx-google-analytics": "^14.0.1",
     "plausible-tracker": "^0.3.8",
     "rxjs": "~7.5.0",
+    "socket.io": "^4.6.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "15.1.0",
+    "@angular-devkit/build-angular": "15.2.6",
     "@angular-eslint/builder": "~13.0.1",
     "@angular-eslint/eslint-plugin": "~13.0.1",
     "@angular-eslint/eslint-plugin-template": "~13.0.1",

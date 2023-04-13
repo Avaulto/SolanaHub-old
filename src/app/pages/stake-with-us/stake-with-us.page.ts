@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ContactInfo, GetProgramAccountsConfig, GetProgramAccountsFilter, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { map, mergeMap, Observable, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
@@ -29,8 +30,14 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   )
   constructor(
     private _utilsService: UtilsService,
-    private _solanaUtilsService: SolanaUtilsService) { }
+    private _solanaUtilsService: SolanaUtilsService,
+    private _titleService: Title  
+    ) {   
 
+  }
+  async ionViewWillEnter() {
+    this._titleService.setTitle('CompactDeFi - stake with us')
+  }
   async ngOnInit() {
     this.anchorWallet$ = this._solanaUtilsService.walletExtended$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(
       (async wallet => {

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { PopoverController } from '@ionic/angular';
 import { DefiTourComponent } from './defi-tour/defi-tour.component';
 
@@ -15,7 +16,7 @@ interface DefiApps {
   templateUrl: './defi.page.html',
   styleUrls: ['./defi.page.scss'],
 })
-export class DefiPage implements OnInit {
+export class DefiPage   {
   public defiApps: DefiApps[] = [
     {
       name: 'Liquid staking',
@@ -39,7 +40,7 @@ export class DefiPage implements OnInit {
       description: `FRAKT Loans is the first decentralized peer-to-pool based NFT liquidity protocol on Solana. Depositors provide SOL liquidity to the lending pool to earn interest, while borrowers are able to borrow SOL through the lending pool using NFTs as collateral instantly`,
       learnMoreLink: 'https://docs.frakt.xyz/frakt',
       deepLink: 'nft-liquidity',
-      status:'pending'
+      status:'active'
     },
     // {
     //   name: 'orca',
@@ -59,10 +60,11 @@ export class DefiPage implements OnInit {
     // },
   ]
   
-  constructor(private _popoverController: PopoverController) { }
-
-  ngOnInit() {
+  constructor(private _popoverController: PopoverController, private _titleService: Title) { }
+  ionViewWillEnter(){
+    this._titleService.setTitle('CompactDeFi - defi')
   }
+
   async showDefiTourSlide(e: Event) {
     const popover = await this._popoverController.create({
       component: DefiTourComponent,

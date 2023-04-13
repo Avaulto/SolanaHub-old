@@ -10,6 +10,7 @@ import { Token, TokenBalance } from '../../../../models';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
 import Decimal from "decimal.js";
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -25,8 +26,13 @@ export class TokenSwapPage implements OnInit {
     private _jupStore: JupiterStoreService,
     private _txInterceptService: TxInterceptService,
     private _solanaUtilsService: SolanaUtilsService,
-    private $gaService: GoogleAnalyticsService
-  ) { }
+    private $gaService: GoogleAnalyticsService,
+    private _titleService: Title,  
+  ) { 
+  }
+  ionViewWillEnter(){
+    this._titleService.setTitle('CompactDeFi - swap tokens')
+  }
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet
 

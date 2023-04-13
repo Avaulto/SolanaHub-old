@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  ga:'G-5MTRXNJ42D',
+  ga:'',
   production: false,
   solanaEnv: 'devnet',
   orcaWhirlPool: {programId:'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',config:'FcrweFY1G9HJAHG5inkGB6pKg1HZ6x9UC2WioAfWrGkR', poolAPI: 'https://api.devnet.orca.so/v1/whirlpool/list'},

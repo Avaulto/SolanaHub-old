@@ -1,0 +1,47 @@
+<ion-row class="ion-margin-bottom" id="yield-apr-box">
+  <div>8%-20% <span>APR</span> </div>
+  <p id="">Maximize your NFT earnings with hassle-free loan pools</p>
+</ion-row>
+
+<ng-container *ngIf="userStats; else elseTemplate">
+  <div *ngIf="userStats?.totalStats?.userTotalLiquidity > 0">
+    <ion-row class="ion-align-items-center ion-justify-content-between">
+      <h2 class="heading-3 ion-text-capitalize">my deposits</h2>
+     <app-harvest></app-harvest>
+    </ion-row>
+    <ion-row id="deposits" class="ion-align-items-center ion-justify-content-around">
+     
+      
+      <ion-col class="data-box ion-padding" size="12" sizeMd="5.5">
+        <app-data-box [loading]="false" [title]="'TOTAL LIQUIDITY'"
+          [desc]="(userStats?.totalStats?.userTotalLiquidity | number : '1.2-2')  +'◎' ">
+         
+        </app-data-box>
+      </ion-col>
+      <ion-col class="data-box ion-padding" size="12" sizeMd="5.5">
+        <app-data-box [loading]="false" [title]="'Current APY'"
+          [desc]="'5%'">
+          <div class="heading-5">Risk: Moderate</div>
+        </app-data-box>
+      </ion-col>
+     
+        <ion-button  fill="outline" (click)="onSelectTab.emit('lend')">Manage pools</ion-button>
+      
+    </ion-row>
+  </div>
+  <div id="no-deposit" *ngIf="userStats?.totalStats?.userTotalLiquidity == 0">
+    <span>
+      <h2 class="heading-3 ion-text-capitalize">No Deposits</h2>
+      <p class="heading-5 ion-margin-bottom">Unlock up to 10% extra yield by joining NFT liquidity pool.</p>
+    </span>
+    <ion-button fill="outline" (click)="onSelectTab.emit('lend')" >Find a pool</ion-button>
+  </div>
+</ng-container>
+<ng-template #elseTemplate>
+  <span>
+
+    <h2 class="heading-3 ion-text-capitalize">Deposits</h2>
+    <p class="heading-5 ion-margin-bottom">Use your SOL for join a NFT liquidty pool and enjoy extra yield up to 10% </p>
+  </span>
+  <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+</ng-template>

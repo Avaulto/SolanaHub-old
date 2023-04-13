@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ActiveBorrowsComponent } from './active-borrows.component';
+import { CalcComponent } from './calc.component';
 
-describe('ActiveBorrowsComponent', () => {
-  let component: ActiveBorrowsComponent;
-  let fixture: ComponentFixture<ActiveBorrowsComponent>;
+describe('CalcComponent', () => {
+  let component: CalcComponent;
+  let fixture: ComponentFixture<CalcComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActiveBorrowsComponent ],
+      declarations: [ CalcComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ActiveBorrowsComponent);
+    fixture = TestBed.createComponent(CalcComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

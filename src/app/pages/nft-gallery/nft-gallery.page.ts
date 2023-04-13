@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { filter, firstValueFrom, map, mergeMap, Observable, shareReplay, Subscription, switchMap } from 'rxjs';
 import { Nft, NFTGroup } from '../../models';
 import { LoaderService, UtilsService, NftStoreService, DataAggregatorService, SolanaUtilsService } from 'src/app/services';
+import { Title } from '@angular/platform-browser';
 
 
 
@@ -32,11 +33,14 @@ export class NftGalleryPage {
     private _nftStore: NftStoreService,
     public loaderService: LoaderService,
     private _solanaUtilsService:SolanaUtilsService,
-    private _utilsService: UtilsService
-  ) { }
+    private _utilsService: UtilsService,
+    private _titleService: Title,  
+  ) {
+   }
   allNft$: Subscription;
   public totalFloor:{sol:number,usd: number} = {sol:0,usd:0};
   async ionViewWillEnter() {
+    this._titleService.setTitle('CompactDeFi - NFT gallery')
 
   }
   ionViewDidLeave() {

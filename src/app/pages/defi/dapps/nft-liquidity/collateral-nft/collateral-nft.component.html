@@ -1,6 +1,6 @@
 <ion-card class="nft-item" style="background: var(--deep-background) !important;">
     <ion-card-header>
-      <app-image-placeholder [imagePath]="nft.imageUrl"></app-image-placeholder>
+      <app-image-placeholder [imagePath]="aggrigateNft?.imageUrl"></app-image-placeholder>
 
      
     </ion-card-header>
@@ -8,13 +8,15 @@
     <ion-card-content>
       <div id="nft-title">
   
-        <h5 class="heading-5">{{nft.name}}</h5>
-        <a [href]="utilsService.explorer +'/address/'+ nft.mint + '?cluster='+env" target="_blank"><ion-icon name="link-outline"></ion-icon></a>
+        <h5 class="heading-5">{{aggrigateNft?.name}}</h5>
+        <a [href]="utilsService.explorer +'/address/'+ aggrigateNft?.mint + '?cluster='+env" target="_blank">
+          <ion-icon name="link-outline"></ion-icon>
+        </a>
       </div>
       <ion-card-title class="sub">
-        <span>to borrow</span>
+        <span>{{aggrigateNft?.customTitle}}</span>
         <span>
-          {{nft.classicParams.maxLoanValue | number: '1.2-2'}} ◎
+          {{aggrigateNft?.customeValue}} 
         </span>
       </ion-card-title>
       <ion-accordion-group >
@@ -23,8 +25,8 @@
             <ion-label>Properties</ion-label>
           </ion-item>
           <div slot="content">
-            <div class="nft-attr ion-margin-bottom" *ngFor="let attr of nft?.classicParams.timeBased | keyvalue">
-              <div class="sub-strong">{{attr.key}}</div>
+            <div class="nft-attr ion-margin-bottom" *ngFor="let attr of aggrigateNft?.extraData | keyvalue">
+              <div class="sub-strong ion-text-capitalize">{{attr.key}}</div>
               <span class="sub">{{attr.value}}</span>
             </div>
           </div>

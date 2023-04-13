@@ -23,41 +23,41 @@
     </ion-row>
 
   </ion-list-header>
-  <ng-container *ngIf="fraktNfts$ | async as fraktNfts; else elseTemplate">
+  <ng-container *ngIf="fraktLendPools$ | async as fraktLendPools; else elseTemplate">
     <ion-accordion-group (ionChange)="isOpenBox($event)">
       <!-- <ion-virtual-scroll [items]="fraktNftList | async | filter: 'name':searchTerm " approxItemHeight="80px"> -->
-      <ion-accordion @slideInOut [value]="i" *ngFor="let loan of fraktNfts | filter:'name':searchTerm;let i = index">
+      <ion-accordion @slideInOut [value]="i" *ngFor="let pool of fraktLendPools | filter:'name':searchTerm;let i = index">
 
         <ion-item id="attr-header" slot="header" class="ion-no-padding">
           <ion-row class="ion-align-items-center">
             <ion-col size="12" size="3">
               <div class="loan-avatar">
-                <app-image-placeholder [imagePath]="loan.imageUrl"></app-image-placeholder>
-                <ion-label class="ion-text-wrap">{{loan.name}}</ion-label>
+                <app-image-placeholder [imagePath]="pool.imageUrl"></app-image-placeholder>
+                <ion-label class="ion-text-wrap">{{pool.name}}</ion-label>
               </div>
             </ion-col>
             <ion-col size="12" sizeMd="2.25">
               <div class="loan-params-wrapper">
                 <ion-label class="ion-hide-md-up">TOTAL LIQUIDITY</ion-label>
-                <ion-label>{{loan.totalLiquidity | number: '1.2-2'}} ◎</ion-label>
+                <ion-label>{{pool.totalLiquidity | number: '1.2-2'}} ◎</ion-label>
               </div>
             </ion-col>
             <ion-col size="12" sizeMd="2.25">
               <div class="loan-params-wrapper">
                 <ion-label class="ion-hide-md-up">DEPOSIT YIELD</ion-label>
-                <ion-label>{{loan.depositApr}} %</ion-label>
+                <ion-label>{{pool.depositApr}} %</ion-label>
               </div>
             </ion-col>
             <ion-col size="12" sizeMd="2.25">
               <div class="loan-params-wrapper">
                 <ion-label class="ion-hide-md-up">BORROW INTEREST</ion-label>
-                <ion-label>{{loan.borrowApr}} %</ion-label>
+                <ion-label>{{pool.borrowApr}} %</ion-label>
               </div>
             </ion-col>
             <ion-col size="12" sizeMd="2.25">
               <div class="loan-params-wrapper">
                 <ion-label class="ion-hide-md-up">TOTAL BORROWED</ion-label>
-                <ion-label>{{loan.totalBorrowed | number: '1.2-2'}} ◎</ion-label>
+                <ion-label>{{pool.totalBorrowed | number: '1.2-2'}} ◎</ion-label>
               </div>
             </ion-col>
             <!-- <ion-col size="12" sizeMd="1.5" class="ion-hide-md-down">
@@ -67,8 +67,8 @@
             </ion-col> -->
           </ion-row>
         </ion-item>
-        <app-box-content slot="content" [wallet]="wallet" [solBalance]="solBalance" [activeLoans]="loan.activeloansAmount" [accordionOpen]="currentBoxOpen == i"
-          [collectionName]="loan.slug"></app-box-content>
+        <app-box-content slot="content" [wallet]="wallet" [pool]="pool" [accordionOpen]="currentBoxOpen == i"
+          ></app-box-content>
 
       </ion-accordion>
       <!-- </ion-virtual-scroll> -->

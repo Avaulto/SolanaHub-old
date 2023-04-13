@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { EpochInfo, LAMPORTS_PER_SOL, RpcResponseAndContext, Supply, VoteAccountStatus } from '@solana/web3.js';
 import { forkJoin, map, Observable, shareReplay, Subject, tap } from 'rxjs';
 import { CoinData } from 'src/app/models';
@@ -36,9 +37,12 @@ export class HomePage implements OnInit, OnDestroy {
     private _dataAggregatorService: DataAggregatorService,
     private _solanaUtilsService: SolanaUtilsService,
     public loaderService: LoaderService,
+    public _titleService: Title,
   ) {
   }
-
+  ionViewWillEnter(){
+    this._titleService.setTitle('CompactDeFi - swap tokens')
+  }
   async ngOnInit() {
     const getSupply = await this._solanaUtilsService.getSupply();
     this.getSupply.next(getSupply)

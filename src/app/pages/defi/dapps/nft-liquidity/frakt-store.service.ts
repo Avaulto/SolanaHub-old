@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { depositLiquidity, proposeLoanIx } from '@frakt-protocol/frakt-sdk/lib/loans';
-
+import {
+  depositLiquidity,
+  unstakeLiquidity,
+  harvestLiquidity,
+  paybackLoanIx,
+  proposeLoanIx,
+} from '@frakt-protocol/frakt-sdk/lib/loans';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { BN } from 'bn.js';
 
 import { catchError, map, observable, Observable, shareReplay, switchMap, throwError } from 'rxjs';
 import { toastData } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
-import { environment } from 'src/environments/environment';
+
 import {
+
+  AllUserStats,
   BestBorrowSuggtion,
   CollectionInfo,
   FraktLiquidity,
@@ -15,10 +23,19 @@ import {
   FraktNftItemWithLiquidity,
   FraktNftMetadata,
   FraktStats,
-  OpenLoan
+  OpenLoan,
+  UserRewards
 } from './frakt.model';
 
 
+// interface MakeProposeTransaction = (params: {
+//   nftMint: string;
+//   valuation: number; //? lamports
+//   loanValue: number; //? lamports
+//   loanType: any //LoanType;
+//   connection: any //web3.Connection;
+//   wallet: any //WalletContextState;
+// }) => Promise<{ transaction:any; signers: any }>;
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +49,8 @@ export class FraktStoreService {
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService
   ) { }
-  protected _lendingAndBorrowingProgramId = new PublicKey("A66HabVL3DzNzeJgcHYtRRNW1ZRMKwBfrdSR4kLsZ9DJ")
+  protected LOANS_PROGRAM_PUBKEY = new PublicKey("A66HabVL3DzNzeJgcHYtRRNW1ZRMKwBfrdSR4kLsZ9DJ")
+  protected LOANS_FEE_ADMIN_PUBKEY = new PublicKey("9aTtUqAnuSMndCpjcPosRNf3fCkrTQAV8C8GERf3tZi3")
   // protected _
   // public orcaContext: WhirlpoolContext;
   // public orcaClient: WhirlpoolClient;
@@ -145,13 +163,37 @@ export class FraktStoreService {
 
     let openLoans: OpenLoan[] = [];
     try {
-      const res = await (await fetch(`${this.fraktApi}/nft/loan/all?user=${user}&loanStatus=activated`)).json();
+      const res = await (await fetch(`${this.fraktApi}/loan/all/${user}`)).json();
       openLoans = res
     } catch (error) {
       console.error(error);
     }
     return openLoans
   }
+
+  public async getUserRewards(user: string): Promise<UserRewards> {
+
+    let userRewards: UserRewards = null;
+    try {
+      const res = await (await fetch(`${this.fraktApi}/stats/rewards/${user}`)).json();
+      userRewards = res
+    } catch (error) {
+      console.error(error);
+    }
+    return userRewards
+  }
+  public async getAllUserStats(user: string): Promise<AllUserStats> {
+
+    let allUserStats: AllUserStats = null;
+    try {
+      const res = await (await fetch(`${this.fraktApi}/stats/all/${user}`)).json();
+      allUserStats = res
+    } catch (error) {
+      console.error(error);
+    }
+    return allUserStats
+  }
+
   public getPoolsListFull(): Observable<FraktNftItemWithLiquidity[]> {
     // priceBasedLiqs
     let poolsFull = []
@@ -168,30 +210,96 @@ export class FraktStoreService {
         })
           .filter(item => item)
           .sort((a, b) => a.totalLiquidity > b.totalLiquidity ? -1 : 1)
+          // console.log(poolsFull,poolsLiquidity,nftWhitelist)
         return poolsFull
       }),
       catchError(this._formatErrors)
     )
   }
   async addLiquidity(walletOwner: PublicKey, liquidityPool: PublicKey, amount: any) {
-    const depositTx = await depositLiquidity({
-      programId: this._lendingAndBorrowingProgramId,
-      liquidityPool,
-      connection: this._solanaUtilsService.connection,
-      user: walletOwner,
-      amount
-    })
+    try {
+      const depositTx = await depositLiquidity({
+        programId: this.LOANS_PROGRAM_PUBKEY,
+        liquidityPool,
+        connection: this._solanaUtilsService.connection,
+        user: walletOwner,
+        amount
+      })
 
-    return await this._txInterceptService.sendTx([depositTx.ix], walletOwner)
+      return await this._txInterceptService.sendTx([depositTx.ix], walletOwner)
+    } catch (error) {
+      console.warn(error)
+    }
   }
-  async borrowSolUsingNft(walletOwner: PublicKey, liquidityPool: PublicKey, amount: any) {
-    // const borrowTx = await proposeLoanIx({
-    //   programId: this._lendingAndBorrowingProgramId,
-    //   liquidityPool,
-    //   connection: this._solanaUtilsService.connection,
-    //   user: walletOwner,
-    //   amount
-    // })
+  async removeLiquidity(walletOwner: PublicKey, liquidityPool: PublicKey, amount: any) {
+    try {
+      const { ix } = await unstakeLiquidity({
+        programId: this.LOANS_PROGRAM_PUBKEY,
+        adminPubkey: this.LOANS_FEE_ADMIN_PUBKEY,
+        connection: this._solanaUtilsService.connection,
+        liquidityPool,
+        user: walletOwner,
+        amount,
+      });
 
+      return await this._txInterceptService.sendTx([ix], walletOwner)
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+
+
+  async borrowSolUsingNft(walletOwner: PublicKey, collateralNft: BestBorrowSuggtion, loanValue: number, loanType: 'price_based' | 'time_based') {
+    try {
+      const loanToValue = (loanValue / collateralNft.valuation) * 1e4;
+      const { ixs: instructions, loan: signer } = await proposeLoanIx({
+        programId: this.LOANS_PROGRAM_PUBKEY,
+        connection: this._solanaUtilsService.connection,
+        user: walletOwner,
+        nftMint: new PublicKey(collateralNft.mint),
+        proposedNftPrice: new BN(collateralNft.valuation),
+        isPriceBased: loanType === 'price_based',
+        loanToValue: new BN(loanToValue),
+        admin: this.LOANS_FEE_ADMIN_PUBKEY,
+      });
+      return await this._txInterceptService.sendTx([...instructions], walletOwner, [signer])
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+  async repayLoan(walletOwner: PublicKey, collateralNft: OpenLoan, loanValue?: number) {
+    try {
+      const { ixs: instructions } = await paybackLoanIx({
+        programId: this.LOANS_PROGRAM_PUBKEY,
+        connection: this._solanaUtilsService.connection,
+        user: walletOwner,
+        admin: this.LOANS_FEE_ADMIN_PUBKEY,
+        loan: new PublicKey(collateralNft.pubkey),
+        nftMint: new PublicKey(collateralNft.nft.mint),
+        liquidityPool: new PublicKey(collateralNft.classicParams.liquidityPool),
+        collectionInfo: new PublicKey(collateralNft.classicParams.collectionInfo),
+        royaltyAddress: new PublicKey(collateralNft.classicParams.royaltyAddress),
+        // paybackAmount,
+      });
+      return await this._txInterceptService.sendTx([...instructions], walletOwner)
+    } catch (error) {
+      console.warn(error)
+    }
+  }
+
+  public async harvestRewards(walletOwner: PublicKey, liquidityPool: string) {
+    try {
+      const { ix } = await harvestLiquidity({
+        programId: this.LOANS_PROGRAM_PUBKEY,
+        adminPubkey: this.LOANS_FEE_ADMIN_PUBKEY,
+        connection: this._solanaUtilsService.connection,
+        liquidityPool: new PublicKey(liquidityPool),
+        user: walletOwner,
+      });
+      return ix // await this._txInterceptService.sendTx([ix], walletOwner)
+    } catch (error) {
+      console.warn(error)
+    }
   }
 }

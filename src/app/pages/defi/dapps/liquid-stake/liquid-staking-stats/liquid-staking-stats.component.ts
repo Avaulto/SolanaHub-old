@@ -30,7 +30,7 @@ export class LiquidStakingStatsComponent implements OnChanges {
     private _stakePoolStore: StakePoolStoreService,
   ) { }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes): void {
     this.stakePoolStats = {
       assetRatio: null,
       supply: null,
@@ -98,7 +98,6 @@ export class LiquidStakingStatsComponent implements OnChanges {
   async fetchUserHoldings() {
     let TVL = { staked_usd: 0, staked_asset: 0 }
     try {
-
       const solprice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price;
       const splAccounts = await this._solanaUtilsService.getTokenAccountsBalance(this.wallet.publicKey) || [];
       const splAccount = splAccounts.find(account => account.mintAddress == this.selectedProvider.tokenMint.toBase58());

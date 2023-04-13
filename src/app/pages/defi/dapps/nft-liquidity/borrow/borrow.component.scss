@@ -1,21 +1,19 @@
 :host{
     width: 100%;
 }
-.nft-list{
-    display: flex;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-}
-
 .nft-wrapper{
-    width: 250px;
+    width: 220px;
+    align-items: flex-start;
 }
 
 #yield-box {
-    display: block;
     width: 450px;
     max-width: 100%;
-    margin: 8px auto;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    // justify-content: center;
 }
 
 #yield-apr-box {
@@ -69,8 +67,37 @@
 
 }
 
-#node-selection {
+ion-slides {
     width: 100%;
+    height: 100%;
 }
 
+.blur-overlay{
+    filter: blur(10px);
+}
 
+ion-text{
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-transform: capitalize;
+    background: #00000033;
+    font-size: 16px;
+}
+app-collateral-nft{
+    border: 1px solid transparent;
+}
+.selected-nft{
+    border: 1px solid var(--ion-color-secondary);
+    border-radius: 6px;
+    ion-button{
+        --border-style: dashed;
+    }
+}

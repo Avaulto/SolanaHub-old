@@ -1,8 +1,8 @@
-<ion-row class="ion-justify-content-between">
-  <ion-col sizeLg="8" size="12" style="min-height: 200px;" class="data-box ion-padding">
-    <app-active-borrows (onSelectTab)="onSelectTab.emit($event)"></app-active-borrows>
+<ion-row class="ion-justify-content-between ion-align-items-start">
+  <ion-col sizeLg="7.5" size="12" class="data-box ion-padding">
+    <app-active-deposits [userStats]="userStats$ | async" (onSelectTab)="onSelectTab.emit($event)"></app-active-deposits>
   </ion-col>
-  <ion-col sizeLg="3.5" size="12" class="data-box ion-padding">
-    <app-active-loans (onSelectTab)="onSelectTab.emit($event)"></app-active-loans>
+  <ion-col sizeLg="4" size="12" class="data-box ion-padding">
+    <app-active-loans [userStats]="userStats$ | async" (onSelectTab)="onSelectTab.emit($event)"></app-active-loans>
   </ion-col>
 </ion-row>

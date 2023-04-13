@@ -1,15 +1,18 @@
 :host {
-    display: block;
-    padding: 15px 0px;
-    margin: 5px auto;
-    height: 100%;
-    width: 220px;
-    max-width: 100%;
+//     display: block;
+// width: 300px;
 }
+// app-image-placeholder {
+//     min-height: 220px;
+//     min-width: 220px;
+//     max-width: 100%;
+//     display: block;
+// }
 
 .nft-item {
     width: 100%;
     height: 100%;
+    padding-bottom: 15px;
 }
 
 ion-accordion {
@@ -32,6 +35,9 @@ ion-accordion {
 .nft-attr {
     display: flex;
     justify-content: space-between;
+     .sub-strong {
+        text-align: left;
+    }
 }
 #nft-title {
     display: flex;
@@ -63,9 +69,6 @@ ion-card-title{
     justify-content: space-between;
     text-transform: uppercase;
     color: var(--ion-text-color);
-    :first-child{
-        width: 100px;
-    }
     span{
         white-space: nowrap;
         overflow: hidden;
