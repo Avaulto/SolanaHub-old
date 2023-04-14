@@ -35,6 +35,11 @@ export const pages: any = [
           url: "/defi/token-swap",
           icon: 'swap-horizontal',
         },
+        {
+          title: "NFT Liquidity",
+          url: "/defi/nft-liquidity",
+          icon: 'swap-horizontal',
+        },
         // {
         //   title: 'nft-liquidity',
         //   url: "/defi/nft-liquidity",
