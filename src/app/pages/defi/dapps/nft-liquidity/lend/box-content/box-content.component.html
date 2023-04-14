@@ -50,7 +50,7 @@
         <app-tabs [menu]="menu"  (onSelectTab)="tabChanged($event)"></app-tabs>
         <div [ngSwitch]="currentTab" id="liquid-stake-form" class="ion-padding-vertical">
           <form *ngSwitchCase="'deposit'" [formGroup]="lendForm">
-            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:wallet.balance | number: '1.2-2'}">
+            <app-label-layout [layoutConfig]="{title: 'SOL Amount', balance:wallet.balance | number: '1.2'}">
              
             </app-label-layout>
             <ion-row id="stake-amount">

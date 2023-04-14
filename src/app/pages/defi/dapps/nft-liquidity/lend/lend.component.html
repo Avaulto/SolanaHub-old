@@ -60,11 +60,7 @@
                 <ion-label>{{pool.totalBorrowed | number: '1.2-2'}} ◎</ion-label>
               </div>
             </ion-col>
-            <!-- <ion-col size="12" sizeMd="1.5" class="ion-hide-md-down">
-              <ion-progress-bar [tooltip]="'active loans: '+loan.activeloansAmount" [value]="loan.activeloansAmount / loan.maxAmountOfActiveLoans"></ion-progress-bar>
-              <span  class="sub">max: {{loan.maxAmountOfActiveLoans}}</span>
 
-            </ion-col> -->
           </ion-row>
         </ion-item>
         <app-box-content slot="content" [wallet]="wallet" [pool]="pool" [accordionOpen]="currentBoxOpen == i"

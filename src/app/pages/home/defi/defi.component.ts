@@ -27,7 +27,7 @@ export class DefiComponent implements OnInit {
       name: 'Frakt',
       description: 'Lending and borrowing for NFTs',
       image: 'assets/images/icons/frakt-logo.jpeg',
-      deepLink: '#'
+      deepLink: '/defi/nft-liquidity'
     }
   ]
 }

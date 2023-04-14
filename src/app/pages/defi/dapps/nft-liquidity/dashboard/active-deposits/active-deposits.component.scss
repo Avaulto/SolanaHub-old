@@ -30,3 +30,11 @@
         width: 100%;
     }
 }
+#active-pool-breakdown{
+    color: #9dff20;
+}
+#active-pool-breakdown span {
+    border-bottom: 1px dashed;
+    line-height: 21px;
+    margin-inline-end: 7px;
+}

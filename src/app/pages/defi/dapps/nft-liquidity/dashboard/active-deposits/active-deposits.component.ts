@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
-import { SolanaUtilsService, UtilsService } from 'src/app/services';
+import { io } from "socket.io-client";
+import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import { PoolIO, UserDeposit } from '../../frakt.model';
 import { FraktStoreService } from '../../frakt-store.service';
 import { AllUserStats, UserRewards } from '../../frakt.model';
 
@@ -12,22 +14,36 @@ import { AllUserStats, UserRewards } from '../../frakt.model';
 export class ActiveDepositsComponent  implements OnInit {
   @Output() onSelectTab = new EventEmitter();
   @Input() userStats: AllUserStats;
+  public loans: PoolIO[] =[]
+  public activePools: {name: string,amount: any}[] = []
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _fraktStoreService: FraktStoreService
     ) { }
 
  
-  public userRewards$: Observable<UserRewards> = this._solanaUtilsService.walletExtended$.pipe(
-    switchMap(async wallet => {
-      if(wallet){
-        const userRewards = await this._fraktStoreService.getUserRewards(wallet.publicKey.toBase58())
-        return userRewards
-      }else{
-        return null
-      }
-    })
-  )
-  ngOnInit() {}
+  ngOnChanges(): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    this.userStats ?  this.getWeightedApy() : null
+  }
+  ngOnInit() {
+   
+  }
 
+  getWeightedApy(){
+    const conn = io('wss://api.frakt.xyz',{ transports: ['websocket'] });
+      conn.emit('lending-subscribe', this._solanaUtilsService.getCurrentWallet().publicKey.toBase58());
+      conn.on('lending', (loans: PoolIO[]) => {
+        this.loans = loans
+        loans.map(loan =>{
+         if(loan.userDeposit?.depositAmount > 0){
+           this.activePools.push({name:loan.name, amount: 'YOUR LIQUIDITY: ' + Number(loan.userDeposit.depositAmount).toFixedNoRounding(2) +' ◎'})
+          }
+          
+        })
+       
+        conn.close()
+          })
+  }
 }

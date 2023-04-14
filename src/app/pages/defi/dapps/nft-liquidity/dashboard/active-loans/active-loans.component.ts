@@ -59,7 +59,6 @@ export class ActiveLoansComponent implements OnInit {
     this.loansInfo.totalDebt = Number(this.loansInfo.totalDebt / LAMPORTS_PER_SOL).toFixedNoRounding(3)
     this.loansInfo.totalFlip = Number(this.loansInfo.totalFlip / LAMPORTS_PER_SOL).toFixedNoRounding(3)
     this.loansInfo.totalPerpetual = Number(this.loansInfo.totalPerpetual / LAMPORTS_PER_SOL).toFixedNoRounding(3)
-    console.log( this.loansInfo)
   }
   ngOnInit() {
 

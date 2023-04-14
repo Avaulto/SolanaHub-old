@@ -33,12 +33,10 @@ export class BoxContentComponent implements OnInit, OnChanges, OnDestroy {
     //Add '${implements OnChanges}' to the class.
     if (this.accordionOpen) {
       await this.getNftMetadata(this.pool.slug)
-      console.log(this.pool)
       const conn = io('wss://api.frakt.xyz',{ transports: ['websocket'] });
       conn.emit('lending-subscribe', this.wallet.publicKey.toBase58());
       conn.on('lending', (loans: PoolIO[]) => {
         this.userDeposit = loans.find(loans => loans.pubkey == this.NftMetadata.liquidityPool).userDeposit
-        console.log('lending',loans, this.userDeposit);
         conn.close()
           })
     }
@@ -61,7 +59,7 @@ export class BoxContentComponent implements OnInit, OnChanges, OnDestroy {
 
    setMaxAmountSOL() {
     if(this.currentTab=='deposit'){
-      this.lendForm.controls.amount.setValue(this.utilsService.shortenNum(this.wallet.balance -  0.001));
+      this.lendForm.controls.amount.setValue(this.utilsService.shortenNum(this.wallet.balance -  0.002));
 
     }else{
       this.lendForm.controls.amount.setValue(this.utilsService.shortenNum(this.userDeposit.depositAmount));
@@ -73,20 +71,17 @@ export class BoxContentComponent implements OnInit, OnChanges, OnDestroy {
     metadata.price = metadata.price / LAMPORTS_PER_SOL
     // metadata[0].liquidityPool = this._utilsService.addrUtil(metadata[0].liquidityPool).addrShort
     this.NftMetadata = metadata
-    console.log(this.NftMetadata)
   }
 
   async deposit(){
     const {amount} = this.lendForm.value;
     const amountBN = new BN(amount * LAMPORTS_PER_SOL);
-    console.log(amount)
     const sig = await this._fraktStore.addLiquidity(this.wallet.publicKey,new PublicKey(this.NftMetadata.liquidityPool), amountBN);
   }
 
   async withdaw(){
     const {amount} = this.lendForm.value;
     const amountBN = new BN(amount * LAMPORTS_PER_SOL);
-    console.log(amount)
     const sig = await this._fraktStore.removeLiquidity(this.wallet.publicKey,new PublicKey(this.NftMetadata.liquidityPool), amountBN);
   }
 }

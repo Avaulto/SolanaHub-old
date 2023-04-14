@@ -7,7 +7,7 @@
   <div *ngIf="userStats?.totalStats?.userTotalLiquidity > 0">
     <ion-row class="ion-align-items-center ion-justify-content-between">
       <h2 class="heading-3 ion-text-capitalize">my deposits</h2>
-     <app-harvest></app-harvest>
+     <app-harvest [loans]="loans" ></app-harvest>
     </ion-row>
     <ion-row id="deposits" class="ion-align-items-center ion-justify-content-around">
      
@@ -15,13 +15,17 @@
       <ion-col class="data-box ion-padding" size="12" sizeMd="5.5">
         <app-data-box [loading]="false" [title]="'TOTAL LIQUIDITY'"
           [desc]="(userStats?.totalStats?.userTotalLiquidity | number : '1.2-2')  +'◎' ">
-         
+   
         </app-data-box>
       </ion-col>
       <ion-col class="data-box ion-padding" size="12" sizeMd="5.5">
-        <app-data-box [loading]="false" [title]="'Current APY'"
-          [desc]="'5%'">
-          <div class="heading-5">Risk: Moderate</div>
+        <app-data-box [loading]="activePools.length == 0" [title]="'Active pools'">
+          <span id="active-pool-breakdown" *ngIf="activePools"  class="sub">
+            <span *ngFor="let pool of activePools" [tooltip]="pool.amount">
+             {{pool.name}} 
+            </span>
+           </span>
+          <!-- <div class="heading-5">Risk: Moderate</div> -->
         </app-data-box>
       </ion-col>
      

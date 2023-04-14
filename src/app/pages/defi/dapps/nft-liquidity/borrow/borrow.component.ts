@@ -58,20 +58,19 @@ export class BorrowComponent implements OnInit {
       duration: ['', [Validators.required]]
     })
 
-    this.borrowForm.valueChanges.subscribe(formValues => {
-      console.log(formValues)
-      if (formValues.loanType == 'time based') {
-        this.loanInfo = {
-          maxLoanValue: null,
-          calcParms: {
-            'floor price': null,
-            'loan to value': null,
-            'fee': null,
-            'to repay': null
-          }
-        }
-      }
-    })
+    // this.borrowForm.valueChanges.subscribe(formValues => {
+    //   if (formValues.loanType == 'time based') {
+    //     this.loanInfo = {
+    //       maxLoanValue: null,
+    //       calcParms: {
+    //         'floor price': null,
+    //         'loan to value': null,
+    //         'fee': null,
+    //         'to repay': null
+    //       }
+    //     }
+    //   }
+    // })
   }
   setSelectedDuration(duration: { extraData: { type: any }, name: string, value: any, selectable: boolean }) {
     this.borrowForm.controls['duration'].setValue(duration.value)
@@ -126,7 +125,6 @@ export class BorrowComponent implements OnInit {
   async submitBorrowForm() {
     const { collateral, amount, duration } = this.borrowForm.value;
     const loanValue = amount * LAMPORTS_PER_SOL;
-    console.log(duration)
     await this._fraktStoreService.borrowSolUsingNft(
       this._solanaUtilsService.getCurrentWallet().publicKey,
       collateral,

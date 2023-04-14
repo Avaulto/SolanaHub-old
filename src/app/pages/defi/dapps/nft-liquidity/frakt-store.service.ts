@@ -24,6 +24,7 @@ import {
   FraktNftMetadata,
   FraktStats,
   OpenLoan,
+  PoolIO,
   UserRewards
 } from './frakt.model';
 
@@ -193,6 +194,7 @@ export class FraktStoreService {
     }
     return allUserStats
   }
+
 
   public getPoolsListFull(): Observable<FraktNftItemWithLiquidity[]> {
     // priceBasedLiqs

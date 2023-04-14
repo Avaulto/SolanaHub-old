@@ -41,14 +41,12 @@ export class CollateralNftComponent  implements OnInit {
       'loan value':  Number(this.nft.classicParams.timeBased.loanValue / LAMPORTS_PER_SOL).toFixedNoRounding(3) + ' ◎', 
       'replay value': Number(this.nft.classicParams.timeBased.repayValue / LAMPORTS_PER_SOL).toFixedNoRounding(3) + ' ◎'
      }
-     console.log('borrow page', this.aggrigateNft,this.nft)
     }else{
       this.aggrigateNft.name = this.nft.nft.name;
       this.aggrigateNft.mint = this.nft.nft.mint
       this.aggrigateNft.imageUrl = this.nft.nft.imageUrl;
       this.aggrigateNft.customTitle = 'to repay';
       this.aggrigateNft.customeValue = Number(this.nft.repayValue / LAMPORTS_PER_SOL).toFixedNoRounding(3) + ' ◎'
-      console.log('dashboard page',this.aggrigateNft, this.nft)
       this.aggrigateNft.extraData = {
        'started at':  new Date(this.nft.startedAt * 1000).toLocaleDateString() + ' ' + new Date(this.nft.startedAt * 1000).toLocaleTimeString(),
       'loan Value': Number(this.nft.loanValue / LAMPORTS_PER_SOL).toFixedNoRounding(3) + ' ◎' ,
