@@ -19,6 +19,10 @@ import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 
 import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
 import { environment } from 'src/environments/environment';
+
+import { inject } from '@vercel/analytics';
+inject();
+
 @NgModule({
     declarations: [
         AppComponent,

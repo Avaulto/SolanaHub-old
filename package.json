@@ -36,6 +36,7 @@
     "@solana/web3.js": "1.73.0",
     "@types/node-fetch": "^2.6.2",
     "@types/readable-stream": "^2.3.13",
+    "@vercel/analytics": "^1.0.0",
     "angularx-qrcode": "15.0.1",
     "bn.js": "^5.2.1",
     "chart.js": "^3.7.1",
