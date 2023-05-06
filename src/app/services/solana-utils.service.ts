@@ -7,7 +7,6 @@ import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance, WalletExtended } from '../models';
 import { PopoverController } from '@ionic/angular';
-import { environment } from 'src/environments/environment';
 
 
 interface jitoValidators {

@@ -40,11 +40,6 @@ export const pages: any = [
           url: "/defi/nft-liquidity",
           icon: 'swap-horizontal',
         },
-        // {
-        //   title: 'nft-liquidity',
-        //   url: "/defi/nft-liquidity",
-        //   icon: 'cash-outline',
-        // },
       ]
     },
     // {
@@ -57,5 +52,10 @@ export const pages: any = [
       title: "stake with us",
       url: "stake-with-us",
       icon: 'heart-circle',
+    },
+    {
+      title: "stake gen2",
+      url: "stake-gen2",
+      icon: 'flash',
     }
   ];

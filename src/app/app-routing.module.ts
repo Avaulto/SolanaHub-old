@@ -21,14 +21,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
     // canActivate:[AuthGuard]
   },
-
+  {
+    path: 'defi',
+    loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
+  },
   {
     path: 'stake-with-us',
     loadChildren: () => import('./pages/stake-with-us/stake-with-us.module').then( m => m.StakeWithUsPageModule)
   },
   {
-    path: 'defi',
-    loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
+    path: 'stake-gen2',
+    loadChildren: () => import('./pages/staking-gen2/staking-gen2.module').then( m => m.StakingGen2PageModule)
   },
   {
     path:"**",

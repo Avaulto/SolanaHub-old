@@ -1,0 +1,39 @@
+:host{
+    width: 100%;
+}
+#craft-wrapper{
+    display: flex;
+    flex-direction: column;
+}
+#craft-master ion-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.demi-image {
+    height: 9vh;
+    background: lightgray;
+}
+.demi-image.demi-one {
+    height: 30vh;
+}
+.selected{
+    background: #673AB7;
+}
+ion-item{
+    text-transform: capitalize;
+    --ion-color-base: transparent !important;
+    --ion-color-contrast: white !important;
+    --background: transparent;
+}
+::ng-deep{
+    ion-accordion {
+        margin-bottom: 15px;
+        background: var(--deep-background);
+        box-shadow: var(--deep-box-shadow);
+    }
+    ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon {
+        
+        color: var(--icon-color);
+    }
+}

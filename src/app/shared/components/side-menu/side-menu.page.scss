@@ -36,6 +36,12 @@
     &.active::before {
         background-color: var(--ion-color-primary);
     }
+    &.gen-2-item{
+        &.active::before {
+            background-color: transparent;
+        }
+        background: linear-gradient(96.02deg, rgb(255, 132, 90) 0.22%, rgb(253, 73, 173) 31.45%, rgb(57, 93, 240) 71.02%, rgb(12, 218, 196) 104.34%);
+    }
 }
 
 .menu-icon {

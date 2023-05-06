@@ -1,0 +1,54 @@
+.nft-attr {
+    width: 112px;
+    min-height: 58px;
+    background: #04172C;
+    border-radius: 4px;
+    padding: 8px;
+    text-transform: capitalize;
+}
+
+.col-group {
+    display: flex;
+    align-items: center;
+    ion-img {
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+}
+#art-icon{
+    width: 26px;
+    height: 26px;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+
+}
+#attr-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 119px);
+}
+a{
+    text-decoration: none;
+    display: flex;
+    ion-icon{
+        font-size: 14px;
+        margin-inline-end: 10px;
+    }
+}
+.rank-1{
+
+}
+.rank-2{
+    color: var(--ion-color-primary);
+}
+.rank-3{
+    color:  var(--ion-color-tertiary);;
+}
+.rank-4{
+    color: gold;
+}

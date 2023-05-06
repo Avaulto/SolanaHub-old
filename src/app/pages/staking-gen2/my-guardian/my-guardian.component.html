@@ -1,0 +1,22 @@
+<ion-row >
+  <ng-container *ngIf="true; else elseTemplate">
+    <ion-row *ngIf="true" class="ion-justify-content-between">
+     
+        <app-preview></app-preview>
+      
+        <app-perks-table></app-perks-table>
+      
+    </ion-row>
+    <div id="no-nfts" *ngIf="false">
+      <ion-icon id="icon-placeholder" name="image-outline"></ion-icon>
+      <h1 class="headings">No NFTs</h1>
+      <p class="sub ion-margin-bottom">Get started with your first NFT</p>
+      <ion-button (onSelectTab)="onSelectTab.emit($event)" class="ion-text-capitalize">browse magic eden<ion-icon slot="end" name="log-out-outline"></ion-icon></ion-button>
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <app-wallet-not-connected-state></app-wallet-not-connected-state>
+  </ng-template>
+
+
+</ion-row>

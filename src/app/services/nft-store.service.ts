@@ -4,7 +4,7 @@ import { SolanaUtilsService } from './solana-utils.service';
 
 import { collectionStats, ListInstuction, Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { environment } from 'src/environments/environment';
 
 
@@ -23,17 +23,26 @@ export class NftStoreService {
   ) {
 
   }
-  public async createNft() {
+  public async createNft(name: string) {
     const wallet = this._solanaUtilsService.getCurrentWallet()
     this._metaplex.use(walletAdapterIdentity(wallet));
-    const { nft } = await this._metaplex
-      .nfts()
-      .create({
-        uri: "https://yyuf64d3dxl7pzwpyvwb24vqgztrxci5w3rvubbogt5s2d2m3weq.arweave.net/xihfcHsd1_fmz8VsHXKwNmcbiR2241oELjT7LQ9M3Yk",
-        name: "my nft 2",
-        sellerFeeBasisPoints: 500, // Represents 5.00%.
-      })
-
+    try {
+      const  {nft}  = await this._metaplex
+        .nfts()
+        .create({
+          isCollection: true,
+          uri: "https://yyuf64d3dxl7pzwpyvwb24vqgztrxci5w3rvubbogt5s2d2m3weq.arweave.net/xihfcHsd1_fmz8VsHXKwNmcbiR2241oELjT7LQ9M3Yk",
+          name,
+          sellerFeeBasisPoints: 0, // Represents 5.00%.
+          ruleSet:null
+        })
+        // this._metaplex.nfts().lock({nftOrSft:'', authority})
+        // await this._metaplex.nfts().delegate({})
+        // await this._metaplex.nfts().freezeDelegatedNft({mintAddress: nft.address, delegateAuthority: ? })
+      return nft;
+    } catch (error) {
+      console.log(error)
+    }
   }
   public async getMagicEdenOwnerNFTS(walletOwnerAddress: string): Promise<any[]> {
     const uri = `${this.magicEdenApiProxy}&endpoint=wallets/${walletOwnerAddress}/tokens`
@@ -42,7 +51,14 @@ export class NftStoreService {
     return nfts
   }
 
+  public async lockNft(addr) {
 
+    try {
+
+    } catch (error) {
+
+    }
+  }
   public async nftSellOrCancel(type: 'sell' | 'sell_cancel', { sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction): Promise<{ tx: any, txSigned: any }> {
 
     let sellCancelNftInstructionReq: { tx: any, txSigned: any } = null;
