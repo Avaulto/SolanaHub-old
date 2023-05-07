@@ -1,39 +1,74 @@
-:host{
+:host {
     width: 100%;
 }
-#craft-wrapper{
+
+#craft-wrapper {
     display: flex;
     flex-direction: column;
 }
+
 #craft-master ion-col {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
+
 .demi-image {
     height: 9vh;
     background: lightgray;
 }
+
 .demi-image.demi-one {
     height: 30vh;
 }
-.selected{
+
+.selected {
     background: #673AB7;
 }
-ion-item{
+
+#craft-intro {
+    text-align: center;
+    h1{
+        font-size: 40px;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+}
+
+ion-item {
     text-transform: capitalize;
     --ion-color-base: transparent !important;
     --ion-color-contrast: white !important;
     --background: transparent;
 }
-::ng-deep{
+
+#my-gurdians-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    gap: 10px;
+
+    ion-img {
+        border-radius: 8px;
+        overflow: hidden;
+    }
+}
+
+::ng-deep {
     ion-accordion {
         margin-bottom: 15px;
         background: var(--deep-background);
         box-shadow: var(--deep-box-shadow);
     }
-    ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon {
-        
+
+    ion-accordion.accordion-animated>[slot=header] .ion-accordion-toggle-icon {
+
         color: var(--icon-color);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #my-gurdians-list {
+        grid-template-columns: 1fr 1fr;
     }
 }
