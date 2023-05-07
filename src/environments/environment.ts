@@ -11,6 +11,8 @@ export const environment = {
   magicEdenProxyAPI: 'https://dev.compact-defi.xyz/api/ME-proxy?env=devnet',
   metaplexProxyAPI: 'https://dev.compact-defi.xyz/api/MP-proxy',
   HyperspaceKey:'',
+  platformFeeCollector:'81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1'
+
 };
 
 /*

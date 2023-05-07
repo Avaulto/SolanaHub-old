@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Jupiter, RouteInfo } from '@jup-ag/core';
-import {  PublicKey,  Transaction } from '@solana/web3.js';
+import { getPlatformFeeAccounts, Jupiter, PlatformFeeAndAccounts, RouteInfo } from '@jup-ag/core';
+import { PublicKey, Transaction } from '@solana/web3.js';
 import JSBI from 'jsbi';
 
 import { catchError, Observable, throwError } from 'rxjs';
 import { JupiterPriceFeed, Token } from '../models';
 import { ApiService, SolanaUtilsService, ToasterService } from './';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { ApiService, SolanaUtilsService, ToasterService } from './';
 export class JupiterStoreService {
 
   private _formatErrors(error: any) {
-    console.warn('my err',error)
+    console.warn('my err', error)
     this._toasterService.msg.next({
       message: error.message,
       segmentClass: "toastError",
@@ -33,12 +34,28 @@ export class JupiterStoreService {
       const connection = this._solanaUtilsService.connection;
       const pk = wallet.publicKey
       try {
+        //   const platformFeeAndAccounts: PlatformFeeAndAccounts = {
+        //     feeBps: 50,
+        //     feeAccounts: new Map<string, PublicKey>([
+        //       ["So11111111111111111111111111111111111111112", new PublicKey('81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1')]
+        //   ])
+        // };
+
+
+        const platformFeeAndAccounts = {
+          feeBps: 50,
+          feeAccounts: await getPlatformFeeAccounts(
+            connection,
+            new PublicKey(environment.platformFeeCollector) // The platform fee account owner
+          ) // map of mint to token account pubkey
+        };
+        console.log("platformFeeAndAccounts", platformFeeAndAccounts)
         this._jupiter = await Jupiter.load({
           connection,
           wrapUnwrapSOL: true,
           cluster: 'mainnet-beta',
           user: pk, // or public key
-          // platformFeeAndAccounts:  NO_PLATFORM_FEE,
+          platformFeeAndAccounts,
           routeCacheDuration: 10_000, // Will not refetch data on computeRoutes for up to 10 seconds
         });
       } catch (error) {
@@ -86,7 +103,7 @@ export class JupiterStoreService {
       }
       arrayOfTx.push(transaction)
     }
-      return arrayOfTx
+    return arrayOfTx
   }
   public fetchTokenList(): Observable<Token[]> {
     //const env = TOKEN_LIST_URL[environment.solanaEnv]//environment.solanaEnv

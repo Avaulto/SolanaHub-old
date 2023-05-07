@@ -94,7 +94,12 @@
 
                             </div>
                             <div>
-                                0%
+                                <span *ngIf="currentProvider.poolName == 'Marinade'">
+                                    0.2%
+                                </span>
+                                <span *ngIf="currentProvider.poolName != 'Marinade'">
+                                    0%
+                                </span>
                             </div>
                         </ion-row>
                     </ion-row>

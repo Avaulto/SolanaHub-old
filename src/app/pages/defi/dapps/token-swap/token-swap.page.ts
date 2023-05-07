@@ -212,7 +212,7 @@ export class TokenSwapPage implements OnInit {
       const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) * -1;
       const minimumRecived = Number(outputAmount * slippagePercentage).toFixedNoRounding(2)
       const priceImpact = marketInfos[0].priceImpactPct
-
+      console.log(marketInfos[0])
       const swapDetail: SwapDetail = {
         priceImpact,
         minimumRecived,

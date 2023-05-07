@@ -29,7 +29,7 @@
 #craft-intro {
     text-align: center;
     h1{
-        font-size: 40px;
+        font-size: 45px;
         font-weight: bold;
         margin-bottom: 0;
     }
@@ -68,6 +68,9 @@ ion-item {
 }
 
 @media screen and (max-width: 600px) {
+    #craft-intro h1{
+        font-size: 34px;
+    }
     #my-gurdians-list {
         grid-template-columns: 1fr 1fr;
     }

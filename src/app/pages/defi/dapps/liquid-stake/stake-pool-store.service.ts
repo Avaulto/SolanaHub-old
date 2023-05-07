@@ -141,7 +141,7 @@ export class StakePoolStoreService {
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
       publicKey: wallet.publicKey,
-      // referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
+      referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
     })
     this.marinadeSDK = new Marinade(config)
   }
