@@ -1,0 +1,21 @@
+<ion-row class="ion-margin-bottom heading-1">
+  Proposals
+</ion-row>
+
+<ion-row class="ion-justify-content-between ion-margin-bottom">
+  <ion-col size="8">
+    <app-search-input (search)="searchItem($event)" [value]="searchTerm"
+      [placeholder]="'Search Proposal'"></app-search-input>
+  </ion-col>
+  <ion-col id="my-props">
+    <ion-label>My Proposals</ion-label>
+    <ion-toggle></ion-toggle>
+  </ion-col>
+</ion-row>
+
+<ng-container *ngIf="proposals; else elseTemplate">
+  <app-item *ngFor="let prop of proposals" [proposal]="prop" class="ion-padding "></app-item>
+</ng-container>
+<ng-template #elseTemplate>
+
+</ng-template>

@@ -18,7 +18,8 @@ export class OptionsPopupComponent implements OnInit {
   public currentPrioretyFee = this._utilsService.priorityFee
   readonly currentExplorer$ = this._utilsService.explorer$.pipe(shareReplay(1));
 
-  public RPC_list = [{
+  public RPC_list = [
+    {
     name:'triton',
     imageUrl: 'assets/images/icons/triton-logo.svg',
     url:'https://mb-avaulto-cc28.mainnet.rpcpool.com'

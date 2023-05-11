@@ -7,3 +7,4 @@ export * from './swapDetails.model';
 export * from './tokenBalance.model'
 export * from './validatorData.model'
 export * from './jupiter-price-feed.model'
+export * from './vote.model'

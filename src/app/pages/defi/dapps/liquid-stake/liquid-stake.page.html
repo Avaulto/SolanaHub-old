@@ -22,7 +22,7 @@
                             class=" ion-align-items-center ion-margin-bottom ion-justify-content-between">
 
                             <ion-col sizeLg="5.8" sizeMd="12" class="stake-by"
-                                [ngClass]="{'selectedstakingType': stakingType == 'sol'}"
+                                [ngClass]="{'selected-path': stakingType == 'sol'}"
                                 (click)="selectStakePath('sol')">
                                 <div class="select-group">
                                     <span>
@@ -37,7 +37,7 @@
 
                             </ion-col>
                             <ion-col sizeLg="5.8" sizeMd="12" class="stake-by"
-                                [ngClass]="{'selectedstakingType': stakingType == 'account'}"
+                                [ngClass]="{'selected-path': stakingType == 'account'}"
                                 (click)="selectStakePath('account')">
                                 <div class="select-group">
                                     <span>

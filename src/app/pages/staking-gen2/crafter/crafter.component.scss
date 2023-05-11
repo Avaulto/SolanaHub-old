@@ -7,14 +7,18 @@
     flex-direction: column;
 }
 
-#craft-master ion-col {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+#craft-master {
+    
+    #craft-options{
+       
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 }
 
 .demi-image {
-    height: 9vh;
+    height: 100%;
     background: lightgray;
 }
 
@@ -54,19 +58,58 @@ ion-item {
     }
 }
 
+#craft-wrapper ion-accordion {
+    margin-bottom: 15px;
+    background: var(--deep-background);
+    box-shadow: var(--deep-box-shadow);
+}
 ::ng-deep {
-    ion-accordion {
-        margin-bottom: 15px;
-        background: var(--deep-background);
-        box-shadow: var(--deep-box-shadow);
-    }
+
 
     ion-accordion.accordion-animated>[slot=header] .ion-accordion-toggle-icon {
 
         color: var(--icon-color);
     }
 }
+.stake-by {
+    transition: 0.3s ease;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    background: var(--deep-background);
+    padding: 12px;
+    cursor: pointer;
+    justify-content: space-evenly;
+    border: 1px solid transparent;
 
+    &.selected-path {
+        border: 1px solid var(--ion-color-primary);
+    }
+
+    .select-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        ion-checkbox {
+            --size: 14px;
+        }
+    }
+}
+
+#stake-amount {
+    position: relative;
+
+    span {
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
+}
 @media screen and (max-width: 600px) {
     #craft-intro h1{
         font-size: 34px;

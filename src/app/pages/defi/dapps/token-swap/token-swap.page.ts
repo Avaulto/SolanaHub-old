@@ -176,12 +176,14 @@ export class TokenSwapPage implements OnInit {
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
     try {
+      console.log(outputToken)
       this.bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken, slippage);
       if (this.bestRoute) {
         // prep output amount on UI
         const calcOutputDecimal = new Decimal(this.bestRoute.outAmount.toString()).div(10 ** outputToken.decimals).toString()
+        const platformFee = new Decimal(this.bestRoute.marketInfos[0].platformFee.amount.toString()).div(10 ** outputToken.decimals).toFixed(3).toString() + " " + outputToken.symbol
         this.outputAmount = Number(calcOutputDecimal).toFixedNoRounding(2);
-        const swapDetails = await this._prepSwapDetails(this.bestRoute, this.outputAmount);
+        const swapDetails = await this._prepSwapDetails(this.bestRoute, this.outputAmount, platformFee);
         this._swapDetail$.next(swapDetails);
       }
     } catch (error) {
@@ -203,7 +205,7 @@ export class TokenSwapPage implements OnInit {
     this.$gaService.event('jupiter', 'swap', this.swapForm.value.inputToken?.extensions?.coingeckoId +'-'+ this.swapForm.value.outputToken?.extensions?.coingeckoId);
 
   }
-  private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number) {
+  private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number, platformFees: string) {
     const { marketInfos } = routeInfo
     try {
       const txFees = await routeInfo.getDepositAndFee();
@@ -218,7 +220,7 @@ export class TokenSwapPage implements OnInit {
         minimumRecived,
         transactionFee: txFees.signatureFee / LAMPORTS_PER_SOL + ' ' + 'SOL',
         AMMfees: (marketInfos[0].lpFee.pct).toFixed(6) + ' ' + 'SOL',
-        platformFees: marketInfos[0].platformFee.pct
+        platformFees
       }
       return swapDetail;
     } catch (error) {

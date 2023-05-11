@@ -85,6 +85,7 @@ export class LiquidStakePage {
     try {
       if (currentProvider.poolName.toLowerCase() != 'marinade') {
         let info = await this.stakePoolStore.stakePoolSDK.stakePoolInfo(this._solanaUtilsService.connection, currentProvider.poolPublicKey);
+        console.log(info)
         if (info.details.updateRequired) {
           await this.stakePoolStore.updateSolBlazePool();
         }

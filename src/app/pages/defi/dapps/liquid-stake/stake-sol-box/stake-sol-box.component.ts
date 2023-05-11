@@ -10,6 +10,7 @@ import { toastData } from 'src/app/models';
 import { TooltipPosition } from 'src/app/shared/components/tooltip/tooltip.enums';
 import { StakePoolStoreService } from '../stake-pool-store.service';
 import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-stake-sol-box',
@@ -72,6 +73,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm.controls['validatorVoteAccount'].setValue(voteAccount)
   }
   async liquidStake() {
+    let referral = new PublicKey(environment.platformFeeCollector);
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     const sol = new bn((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
@@ -82,12 +84,14 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
       if (validatorVoteAccount) {
         this.stakeCLS(Number(sol));
       } else {
-
+        
         let depositTx = await depositSol(
           this._solanaUtilsService.connection,
           this.selectedProvider.poolPublicKey,
           this.wallet.publicKey,
-          Number(sol)
+          Number(sol),
+          undefined,
+          // referral
         );
         await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
         this.$gaService.event('liquid staking', 'stake', 'stake SOL');

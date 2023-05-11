@@ -26,6 +26,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)
   },
   {
+    path: 'vote-what-next',
+    loadChildren: () => import('./pages/vote-what-next/vote-what-next.module').then( m => m.VoteWhatNextPageModule)
+  },
+  {
     path: 'stake-with-us',
     loadChildren: () => import('./pages/stake-with-us/stake-with-us.module').then( m => m.StakeWithUsPageModule)
   },
@@ -36,7 +40,8 @@ const routes: Routes = [
   {
     path:"**",
     redirectTo:'home'
-  }
+  },
+
 ];
 
 @NgModule({

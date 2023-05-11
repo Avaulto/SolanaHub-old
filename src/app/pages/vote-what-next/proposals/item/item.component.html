@@ -1,0 +1,24 @@
+<ion-row id="prop-head" class="ion-justify-content-between ion-text-capitalize">
+  <span class="heading-3">
+    {{proposal.category}} - {{proposal.title}}
+  </span>
+  <span class="sub">{{proposal.status}}</span>
+</ion-row>
+<ion-row id="prop-body">
+
+  <p>
+    {{proposal.desc}}
+  </p>
+
+  <ion-row class="ion-justify-content-between">
+    <ion-col size="3.5" class="votes">
+      <label>For</label>
+      <span class="for">{{proposal.for}}</span>
+    </ion-col>
+    <ion-col size="3.5" class="votes">
+      <label>Against</label>
+      <span class="against">{{proposal.against}}</span>
+    </ion-col>
+
+  </ion-row>
+</ion-row>

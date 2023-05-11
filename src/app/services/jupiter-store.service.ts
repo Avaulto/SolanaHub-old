@@ -43,13 +43,12 @@ export class JupiterStoreService {
 
 
         const platformFeeAndAccounts = {
-          feeBps: 50,
+          feeBps: 10,
           feeAccounts: await getPlatformFeeAccounts(
             connection,
             new PublicKey(environment.platformFeeCollector) // The platform fee account owner
           ) // map of mint to token account pubkey
         };
-        console.log("platformFeeAndAccounts", platformFeeAndAccounts)
         this._jupiter = await Jupiter.load({
           connection,
           wrapUnwrapSOL: true,

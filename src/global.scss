@@ -170,19 +170,23 @@ ion-button {
     }
 }
 
+ion-input,ion-select{
+    height: 41px;
+}
 ion-input,
+ion-textarea,
 ion-select {
     border: 2px solid transparent;
     box-sizing: border-box;
     border-radius: 4px;
     width: inherit;
-    height: 41px;
     margin-bottom: 16px;
     text-transform: capitalize;
     width: 100%;
     background: var(--deep-background) !important;
     --background: var(--deep-background) !important;
     --padding-start: 16px !important;
+    --padding-end: 16px !important;
     padding-inline-start: 16px !important;
     --placeholder-color: white;
     --placeholder-opacity: 1 !important;
@@ -205,7 +209,9 @@ ion-select {
         opacity: 1;
     }
 }
-
+textarea{
+    padding-inline-start: 0 !important;
+}
 .toastStyle {
     --color: var(--ion-text-color);
     --background: var(--notif-background);

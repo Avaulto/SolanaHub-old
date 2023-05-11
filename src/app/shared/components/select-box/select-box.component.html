@@ -1,6 +1,6 @@
 <div id="select-box-options" *ngIf="!disabled">
-  <div class="nodes" id="search-box">
-    <app-search-input (search)="searchItem($event)" [placeholder]="'search'"></app-search-input>
+  <div class="nodes" id="search-box" *ngIf="searchTerm">
+    <app-search-input (search)="searchItem($event)" [placeholder]="'search'" ></app-search-input>
   </div>
 
   <ion-content id="list-of-items">
@@ -8,7 +8,7 @@
     <div style="text-align: center;" *ngIf="(dataset | async)?.length == 0">
       No results
     </div>
-    <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm"
+    <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm "
       approxItemHeight="54px">
       <div *virtualItem="let item">
         <app-select-item [item]="item" [searchTerm]="searchTerm" (onSelect)="setSelectedItem($event)"

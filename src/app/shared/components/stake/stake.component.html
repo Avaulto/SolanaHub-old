@@ -37,7 +37,7 @@
 
       </div>
     </ion-row>
-    <ion-row class="heading-6 ion-justify-content-between">
+    <!-- <ion-row class="heading-6 ion-justify-content-between">
       <div class="aligned">commitment
         <app-icon-tooltip tooltip="feeling bulish? lock your stake account and commit to yourself"></app-icon-tooltip>
       </div>
@@ -48,7 +48,7 @@
     <ion-row id="commitment-amount">
       <ion-range formControlName="monthLockuptime" [min]="0" [max]="32" [pin]="true" [ticks]="true" [snaps]="true">
       </ion-range>
-    </ion-row>
+    </ion-row> -->
     <ion-row class="ion-justify-content-center">
       <ng-container *ngIf="wallet$ | async; else elseTemplate">
         <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"

@@ -1,60 +1,115 @@
 <ion-row id="craft-wrapper">
-  <ion-row id="craft-intro" class="ion-justify-content-around ion-text-capitalize on-align-items-center ion-margin-bottom">
+  <ion-row id="craft-intro"
+    class="ion-justify-content-around ion-text-capitalize on-align-items-center ion-margin-bottom">
     <ion-col size="4">
       <h1 class="craft-head" style="color: rgb(255, 132, 90);">STAKE.</h1>
       <p class="sub">no smart contract risk</p>
     </ion-col>
     <ion-col size="4">
       <h1 class="craft-head" style="color: rgb(253, 73, 173);">EARN.</h1>
-      <p  class="sub">stake reward + MEV + NFT perks</p>
+      <p class="sub">stake reward + MEV + NFT perks</p>
     </ion-col>
     <ion-col size="4">
       <h1 class="craft-head" style="color: rgb(12, 218, 196);">FUN.</h1>
-      <p  class="sub">be a loyal member of Avaulto, decide what next</p>
+      <p class="sub">be a loyal member of Avaulto, decide what next</p>
     </ion-col>
 
   </ion-row>
+  <ion-row class="ion-justify-content-center">
 
-  <ion-row id="craft-master" class="data-box ion-padding ion-justify-content-between">
-    <ion-col size="8.9">
-      <div>
-        <div class="demi-image selected demi-one"></div>
-      </div>
-      <div>
-        <app-label-layout
-          [layoutConfig]="{title: 'SOL Amount', balance:wallet.balance | number: '1.2'}"></app-label-layout>
-        <ion-range [min]="0" [max]="wallet.balance | number: '1.2'" [pin]="true" [ticks]="true"
-          [snaps]="true"></ion-range>
-        <ion-button expand="block">stake & craft</ion-button>
-      </div>
+  <ion-col size="12" sizeMd="9">
+    <ion-row id="craft-master" class="data-box ion-padding ion-justify-content-between">
+      <ion-col size="8.9">
+        <div>
+          <div class="demi-image selected demi-one"></div>
+        </div>
+        <div>
+          <h4 class="heading-4">Pick craft relayer</h4>
+          <ion-row id="btn-controls" class=" ion-align-items-center ion-margin-bottom ion-justify-content-between">
+            <ion-col sizeLg="5.8" sizeMd="12" class="stake-by" [ngClass]="{'selected-path': relayer == 'new-stake'}"
+              (click)="selectRelayer('new-stake')">
+              <div class="select-group">
+                <span>
+                  New Stake
+                </span>
+                <ion-checkbox mode="ios" [checked]="relayer == 'new-stake'" color="primary">
+                </ion-checkbox>
+              </div>
+              <span class="sub">
+                {{wallet?.balance || 0}} SOL
+              </span>
 
-    </ion-col>
-    <ion-col size="2.8">
-      <div class="demi-image"></div>
-      <div class="demi-image selected"></div>
-      <div class="demi-image"></div>
-      <div class="demi-image"></div>
-    </ion-col>
-  </ion-row>
+            </ion-col>
+            <ion-col sizeLg="5.8" sizeMd="12" class="stake-by" [ngClass]="{'selected-path': relayer == 'active-stake'}"
+              (click)="selectRelayer('active-stake')">
+              <div class="select-group">
+                <span>
+                  Total Active Stake
+                </span>
+                <ion-checkbox mode="ios" [checked]="relayer == 'active-stake'" color="primary"></ion-checkbox>
+              </div>
+              <span class="sub">
+                100 SOL
+              </span>
 
-  <ion-row>
+            </ion-col>
+
+          </ion-row>
+
+          <ng-container *ngIf="wallet; else elseTemplate">
+            <ng-container *ngIf="relayer == 'active-stake'; else elseTemplate">
+              <ion-button expand="block" (click)="mint()">Craft</ion-button>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <!-- <app-label-layout
+                [layoutConfig]="{title: 'SOL Amount', balance:wallet.balance | number: '1.2'}"></app-label-layout>
+              <ion-row id="stake-amount">
+                <ion-input class="button-text" [value]="range.value" placeholder="Amount"></ion-input>
+                <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
+              </ion-row> -->
+              <ion-range  #range min="0" [max]="wallet.balance.toFixed(3)" [pin]="true" [ticks]="true" [snaps]="true"></ion-range>
+              <ion-button expand="block" (click)="mint()">stake & craft</ion-button>
+            </ng-template>
+
+          </ng-container>
+          <ng-template #elseTemplate>
+            <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+          </ng-template>
+
+
+
+
+        </div>
+
+      </ion-col>
+      <ion-col size="2.8" id="craft-options">
+        <div class="demi-image"></div>
+        <div class="demi-image selected"></div>
+        <div class="demi-image"></div>
+        <div class="demi-image"></div>
+      </ion-col>
+    </ion-row>
+  </ion-col>
+</ion-row>
+  <ion-row *ngIf="wallet">
     <ion-col size="12">
       <h2 class="heading-2">Active Gurdians</h2>
     </ion-col>
     <div id="my-gurdians-list">
-      <ion-row *ngFor="let gurdian of [0,1,2]" class="gurdian ion-padding ion-align-items-center ion-justify-content-between data-box">
+      <ion-row *ngFor="let gurdian of [0,1,2]"
+        class="gurdian ion-padding ion-align-items-center ion-justify-content-between data-box">
         <ion-col size="12" sizeMd="3">
           <ion-img
             src="https://openai-labs-public-images-prod.azureedge.net/user-bpyXZqTG1b1nFQwhJ358lGb2/generations/generation-N2QjuV6SxF9TqmBcjkj5CWL0/image.webp"></ion-img>
-        </ion-col >
-        <ion-col   size="12" sizeMd="4">
+        </ion-col>
+        <ion-col size="12" sizeMd="4">
           <p class="sub-strong">amount stake</p>
           <p>500 @</p>
-        </ion-col >
+        </ion-col>
         <ion-col size="12" sizeMd="4">
           <ion-button expand="block" fill="outline" style="margin-bottom: 5px;">level up</ion-button>
           <ion-button expand="block" color="danger">Burn NFT</ion-button>
-        </ion-col >
+        </ion-col>
       </ion-row>
     </div>
   </ion-row>
