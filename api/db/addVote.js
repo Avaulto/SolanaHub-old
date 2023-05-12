@@ -19,7 +19,7 @@ export default async function votes(request, response) {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // const queryParamDecode = decodeURIComponent(queryParam);
-    await client.db("CDv1").collection('votes').insertOne({
+    const res = await client.db("CDv1").collection('votes').insertOne({
       uuid: "234534645",
       date: new Date(),
       category: "integration",
@@ -31,8 +31,8 @@ export default async function votes(request, response) {
       status: "vote",
     });
     // const res = await fetch(url, settings, JSON.stringify(body));
-    const data = await res.json({ message: 'vote added' });
-    return response.status(200).json(data);
+    // const data = await res.json({ message: 'vote added' });
+    return response.status(200).json(res);
   } catch (error) {
     return response.status(500).json(error);
   } finally {
