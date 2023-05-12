@@ -14,9 +14,9 @@ const client = new MongoClient(uri, {
 
 export default async function votes(request, response) {
   const { endpoint } = request.query;
-  // const { proposal } = request.body
+  const { body } = request
   try {
-    const proposal = request.body.proposal
+    const proposal = JSON.parse(body.proposal)
     console.dir(proposal)
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
