@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
 
 
 
-export default async function votes(request, response) {
+export default async function addVote(request, response) {
   const { endpoint } = request.query;
   const { proposalId, vote, signer } = request.body
   try {

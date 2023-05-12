@@ -10,7 +10,7 @@ const client = new MongoClient(uri, {
   }
 });
 
-export default async function votes(request, response) {
+export default async function getProposals(request, response) {
   try {
     const votes = client.db('CDv1').collection('votes')
     return response.status(200).json(votes);

@@ -9,9 +9,9 @@ import { SolanaUtilsService, JupiterStoreService, UtilsService, TxInterceptServi
 import { Token, TokenBalance } from '../../../../models';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
 import Decimal from "decimal.js";
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
-import { Title } from '@angular/platform-browser';
 
+import { Title } from '@angular/platform-browser';
+import va from '@vercel/analytics';
 
 @Component({
   selector: 'app-token-swap',
@@ -26,7 +26,6 @@ export class TokenSwapPage implements OnInit {
     private _jupStore: JupiterStoreService,
     private _txInterceptService: TxInterceptService,
     private _solanaUtilsService: SolanaUtilsService,
-    private $gaService: GoogleAnalyticsService,
     private _titleService: Title,  
   ) { 
   }
@@ -202,8 +201,7 @@ export class TokenSwapPage implements OnInit {
 
     await this._txInterceptService.sendTx(transactions, this.wallet.publicKey);
 
-    this.$gaService.event('jupiter', 'swap', this.swapForm.value.inputToken?.extensions?.coingeckoId +'-'+ this.swapForm.value.outputToken?.extensions?.coingeckoId);
-
+    va.track('jupiter', { type: `swap ${this.swapForm.value.inputToken?.extensions?.coingeckoId +'-'+ this.swapForm.value.outputToken?.extensions?.coingeckoId}` });
   }
   private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number, platformFees: string) {
     const { marketInfos } = routeInfo

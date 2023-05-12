@@ -4,10 +4,9 @@ import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { firstValueFrom, lastValueFrom, map, observable, Observable, Subscriber, switchMap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
-
 import { ActivatedRoute } from '@angular/router';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
 
+import va from '@vercel/analytics';
 
 
 @Component({
@@ -35,7 +34,6 @@ export class StakeComponent implements OnInit {
     private _fb: FormBuilder,
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
-    private $gaService: GoogleAnalyticsService,
     private _activeRoute: ActivatedRoute
   ) { }
   async ngOnInit() {
@@ -94,11 +92,7 @@ export class StakeComponent implements OnInit {
     //   monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     // }
     await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount);
-    if (this.privateValidatorPage) {
-      this.$gaService.event('stake', 'stake with Avaulto');
-    } else {
-      this.$gaService.event('stake', 'regular');
-    }
+    va.track(`stake with ${voteAccount}`);
   }
   // private _getLockuptimeMilisecond(months: number): number {
   //   const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();

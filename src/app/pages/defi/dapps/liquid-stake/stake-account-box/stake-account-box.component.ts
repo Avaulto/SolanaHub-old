@@ -11,9 +11,8 @@ import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, depositStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakePoolStoreService } from '../stake-pool-store.service';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
-
-
+import va from '@vercel/analytics';
+ 
 
 @Component({
   selector: 'app-stake-account-box',
@@ -35,8 +34,7 @@ export class StakeAccountBoxComponent implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _toasterService: ToasterService,
     private _fb: FormBuilder,
-    private _stakePoolStore: StakePoolStoreService,
-    private $gaService: GoogleAnalyticsService
+    private _stakePoolStore: StakePoolStoreService
   ) { }
 
 
@@ -94,7 +92,7 @@ export class StakeAccountBoxComponent implements OnInit {
             stakeAccountPK
           );
           await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
-          this.$gaService.event('liquid staking', 'stake', 'stake account');
+          va.track('liquid staking', { type: 'stake account' });
         }
 
       }
@@ -143,8 +141,7 @@ export class StakeAccountBoxComponent implements OnInit {
 
       const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
-      this.$gaService.event('liquid staking', 'custom validator stake account', targetValidatorVoteAccount);
-
+      va.track('liquid staking', { type: `custom validator stake account ${targetValidatorVoteAccount}` });
     } catch (error) {
 
       const toasterMessage: toastData = {

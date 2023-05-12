@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonCheckbox, PopoverController } from '@ionic/angular';
 import { AuthorizeStakeParams, PublicKey, StakeProgram } from '@solana/web3.js';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
+
 import { StakeAccountExtended } from 'src/app/models';
 import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
-
+import va from '@vercel/analytics';
 @Component({
   selector: 'app-accounts-popup',
   templateUrl: './accounts-popup.component.html',
@@ -22,8 +22,7 @@ export class AccountsPopupComponent implements OnInit {
   constructor(
     private _txInterceptService: TxInterceptService,
      private _popoverController:PopoverController,
-     private _fb: FormBuilder,
-     private $gaService: GoogleAnalyticsService
+     private _fb: FormBuilder
      ) { }
 
   ngOnInit() {
@@ -63,12 +62,12 @@ export class AccountsPopupComponent implements OnInit {
     if(this.actionType == 'merge'){
       const stakeAccountsSource: PublicKey[] = this.selectedAccounts.map(account => new PublicKey(account.addr));
       await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
-      this.$gaService.event('account', 'merge stake accounts');
+      va.track('account actions',{type: 'merge stake accounts'});
     }
     if(this.actionType == 'transferAuth'){
       const authrizedPubkey = new PublicKey(this.transferAssetForm.value.authrizedPubkey)
       await this._txInterceptService.transferStakeAccountAuth(accountTarget ,walletOwner, authrizedPubkey);
-      this.$gaService.event('account', 'transfer authority');
+      va.track('account actions',{type: 'transfer authority'});
     }
   }
 

@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
 
 
 
-export default async function votes(request, response) {
+export default async function newProposal(request, response) {
   const { endpoint } = request.query;
   const { body } = request
   console.log(proposal,request.body)
@@ -29,7 +29,7 @@ export default async function votes(request, response) {
     return response.status(200).json(newItem);
   } catch (error) {
     console.warn(error)
-    return response.status(500).json(error);
+    return response.status(500).json({message: error});
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();

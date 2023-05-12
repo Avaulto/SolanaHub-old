@@ -7,7 +7,7 @@ import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-a
 import { WalletConnectedDropdownComponent } from './wallet-connected-dropdown/wallet-connected-dropdown.component';
 
 
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import va from '@vercel/analytics';
 
 @Component({
   selector: 'app-wallet-connect',
@@ -22,7 +22,6 @@ export class WalletConnectComponent implements OnInit {
     private _toasterService: ToasterService,
     public popoverController: PopoverController,
     private _solanaUtilsService:SolanaUtilsService,
-    private $gaService: GoogleAnalyticsService,
     private conne:ConnectionStore
   ) { }
   readonly wallets$ = this._walletStore.wallets$.pipe(shareReplay(1));
@@ -30,7 +29,7 @@ export class WalletConnectComponent implements OnInit {
   readonly isReady$ = this._walletStore.connected$.pipe(map(isReady => {
     if (isReady) {
       //trackEvent('wallet connected')
-      this.$gaService.event('wallet', 'connected')
+      va.track('wallet connected');
       this._toasterService.msg.next({
         message: `Wallet connected`,
         segmentClass: "toastInfo",

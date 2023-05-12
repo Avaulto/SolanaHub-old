@@ -14,14 +14,11 @@ import { SharedModule } from './shared/shared.module';
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
-
-
-
-import { NgxGoogleAnalyticsModule, NgxGoogleAnalyticsRouterModule } from 'ngx-google-analytics';
+import { inject } from '@vercel/analytics';
 import { environment } from 'src/environments/environment';
 
-import { inject } from '@vercel/analytics';
-inject();
+
+inject({debug: environment.production});
 
 @NgModule({
     declarations: [
@@ -35,9 +32,7 @@ inject();
         BrowserAnimationsModule,
         IonicModule.forRoot(),
         AppRoutingModule,
-        HdWalletAdapterModule.forRoot({ autoConnect: true }),
-        NgxGoogleAnalyticsModule.forRoot(environment.ga),
-        NgxGoogleAnalyticsRouterModule
+        HdWalletAdapterModule.forRoot({ autoConnect: true })
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

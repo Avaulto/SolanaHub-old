@@ -9,9 +9,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { toastData } from 'src/app/models';
 import { TooltipPosition } from 'src/app/shared/components/tooltip/tooltip.enums';
 import { StakePoolStoreService } from '../stake-pool-store.service';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
 import { environment } from 'src/environments/environment';
-
+import va from '@vercel/analytics';
 @Component({
   selector: 'app-stake-sol-box',
   templateUrl: './stake-sol-box.component.html',
@@ -36,8 +35,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     private _fb: FormBuilder,
     private _utilsService: UtilsService,
     private _toasterService: ToasterService,
-    private _stakePoolStore: StakePoolStoreService,
-    private $gaService: GoogleAnalyticsService
+    private _stakePoolStore: StakePoolStoreService
   ) { }
 
   ngOnInit(): void {
@@ -94,7 +92,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
           // referral
         );
         await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
-        this.$gaService.event('liquid staking', 'stake', 'stake SOL');
+        va.track('liquid staking', { type: `stake SOL` });
+
       }
     }
 
@@ -134,7 +133,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
       const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
 
-      this.$gaService.event('liquid staking', 'custom validator stake SOL', validatorVoteAccount);
+      va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount}` });
     } catch (error) {
 
       const toasterMessage: toastData = {

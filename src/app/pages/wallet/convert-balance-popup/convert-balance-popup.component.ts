@@ -2,14 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { AddressLookupTableAccount, TransactionBlockhashCtor } from '@solana/web3.js';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction, TransactionMessage, VersionedTransaction } from '@solana/web3.js';
-import { GoogleAnalyticsService } from 'ngx-google-analytics';
+
 import { Asset } from 'src/app/models';
 import { JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import {
   createBurnInstruction,
   createCloseAccountInstruction,
 } from "../../../../../node_modules/@solana/spl-token";
-
+import va from '@vercel/analytics';
 
 @Component({
   selector: 'app-convert-balance-popup',
@@ -36,8 +36,7 @@ export class ConvertBalancePopupComponent implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _popoverController: PopoverController,
     private _solanaUtilsService: SolanaUtilsService,
-    private _jupStore: JupiterStoreService,
-    private $gaService: GoogleAnalyticsService
+    private _jupStore: JupiterStoreService
   ) { }
 
   ngOnInit() {
@@ -136,7 +135,7 @@ export class ConvertBalancePopupComponent implements OnInit {
         await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
       }, Promise.resolve());
     }
-    this.$gaService.event('bulk event', 'swap/close ATA');
+    va.track('bulk swap');
   }
 
   async closeATA(asset: Asset): Promise<TransactionInstruction[]> {
