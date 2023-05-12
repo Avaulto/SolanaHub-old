@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, lastValueFrom, of, takeLast } from 'rxjs';
+import { Observable, firstValueFrom, lastValueFrom, of, takeLast } from 'rxjs';
 import { SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
 import { VotesService } from '../votes.service';
 import { newProposal } from 'src/app/models';
@@ -40,12 +40,14 @@ export class NewProposalComponent implements OnInit {
   }
   async submitProposal() {
     const { category, title, desc } = this.proposalForm.value
-    const message = new Uint8Array(title);
-    const signeture = (await lastValueFrom(this._walletStore.signMessage(message))).toString()
     const wallet = this._solanaUtilsService.getCurrentWallet();
+    const message = (new TextEncoder()).encode(title) as Buffer;
+    const signeture = await firstValueFrom(this._walletStore.signMessage(message));
     console.log(signeture)
-    const proposal: newProposal = { category, title, desc, proposalOwnerPk: wallet.publicKey.toBase58(), signeture }
-    this._votesService.newProposal(proposal)
+    const proposal: newProposal = { category, title, desc, proposalOwnerPk: wallet.publicKey.toBase58(), signeture:signeture.toString() }
+    this._votesService.newProposal(proposal).subscribe(res =>{
+      console.log(res);
+    })
     console.log(this.proposalForm.value)
   }
   public isFocus = false
