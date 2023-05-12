@@ -12,8 +12,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class NftStoreService {
-  protected magicEdenApiProxy = environment.magicEdenProxyAPI;
-  protected metaplexApiProxy = environment.metaplexProxyAPI;
+  protected magicEdenApiProxy = environment.serverlessAPI + '/api/ME-proxy?env=mainnet';
+  protected metaplexApiProxy = environment.serverlessAPI + '/api/MP-proxy';
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
   // private myNfts: Subject<Nft[]> = new Subject();
   // public myNft$ = this.myNfts.asObservable();
