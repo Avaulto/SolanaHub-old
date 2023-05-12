@@ -19,7 +19,7 @@ export default async function votes(request, response) {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // const queryParamDecode = decodeURIComponent(queryParam);
-    await client.db.collection('votes').insertOne({
+    await client.db("CDv1").collection('votes').insertOne({
       uuid: "234534645",
       date: new Date(),
       category: "integration",
