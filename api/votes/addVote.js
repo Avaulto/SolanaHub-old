@@ -14,22 +14,27 @@ const client = new MongoClient(uri, {
 
 export default async function votes(request, response) {
   const { endpoint } = request.query;
-  const { body } = request
+  const { proposalId, vote, signer } = request.body
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // const queryParamDecode = decodeURIComponent(queryParam);
-    const res = await client.db("CDv1").collection('votes').insertOne({
-      uuid: "234534645",
-      date: new Date(),
-      category: "integration",
-      title: "orca integration",
-      desc: "This proposal will - Ratify the Constitution to be used by Marinade DAO - Ratify the Code of Conduct to be used by Marinade DAO - Confirm phase one of the migration to SPL governance, where multisigs and team powers are moved to Realms while MNDE voting stays on Tribeca until phase two.",
-      ownerPK: "JPQmr9p2RF3X5TuBXxn6AGcEfcsHp4ehcmzE5Ys7pZD",
-      for: 100,
-      against: 15,
-      status: "vote",
-    });
+    const db = await client.db("CDv1")
+    const collection = db.collection('votes')
+
+    // create a filter for a movie to update
+    const filter = { _id: proposalId };
+    // this option instructs the method to create a document if no documents match the filter
+    const options = { upsert: false };
+    // create a document that sets the plot of the movie
+    const updateDoc = {
+      $set: {
+        plot: `A harvest of random numbers, such as: ${Math.random()}`
+      },
+    };
+    const result = await movies.updateOne(filter, updateDoc, options);
+   
+
     // const res = await fetch(url, settings, JSON.stringify(body));
     // const data = await res.json({ message: 'vote added' });
     return response.status(200).json(res);

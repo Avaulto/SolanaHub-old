@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
+import { VotesService } from '../votes.service';
 
 @Component({
   selector: 'app-new-proposal',
@@ -18,7 +19,8 @@ export class NewProposalComponent  implements OnInit {
   formSubmitted: boolean = false;
   public showCategoryList: boolean = false;
   constructor(    
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private votesService:VotesService
     ) { }
 
   ngOnInit() {

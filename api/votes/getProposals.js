@@ -11,13 +11,14 @@ const client = new MongoClient(uri, {
 });
 
 export default async function votes(request, response) {
-  const { endpoint } = request.query;
-  const { body } = request
   try {
     const votes = client.db('CDv1').collection('votes')
     return response.status(200).json(votes);
   } catch (error) {
     return response.status(500).json(error);
+  }finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
   }
 
 }
