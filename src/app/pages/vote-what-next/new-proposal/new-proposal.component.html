@@ -17,7 +17,7 @@
 
   <app-label-layout [layoutConfig]="{title: 'Description'}"></app-label-layout>
   <ion-row class="ion-margin-bottom">
-    <ion-textarea [autoGrow]="true" rows="5" maxlength="500" formControlName="desc"></ion-textarea>
+    <ion-textarea [autoGrow]="true" (ionFocus)="isDescFocus($event)" [ngStyle]="{'border-color': isFocus ? '2px solid greed' : ''}" rows="5" maxlength="500" formControlName="desc"></ion-textarea>
   </ion-row>
 
   <ion-row>
@@ -29,11 +29,11 @@
   <ion-col size="12">
   <h6>Notes:</h6>
   </ion-col>
-<ul class="sub">
-  <li>
+<ul>
+  <li class="sub">
     only NFT holders of Avaulto can submit new proposals
   </li>
-  <li>
+  <li class="sub">
     please search if a similar proposal is already open and vote for it!
   </li>
 </ul>

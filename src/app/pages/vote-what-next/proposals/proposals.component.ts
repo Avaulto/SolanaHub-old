@@ -10,6 +10,8 @@ import { Proposal } from 'src/app/models';
 export class ProposalsComponent implements OnInit {
   public searchTerm: string;
   public proposals: Proposal[] = [{
+    uuid:"234534645",
+    date: new Date(),
     category: "integration",
     title: 'orca integration',
     desc: 'This proposal will - Ratify the Constitution to be used by Marinade DAO - Ratify the Code of Conduct to be used by Marinade DAO - Confirm phase one of the migration to SPL governance, where multisigs and team powers are moved to Realms while MNDE voting stays on Tribeca until phase two.',
@@ -19,6 +21,8 @@ export class ProposalsComponent implements OnInit {
     status: "vote",
   },
   {
+    uuid:"678678768",
+    date: new Date(),
     category: "feature",
     title: 'split accounts  ',
     desc: 'split stake account loreum ipsum',
@@ -28,6 +32,8 @@ export class ProposalsComponent implements OnInit {
     status: "pass",
   },
   {
+    uuid:"456456",
+    date: new Date(),
     category: "feature",
     title: 'bulk swap ',
     desc: 'This proposal will - Ratify the Constitution to be used by Marinade DAO - Ratify the Code of Conduct to be used by Marinade DAO - Confirm phase one of the migration to SPL governance, where multisigs and team powers are moved to Realms while MNDE voting stays on Tribeca until phase two.',
