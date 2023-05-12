@@ -28,6 +28,7 @@ export default async function votes(request, response) {
     // const data = await res.json({ message: 'vote added' });
     return response.status(200).json(newItem);
   } catch (error) {
+    console.warn(error)
     return response.status(500).json(error);
   } finally {
     // Ensures that the client will close when you finish/error
