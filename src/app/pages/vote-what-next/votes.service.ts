@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Proposal } from 'src/app/models';
+import { Proposal, newProposal } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class VotesService {
     });
     return throwError((() => error))
   }
-  public newProposal(proposal: Proposal): Observable<Proposal> {
+  public newProposal(proposal: newProposal): Observable<Proposal> {
     return this.apiService.post('/api/votes/newProposal', proposal).pipe(
       catchError((error) => this._formatErrors(error))
     );

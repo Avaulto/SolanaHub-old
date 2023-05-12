@@ -64,7 +64,7 @@ export class SolanaUtilsService {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
     this._walletStore.anchorWallet$.subscribe(wallet => this._walletExtended$.next(wallet));
   }
-  public getCurrentWallet() {
+  public getCurrentWallet(): WalletExtended {
     return this._walletExtended$.value
   }
   public onAccountChangeCB(walletOwnerPk: PublicKey): void {

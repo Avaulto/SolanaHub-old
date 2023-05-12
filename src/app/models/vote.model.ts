@@ -5,7 +5,6 @@ export interface newProposal {
   category: "feature" | "integration",
   title: string,
   desc: string,
-  signers: signers[]
 }
 export interface Proposal {
   uuid: string;
