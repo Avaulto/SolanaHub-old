@@ -176,7 +176,7 @@ export class TokenSwapPage implements OnInit {
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
     try {
-      console.log(outputToken)
+
       this.bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken, slippage);
       if (this.bestRoute) {
         // prep output amount on UI
@@ -214,7 +214,6 @@ export class TokenSwapPage implements OnInit {
       const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) * -1;
       const minimumRecived = Number(outputAmount * slippagePercentage).toFixedNoRounding(2)
       const priceImpact = marketInfos[0].priceImpactPct
-      console.log(marketInfos[0])
       const swapDetail: SwapDetail = {
         priceImpact,
         minimumRecived,

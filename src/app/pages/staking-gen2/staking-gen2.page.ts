@@ -27,13 +27,11 @@ export class StakingGen2Page implements OnInit {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
       const newNft = await this.createNFTowner();
       // const stakeAccount = await this._txInterceptService.delegate(sol, walletOwner, 'dv3qDFk1DTF36Z62bNvrCXe9sKATA6xvVy6A798xxAS', 0)
-      console.log(newNft)
     } catch (error) {
       console.warn(error)
     }
   }
   private async createNFTowner() {
-    console.log(this.nftName)
     try {
       const NFT = await this._nftStoreService.createNft(this.nftName)
       return NFT;

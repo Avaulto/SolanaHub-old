@@ -50,10 +50,5 @@ export class NewProposalComponent implements OnInit {
     })
     console.log(this.proposalForm.value)
   }
-  public isFocus = false
-  isDescFocus(ev) {
-    console.log(ev)
-    this.isFocus = ev.returnValue;
-    console.log(this.isFocus)
-  }
+
 }
