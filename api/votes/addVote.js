@@ -29,7 +29,8 @@ export default async function votes(request, response) {
     // create a document that sets the plot of the movie
     const updateDoc = {
       $set: {
-        plot: `A harvest of random numbers, such as: ${Math.random()}`
+        for: +1,
+        against: +1 ,
       },
     };
     const result = await movies.updateOne(filter, updateDoc, options);

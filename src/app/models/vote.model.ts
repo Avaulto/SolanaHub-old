@@ -1,6 +1,15 @@
+
+export interface newProposal {
+  proposalOwnerPk: string,
+  signeture: string,
+  category: "feature" | "integration",
+  title: string,
+  desc: string,
+  signers: signers[]
+}
 export interface Proposal {
   uuid: string;
-  ownerPK: string,
+  proposalOwnerPk: string,
   signeture: string,
   signers: signers[]
   date: Date,
