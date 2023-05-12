@@ -14,7 +14,7 @@
 </ion-row>
 
 <ng-container *ngIf="proposals; else elseTemplate">
-  <app-item *ngFor="let prop of proposals" [proposal]="prop" class="ion-padding "></app-item>
+  <app-item *ngFor="let prop of proposals | async" [proposal]="prop" class="ion-padding "></app-item>
 </ng-container>
 <ng-template #elseTemplate>
 

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, catchError, map, throwError } from 'rxjs';
+import { Proposal } from 'src/app/models';
+import { ApiService, ToasterService } from 'src/app/services';
 
 @Component({
   selector: 'app-vote-what-next',
@@ -6,8 +9,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./vote-what-next.page.scss'],
 })
 export class VoteWhatNextPage implements OnInit {
-
-  constructor() { }
 
   ngOnInit() {
   }
