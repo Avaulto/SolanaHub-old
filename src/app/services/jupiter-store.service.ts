@@ -54,7 +54,7 @@ export class JupiterStoreService {
           wrapUnwrapSOL: true,
           cluster: 'mainnet-beta',
           user: pk, // or public key
-          platformFeeAndAccounts,
+          // platformFeeAndAccounts,
           routeCacheDuration: 10_000, // Will not refetch data on computeRoutes for up to 10 seconds
         });
       } catch (error) {
