@@ -26,7 +26,7 @@ export default async function newProposal(request, response) {
     // const queryParamDecode = decodeURIComponent(queryParam);
     const db = client.db("CDv1")
     const collection = db.collection('proposals')
-    const newProposal = {...proposal,for:1,agains:0, date: new Date(), signers:[] }
+    const newProposal = {...proposal,for:1,against:0, date: new Date(), signers:[] }
     const newItem = await collection.insertOne(newProposal);
     // const res = await fetch(url, settings, JSON.stringify(body));
     // const data = await res.json({ message: 'vote added' });

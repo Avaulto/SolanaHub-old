@@ -32,13 +32,13 @@ export class VotesService {
     );
   }
   public getProposals(): Observable<Proposal[]> {
-    return this.apiService.get(`http://localhost:8000/api/votes/getProposals`).pipe(
+    return this.apiService.get(`${this.votesProxy}/api/votes/getProposals`).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
 
-  public addVote(propId: string, vote: "for" | "against"): Observable<boolean> {
-    return this.apiService.post(`${this.votesProxy}/api/votes/addVote`, {propId, vote}).pipe(
+  public addVote(propId: string, vote: "for" | "against", signer: string): Observable<boolean> {
+    return this.apiService.post(`${this.votesProxy}/api/votes/addVote`, {propId, vote, signer}).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
