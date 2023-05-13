@@ -27,18 +27,18 @@ export class VotesService {
     return throwError((() => error))
   }
   public newProposal(proposal: newProposal): Observable<Proposal> {
-    return this.apiService.post(`http://localhost:8000/votes/newProposal`, {proposal}).pipe(
+    return this.apiService.post(`${this.votesProxy}/votes/newProposal`, {proposal}).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
   public getProposals(): Observable<Proposal[]> {
-    return this.apiService.get('/api/votes/getProposals').pipe(
+    return this.apiService.get(`${this.votesProxy}/api/votes/getProposals`).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
 
   public addVote(propId: string, vote: "for" | "against"): Observable<boolean> {
-    return this.apiService.post('/api/votes/addVote', {propId, vote}).pipe(
+    return this.apiService.post(`${this.votesProxy}/api/votes/addVote`, {propId, vote}).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
