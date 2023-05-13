@@ -18,7 +18,7 @@ import { inject } from '@vercel/analytics';
 import { environment } from 'src/environments/environment';
 
 
-inject({debug: environment.production});
+inject({mode: "auto"});
 
 @NgModule({
     declarations: [
