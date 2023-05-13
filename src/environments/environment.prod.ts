@@ -9,6 +9,5 @@ export const environment = {
   },
   solanaCluster: 'https://mb-avaulto-cc28.mainnet.rpcpool.com',
   serverlessAPI: 'https://beta.compact-defi.xyz',
-  HyperspaceKey: '',
   platformFeeCollector:'81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1'
 };

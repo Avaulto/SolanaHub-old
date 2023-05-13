@@ -27,7 +27,7 @@ export class VotesService {
     return throwError((() => error))
   }
   public newProposal(proposal: newProposal): Observable<Proposal> {
-    return this.apiService.post(`${this.votesProxy}/votes/newProposal`, {proposal}).pipe(
+    return this.apiService.post(`${this.votesProxy}/api/votes/newProposal`, {proposal}).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
