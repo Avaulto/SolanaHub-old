@@ -23,4 +23,5 @@ export interface Proposal {
 interface signers{
   signer: string;
   signeture: string;
+  voted: "for" | "against"
 }

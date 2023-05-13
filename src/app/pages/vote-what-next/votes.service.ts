@@ -32,7 +32,7 @@ export class VotesService {
     );
   }
   public getProposals(): Observable<Proposal[]> {
-    return this.apiService.get(`${this.votesProxy}/api/votes/getProposals`).pipe(
+    return this.apiService.get(`http://localhost:8000/api/votes/getProposals`).pipe(
       catchError((error) => this._formatErrors(error))
     );
   }
