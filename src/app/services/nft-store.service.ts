@@ -41,7 +41,7 @@ export class NftStoreService {
         // await this._metaplex.nfts().freezeDelegatedNft({mintAddress: nft.address, delegateAuthority: ? })
       return nft;
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
   public async getMagicEdenOwnerNFTS(walletOwnerAddress: string): Promise<any[]> {

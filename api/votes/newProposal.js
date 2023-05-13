@@ -22,7 +22,7 @@ export default async function newProposal(request, response) {
     await client.connect();
     const db = client.db("CDv1")
     const collection = db.collection('proposals')
-    const newProposal = { ...proposal, for: 1, against: 0, date: new Date(), status: 'active', signers: [] }
+    const newProposal = { ...proposal, for: 0, against: 0, date: new Date(), status: 'active', signers: [] }
     const newItem = await collection.insertOne(newProposal);
     return response.status(200).json(newItem);
   } catch (error) {

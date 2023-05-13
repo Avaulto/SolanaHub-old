@@ -213,6 +213,7 @@ textarea{
     padding-inline-start: 0 !important;
 }
 .toastStyle {
+    text-transform: capitalize;
     --color: var(--ion-text-color);
     --background: var(--notif-background);
     --min-height: 50px;

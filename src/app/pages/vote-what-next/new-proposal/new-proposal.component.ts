@@ -20,6 +20,7 @@ export class NewProposalComponent implements OnInit {
   public proposalForm: FormGroup;
   formSubmitted: boolean = false;
   public showCategoryList: boolean = false;
+  public wallet$ = this._solanaUtilsService.walletExtended$;
   constructor(
     private _fb: FormBuilder,
     private _votesService: VotesService,
@@ -48,7 +49,7 @@ export class NewProposalComponent implements OnInit {
     this._votesService.newProposal(proposal).subscribe(res =>{
       this._votesService.emitGetProposals.next(true);
     })
-    console.log(this.proposalForm.value)
+
   }
 
 }

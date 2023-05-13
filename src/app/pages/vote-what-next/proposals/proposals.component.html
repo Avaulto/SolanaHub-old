@@ -3,19 +3,17 @@
 </ion-row>
 
 <ion-row class="ion-justify-content-between ion-margin-bottom">
-  <ion-col size="8">
+  <ion-col size="12">
     <app-search-input (search)="searchItem($event)" [value]="searchTerm"
       [placeholder]="'Search Proposal'"></app-search-input>
   </ion-col>
-  <ion-col id="my-props">
+  <!-- <ion-col id="my-props">
     <ion-label>My Proposals</ion-label>
-    <ion-toggle></ion-toggle>
-  </ion-col>
+    <ion-toggle (ionChange)="istoggleChcked($event)"></ion-toggle>
+  </ion-col> -->
 </ion-row>
 
-<ng-container *ngIf="proposals; else elseTemplate">
-  <app-item *ngFor="let prop of proposals | async" [proposal]="prop" class="ion-padding "></app-item>
-</ng-container>
-<ng-template #elseTemplate>
 
-</ng-template>
+  <app-item *ngFor="let prop of proposals | async | filter:'title':searchTerm" [proposal]="prop" class="ion-padding "></app-item>
+
+
