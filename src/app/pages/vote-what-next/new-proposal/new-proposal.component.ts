@@ -46,7 +46,7 @@ export class NewProposalComponent implements OnInit {
     console.log(signeture)
     const proposal: newProposal = { category, title, desc, proposalOwnerPk: wallet.publicKey.toBase58(), signeture:signeture.toString() }
     this._votesService.newProposal(proposal).subscribe(res =>{
-      console.log(res);
+      this._votesService.emitGetProposals.next(true);
     })
     console.log(this.proposalForm.value)
   }

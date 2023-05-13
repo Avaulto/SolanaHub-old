@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, combineLatest, combineLatestWith, throwError } from 'rxjs';
 import { Proposal, newProposal } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,7 @@ export class VotesService {
     private _toasterService: ToasterService,
     private apiService: ApiService,
   ) { }
-
+  public emitGetProposals = new BehaviorSubject(true as boolean)
 
   private _formatErrors(error: any) {
     console.warn(error)

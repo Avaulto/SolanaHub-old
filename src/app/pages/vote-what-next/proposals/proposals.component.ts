@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Proposal } from "src/app/models";
 import { VotesService } from "../votes.service";
-import { Observable } from "rxjs";
+import { Observable, switchMap } from "rxjs";
 
 
 @Component({
@@ -11,8 +11,12 @@ import { Observable } from "rxjs";
 })
 export class ProposalsComponent implements OnInit {
   public searchTerm: string;
-  public proposals: Observable<Proposal[]> = this.voteService.getProposals()
-  constructor(private voteService: VotesService) { }
+  public proposals: Observable<Proposal[]> = this._voteService.emitGetProposals.pipe(switchMap((res: boolean) => {
+    if(res){
+      return this._voteService.getProposals()
+    }
+  }))
+  constructor(private _voteService: VotesService) { }
 
   ngOnInit() { }
   public searchItem(term: any) {
