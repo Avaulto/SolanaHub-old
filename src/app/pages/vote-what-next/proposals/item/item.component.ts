@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Proposal, voteSinger } from 'src/app/models';
+import { Proposal, voter } from 'src/app/models';
 import { VotesService } from '../../votes.service';
 import { firstValueFrom } from 'rxjs';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
@@ -19,12 +19,13 @@ export class ItemComponent implements OnInit {
 
   ngOnInit() { }
 
-  public async addVote(propId: string, voted: "for" | "against") {
+  public async addVote(proposalId: string, voted: "for" | "against") {
     const voterPubkey = this._solanaUtilsService.getCurrentWallet().publicKey.toBase58();
     const message = (new TextEncoder()).encode(voted) as Buffer;
     const signeture = await firstValueFrom(this._walletStore.signMessage(message));
-    const voter: voteSinger = { signer: voterPubkey, signeture, voted }
-    this._votesService.addVote(propId, voter).subscribe(voteStatus =>{
+    const voter: voter = { voterPubkey, signeture, voted }
+
+    this._votesService.addVote(proposalId, voter).subscribe(() =>{
       this._votesService.emitGetProposals.next(true);
     })
   }

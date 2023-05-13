@@ -11,11 +11,11 @@
   </p>
 
   <ion-row class="ion-justify-content-between">
-    <ion-col size="3.5" class="votes">
+    <ion-col size="3.5" class="votes" (click)="addVote(proposal._id, 'for')">
       <label>For</label>
       <span class="for">{{proposal.for}}</span>
     </ion-col>
-    <ion-col size="3.5" class="votes">
+    <ion-col size="3.5" class="votes" (click)="addVote(proposal._id, 'against')">
       <label>Against</label>
       <span class="against">{{proposal.against}}</span>
     </ion-col>

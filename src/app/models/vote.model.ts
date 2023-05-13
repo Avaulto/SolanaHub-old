@@ -7,10 +7,10 @@ export interface newProposal {
   desc: string,
 }
 export interface Proposal {
-  uuid: string;
+  _id: string;
   proposalOwnerPk: string,
   signeture: string,
-  signers: voteSinger[]
+  signers: voter[]
   date: Date,
   category: "feature" | "integration",
   title: string,
@@ -20,8 +20,8 @@ export interface Proposal {
   status: "active" | "pass" | "failed",
 }
 
-export interface voteSinger{
-  signer: string;
+export interface voter{
+  voterPubkey: string;
   signeture: Uint8Array;
   voted: "for" | "against"
 }
