@@ -13,7 +13,7 @@ const client = new MongoClient(uri, {
 
 
 export default async function addVote(request, response) {
-  const { proposalId, vote, signer } = request.body
+  const { proposalId, signer } = request.body
   try {
       await client.connect();
       const db = client.db("CDv1")
@@ -28,11 +28,11 @@ export default async function addVote(request, response) {
 
       const updateOptions = { returnOriginal: false };
       let voteUpdate
-      if (vote == 'for') {
-          voteUpdate = { for: proposal.for + 1 }
+      if (signer.voted == 'for') {
+          voteUpdate = { for: proposal.for + 1, signers: proposal.signers.push(signer) }
       }
-      if (vote == 'against') {
-          voteUpdate = { against: proposal.against + 1 }
+      if (signer.voted == 'against') {
+          voteUpdate = { against: proposal.against + 1, signers: proposal.signers.push(signer) }
       }
 
       const updateDoc = {

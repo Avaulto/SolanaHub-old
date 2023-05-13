@@ -40,11 +40,11 @@ export class NewProposalComponent implements OnInit {
   }
   async submitProposal() {
     const { category, title, desc } = this.proposalForm.value
-    const wallet = this._solanaUtilsService.getCurrentWallet();
+    const walletPubkey = this._solanaUtilsService.getCurrentWallet().publicKey.toBase58();
     const message = (new TextEncoder()).encode(title) as Buffer;
     const signeture = await firstValueFrom(this._walletStore.signMessage(message));
-    console.log(signeture)
-    const proposal: newProposal = { category, title, desc, proposalOwnerPk: wallet.publicKey.toBase58(), signeture:signeture.toString() }
+ 
+    const proposal: newProposal = { category, title, desc, proposalOwnerPk: walletPubkey, signeture }
     this._votesService.newProposal(proposal).subscribe(res =>{
       this._votesService.emitGetProposals.next(true);
     })

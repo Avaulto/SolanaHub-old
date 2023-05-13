@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, combineLatest, combineLatestWith, throwError } from 'rxjs';
-import { Proposal, newProposal } from 'src/app/models';
+import { BehaviorSubject, Observable, catchError, combineLatest, combineLatestWith, map, throwError } from 'rxjs';
+import { Proposal, newProposal, toastData, voteSinger } from 'src/app/models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 
@@ -28,6 +28,14 @@ export class VotesService {
   }
   public newProposal(proposal: newProposal): Observable<Proposal> {
     return this.apiService.post(`${this.votesProxy}/api/votes/newProposal`, {proposal}).pipe(
+      map(res =>{
+        const toasterMessage: toastData = {
+          message: 'new proposal added',
+          segmentClass: "toastInfo"
+        }
+        this._toasterService.msg.next(toasterMessage)
+        return res
+      }),
       catchError((error) => this._formatErrors(error))
     );
   }
@@ -37,8 +45,16 @@ export class VotesService {
     );
   }
 
-  public addVote(propId: string, vote: "for" | "against", signer: string): Observable<boolean> {
-    return this.apiService.post(`${this.votesProxy}/api/votes/addVote`, {propId, vote, signer}).pipe(
+  public addVote(propId: string, voteSinger: voteSinger): Observable<boolean> {
+    return this.apiService.post(`${this.votesProxy}/api/votes/addVote`, {propId, voteSinger}).pipe(
+      map(res =>{
+        const toasterMessage: toastData = {
+          message: 'vote added',
+          segmentClass: "toastInfo"
+        }
+        this._toasterService.msg.next(toasterMessage)
+        return res
+      }),
       catchError((error) => this._formatErrors(error))
     );
   }
