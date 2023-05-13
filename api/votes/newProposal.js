@@ -26,14 +26,14 @@ export default async function newProposal(request, response) {
     // const queryParamDecode = decodeURIComponent(queryParam);
     const db = await client.db("CDv1")
     const collection = db.collection('votes')
-    const newProposal = {...proposal,for:1,agains:0, date: new Date().now(), signers:[] }
+    const newProposal = {...proposal,for:1,agains:0, date: new Date(), signers:[] }
     const newItem = await collection.insertOne(newProposal);
     // const res = await fetch(url, settings, JSON.stringify(body));
     // const data = await res.json({ message: 'vote added' });
     return response.status(200).json(newItem);
   } catch (error) {
     console.warn(error)
-    return response.status(500).json({message: error});
+    return response.status(500).json({message: 'fail to create new proposal'});
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
