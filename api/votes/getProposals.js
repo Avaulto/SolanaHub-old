@@ -12,10 +12,11 @@ const client = new MongoClient(uri, {
 
 export default async function getProposals(request, response) {
   try {
-    const votes = client.db('CDv1').collection('votes')
-    return response.status(200).json(votes);
+    const db = await client.db("CDv1")
+    const allProposals = db.getCollection('proposals')
+    return response.status(200).json(allProposals);
   } catch (error) {
-    return response.status(500).json(error);
+    return response.status(500).json({message:'Fail to retrieve proposals', error});
   }finally {
     // Ensures that the client will close when you finish/error
     await client.close();

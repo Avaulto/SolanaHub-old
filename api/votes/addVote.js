@@ -19,8 +19,8 @@ export default async function addVote(request, response) {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // const queryParamDecode = decodeURIComponent(queryParam);
-    const db = await client.db("CDv1")
-    const collection = db.collection('votes')
+    const db = client.db("CDv1")
+    const collection = db.collection('proposals')
 
     // create a filter for a movie to update
     const filter = { _id: proposalId };
@@ -33,14 +33,12 @@ export default async function addVote(request, response) {
         against: +1 ,
       },
     };
-    const result = await movies.updateOne(filter, updateDoc, options);
-   
-
+    await collection.updateOne(filter, updateDoc, options);
     // const res = await fetch(url, settings, JSON.stringify(body));
-    // const data = await res.json({ message: 'vote added' });
+    await res.json({ message: 'vote added' });
     return response.status(200).json(res);
   } catch (error) {
-    return response.status(500).json(error);
+    return response.status(500).json({message:'fail to vote', error});
   } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
