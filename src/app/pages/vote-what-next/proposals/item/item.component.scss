@@ -1,30 +1,52 @@
-:host{
-    background: var(--ion-background-color);
-    width: 100%;
-    border-radius: 6px;
+:host {
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    background: var(--deep-background);
+    border-radius: 8px;
 }
-#prop-head{
-    .heading-3{
+
+#prop-head {
+    .heading-3 {
         margin-bottom: 10px;
     }
-    .sub{
-        text-decoration: underline;
-    }
 }
-#prop-body{
-    ion-row{
+
+#prop-body {
+    ion-row {
         width: 100%;
     }
-    p{
+
+    .prop-info {
+        display: flex;
+        color: #D6D6D6;
+        font-weight: 400;
+        text-transform: uppercase;
+        align-items: center;
+        div {
+            margin-right: 8px;
+        }
+
+        span {
+            font-size: 10px;
+        }
+    }
+
+    p {
         padding-bottom: 30px;
         margin-bottom: 15px;
-        border-bottom: 1px solid var(--deep-background);
         width: 100%;
+        color: #B3B3B3;
     }
-    
-    .votes {
+
+    #vote-button-wrapper {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .vote-button {
+        padding: 12px 12px 12px 8px;
+        height: 36px;
+        border-radius: 6px;
         background: var(--deep-background);
         padding: 5px;
         display: flex;
@@ -32,14 +54,24 @@
         justify-content: space-around;
         flex-direction: revert;
         border-radius: 4px;
-        max-width: 150px !important;
-    }
-    
-    .for{
-        color: var(--ion-color-primary);
-    }
-    
-    .against{
-        color: var(--ion-color-danger);
+        min-width: 110px;
+        label{
+            margin: 0 4px;
+        }
+        &#vote-for {
+            border: 1px solid var(--ion-color-primary);
+            ion-icon {
+                color: var(--ion-color-primary);
+                ;
+            }
+        }
+
+        &#vote-against {
+            border: 1px solid var(--ion-color-danger);
+            margin-inline-end: 8px;
+            ion-icon {
+                color: var(--ion-color-danger);
+            }
+        }
     }
 }

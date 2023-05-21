@@ -1,5 +1,5 @@
-<ion-row class="data-box ion-padding-end ion-justify-content-start">
-  <ion-col size="12" sizeMd="6" class="ion-padding">
+<ion-row class="ion-padding-vertical ion-justify-content-start">
+  <ion-col size="12" sizeMd="6">
     <ion-row class="ion-margin-bottom">
       <div class="col-group ">
         <ion-img
@@ -14,57 +14,37 @@
           </ion-col> -->
     </ion-row>
     <ion-row class="heading-1 ion-margin-bottom">Solara</ion-row>
-    <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">description</ion-row>
-    <ion-row class="ion-margin-bottom">In the realm of Solano,
+    <ion-row class="gray-title ion-text-capitalize">description</ion-row>
+    <ion-row id="nft-desc" class="ion-margin-bottom">In the realm of Solano,
       Solara entrusted her SOL tokens to the mighty Avaulto node.
       Their union amplified her stake, safeguarding it with unwavering devotion. Together,
       they embarked on a journey to protect and nurture her precious investment.</ion-row>
     <ion-row class="ion-margin-bottom ion-align-items-center">
 
-      <div id="art-icon" class="ion-margin-end">
+      <div id="art-icon">
         <ion-icon name="color-palette-outline"></ion-icon>
       </div>
 
-      <div class="ion-text-capitalize">
-        token address: <br>
-        <ion-col size="12" class="sub">H2V1oE7L1Vz6nbeLddJoVCCuzDBbBaTiP6bKFDEccdpP</ion-col>
+      <div id="token-address" class="ion-text-capitalize">
+        <span class="gray-title">token address:</span> <br>
+        <span >H2V1oE7L1Vz6nbeLddJoVCCuzDBbBaTiP6bKFDEccdpP</span>
       </div>
 
     </ion-row>
-    <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">Attributes</ion-row>
+    <ion-row class="gray-title ion-text-capitalize ion-margin-bottom ">Attributes</ion-row>
     <ion-row id="attr-grid">
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">gender</div>
-        <span class="sub">fembot</span>
+
+      <div class="nft-attr ion-margin-bottom"  *ngFor="let attr of nftAttr | keyvalue">
+        <div>{{attr.key}}</div>
+        <span>{{attr.value}}</span>
       </div>
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">weapon</div>
-        <span class="sub rank-4">shiny sword</span>
-      </div>
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">armor</div>
-        <span class="sub rank-2">brave armor</span>
-      </div>
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">gloves</div>
-        <span class="sub rank-2">wisdom gloves</span>
-      </div>
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">helmet</div>
-        <span class="sub rank-3">shiny helmet</span>
-      </div>
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">guardian tier</div>
-        <span class="sub rank-3">3</span>
-      </div>
-      <div class="nft-attr ion-margin-bottom">
-        <div class="sub-strong">amount stake</div>
-        <span class="sub">500 ◎</span>
-      </div>
+    
     </ion-row>
 
   </ion-col>
-  <ion-col  size="12" sizeMd="6" style="display: flex;" class="ion-align-items-center ion-padding-vertical">
+  <ion-col  size="12" sizeMd="6" style="display: flex;" class="ion-align-items-center">
+    <div class="ion-hide-lg-down ion-padding-start" ></div>
+
     <ion-img
       src="https://openai-labs-public-images-prod.azureedge.net/user-bpyXZqTG1b1nFQwhJ358lGb2/generations/generation-N2QjuV6SxF9TqmBcjkj5CWL0/image.webp"
       alt="NFT img"></ion-img>

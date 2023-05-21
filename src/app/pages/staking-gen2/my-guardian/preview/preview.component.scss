@@ -1,54 +1,84 @@
 .nft-attr {
-    width: 112px;
     min-height: 58px;
-    background: #04172C;
-    border-radius: 4px;
-    padding: 8px;
     text-transform: capitalize;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.24);
+    border-radius: 4px;
+    margin-bottom: 12px;
+
+    div {
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 12px;
+        margin-block-end: 8px;
+    }
+
+    span {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 22px;
+    }
 }
 
 .col-group {
     display: flex;
     align-items: center;
+    padding: 8px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+
     ion-img {
-        width: 30px;
-        height: 30px;
-        border-radius: 4px;
+        width: 20px;
+        height: 20px;
+        border-radius: 24px;
         overflow: hidden;
     }
 
 }
-#art-icon{
-    width: 26px;
-    height: 26px;
-    background: black;
+
+#art-icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%;
-
-}
-#attr-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 119px);
-}
-a{
-    text-decoration: none;
-    display: flex;
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    margin-inline-end: 8px;
     ion-icon{
-        font-size: 14px;
-        margin-inline-end: 10px;
+        font-size: 24px;
     }
 }
-.rank-1{
 
+#attr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
 }
-.rank-2{
-    color: var(--ion-color-primary);
+
+.gray-title {
+    color: #A3A3A3;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
 }
-.rank-3{
-    color:  var(--ion-color-tertiary);;
+
+.nft-desc {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 26px;
+    color: var(--ion-text-color);
 }
-.rank-4{
-    color: gold;
+
+@media screen and (max-width: 600px) {
+    #attr-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    #token-address{
+        span{
+            font-size: 12px;
+        }
+    }
 }

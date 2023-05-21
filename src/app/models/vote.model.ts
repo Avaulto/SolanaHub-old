@@ -17,7 +17,7 @@ export interface Proposal {
   desc: string,
   for: number,
   against: number,
-  status: "active" | "pass" | "failed",
+  status: "active" | "shipped" | "rejected",
 }
 
 export interface voter{

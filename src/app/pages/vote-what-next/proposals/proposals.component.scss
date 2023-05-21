@@ -9,3 +9,23 @@
         margin-inline-start: 8px;
     }
 }
+
+#proposal-header{
+    ion-button{
+        height: 40px;
+        --background: #EBEBEB;
+        color: #061832;
+        background: #EBEBEB;
+        border: 1px solid #EBEBEB;
+        border-radius: 6px;
+    }
+    ion-select{
+        height: 40px;
+        --background: #EBEBEB !important;
+        --placeholder-color: #061832;
+        color: #061832;
+        background: #EBEBEB !important;
+        border: 1px solid #EBEBEB;
+        border-radius: 6px;
+        width: 121px;}
+}

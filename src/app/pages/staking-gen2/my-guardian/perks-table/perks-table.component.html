@@ -1,38 +1,17 @@
-<ion-row class="data-box ion-padding">
-  <ion-row class="heading-4 ion-text-capitalize ion-margin-bottom">
+<ion-row id="perks-wrapper">
+  <ion-row class="heading-3 ion-text-capitalize ion-margin-bottom">
     perks
   </ion-row>
-  <ion-row class="ion-text-capitalize">
+  <ion-row class="ion-text-capitalize ion-justify-content-between">
 
-    <ion-col class="perks " sizeMd="2" size="6">
-      <div>
-        <ion-icon name="speedometer-outline"></ion-icon>
-        <ion-text>tier:</ion-text>
+    <ion-col *ngFor="let perk of perks" class="perks" sizeMd="2.9" size="12">
+      <div class="icon-wrapper">
+        <ion-icon [name]="perk.icon"></ion-icon>
       </div>
-      <span class="rank-3">epic</span>
-    </ion-col>
-    <ion-col class="perks" sizeMd="3" size="6">
-      <div>
-        <ion-icon name="balloon-outline"></ion-icon>
-        <ion-text>platform discount:</ion-text>
+      <div class="perks-key-value">
+        <ion-text>{{perk.name}}:</ion-text>
+        <span class="perk-value">{{perk.value}}</span>
       </div>
-      <span class="rank-3">50% discount</span>
-    </ion-col>
-
-    <ion-col class="perks" sizeMd="3" size="6">
-      <div>
-        <ion-icon name="trending-up-outline"></ion-icon>
-        <ion-text>validator fee cashbach:</ion-text>
-      </div>
-      <span class="rank-3">1% cashback</span>
-    </ion-col>
-
-    <ion-col class="perks" sizeMd="3" size="6">
-      <div>
-        <ion-icon name="bulb-outline"></ion-icon>
-        <ion-text>Proposal authority:</ion-text>
-      </div>
-      <span class="rank-3">suggest new features</span>
     </ion-col>
   </ion-row>
 </ion-row>
