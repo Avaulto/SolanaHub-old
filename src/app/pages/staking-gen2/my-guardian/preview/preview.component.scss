@@ -73,6 +73,9 @@
 }
 
 @media screen and (max-width: 600px) {
+    #preview-wrapper{
+        flex-direction: column-reverse;
+    }
     #attr-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }

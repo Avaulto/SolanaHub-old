@@ -45,6 +45,7 @@ export class SolanaUtilsService {
     combineLatestWith(this.accountChange$),
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async ([wallet, accountStateChange]: any) => {
+      console.log('runs')
       if (wallet) {
         wallet.balance = ((await this.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
       }

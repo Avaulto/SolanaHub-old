@@ -2,119 +2,21 @@
     width: 100%;
 }
 
-#craft-wrapper {
-    display: flex;
-    flex-direction: column;
-}
-
-#craft-master {
-    
-    #craft-options{
-       
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-}
-
-.demi-image {
-    height: 100%;
-    background: lightgray;
-}
-
-.demi-image.demi-one {
-    height: 30vh;
-}
-
-.selected {
-    background: #673AB7;
-}
 
 #craft-intro {
     text-align: center;
     h1{
-        font-size: 45px;
+        font-size: 35px;
         font-weight: bold;
         margin-bottom: 0;
     }
-}
-
-ion-item {
-    text-transform: capitalize;
-    --ion-color-base: transparent !important;
-    --ion-color-contrast: white !important;
-    --background: transparent;
-}
-
-#my-gurdians-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    width: 100%;
-    gap: 10px;
-
-    ion-img {
-        border-radius: 8px;
-        overflow: hidden;
+    p{
+        padding: 0 10px;
     }
 }
 
-#craft-wrapper ion-accordion {
-    margin-bottom: 15px;
-    background: var(--deep-background);
-    box-shadow: var(--deep-box-shadow);
-}
-::ng-deep {
-
-
-    ion-accordion.accordion-animated>[slot=header] .ion-accordion-toggle-icon {
-
-        color: var(--icon-color);
-    }
-}
-.stake-by {
-    transition: 0.3s ease;
-    height: 80px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 4px;
-    background: var(--deep-background);
-    padding: 12px;
-    cursor: pointer;
-    justify-content: space-evenly;
-    border: 1px solid transparent;
-
-    &.selected-path {
-        border: 1px solid var(--ion-color-primary);
-    }
-
-    .select-group {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        ion-checkbox {
-            --size: 14px;
-        }
-    }
-}
-
-#stake-amount {
-    position: relative;
-
-    span {
-        cursor: pointer;
-        position: absolute;
-        color: var(--ion-color-primary);
-        z-index: 2;
-        right: 15px;
-        top: 12px;
-    }
-}
 @media screen and (max-width: 600px) {
     #craft-intro h1{
-        font-size: 34px;
-    }
-    #my-gurdians-list {
-        grid-template-columns: 1fr 1fr;
+        font-size: 18px;
     }
 }

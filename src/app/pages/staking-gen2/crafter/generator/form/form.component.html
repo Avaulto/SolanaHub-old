@@ -1,0 +1,65 @@
+<div id="segmented-util">
+
+  <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+
+
+  <div [ngSwitch]="currentTab" id="gen2-form">
+    <form *ngSwitchCase="'new stake'" [formGroup]="craftForm">
+      <app-label-layout class="balance-label"
+        [layoutConfig]="{title: 'SOL Amount', balance:(wallet$ | async).balance| number: '1.2-2'}">
+        <app-icon-tooltip
+          tip="A 0.001 ◎ is reduced from maximum balance to prevent transaction failure."></app-icon-tooltip>
+      </app-label-layout>
+      <ion-row id="stake-amount">
+        <ion-input class="button-text" #stake [value]="range.value || 0" formControlName="stakeAmount"
+          placeholder="Amount"></ion-input>
+        <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
+      </ion-row>
+      <ion-row id="stake-range-amount">
+        <ion-range [min]="0" [max]="(wallet$ | async).balance" #range [value]="stake.value || 0" [pin]="true"
+          class="button-text" formControlName="stakeAmount">
+        </ion-range>
+        <span>
+          <ion-label>
+            <div  class="divider"></div>
+            <div>
+              min
+            </div>
+          </ion-label>
+          <ion-label>
+            <div class="divider"></div>
+            <div> max</div>
+          </ion-label>
+        </span>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center">
+        <!-- <app-loader></app-loader> -->
+        <ion-button (click)="stakeGen2()" [disabled]="formSubmitted || craftForm.invalid" class="ion-text-capitalize">
+          stake & craft
+        </ion-button>
+      </ion-row>
+    </form>
+    <form *ngSwitchCase="'active stake'" [formGroup]="craftForm">
+
+      <app-label-layout class="balance labler" [layoutConfig]="{title: 'stake account relayer'}"></app-label-layout>
+      <ion-row style="margin-bottom:8px;">
+        <ion-select placeholder="select active stake account" icon="chevron-down-outline" aria-label="sort by" interface="popover">
+          <ion-select-option value="integration request">
+            <ion-text>ai46....DA5A</ion-text>
+          </ion-select-option>
+          <ion-select-option value="integration request">
+            <ion-text>ai46....DA5A</ion-text>
+          </ion-select-option>
+        </ion-select>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <!-- <app-loader></app-loader> -->
+        <ion-button (click)="stakeGen2()" [disabled]="formSubmitted || craftForm.invalid" class="ion-text-capitalize">
+          craft
+        </ion-button>
+      </ion-row>
+
+    </form>
+  </div>
+</div>

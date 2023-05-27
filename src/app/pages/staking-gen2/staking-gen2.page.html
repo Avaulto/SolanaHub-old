@@ -4,20 +4,14 @@
     <ion-row class="ion-justify-content-between ion-align-items-center">
       <app-tabs [menu]="menu" [currentTab]="currentTab" (onSelectTab)="tabChange($event)"></app-tabs>
     </ion-row>
-      <!-- <ion-row>
-         stake gen 2
-         <ion-input [(ngModel)]="nftName" placeholder="name your Guardian"></ion-input>
-        <ion-button (click)="createBondStakeAccount()">
-          create bonded nft
-        </ion-button>
-      </ion-row> -->
-      <ion-row>
-        <ng-container [ngSwitch]="currentTab" >
-          <app-my-guardian *ngSwitchCase="'my-guaridan'"  (onSelectTab)="tabChange($event)" [wallet]="wallet$ | async"></app-my-guardian>
-          <app-crafter *ngSwitchCase="'crafter'" [wallet]="wallet$ | async" ></app-crafter>
-        </ng-container>
-        
-       
-      </ion-row>
+    <ion-row>
+      <ng-container [ngSwitch]="currentTab">
+        <app-my-guardian *ngSwitchCase="'my-guaridan'" (onSelectTab)="tabChange($event)"
+          [wallet]="wallet$ | async"></app-my-guardian>
+        <app-crafter *ngSwitchCase="'crafter'" [wallet]="wallet$ | async"></app-crafter>
+      </ng-container>
+
+
+    </ion-row>
   </ion-grid>
 </ion-content>

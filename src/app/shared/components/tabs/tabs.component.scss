@@ -3,7 +3,12 @@
     --color: var(--ion-text-color);
     --color-checked:var(--ion-text-color);
     --indicator-color: var(--ion-color-primary);
-    --indicator-height: 4px;
-    height: 20px;
+    --indicator-height: 2px;
+    height: 62px;
   }
   
+  
+  ion-label {
+    text-transform: capitalize;
+    font-size: 16px;
+}

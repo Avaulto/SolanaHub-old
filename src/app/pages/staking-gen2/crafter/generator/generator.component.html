@@ -1,0 +1,41 @@
+<ion-row id="guardian-crafter-wrapper" class="ion-justify-content-between">
+  <h2 id="crafter-title">Craft your guardian</h2>
+  <ion-col size="12" sizeLg="5.8">
+    <ion-row class="guardian-to-mint" [ngClass]="{'can-mint': (wallet$ | async)?.balance > guardianToMint.minStake}" id="guardian-preview">
+      <ion-img [src]="guardianToMint.img"></ion-img>
+    </ion-row>
+    <ion-row id="guardian-options">
+      <div class="guardian-to-mint" *ngFor="let option of mintOptions" (click)="guardianToMint = option"
+        [ngClass]="{'selected': guardianToMint.img == option.img ,'can-mint': (wallet$ | async)?.balance > option.minStake}">
+        <ion-img [src]="option.img"></ion-img>
+        <p>{{option.minStake}}</p>
+      </div>
+      
+    </ion-row>
+  </ion-col>
+  <ion-col size="12" sizeLg="5.8">
+    <ion-row id="tier-selection">
+      <h4>Chosen Tier perks</h4>
+      <h6>learn more <ion-icon name="exit-outline"></ion-icon></h6>
+    </ion-row>
+    <ion-row id="chosen-tier-perks">
+
+      <ion-row class="ion-justify-content-between">
+        <div id="tier-level">{{guardianToMint.tier}}</div>
+        <div id="tier-require-amount">{{guardianToMint.minStake}} SOL</div>
+      </ion-row>
+      <ion-row id="tier-perks" class="ion-justify-content-between">
+        <div class="perk" *ngFor="let perk of guardianToMint.perks">
+          <ion-icon [name]="perk.icon"></ion-icon>
+          <span>{{perk.name}}</span>
+        </div>
+      
+      </ion-row>
+
+    </ion-row>
+
+    <!-- form here -->
+    <app-form class="data-box"></app-form>
+
+  </ion-col>
+</ion-row>
