@@ -6,11 +6,15 @@
     justify-content: flex-end;
     ion-toggle{
         height: 20px;
-        margin-inline-start: 8px;
+        margin-inline-end: 8px;
     }
 }
 
 #proposal-header{
+    app-search-input{
+        width: 320px;
+        margin-inline-end: 24px;
+    }
     ion-button{
         height: 40px;
         --background: #EBEBEB;
@@ -27,5 +31,7 @@
         background: #EBEBEB !important;
         border: 1px solid #EBEBEB;
         border-radius: 6px;
-        width: 121px;}
+        width: 121px;
+        margin:0;
+    }
 }

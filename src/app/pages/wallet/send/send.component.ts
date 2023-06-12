@@ -4,9 +4,10 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 
 import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
-// import { Elusiv, TokenType } from "elusiv-sdk";
-import { Asset } from 'src/app/models';
+import { Elusiv, TokenType } from "@elusiv/sdk";
+
 import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import { environment } from 'src/environments/environment';
 
 // @ts-ignore
 // process.browser = true;
@@ -69,7 +70,7 @@ export class SendComponent implements OnInit {
     try {
       // try {
       if (privateTx) {
-        // this._sendPrivateTx(SOL, walletOwnerPublicKey, targetPk)
+        this._sendPrivateTx(SOL, targetAddress, targetPk)
       } else {
         await this._txInterceptService.sendSol(SOL, targetPk, this._solanaUtilsService.getCurrentWallet().publicKey)
       }
@@ -83,46 +84,46 @@ export class SendComponent implements OnInit {
   }
   private async _sendPrivateTx(SOL, walletOwnerPublicKey, targetPk) {
     // maximum fee payable
-    // const maxFee = 5000 * 100;
-
-    // // generate seed buffer
-    // const seed = (new TextEncoder()).encode(SEED_PREIMAGE) as Buffer;
-
-
-    // // sign wallet owner
-    // const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
-
-    // // init elusiv SDK
-    // const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection);
-
-    // // Top up our private balance with 1 SOL
-    // const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
-
-    // // Since this the topup, the funds still come from our original wallet. This is just
-    // // a regular Solana transaction in this case.
-    // await firstValueFrom(this._wallet.signTransaction(topupTxData.tx));
-
-    // // send http tx Through warden
-    // const topupSig = await elusiv.sendElusivTx(topupTxData)
+    const maxFee = 5000 * 100;
+    const randomSeed = Math.floor(Math.random() * 100000000).toString();
+    // generate seed buffer
+    const seed = (new TextEncoder()).encode(randomSeed) as Buffer;
 
 
-    // // wait for confimartion for users
-    // await this._solanaUtilsService.connection.confirmTransaction({
-    //   signature: topupSig.sig.signature,
-    //   lastValidBlockHeight: topupTxData.tx.lastValidBlockHeight!,
-    //   blockhash: topupTxData.tx.recentBlockhash!
-    // }, "finalized")
+    // sign wallet owner
+    const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
 
-    // // tx confimed
-    // await topupSig.isConfirmed
+    // init elusiv SDK
+    const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection, 'mainnet-beta');
 
-    // // // Send SOL, privately 😎
-    // const sendTx = await elusiv.buildSendTx(SOL / 2 , targetPk, 'LAMPORTS');
-    // // send http tx Through warden
-    // const sendTxSig = await elusiv.sendElusivTx(sendTx);
+    // Top up our private balance with 1 SOL
+    const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
 
-    // // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
-    // await sendTxSig.isConfirmed;
+    // Since this the topup, the funds still come from our original wallet. This is just
+    // a regular Solana transaction in this case.
+    await firstValueFrom(this._wallet.signTransaction(topupTxData.tx));
+
+    // send http tx Through warden
+    const topupSig = await elusiv.sendElusivTx(topupTxData)
+
+
+    // wait for confimartion for users
+    await this._solanaUtilsService.connection.confirmTransaction({
+      signature: topupSig.signature,
+      lastValidBlockHeight: topupTxData.tx.lastValidBlockHeight!,
+      blockhash: topupTxData.tx.recentBlockhash!
+    }, "finalized")
+
+    // tx confimed
+    await topupSig.confirmationStatus
+
+    // // Send SOL, privately 😎
+    const sendTx = await elusiv.buildSendTx(SOL / 2 , targetPk, 'LAMPORTS');
+    // send http tx Through warden
+    const sendTxSig = await elusiv.sendElusivTx(sendTx);
+
+    // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
+    await sendTxSig.confirmationStatus;
   }
 
 }

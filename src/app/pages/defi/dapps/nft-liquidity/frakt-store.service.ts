@@ -212,7 +212,6 @@ export class FraktStoreService {
         })
           .filter(item => item)
           .sort((a, b) => a.totalLiquidity > b.totalLiquidity ? -1 : 1)
-          // console.log(poolsFull,poolsLiquidity,nftWhitelist)
         return poolsFull
       }),
       catchError(this._formatErrors)

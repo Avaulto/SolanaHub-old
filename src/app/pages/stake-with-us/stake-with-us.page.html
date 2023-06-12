@@ -10,6 +10,15 @@
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
                 <app-data-box [title]="'stake'" [loading]="(getValidatorInfo | async) == null"
                     [desc]="(getValidatorInfo | async)?.activated_stake | number: '1.2-2'">
+                    <span *ngIf="(stakeChange | async) as sc">
+                        <span class="stake-change" 
+                        [ngClass]="{
+                            'stake-change-up': sc[0]?.activating_stake > sc[0]?.deactivating_stake,
+                            'stake-change-down': sc[0]?.activating_stake < sc[0]?.deactivating_stake}"
+                            >
+                                        {{(sc[0]?.activating_stake - sc[0]?.deactivating_stake).toFixed(0) }}◎
+                                    </span>
+                    </span>
                 </app-data-box>
             </ion-col>
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">

@@ -31,10 +31,10 @@
 
           <div id="cls-wrapper">
 
-            <app-stake-custom-validator (onValidatorSelect)="setValidator($event)"></app-stake-custom-validator>
+            <app-stake-custom-validator  [poolName]="selectedProvider.poolName" (onValidatorSelect)="setValidator($event)"></app-stake-custom-validator>
             <ion-button class="cls-btn" fill="clear" slot="start" (click)="removeValidatorControl()">
               <div>
-                remove custom validator
+                remove
               </div>
             </ion-button>
           </div>
@@ -43,7 +43,7 @@
 
         </ng-container>
         <ng-template #elseTemplate>
-          <ion-button *ngIf="selectedProvider?.poolName == 'SolBlaze'" class="cls-btn" fill="clear"
+          <ion-button *ngIf="supportDirectStake" class="cls-btn" fill="clear"
             (click)="addValidatorControl()"
             tooltip="stake with custom validator will give you the benefit to support your favorite validator while join liquid staking pool">
             <div>

@@ -20,13 +20,14 @@ import va from '@vercel/analytics';
   styleUrls: ['./stake-account-box.component.scss'],
 })
 export class StakeAccountBoxComponent implements OnInit {
-  @Input() selectedProvider: StakePoolProvider;
+  @Input() selectedProvider: StakePoolProvider = null;
   @Input() stakePoolStats: StakePoolStats;
   @Input() stakeAccounts: Observable<StakeAccountExtended[]>
   @Input() wallet;
+  public supportDirectStake: boolean = false
   public stakeForm: FormGroup;
-  formSubmitted: boolean = false;
-  withCLS = false;
+  public formSubmitted: boolean = false;
+  public withCLS = false;
   public showAccountList: boolean = false;
 
   constructor(
@@ -46,7 +47,8 @@ export class StakeAccountBoxComponent implements OnInit {
     })
   }
   async ngOnChanges() {
-    if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
+    this.supportDirectStake = this.selectedProvider?.poolName === 'SolBlaze' || this.selectedProvider?.poolName === 'Marinade'
+    if (!this.supportDirectStake) {
       this.removeValidatorControl()
     }
   }
@@ -76,21 +78,22 @@ export class StakeAccountBoxComponent implements OnInit {
 
     try {
       if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-        const depositAccount: MarinadeResult.DepositStakeAccount = await  this._stakePoolStore.marinadeSDK.depositStakeAccount(stakeAccountPK);
+        const depositAccount: MarinadeResult.DepositStakeAccount = await  this._stakePoolStore.marinadeSDK.depositStakeAccount(stakeAccountPK,{directToValidatorVoteAddress:validatorVoteAccount});
         const txIns: Transaction = depositAccount.transaction
         await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
       } else {
+        const validator_vote_key = new PublicKey(stakeAccount.validatorData.vote_identity);
+        let depositTx = await depositStake(
+          this._solanaUtilsService.connection,
+          this.selectedProvider.poolPublicKey,
+          this.wallet.publicKey,
+          validator_vote_key,
+          stakeAccountPK
+        );
         if (validatorVoteAccount) {
           this.stakeCLS(stakeAccount, validatorVoteAccount)
         } else {
-          const validator_vote_key = new PublicKey(stakeAccount.validatorData.vote_identity);
-          let depositTx = await depositStake(
-            this._solanaUtilsService.connection,
-            this.selectedProvider.poolPublicKey,
-            this.wallet.publicKey,
-            validator_vote_key,
-            stakeAccountPK
-          );
+   
           await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
           va.track('liquid staking', { type: 'stake account' });
         }
@@ -105,24 +108,17 @@ export class StakeAccountBoxComponent implements OnInit {
       this._toasterService.msg.next(toasterMessage)
     }
   }
-  public async stakeCLS(stakeAccount:StakeAccountExtended, targetValidatorVoteAccount: string) {
+  // stake custom validator
+  public async stakeCLS(txs, validatorVoteAccount: string) {
 
-    // current validator whom delegated by stake account
-    const currentValidator = new PublicKey(stakeAccount.validatorData.vote_identity);
-    // target validator you wish to delegate
-    const validator = new PublicKey(targetValidatorVoteAccount)
 
-    const stakeAccountPK = new PublicKey(stakeAccount.addr);
+    const validator = new PublicKey(validatorVoteAccount);
+
     const wallet = this.wallet.publicKey;
 
     try {
-      let depositTx = await depositStake(
-        this._solanaUtilsService.connection,
-        this.selectedProvider.poolPublicKey,
-        wallet,
-        currentValidator,
-        stakeAccountPK
-      );
+   
+
       let memo = JSON.stringify({
         type: "cls/validator_stake/lamports",
         value: {
@@ -139,9 +135,9 @@ export class StakeAccountBoxComponent implements OnInit {
         data: (new TextEncoder()).encode(memo) as Buffer
       })
 
-      const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
+      const txId = await this._txInterceptService.sendTx([...txs, memoInstruction], this.wallet.publicKey, txs.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
-      va.track('liquid staking', { type: `custom validator stake account ${targetValidatorVoteAccount}` });
+      va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount} using account` });
     } catch (error) {
 
       const toasterMessage: toastData = {

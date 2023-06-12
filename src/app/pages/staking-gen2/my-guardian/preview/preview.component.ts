@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
 interface NftAttr{
-  gender: string,
   weapon: string,
   armor: string,
   gloves: string,
   helmet: string,
-  tier: number,
-  stake: number
+  tier: string,
+  'stake account': string,
+
 }
 @Component({
   selector: 'app-preview',
@@ -16,14 +16,15 @@ interface NftAttr{
 })
 export class PreviewComponent  implements OnInit {
   public nftAttr: NftAttr = {
-    gender: 'fembot',
-    weapon:'shiny sword',
-    armor:'light armor',
-    gloves:'epic gloves',
-    helmet: 'none',
-    tier:3,
-    stake:1000
+    
+    weapon:'heavy sword',
+    armor:'matte purple armor',
+    gloves:'light gloves',
+    helmet: 'Ionia focus',
+    tier:'legendary',
+    'stake account':'sASW....5SD2'
   }
+  public demoNft = 'assets/images/nft-bg/demo-ag.png'
   constructor() { }
 
   ngOnInit() {}

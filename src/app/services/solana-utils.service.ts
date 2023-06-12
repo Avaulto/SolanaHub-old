@@ -45,7 +45,6 @@ export class SolanaUtilsService {
     combineLatestWith(this.accountChange$),
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async ([wallet, accountStateChange]: any) => {
-      console.log('runs')
       if (wallet) {
         wallet.balance = ((await this.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
       }
@@ -144,6 +143,14 @@ export class SolanaUtilsService {
           this.validatorsData = result;
         }
         return result;
+      }),
+      catchError(this._formatErrors)
+    );
+  }
+  public getAvaultoStakeChange(){
+    return this._apiService.get(`https://api.stakewiz.com/validator_epoch_stakes/7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh`).pipe(
+      map((stake) => {
+        return stake
       }),
       catchError(this._formatErrors)
     );

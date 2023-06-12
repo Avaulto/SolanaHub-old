@@ -8,7 +8,7 @@
       <div class="guardian-to-mint" *ngFor="let option of mintOptions" (click)="guardianToMint = option"
         [ngClass]="{'selected': guardianToMint.img == option.img ,'can-mint': (wallet$ | async)?.balance > option.minStake}">
         <ion-img [src]="option.img"></ion-img>
-        <p>{{option.minStake}}</p>
+        <p>{{option.minStake == 0 ? 'any' : option.minStake}}</p>
       </div>
       
     </ion-row>

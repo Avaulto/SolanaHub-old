@@ -47,19 +47,19 @@ export const pages: any = [
     //   url: "learning-center",
     //   icon: 'book-outline',
     // },
-    {
-      title: "vote what next",
-      url: "vote-what-next",
-      icon: 'rocket-outline',
-    },
+    // {
+    //   title: "vote what next",
+    //   url: "vote-what-next",
+    //   icon: 'rocket-outline',
+    // },
     {
       title: "stake with us",
       url: "stake-with-us",
       icon: 'heart-circle',
     },
-    {
-      title: "stake gen2",
-      url: "stake-gen2",
-      icon: 'flash',
-    }
+    // {
+    //   title: "stake gen2",
+    //   url: "stake-gen2",
+    //   icon: 'flash',
+    // }
   ];

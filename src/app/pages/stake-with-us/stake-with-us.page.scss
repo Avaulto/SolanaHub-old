@@ -7,3 +7,23 @@
         color: var(--ion-text-color);
     }
 }
+
+.stake-change {
+    padding: 2px 4px;
+    font-size: 12px;
+    margin-inline-start: 8px;
+    background: var(--ion-color-tertiary);
+    border-radius: 5px;
+    width: 51px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.stake-change-up{
+        background: var(--ion-color-success);
+    }
+    &.stake-change-down{
+        background: var(--ion-color-tertiary);
+    }
+}

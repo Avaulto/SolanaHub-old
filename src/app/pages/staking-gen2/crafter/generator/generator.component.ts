@@ -47,7 +47,7 @@ export class GeneratorComponent implements OnInit {
           icon: 'balloon-outline'
         },
         {
-          name: '1% cashback',
+          name: '0.5% cashback',
           icon: 'trending-up-outline'
         },
         {
@@ -66,7 +66,7 @@ export class GeneratorComponent implements OnInit {
           icon: 'balloon-outline'
         },
         {
-          name: '2% cashback',
+          name: '1% cashback',
           icon: 'trending-up-outline'
         },
         {

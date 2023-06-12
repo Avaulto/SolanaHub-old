@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { LAMPORTS_PER_SOL, PublicKey,  TransactionInstruction } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
 import bn from 'bn.js'
 
@@ -17,14 +17,15 @@ import va from '@vercel/analytics';
   styleUrls: ['./stake-sol-box.component.scss'],
 })
 export class StakeSolBoxComponent implements OnInit, OnChanges {
-  @Input() selectedProvider: StakePoolProvider;
+  @Input() selectedProvider: StakePoolProvider = null;
   @Input() stakePoolStats: StakePoolStats;
   @Input() solBalance: number = 0;
   @Input() wallet;
-  tooltippos = TooltipPosition.LEFT
+  public supportDirectStake: boolean = false
+  public tooltippos = TooltipPosition.LEFT
   public stakeForm: FormGroup;
-  formSubmitted: boolean = false;
-  withCLS = false;
+  public formSubmitted: boolean = false;
+  public withCLS = false;
   public menu: string[] = ['stake', 'unstake'];
   public currentTab: string = this.menu[0]
 
@@ -46,13 +47,14 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     })
   }
   async ngOnChanges() {
-    if (this.selectedProvider.poolName.toLowerCase() != 'solblaze') {
+    this.supportDirectStake = this.selectedProvider?.poolName === 'SolBlaze' || this.selectedProvider?.poolName === 'Marinade'
+    if (!this.supportDirectStake) {
       this.removeValidatorControl()
     }
   }
 
   setMaxAmountSOL() {
-    this.stakeForm.controls.stakeAmount.setValue(this._utilsService.shortenNum(this.solBalance -  0.001));
+    this.stakeForm.controls.stakeAmount.setValue(this._utilsService.shortenNum(this.solBalance - 0.001));
   }
   setMaxAmountxSOL() {
     this.unStakeAmount = this.stakePoolStats.userHoldings.staked_asset
@@ -75,44 +77,40 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     const sol = new bn((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-      const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol);
+      const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol, { directToValidatorVoteAddress: validatorVoteAccount });
       this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
     } else {
+      let depositTx = await depositSol(
+        this._solanaUtilsService.connection,
+        this.selectedProvider.poolPublicKey,
+        this.wallet.publicKey,
+        Number(sol),
+        undefined,
+        referral
+      );
       // custom stake to a validator using solblaze pool
       if (validatorVoteAccount) {
-        this.stakeCLS(Number(sol));
+        this.stakeCLS(depositTx, validatorVoteAccount);
       } else {
-        
-        let depositTx = await depositSol(
-          this._solanaUtilsService.connection,
-          this.selectedProvider.poolPublicKey,
-          this.wallet.publicKey,
-          Number(sol),
-          undefined,
-          // referral
-        );
-        await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
-        va.track('liquid staking', { type: `stake SOL` });
 
+  
+        await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
+        
       }
     }
+    va.track('liquid staking', { type: `stake SOL` });
 
   }
   // stake custom validator
-  public async stakeCLS(sol: number) {
-    let { validatorVoteAccount } = this.stakeForm.value;
+  public async stakeCLS(txs, validatorVoteAccount: string) {
+
 
     const validator = new PublicKey(validatorVoteAccount);
 
     const wallet = this.wallet.publicKey;
 
     try {
-      let depositTx = await depositSol(
-        this._solanaUtilsService.connection,
-        this.selectedProvider.poolPublicKey,
-        wallet,
-        sol
-      );
+   
 
       let memo = JSON.stringify({
         type: "cls/validator_stake/lamports",
@@ -130,7 +128,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         data: (new TextEncoder()).encode(memo) as Buffer
       })
 
-      const txId = await this._txInterceptService.sendTx([...depositTx.instructions, memoInstruction], this.wallet.publicKey, depositTx.signers);
+      const txId = await this._txInterceptService.sendTx([...txs, memoInstruction], this.wallet.publicKey, txs.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
 
       va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount}` });

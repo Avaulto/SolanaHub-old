@@ -15,7 +15,6 @@ import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 import { inject } from '@vercel/analytics';
-import { environment } from 'src/environments/environment';
 
 
 inject({mode: "auto"});

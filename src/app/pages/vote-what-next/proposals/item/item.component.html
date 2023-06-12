@@ -11,22 +11,22 @@
   </p>
 
   <ion-row class="ion-justify-content-between">
-    <ion-col sizeMd="4" size="6" class="prop-info">
+    
+    <div class="prop-info">
       <div>ECWY....JUXk</div><span>2 days ago</span>
-    </ion-col>
-    <ion-col sizeMd="4" size="6" id="vote-button-wrapper">
+    </div>
+
+    <div id="vote-button-wrapper">
       <div class="vote-button ButtonText" id="vote-against" (click)="addVote(proposal._id, 'against')">
         <ion-icon name="caret-down-outline"></ion-icon>
         <label>Vote Against</label>
         <span>{{proposal.against}}</span>
       </div>
-        <div class="vote-button ButtonText" id="vote-for" (click)="addVote(proposal._id, 'for')">
-          <ion-icon name="caret-up-outline"></ion-icon>
-          <label>Vote For</label>
-          <span>{{proposal.for}}</span>
-        </div>
-       
-     
-    </ion-col>
+      <div class="vote-button ButtonText" id="vote-for" (click)="addVote(proposal._id, 'for')">
+        <ion-icon name="caret-up-outline"></ion-icon>
+        <label>Vote For</label>
+        <span>{{proposal.for}}</span>
+      </div>
+    </div>
   </ion-row>
 </ion-row>
