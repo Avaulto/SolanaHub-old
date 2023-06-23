@@ -1,0 +1,22 @@
+<ion-row class="ion-justify-content-between ion-text-capitalize">
+  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'Total Value Locked'" [loading]="!(meteoraStats | async)"
+      [desc]="((meteoraStats | async)?.TVL| currency)  ">
+    </app-data-box>
+  </ion-col>
+  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'Total Vaults Earnings'" [loading]="!(meteoraStats | async)"
+      [desc]="((meteoraStats | async)?.totalValueEarn | currency)   ">
+    </app-data-box>
+  </ion-col>
+ <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'your deposit'" loading="false"
+    [desc]="0 | currency">
+    </app-data-box>
+  </ion-col>
+  <!--  <ion-col sizeMd="2.8" size="5" class="data-box ion-padding">
+    <app-data-box [title]="'total loans issued'" [loading]="!(fraktStats | async)"
+      [desc]="(fraktStats | async)?.totalIssued | number ">
+    </app-data-box>
+  </ion-col> -->
+</ion-row>

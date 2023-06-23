@@ -42,6 +42,14 @@ export class DefiPage   {
       deepLink: 'nft-liquidity',
       status:'active'
     },
+    {
+      name: 'meteora',
+      image: 'assets/images/icons/meteora-logo.svg',
+      description: `Make Solana Liquid Again`,
+      learnMoreLink: 'https://docs.meteora.ag/',
+      deepLink: 'vaults-liquidity',
+      status:'active'
+    },
     // {
     //   name: 'orca',
     //   image: 'assets/images/icons/orca-logo.svg',

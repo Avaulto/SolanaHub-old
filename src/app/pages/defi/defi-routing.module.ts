@@ -19,6 +19,14 @@ const routes: Routes = [
   {
     path: 'nft-liquidity',
     loadChildren: () => import('./dapps/nft-liquidity/nft-liquidity.module').then( m => m.NftLiquidityPageModule)
+  },
+  {
+    path: 'vaults-liquidity',
+    loadChildren: () => import('./dapps/vault-liquidity/vault-liquidity.module').then( m => m.VaultLiquidityPageModule)
+  },
+  {
+    path: 'vault-liquidity',
+    loadChildren: () => import('./dapps/vault-liquidity/vault-liquidity.module').then( m => m.VaultLiquidityPageModule)
   }
 ];
 

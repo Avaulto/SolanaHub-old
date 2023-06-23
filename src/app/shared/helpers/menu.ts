@@ -38,7 +38,12 @@ export const pages: any = [
         {
           title: "NFT Liquidity",
           url: "/defi/nft-liquidity",
-          icon: 'swap-horizontal',
+          icon: 'diamond-outline',
+        },
+        {
+          title: "Liquidity vaults",
+          url: "/defi/vaults-liquidity",
+          icon: 'server-outline',
         },
       ]
     },

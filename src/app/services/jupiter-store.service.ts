@@ -110,6 +110,13 @@ export class JupiterStoreService {
       catchError(this._formatErrors)
     )
   }
+
+  public fetchTokenListV2(): Observable<Token[]> {
+    //const env = TOKEN_LIST_URL[environment.solanaEnv]//environment.solanaEnv
+    return this._apiService.get('https://cdn.jsdelivr.net/gh/solflare-wallet/token-list/solana-tokenlist.json').pipe(
+      catchError(this._formatErrors)
+    )
+  }
   public async fetchPriceFeed(mintAddress: string, vsAmount: number = 1): Promise<JupiterPriceFeed> {
     let data: JupiterPriceFeed = null
     try {
