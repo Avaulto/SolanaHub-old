@@ -110,7 +110,6 @@ export class StakeAccountBoxComponent implements OnInit {
   }
   // stake custom validator
   public async stakeCLS(txs, validatorVoteAccount: string) {
-    console.log(txs)
 
     const validator = new PublicKey(validatorVoteAccount);
 
