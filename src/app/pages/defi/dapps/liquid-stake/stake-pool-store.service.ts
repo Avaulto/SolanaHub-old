@@ -45,7 +45,7 @@ export class StakePoolStoreService {
     tokenImageURL: 'https://arweave.net/FG1nqKGeIZ2K8HyaoVw5PmEjSN2U4vklELDW8MaVMcQ?ext=gif',
     poolPublicKey: new PublicKey("F8h46pYkaqPJNP2MRkUUUtRkf8efCkpoqehn9g1bTTm7"),
     MEVDelegation: false,
-    website: "https://stake.solblaze.org/"
+    website: "https://risk.lol/"
   },{
     poolName: 'Marinade',
     apy: null,
