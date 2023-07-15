@@ -157,6 +157,7 @@ export class StakePoolStoreService {
   }
   public async getStakePoolsInfo(): Promise<void> {
     try {
+      /*
       this.providers = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.map((provider: StakePoolProvider) => {
         provider.poolName == 'BlazeStake' ? provider.poolName = 'SolBlaze' : provider.poolName
         provider.poolPublicKey = new PublicKey(provider.poolPublicKey)
@@ -164,7 +165,7 @@ export class StakePoolStoreService {
         return provider
       })
       .filter(provider => provider.poolName != "DAO Pool")
-      .sort((a, b) => a.tokenMintSupply > b.tokenMintSupply ? -1 : 1)
+      .sort((a, b) => a.tokenMintSupply > b.tokenMintSupply ? -1 : 1) */
     } catch (error) {
       console.error(error)
     }
