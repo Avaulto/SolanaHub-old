@@ -40,7 +40,7 @@ export class StakePoolStoreService {
     poolName: 'Risk.lol',
     apy: null,
     exchangeRate: null,
-    tokenSymbol: "mSOL",
+    tokenSymbol: "riskSOL",
     tokenMint: new PublicKey("C4kq9QRFLAqwYHK7p4Ez54KMZLZNw2yLsiT3KN4FSmdH"),
     tokenImageURL: 'https://arweave.net/FG1nqKGeIZ2K8HyaoVw5PmEjSN2U4vklELDW8MaVMcQ?ext=gif',
     poolPublicKey: new PublicKey("F8h46pYkaqPJNP2MRkUUUtRkf8efCkpoqehn9g1bTTm7"),
