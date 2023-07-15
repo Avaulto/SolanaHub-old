@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { ApiService, SolanaUtilsService, JupiterStoreService } from 'src/app/services';
 import { StakePoolStoreService } from '../stake-pool-store.service';
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
+import { sol } from '@metaplex-foundation/js';
 
 @Component({
   selector: 'app-liquid-staking-stats',
@@ -54,7 +55,13 @@ export class LiquidStakingStatsComponent implements OnChanges {
 
   async fetchPoolProviderStats() {
     let info = await stakePoolInfo(this._solanaUtilsService.connection, this.selectedProvider.poolPublicKey);
-    const solprice = await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
+    let solprice = 0
+    try {
+     solprice =  await (await this._jupStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
+    } 
+    catch (err){
+      solprice = 1.111
+    }
     let solanaAmount = info.details.reserveStakeLamports;
     for (let i = 0; i < info.details.stakeAccounts.length; i++) {
       solanaAmount += parseInt(info.details.stakeAccounts[i].validatorLamports);
