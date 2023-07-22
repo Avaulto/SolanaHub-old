@@ -53,6 +53,11 @@ export const pages: any = [
     //   icon: 'rocket-outline',
     // },
     {
+      title: "The Laboratory",
+      url: "the-laboratory",
+      icon: 'flask-sharp',
+    },
+    {
       title: "stake with us",
       url: "stake-with-us",
       icon: 'heart-circle',

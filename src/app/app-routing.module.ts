@@ -38,6 +38,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/staking-gen2/staking-gen2.module').then( m => m.StakingGen2PageModule)
   },
   {
+    path: 'the-laboratory',
+    loadChildren: () => import('./pages/the-laboratory/the-laboratory.module').then( m => m.TheLaboratoryPageModule)
+  },
+  {
     path:"**",
     redirectTo:'home'
   },
