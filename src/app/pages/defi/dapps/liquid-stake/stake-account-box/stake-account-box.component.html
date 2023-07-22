@@ -31,7 +31,10 @@
 
           <div id="cls-wrapper">
 
-            <app-stake-custom-validator  [poolName]="selectedProvider.poolName" (onValidatorSelect)="setValidator($event)"></app-stake-custom-validator>
+            <app-stake-custom-validator  
+            [poolName]="selectedProvider.poolName"
+             (onValidatorSelect)="setValidator($event)"
+             ></app-stake-custom-validator>
             <ion-button class="cls-btn" fill="clear" slot="start" (click)="removeValidatorControl()">
               <div>
                 remove

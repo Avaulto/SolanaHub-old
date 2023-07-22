@@ -77,8 +77,12 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     const sol = new bn((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
+
+
       const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol, { directToValidatorVoteAddress: validatorVoteAccount });
-      this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
+
+        this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
+
     } else {
       let depositTx = await depositSol(
         this._solanaUtilsService.connection,
@@ -86,7 +90,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         this.wallet.publicKey,
         Number(sol),
         undefined,
-        referral
+        // referral
       );
       // custom stake to a validator using solblaze pool
       if (validatorVoteAccount) {
@@ -103,7 +107,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   }
   // stake custom validator
   public async stakeCLS(txs, validatorVoteAccount: string) {
-
 
     const validator = new PublicKey(validatorVoteAccount);
 
@@ -128,12 +131,11 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         data: (new TextEncoder()).encode(memo) as Buffer
       })
 
-      const txId = await this._txInterceptService.sendTx([...txs, memoInstruction], this.wallet.publicKey, txs.signers);
+      const txId = await this._txInterceptService.sendTx([txs, memoInstruction], this.wallet.publicKey, txs.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
 
       va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount}` });
     } catch (error) {
-
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
         segmentClass: "merinadeErr"

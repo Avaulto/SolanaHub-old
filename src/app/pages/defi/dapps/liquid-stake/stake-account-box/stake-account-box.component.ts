@@ -91,7 +91,7 @@ export class StakeAccountBoxComponent implements OnInit {
           stakeAccountPK
         );
         if (validatorVoteAccount) {
-          this.stakeCLS(stakeAccount, validatorVoteAccount)
+          this.stakeCLS(depositTx, validatorVoteAccount)
         } else {
    
           await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
@@ -100,7 +100,7 @@ export class StakeAccountBoxComponent implements OnInit {
 
       }
     } catch (error) {
-
+      console.log(error)
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
         segmentClass: "merinadeErr"
@@ -110,7 +110,6 @@ export class StakeAccountBoxComponent implements OnInit {
   }
   // stake custom validator
   public async stakeCLS(txs, validatorVoteAccount: string) {
-
 
     const validator = new PublicKey(validatorVoteAccount);
 
@@ -135,11 +134,11 @@ export class StakeAccountBoxComponent implements OnInit {
         data: (new TextEncoder()).encode(memo) as Buffer
       })
 
-      const txId = await this._txInterceptService.sendTx([...txs, memoInstruction], this.wallet.publicKey, txs.signers);
+      const txId = await this._txInterceptService.sendTx([txs, memoInstruction], this.wallet.publicKey, txs.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
       va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount} using account` });
     } catch (error) {
-
+      console.log(error)
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
         segmentClass: "merinadeErr"

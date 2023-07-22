@@ -92,7 +92,10 @@ export class SendComponent implements OnInit {
     console.log(signedSeed)
     // init elusiv SDK
     const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection, 'mainnet-beta');
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
     // Top up our private balance with 1 SOL
     const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
 
