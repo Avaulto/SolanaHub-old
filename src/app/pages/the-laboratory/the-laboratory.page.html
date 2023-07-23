@@ -1,6 +1,16 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
-    <ion-row class="ion-justify-content-between ">
+    <ion-row class="ion-margin-bottom ion-justify-content-between ion-align-items-center">
+        <h2 class="heading-1">Laboratory products</h2>
+        <!-- <ion-button fill="outline" (click)="showDefiTourSlide($event)" >DeFi tour</ion-button> -->
     </ion-row>
+    
+
+    <ion-row *ngFor="let dapp of defiLab">
+      <ion-col size="12" class="ion-margin-end">
+        
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
 </ion-content>

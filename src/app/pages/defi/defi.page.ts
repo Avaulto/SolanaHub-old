@@ -2,22 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PopoverController } from '@ionic/angular';
 import { DefiTourComponent } from './defi-tour/defi-tour.component';
+import { DefiApp } from 'src/app/models';
 
-interface DefiApps {
-  name: string;
-  image: string;
-  description: string;
-  learnMoreLink: string;
-  deepLink: string;
-  status: 'active' | 'pending';
-}
 @Component({
   selector: 'app-defi',
   templateUrl: './defi.page.html',
   styleUrls: ['./defi.page.scss'],
 })
 export class DefiPage   {
-  public defiApps: DefiApps[] = [
+  public defiApps: DefiApp[] = [
     {
       name: 'Liquid staking',
       image: 'assets/images/icons/liquid-stake-logo.gif',

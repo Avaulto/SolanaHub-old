@@ -7,14 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { TheLaboratoryPageRoutingModule } from './the-laboratory-routing.module';
 
 import { TheLaboratoryPage } from './the-laboratory.page';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+    SharedModule,
     TheLaboratoryPageRoutingModule
   ],
   declarations: [TheLaboratoryPage]
 })
-export class TheLaboratoryPageModule {}
+export class TheLaboratoryPageModule { }

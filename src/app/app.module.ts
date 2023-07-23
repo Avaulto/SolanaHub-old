@@ -17,7 +17,7 @@ import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 import { inject } from '@vercel/analytics';
 
 
-inject({mode: "auto"});
+// inject({mode: "auto"});
 
 @NgModule({
     declarations: [

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DefiApp } from 'src/app/models';
 
 @Component({
   selector: 'app-the-laboratory',
@@ -11,5 +12,14 @@ export class TheLaboratoryPage implements OnInit {
 
   ngOnInit() {
   }
-
+  public defiLab: DefiApp[] = [
+    {
+      name: 'marinade plus',
+      image: 'assets/images/icons/liquid-stake-logo.gif',
+      description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
+      learnMoreLink: 'https://solana.org/stake-pools',
+      deepLink: 'marinade-plus',
+      status:'active'
+    }
+  ]
 }

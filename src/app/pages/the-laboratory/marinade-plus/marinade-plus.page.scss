@@ -1,0 +1,76 @@
+
+::ng-deep app-dapp-head{
+    #dapp-logo ion-img{
+        width: 100px !important;
+        margin-inline-start: 8px;
+        overflow: hidden;
+        border-radius: 0%  !important;
+    }
+}
+
+#stake-box {
+    display: block;
+    width: 450px;
+    max-width: 100%;
+    margin: 8px auto;
+}
+
+#stake-apr-box {
+    height: 99px;
+    background:var( --apr-box);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    text-transform: capitalize;
+    div {
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    span {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    p {
+        margin-top: 4px;
+        font-size: 12px;
+    }
+    #mev-reward{
+        display: block;
+        font-size: 12px;
+        position: relative;
+        bottom: 7px;
+        color: gold;
+    }
+}
+
+#stake-amount {
+    position: relative;
+
+    span {
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
+}
+
+.yield-asset{
+    align-items: center;
+    display: flex;
+    ion-img {
+        width: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-inline-end: 6px;
+    }
+    span{
+        font-size: 13px;
+    font-weight: 100;
+    }
+}

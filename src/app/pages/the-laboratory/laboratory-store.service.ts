@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StakePoolStoreService } from '../defi/dapps/liquid-stake/stake-pool-store.service';
 import { ApiService, JupiterStoreService, SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
-import { environment } from 'src/environments/environment';
 import { depositSol, withdrawStake } from '@solana/spl-stake-pool';
-import { PublicKey, TransactionInstruction } from '@solana/web3.js';
+import { PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { toastData } from 'src/app/models';
-import { Transaction } from 'mongodb';
+import { SolendMarket, SolendAction, SolendWallet } from '@solendprotocol/solend-sdk'
+import BN from 'bn.js';
 
 @Injectable({
   providedIn: 'root'
@@ -75,11 +75,90 @@ export class LaboratoryStoreService {
       this._toasterService.msg.next(toasterMessage)
     }
   }
-  private async _mSolStake(amount: any): Promise<Transaction | any>{
+  private async _mSolStake(amount: any): Promise<Transaction | any> {
     const directToValidatorVoteAddress = this.avaultoVoteKey;
     const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(amount, { directToValidatorVoteAddress });
     return transaction;
   }
   // step 2 - push as collateral on solend
 
+
+  public async initSolendMarket(walletOwner: PublicKey) {
+    const market = await SolendMarket.initialize(
+      this._solanaUtilsService.connection,
+      //environment.solanaEnv as any, // optional environment argument
+    );
+    console.log(market.reserves);
+
+    // 2. Read on-chain accounts for reserve data and cache
+    await market.loadReserves();
+
+    const usdcReserve = market.reserves.find((res) => res.config.liquidityToken.symbol == "mSOL");
+    console.log(usdcReserve);
+
+    // // Read Solend liquidity mining stats
+    // await market.loadRewards();
+    // console.log(usdcReserve.stats); // {apy: 0.07, rewardMint: "SLND...
+
+    // // Refresh all cached data
+    // market.refreshAll();
+
+    // const obligation = await market.fetchObligationByWallet(walletOwner);
+    // console.log(obligation);
+  }
+
+  // deposit mSOL to solend pool
+  public async depositMsol(amountBase: BN, walletOwner: PublicKey) {
+    const solendAction = await SolendAction
+    .buildDepositTxns(
+      this._solanaUtilsService.connection,
+      amountBase,
+      'mSOL',
+      walletOwner,
+      //environment.solanaEnv as any,
+    );
+
+    return solendAction
+
+  }
+    // withdraw mSOL to solend pool
+    public async withdrawMsol(amountBase: BN, walletOwner: PublicKey) {
+      const solendAction = await SolendAction
+      .buildWithdrawTxns(
+        this._solanaUtilsService.connection,
+        amountBase,
+        'mSOL',
+        walletOwner,
+      );
+  
+      return solendAction
+    }
+
+  public async claimMNDE(walletOwner: PublicKey) {
+
+    const solendWallet = await SolendWallet.initialize(walletOwner as any, this._solanaUtilsService.connection);
+
+    // Claim rewards
+    const mndeRewards = solendWallet.rewards["MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey"];
+    console.log(
+      "Claimable rewards:",
+      mndeRewards.claimableAmount
+    );
+
+    const sig1 = await mndeRewards.rewardClaims
+      .find((claim) => !claim.metadata.claimedAt)
+      ?.claim();
+
+    // Exercise options (after claiming)
+    const slndOptionClaim = solendWallet.rewards["SLND_OPTION"].rewardClaims.find(
+      (claim) => claim.metadata.optionMarket.userBalance
+    );
+
+    // const sig2 = await slndOptionClaim.exercise(
+    //   slndOptionClaim.optionMarket.userBalance
+    // );
+
+    const [setupIxs, claimIxs] = await solendWallet.getClaimAllIxs();
+    // Claim all claimable rewards
+  }
 }

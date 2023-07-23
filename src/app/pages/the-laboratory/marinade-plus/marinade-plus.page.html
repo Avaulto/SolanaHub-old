@@ -1,0 +1,67 @@
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
+    <app-dapp-head name="marinade & solend"
+      imgPath="/assets/images/icons/strategies-icons/msol-solend-mnde.png"></app-dapp-head>
+    <app-defi-stats [stats]="strategyStats"></app-defi-stats>
+
+    <ion-row class="ion-justify-content-between">
+
+
+      <ion-col class="data-box" sizeLg="7.7" size="12">
+        <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+        <div [ngSwitch]="currentTab" class="ion-padding-top">
+          <form *ngSwitchCase="'deposit'" [formGroup]="depositForm" id="stake-box">
+            <ion-row class="ion-margin-bottom" id="stake-apr-box">
+              <div>~7.1% <span>APY</span>
+                <span id="mev-reward">SOL + MNDE rewards</span>
+              </div>
+              <p id="">marinade liquid staking + soled pool strategy</p>
+            </ion-row>
+            <app-label-layout
+              [layoutConfig]="{title: 'Deposit SOL', balance: (walletExtended$ | async)?.balance | number: '1.2-2'}">
+              <app-icon-tooltip
+                tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+            </app-label-layout>
+
+            <ion-row id="stake-amount">
+              <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
+              <span class="heading-6">MAX</span>
+            </ion-row>
+
+
+            <ion-row class="ion-justify-content-center">
+              <ng-container *ngIf="walletExtended$ | async; else elseTemplate">
+                <ion-button [disabled]="formSubmitted || depositForm.invalid" (click)="submit()" type="button"
+                  class="ion-text-capitalize">yield now</ion-button>
+                <!-- {{wallet.tokens}} -->
+              </ng-container>
+              <ng-template #elseTemplate>
+                <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+              </ng-template>
+
+            </ion-row>
+          </form>
+        </div>
+      </ion-col>
+      <ion-col class="data-box ion-padding" sizeLg="4" size="12">
+        <div class="heading-4 ion-margin-bottom ion-text-uppercase">APY Breakdown</div>
+        <div class="yield-asset">
+          <ion-img src="/assets/images/icons/solana-logo.webp"></ion-img>
+          <span>
+            Base 6.6% SOL staking rewards
+          </span>
+        </div>
+        <div class="yield-asset">
+          <ion-img src="/assets/images/icons/marinade-logo-small.svg"></ion-img>
+          <span>
+            Base 0.5% MNDE from supply mMSOL liquidity on solend
+          </span>
+
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      risks
+    </ion-row>
+  </ion-grid>
+</ion-content>
