@@ -41,7 +41,7 @@ export class StakeComponent implements OnInit {
     this.stakeForm = this._fb.group({
       amount: ['', [Validators.required]],
       voteAccount: ['', [Validators.required]],
-      // monthLockuptime: [0]
+      monthLockuptime: [0]
     })
     this.stakeForm.valueChanges.subscribe(form => {
       this.rewardInfo.amount = form.amount
@@ -85,18 +85,18 @@ export class StakeComponent implements OnInit {
   public async submitNewStake(): Promise<void> {
 
 
-    let { amount, voteAccount } = this.stakeForm.value;
+    let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
     const walletOwnerPublicKey = this._solanaUtilsService.getCurrentWallet().publicKey;
     // const testnetvoteAccount = '87QuuzX6cCuWcKQUFZFm7vP9uJ72ayQD5nr6ycwWYWBG'
-    // if (monthLockuptime) {
-    //   monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
-    // }
+    if (monthLockuptime) {
+      monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
+    }
     await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount);
     va.track(`stake with ${voteAccount}`);
   }
-  // private _getLockuptimeMilisecond(months: number): number {
-  //   const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();
-  //   const unixTime = Math.floor(lockupDateInSecond / 1000);
-  //   return unixTime;
-  // }
+  private _getLockuptimeMilisecond(months: number): number {
+    const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();
+    const unixTime = Math.floor(lockupDateInSecond / 1000);
+    return unixTime;
+  }
 }
