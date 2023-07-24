@@ -4,7 +4,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 
 import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { firstValueFrom } from 'rxjs';
-import { Elusiv, SEED_MESSAGE, TokenType } from "@elusiv/sdk";
+// import { Elusiv, SEED_MESSAGE, TokenType } from "@elusiv/sdk";
 
 import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
@@ -86,14 +86,14 @@ export class SendComponent implements OnInit {
     // maximum fee payable
     const maxFee = 5000 * 100;
     // generate seed buffer
-    const seed = (new TextEncoder()).encode(SEED_MESSAGE) as Buffer;
+    // const seed = (new TextEncoder()).encode(SEED_MESSAGE) as Buffer;
 
 
-    // sign wallet owner
-    const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
+    // // sign wallet owner
+    // const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
 
-    // init elusiv SDK
-    const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection, 'mainnet-beta');
+    // // init elusiv SDK
+    // const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection, 'mainnet-beta');
     // Top up our private balance with 1 SOL
     // const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
 

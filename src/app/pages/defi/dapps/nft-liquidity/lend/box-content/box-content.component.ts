@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { BN } from 'bn.js';
 import { WalletExtended } from 'src/app/models';
-import { UtilsService } from 'src/app/services';
+import { ApiService, UtilsService } from 'src/app/services';
 import { FraktStoreService } from '../../frakt-store.service';
 import { FraktNftItemWithLiquidity, FraktNftMetadata, PoolIO, UserDeposit } from '../../frakt.model';
 import { io } from "socket.io-client";
@@ -27,18 +27,21 @@ export class BoxContentComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private _fb: FormBuilder,
     private _fraktStore: FraktStoreService,
-     public utilsService: UtilsService) { }
+    private _apiService: ApiService,
+     public utilsService: UtilsService
+     ) { }
   async ngOnChanges(changes) {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     if (this.accordionOpen) {
       await this.getNftMetadata(this.pool.slug)
-      const conn = io('wss://api.frakt.xyz',{ transports: ['websocket'] });
-      conn.emit('lending-subscribe', this.wallet.publicKey.toBase58());
-      conn.on('lending', (loans: PoolIO[]) => {
+  
+      this._apiService.get(`http://api.frakt.xyz/liquidity/list?wallet=${this.wallet.publicKey.toBase58()}`)
+      .subscribe(loans => {
         this.userDeposit = loans.find(loans => loans.pubkey == this.NftMetadata.liquidityPool).userDeposit
-        conn.close()
-          })
+      })
+     
+
     }
   }
   ngOnInit() {

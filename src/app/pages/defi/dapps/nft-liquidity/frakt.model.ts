@@ -5,8 +5,17 @@ export interface FraktStats {
     activeLoansCount: number;
 }
 export interface FraktLiquidity {
-    timeBasedLiqs: TimeBasedLiq[];
-    priceBasedLiqs: PriceBasedLiqs[];
+    pubkey:             string;
+    isPriceBased:       boolean;
+    name:               string;
+    imageUrl:           string[];
+    totalLiquidity:     number;
+    totalBorrowed:      number;
+    utilizationRate:    number;
+    depositApr:         number;
+    borrowApr:          number;
+    activeloansAmount?: number;
+    collectionsAmount:  number;
 }
 interface TimeBasedLiq {
     isPriceBased: boolean;

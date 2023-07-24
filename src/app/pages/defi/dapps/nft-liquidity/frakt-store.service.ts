@@ -94,17 +94,17 @@ export class FraktStoreService {
     return nftWhitelist
 
   }
-  private async _fetchPoolLiquidity(): Promise<FraktLiquidity> {
-    let poolsLiquidity: FraktLiquidity = {} as FraktLiquidity
+  private async _fetchPoolLiquidity(): Promise<FraktLiquidity[]> {
+    let poolsLiquidity: FraktLiquidity[] = []
     try {
-      const poolRes: FraktLiquidity = await (await fetch(`${this.fraktApi}/liquidity/full`)).json();
+      const poolRes: FraktLiquidity[] = await (await fetch(`${this.fraktApi}/liquidity/list`)).json();
       poolsLiquidity = poolRes;
-      poolsLiquidity.priceBasedLiqs = poolRes.priceBasedLiqs.map(pool => {
-        if (!pool?.activeloansAmount) {
-          pool.activeloansAmount = 0
-        }
-        return pool
-      });
+      // poolsLiquidity.priceBasedLiqs = poolRes.priceBasedLiqs.map(pool => {
+      //   if (!pool?.activeloansAmount) {
+      //     pool.activeloansAmount = 0
+      //   }
+      //   return pool
+      // });
     } catch (error) {
       console.error(error);
     }
@@ -205,7 +205,7 @@ export class FraktStoreService {
         const poolsLiquidity = await this._fetchPoolLiquidity();
 
         poolsFull = nftWhitelist.map(nft => {
-          const findLiquidity = poolsLiquidity.priceBasedLiqs.find(pool => pool.name == nft.name)
+          const findLiquidity = poolsLiquidity.find(pool => pool.name == nft.name)
           if (findLiquidity) {
             return { ...nft, ...findLiquidity }
           }

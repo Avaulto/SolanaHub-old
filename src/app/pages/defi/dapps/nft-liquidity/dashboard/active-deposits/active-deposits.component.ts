@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
 import { io } from "socket.io-client";
-import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import { ApiService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import { PoolIO, UserDeposit } from '../../frakt.model';
 import { FraktStoreService } from '../../frakt-store.service';
 import { AllUserStats, UserRewards } from '../../frakt.model';
@@ -18,7 +18,8 @@ export class ActiveDepositsComponent  implements OnInit {
   public activePools: {name: string,amount: any}[] = []
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
-    private _fraktStoreService: FraktStoreService
+    private _fraktStoreService: FraktStoreService,
+    private _apiService:ApiService
     ) { }
 
  
@@ -32,18 +33,31 @@ export class ActiveDepositsComponent  implements OnInit {
   }
 
   getWeightedApy(){
-    const conn = io('wss://api.frakt.xyz',{ transports: ['websocket'] });
-      conn.emit('lending-subscribe', this._solanaUtilsService.getCurrentWallet().publicKey.toBase58());
-      conn.on('lending', (loans: PoolIO[]) => {
-        this.loans = loans
-        loans.map(loan =>{
-         if(loan.userDeposit?.depositAmount > 0){
-           this.activePools.push({name:loan.name, amount: 'YOUR LIQUIDITY: ' + Number(loan.userDeposit.depositAmount).toFixedNoRounding(2) +' ◎'})
-          }
+    this._apiService.get(`http://api.frakt.xyz/liquidity/list?wallet=${this._solanaUtilsService.getCurrentWallet().publicKey.toBase58()}`).subscribe(loans=>{
+      this.loans = loans
+      loans.map(loan =>{
+        if(loan.userDeposit?.depositAmount > 0){
+         console.log(loan)
+         this.activePools.push({name:loan.name, amount: 'YOUR LIQUIDITY: ' + Number(loan.userDeposit.depositAmount).toFixedNoRounding(2) +' ◎'})
+        }
+        
+      })
+
+
+    })
+    // const conn = io('wss://api.frakt.xyz',{ transports: ['websocket'] });
+    //   conn.emit('lending-subscribe', this._solanaUtilsService.getCurrentWallet().publicKey.toBase58());
+    //   conn.on('lending', (loans: PoolIO[]) => {
+    //     console.log(loans)
+    //     this.loans = loans
+    //     loans.map(loan =>{
+    //      if(loan.userDeposit?.depositAmount > 0){
+    //        this.activePools.push({name:loan.name, amount: 'YOUR LIQUIDITY: ' + Number(loan.userDeposit.depositAmount).toFixedNoRounding(2) +' ◎'})
+    //       }
           
-        })
+    //     })
        
-        conn.close()
-          })
+    //     conn.close()
+    //       })
   }
 }
