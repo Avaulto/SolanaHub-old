@@ -91,7 +91,7 @@ export class StakeComponent implements OnInit {
     if (monthLockuptime) {
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
-    await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount);
+    await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
     va.track(`stake with ${voteAccount}`);
   }
   private _getLockuptimeMilisecond(months: number): number {
