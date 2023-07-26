@@ -8,9 +8,10 @@ const routes: Routes = [
     path: '',
     component: TheLaboratoryPage
   },
+
   {
-    path: 'marinade-plus',
-    loadChildren: () => import('./marinade-plus/marinade-plus.module').then( m => m.MarinadePlusPageModule)
+    path: 'basic-template',
+    loadChildren: () => import('./basic-template/basic-template.module').then( m => m.BasicTemplatePageModule)
   }
 ];
 

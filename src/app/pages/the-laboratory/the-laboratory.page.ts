@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DefiApp } from 'src/app/models';
+import { NavController } from '@ionic/angular';
+import { DefiApp, Token } from 'src/app/models';
+import { DefiLab, LabIntro } from 'src/app/models/defiLab.model';
+import { JupiterStoreService } from 'src/app/services';
 
 @Component({
   selector: 'app-the-laboratory',
@@ -8,18 +11,60 @@ import { DefiApp } from 'src/app/models';
 })
 export class TheLaboratoryPage implements OnInit {
 
-  constructor() { }
+  constructor
+  (private nav: NavController,
+    ) { }
 
   ngOnInit() {
   }
-  public defiLab: DefiApp[] = [
+  public searchTerm: string = "";
+  public searchItem(term: any) {
+    this.searchTerm = term.value;
+  }
+
+  //strategy = defi protocol participate + 
+  public labProduct: LabIntro[] = [
     {
-      name: 'marinade plus',
-      image: 'assets/images/icons/liquid-stake-logo.gif',
-      description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
+      strategy: 'marinade-plus',
+      apy: 7.1,
+      depositAssetImgs: ['/assets/images/icons/solana-logo.webp'],
+      // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
+      defiParticipate: ['marinade','solend'],
+      rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/mnde.webp'],
       learnMoreLink: 'https://solana.org/stake-pools',
-      deepLink: 'marinade-plus',
-      status:'active'
+      deepLink: 'basic-template',
+      active: true,
+      riskLevel: 'low',
+    },
+    {
+      strategy: 'solblaze-farmer',
+      apy: 9.1,
+      // description: `dual yield for farmerers, taking SOL and stake with bSOL, and deposit SOL & bSOL into metora bSOL-sol pool for additional APY`,
+      depositAssetImgs: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/solblaze-logo.png'],
+      defiParticipate: ['solblaze','meteora'],
+      rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/blze.png'],
+      learnMoreLink: 'https://solana.org/stake-pools',
+      deepLink: 'basic-template',
+      active: true,
+      riskLevel:'high'
+    },
+    {
+      strategy: 'solblaze-farmer',
+      apy: 9.1,
+      // description: `dual yield for farmerers, taking SOL and stake with bSOL, and deposit SOL & bSOL into metora bSOL-sol pool for additional APY`,
+      depositAssetImgs: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/usdc.webp'],
+      defiParticipate: ['kamino'],
+      rewardAsssets: ['/assets/images/icons/solana-logo.webp'],
+      learnMoreLink: 'https://solana.org/stake-pools',
+      deepLink: 'basic-template',
+      active: true,
+      riskLevel:'medium'
     }
   ]
+
+
+  public goToStrategy(dapp: LabIntro) {
+    console.log(dapp)
+    this.nav.navigateForward('/the-laboratory/' +dapp.deepLink)
+  }
 }

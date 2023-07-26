@@ -7,19 +7,20 @@ import bn from 'bn.js'
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LaboratoryStoreService } from '../laboratory-store.service';
+
 @Component({
-  selector: 'app-marinade-plus',
-  templateUrl: './marinade-plus.page.html',
-  styleUrls: ['./marinade-plus.page.scss'],
+  selector: 'app-basic-template',
+  templateUrl: './basic-template.page.html',
+  styleUrls: ['./basic-template.page.scss'],
 })
-export class MarinadePlusPage implements OnInit {
+export class BasicTemplatePage implements OnInit {
   public menu: string[] = ['deposit', 'withdraw', 'claim'];
   public currentTab: string = this.menu[0]
   strategyStats: DefiStat[] = [
     {
       title:'YOUR BALANCE',
       loading: false,
-      desc:'~ 2 SOL'
+      desc:'12 SOL'
     },
     {
       title:'YOUR REWARDS',
@@ -36,7 +37,6 @@ export class MarinadePlusPage implements OnInit {
       loading: false,
       desc:'257,879'
     },
-
   ]
   public depositForm: FormGroup;
   public formSubmitted: boolean = false;
@@ -95,4 +95,5 @@ export class MarinadePlusPage implements OnInit {
         }
     await this._txInterceptService.sendTx([...arrayOfTx], wallet.publicKey)
   }
+
 }

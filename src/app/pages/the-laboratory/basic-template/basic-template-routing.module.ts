@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MarinadePlusPage } from './marinade-plus.page';
+import { BasicTemplatePage } from './basic-template.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: MarinadePlusPage
+    component: BasicTemplatePage
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MarinadePlusPageRoutingModule {}
+export class BasicTemplatePageRoutingModule {}

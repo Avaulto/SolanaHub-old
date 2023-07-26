@@ -1,14 +1,65 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
     <ion-row class="ion-margin-bottom ion-justify-content-between ion-align-items-center">
-        <h2 class="heading-1">Laboratory products</h2>
-        <!-- <ion-button fill="outline" (click)="showDefiTourSlide($event)" >DeFi tour</ion-button> -->
+      <h2 class="heading-1">Laboratory products</h2>
+      <ion-button fill="outline" >Laboratory tour</ion-button>
     </ion-row>
-    
+    <ion-row class="ion-justify-content-between ion-margin-bottom" id="lab-header">
+      <ion-col>
+        <app-search-input (search)="searchItem($event)" [value]="searchTerm"
+          [placeholder]="'Search strategy'"></app-search-input>
+      </ion-col>
+      <ion-col>
+        <ion-select placeholder="sort by" icon="chevron-down-outline" aria-label="sort by" interface="popover">
+          <ion-select-option value="all">all</ion-select-option>
+          <ion-select-option value="single">single asset</ion-select-option>
+          <ion-select-option value="multi">multi assets</ion-select-option>
+        </ion-select>
+      </ion-col>
+      <ion-col id="my-deposits">
+        <ion-toggle></ion-toggle>
+        <ion-label>My deposits</ion-label>
+      </ion-col>
+    </ion-row>
 
-    <ion-row *ngFor="let dapp of defiLab">
-      <ion-col size="12" class="ion-margin-end">
-        
+    <ion-row *ngFor="let product of labProduct" id="lab-product" class="ion-padding ion-justify-content-between data-box" (click)="goToStrategy(product)">
+      <!-- <ion-col sizeLg="2" size="6">
+        <div class="strategy-assets">
+          <div class="assets-images">
+            <ion-img *ngFor="let assetImg of product.depositAssetImgs" [src]="assetImg"></ion-img>
+          </div>
+          <div class="assets-symbol">
+            <div *ngFor="let symbol of product.assetsSymbol; let i = index">
+
+              {{symbol}}<span *ngIf="i < product.assetsSymbol.length">-</span>
+            </div>
+          </div>
+        </div>
+      </ion-col> -->
+      <ion-col sizeLg="3" size="6" class="strategy-protocols">
+        <h5>protocols</h5>
+        <div class="protocol" *ngFor="let protocol of product.defiParticipate">
+          {{protocol}}
+        </div>
+      </ion-col>
+      <ion-col sizeLg="3" size="6" class="strategy-apy">
+        <h5>apy</h5>
+        <span>
+          {{product.apy}}%
+        </span>
+      </ion-col>
+      <ion-col sizeLg="3" size="6" class="strategy-risk">
+        <h5>risk</h5>
+        <div class="risk" [ngClass]="product.riskLevel" *ngFor="let risk of [0,1,2,3]">
+
+        </div>
+      </ion-col>
+
+      <ion-col sizeLg="3" size="6" class="strategy-risk">
+        <h5>rewards</h5>
+        <div class="reward-assets" >
+          <ion-img [src]="reward" *ngFor="let reward of product.rewardAsssets"></ion-img>
+        </div>
       </ion-col>
     </ion-row>
 

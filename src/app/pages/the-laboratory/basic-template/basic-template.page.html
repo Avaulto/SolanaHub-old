@@ -4,14 +4,14 @@
       imgPath="/assets/images/icons/strategies-icons/msol-solend-mnde.png"></app-dapp-head>
     <app-defi-stats [stats]="strategyStats"></app-defi-stats>
 
-    <ion-row class="ion-justify-content-between">
+    <ion-row class="ion-justify-content-between ion-align-items-start">
 
 
       <ion-col class="data-box" sizeLg="7.7" size="12">
         <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
-        <div [ngSwitch]="currentTab" class="ion-padding-top">
-          <form *ngSwitchCase="'deposit'" [formGroup]="depositForm" id="stake-box">
-            <ion-row class="ion-margin-bottom" id="stake-apr-box">
+        <div [ngSwitch]="currentTab" class="ion-padding">
+          <form *ngSwitchCase="'deposit'" [formGroup]="depositForm" id="deposit-box">
+            <ion-row class="ion-margin-bottom" id="deposit-apr-box">
               <div>~7.1% <span>APY</span>
                 <span id="mev-reward">SOL + MNDE rewards</span>
               </div>
@@ -23,7 +23,7 @@
                 tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
             </app-label-layout>
 
-            <ion-row id="stake-amount">
+            <ion-row id="deposit-amount">
               <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
               <span class="heading-6">MAX</span>
             </ion-row>
@@ -43,16 +43,21 @@
           </form>
         </div>
       </ion-col>
-      <ion-col class="data-box ion-padding" sizeLg="4" size="12">
+      <ion-col class="data-box ion-padding ion-text-capitalize" sizeLg="4" size="12">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">APY Breakdown</div>
         <div class="yield-asset">
-          <ion-img src="/assets/images/icons/solana-logo.webp"></ion-img>
+          <div>
+
+            <ion-img src="/assets/images/icons/solana-logo.webp"></ion-img>
+          </div>
           <span>
             Base 6.6% SOL staking rewards
           </span>
         </div>
         <div class="yield-asset">
-          <ion-img src="/assets/images/icons/marinade-logo-small.svg"></ion-img>
+          <div>
+            <ion-img src="/assets/images/icons/mnde.webp"></ion-img>
+          </div>
           <span>
             Base 0.5% MNDE from supply mMSOL liquidity on solend
           </span>
@@ -61,7 +66,23 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      risks
+      <ion-col sizeLg="8"></ion-col>
+      <ion-col id="risk-info" class="data-box ion-padding ion-text-capitalize" sizeLg="4" size="12">
+        <div class="heading-4 ion-margin-bottom ion-text-uppercase">RISK Breakdown</div>
+        <div class="risk">
+          <span class="low"></span> <p>audited smart contract</p>
+        </div>
+        <div class="risk">
+          <span class="low "></span> <p>single asset yield(no impermanent loss)</p>
+        </div>
+        <div class="risk">
+          <span class="medium"></span> <p>high volatility on MNDE USD value</p>
+        </div>
+        <div class="risk">
+          <span class="high"></span> <p>multiple smart contract exposure</p>
+        </div>
+
+      </ion-col>
     </ion-row>
-  </ion-grid>
-</ion-content>
+    </ion-grid>
+  </ion-content>

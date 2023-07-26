@@ -7,3 +7,121 @@
     text-transform: capitalize;
     margin: 10px auto;
 }
+
+#my-deposits{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    ion-toggle{
+        height: 20px;
+        margin-inline-end: 8px;
+    }
+}
+
+#lab-header{
+    app-search-input{
+        margin-inline-end: 24px;
+        display: block;
+    }
+    ion-button{
+        height: 40px;
+        --background: #EBEBEB;
+        color: #061832;
+        background: #EBEBEB;
+        border: 1px solid #EBEBEB;
+        border-radius: 6px;
+    }
+    ion-select{
+        height: 40px;
+        --background: #EBEBEB !important;
+        --placeholder-color: #061832;
+        color: #061832;
+        background: #EBEBEB !important;
+        border: 1px solid #EBEBEB;
+        border-radius: 6px;
+        width: 121px;
+        margin:0;
+    }
+}
+#lab-product{
+    border: 1px solid transparent !important;
+    cursor: pointer;
+    transition: 0.3s ease;
+    &:hover{
+        border: 1px solid lightblue !important;
+    }
+}
+.strategy-assets{
+    display: flex;
+    .assets-images{
+        ion-img {
+            width: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        ion-img:not(:first-child){
+            transform: translate(-9px, 0px);
+        }
+    } 
+    .assets-images {
+        display: flex;
+    }
+    .assets-symbol {
+        display: flex;
+    }
+}
+h5{
+    margin-top: 0px;
+    text-transform: uppercase;
+}
+
+.strategy-apy{
+    span{
+        font-weight: bold;
+        color: #00ffa3;
+    }
+}
+.protocol {
+    display: inline;
+    background: #13cfc68f;
+    padding: 3px 7px;
+    border-radius: 4px;
+    margin: 0 3px;
+    text-transform: capitalize;
+}
+
+.reward-assets{
+    display: flex;
+    align-items: flex-start;
+    height: 70px;
+    width: 60%;
+    background: var(--apr-box);
+    border-radius: 6px;
+    padding: 9px 10px;
+    ion-img {
+        margin-inline-end: 4px;
+        width: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+}
+
+.risk {
+    background: transparent;
+    border: 1px solid #ffffff73;
+    width: 6px;
+    height: 16px;
+    margin-inline-end: 3px;
+    display: inline-block;
+    &.low{
+        background: var(--ion-color-success);
+    }
+    &.medium{
+        background: var(--ion-color-warning);
+    }
+    &.high{
+        background: var(--ion-color-danger);
+    }
+}
+
+
