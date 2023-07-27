@@ -26,10 +26,11 @@ export class TheLaboratoryPage implements OnInit {
   public labProduct: LabIntro[] = [
     {
       strategy: 'marinade-plus',
-      apy: 7.1,
+      apy: 7.5,
       depositAssetImgs: ['/assets/images/icons/solana-logo.webp'],
       // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
       defiParticipate: ['marinade','solend'],
+      strategies: ['staking', 'liquidity provider'],
       rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/mnde.webp'],
       learnMoreLink: 'https://solana.org/stake-pools',
       deepLink: 'basic-template',
@@ -38,28 +39,17 @@ export class TheLaboratoryPage implements OnInit {
     },
     {
       strategy: 'solblaze-farmer',
-      apy: 9.1,
+      apy: 13.1,
       // description: `dual yield for farmerers, taking SOL and stake with bSOL, and deposit SOL & bSOL into metora bSOL-sol pool for additional APY`,
       depositAssetImgs: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/solblaze-logo.png'],
       defiParticipate: ['solblaze','meteora'],
+      strategies: ['staking', 'farming', 'liquidity provider'],
       rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/blze.png'],
       learnMoreLink: 'https://solana.org/stake-pools',
       deepLink: 'basic-template',
       active: true,
-      riskLevel:'high'
+      riskLevel:'medium',
     },
-    {
-      strategy: 'solblaze-farmer',
-      apy: 9.1,
-      // description: `dual yield for farmerers, taking SOL and stake with bSOL, and deposit SOL & bSOL into metora bSOL-sol pool for additional APY`,
-      depositAssetImgs: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/usdc.webp'],
-      defiParticipate: ['kamino'],
-      rewardAsssets: ['/assets/images/icons/solana-logo.webp'],
-      learnMoreLink: 'https://solana.org/stake-pools',
-      deepLink: 'basic-template',
-      active: true,
-      riskLevel:'medium'
-    }
   ]
 
 

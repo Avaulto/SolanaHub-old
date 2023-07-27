@@ -8,6 +8,7 @@ export interface LabIntro {
     apy: number,
     depositAssetImgs: string[],
     defiParticipate: string[],
+    strategies: string[],
     rewardAsssets: string[],
     learnMoreLink: string,
     deepLink: string,

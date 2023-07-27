@@ -62,11 +62,6 @@
 }
 
 .yield-asset {
-    align-items: center;
-    display: flex;
-    border-bottom: 1px solid #d3d3d354;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
     div{
         margin-inline-end: 6px;
     }
@@ -75,23 +70,22 @@
         border-radius: 50%;
         overflow: hidden;
     }
+}
 
+.break-down{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #d3d3d354;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
     span {
         font-size: 13px;
         font-weight: 100;
     }
 }
-
 #risk-info {
     .risk {
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid #d3d3d354;
-        margin-bottom: 10px;
-        padding-bottom: 10px;
         span {
-            font-size: 13px;
-            font-weight: 100;
             width: 10px;
             height: 10px;
             border-radius: 50%;

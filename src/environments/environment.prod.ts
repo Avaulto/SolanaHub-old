@@ -7,7 +7,7 @@ export const environment = {
     config: '2LecshUwdy9xi7meFgHtFJQNSKk4KdTrcpvaB56dP2NQ',
     poolAPI: 'https://api.mainnet.orca.so/v1/whirlpool/list'
   },
-  solanaCluster: 'https://mb-avaulto-cc28.mainnet.rpcpool.com/190dce2e-b99d-475e-8e0f-3207a5c97e8b',
+  solanaCluster: 'https://evocative-aged-wish.solana-mainnet.discover.quiknode.pro/a9aa5c76f9878b168043cc3452d267e0bda9dfdb',
   serverlessAPI: 'https://beta.compact-defi.xyz',
   platformFeeCollector:'81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1'
 };

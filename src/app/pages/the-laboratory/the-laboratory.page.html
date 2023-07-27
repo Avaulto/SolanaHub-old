@@ -2,7 +2,7 @@
   <ion-grid class="ion-padding">
     <ion-row class="ion-margin-bottom ion-justify-content-between ion-align-items-center">
       <h2 class="heading-1">Laboratory products</h2>
-      <ion-button fill="outline" >Laboratory tour</ion-button>
+      <ion-button fill="outline">Laboratory tour</ion-button>
     </ion-row>
     <ion-row class="ion-justify-content-between ion-margin-bottom" id="lab-header">
       <ion-col>
@@ -22,7 +22,8 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let product of labProduct" id="lab-product" class="ion-padding ion-justify-content-between data-box" (click)="goToStrategy(product)">
+    <ion-row *ngFor="let product of labProduct" class="lab-product ion-padding ion-justify-content-between data-box"
+      (click)="goToStrategy(product)">
       <!-- <ion-col sizeLg="2" size="6">
         <div class="strategy-assets">
           <div class="assets-images">
@@ -36,35 +37,48 @@
           </div>
         </div>
       </ion-col> -->
-      <ion-col sizeLg="3" size="6" class="strategy-protocols">
+      <ion-col sizeLg="2.5" size="6">
         <h5>protocols</h5>
-        <div class="protocol" *ngFor="let protocol of product.defiParticipate">
-          {{protocol}}
+        <div class="strategy-protocols">
+
+          <div class="protocol" *ngFor="let protocol of product.defiParticipate">
+            {{protocol}}
+          </div>
         </div>
       </ion-col>
-      <ion-col sizeLg="3" size="6" class="strategy-apy">
+      <ion-col sizeLg="2.5" size="6">
+        <h5>strategies</h5>
+        <div  class="strategies-items">
+
+          <div class="strategies ion-text-capitalize" *ngFor="let strategy of product.strategies">
+            {{strategy}}
+          </div>
+        </div>
+      </ion-col>
+      <ion-col sizeLg="2" size="6" class="strategy-apy">
         <h5>apy</h5>
         <span>
           {{product.apy}}%
         </span>
       </ion-col>
-      <ion-col sizeLg="3" size="6" class="strategy-risk">
+      <ion-col sizeLg="2" size="6" class="strategy-risk">
         <h5>risk</h5>
-        <div class="risk"
-            [ngClass]="{
+        <div class="risk" [ngClass]="{
                     'low': product.riskLevel == 'low' && i == 0,
                     'medium': product.riskLevel =='medium' && i < 2,
                     'high': product.riskLevel == 'high' && i < 3
-                    }"
-      
-          *ngFor="let risk of [0,1,2,3]; let i = index">
+                    }" *ngFor="let risk of [0,1,2,3]; let i = index">
 
         </div>
+        <!-- <div class="risk " [ngClass]="{'low': product.riskLevel == 'low'}"></div>
+        <div class="risk" [ngClass]="{'medium': product.riskLevel == 'medium'}"></div>
+        <div class="risk" [ngClass]="{'high': product.riskLevel == 'high'}"></div>
+        <div class="risk" ></div> -->
       </ion-col>
 
-      <ion-col sizeLg="3" size="6" class="strategy-risk">
+      <ion-col sizeLg="2" size="6" class="strategy-risk">
         <h5>rewards</h5>
-        <div class="reward-assets" >
+        <div class="reward-assets">
           <ion-img [src]="reward" *ngFor="let reward of product.rewardAsssets"></ion-img>
         </div>
       </ion-col>

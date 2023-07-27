@@ -19,24 +19,24 @@ export class BasicTemplatePage implements OnInit {
   public currentTab: string = this.menu[0]
   strategyStats: DefiStat[] = [
     {
-      title:'YOUR BALANCE',
-      loading: false,
-      desc:'12 SOL'
+      title: 'YOUR SOL BALANCE',
+      loading: true,
+      desc: null
     },
     {
-      title:'YOUR REWARDS',
-      loading: false,
-      desc:'~ 2 SOL'
+      title: 'YOUR CLAIMED REWARDS',
+      loading: true,
+      desc: null
     },
     {
-      title:'projected APY',
+      title: 'projected APY',
       loading: false,
-      desc:'7.1%'
+      desc: "7.5%"
     },
     {
-      title:'TVL',
+      title: 'TVL',
       loading: false,
-      desc:'257,879'
+      desc: "2,432,777"
     },
   ]
   public depositForm: FormGroup;
@@ -48,14 +48,27 @@ export class BasicTemplatePage implements OnInit {
     private _fb: FormBuilder,
     // private _lab: LaboratoryStoreService,
     private _txInterceptService: TxInterceptService,
-    private _apiService:ApiService,
-    private _marinadePlusService:MarinadePlusService
+    private _apiService: ApiService,
+    private _marinadePlusService: MarinadePlusService
   ) { }
   public walletExtended$: Observable<WalletExtended> = this._solanaUtilsService.walletExtended$.pipe(
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async (wallet) => {
       if (wallet) {
-        this._stakePoolStore.initMarinade(wallet);
+        await this._stakePoolStore.initMarinade(wallet);
+        await this._marinadePlusService.initSolendWallet()
+        const deposits = await this._marinadePlusService.getOnwerMsolDeposit();
+        this.strategyStats[0].desc = deposits.toFixedNoRounding(3);
+        this.strategyStats[0].loading = false;
+
+        const claimedRewards = await this._marinadePlusService.getClaimedRewards();
+        this.strategyStats[1].desc = claimedRewards.toFixedNoRounding(3) + ' MNDE';
+        this.strategyStats[1].loading = false;
+
+
+        // const projectedAPY = await this._marinadePlusService.getStrategyAPY();
+        // this.strategyStats[2].desc = projectedAPY + '%';
+        // this.strategyStats[2].loading = false;
         // this._lab.initSolendMarket(wallet)
         return wallet;
       } else {
@@ -65,7 +78,13 @@ export class BasicTemplatePage implements OnInit {
 
     }), shareReplay(),
   )
+
+  async ionViewWillEnter() {
+
+
+  }
   ngOnInit() {
+
     this.depositForm = this._fb.group({
       amount: ['', [Validators.required]]
     })
@@ -81,9 +100,9 @@ export class BasicTemplatePage implements OnInit {
     // const wallet = this._solanaUtilsService.getCurrentWallet();
     // const sol = new bn((amount - 0.001) * LAMPORTS_PER_SOL);
     // const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol, { directToValidatorVoteAddress: this.avaultoVoteKey });
-    
+
     // await this._txInterceptService.sendTx([transaction], wallet.publicKey)
-    
+
     // const assetRatio = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/price_sol'))
     // const msol = new bn(((amount- 0.001) * 0.99) / assetRatio * LAMPORTS_PER_SOL); 
     // const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._lab.depositMsol(msol, wallet.publicKey)).getTransactions()

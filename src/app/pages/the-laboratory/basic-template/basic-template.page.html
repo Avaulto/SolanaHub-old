@@ -4,7 +4,7 @@
       imgPath="/assets/images/icons/strategies-icons/msol-solend-mnde.png"></app-dapp-head>
     <app-defi-stats [stats]="strategyStats"></app-defi-stats>
 
-    <ion-row class="ion-justify-content-between ion-align-items-start">
+    <ion-row class="ion-justify-content-between">
 
 
       <ion-col class="data-box" sizeLg="7.7" size="12">
@@ -12,7 +12,7 @@
         <div [ngSwitch]="currentTab" class="ion-padding">
           <form *ngSwitchCase="'deposit'" [formGroup]="depositForm" id="deposit-box">
             <ion-row class="ion-margin-bottom" id="deposit-apr-box">
-              <div>~7.1% <span>APY</span>
+              <div>{{strategyStats[2].desc}}<span>APY</span>
                 <span id="mev-reward">SOL + MNDE rewards</span>
               </div>
               <p id="">marinade liquid staking + soled pool strategy</p>
@@ -45,44 +45,63 @@
       </ion-col>
       <ion-col class="data-box ion-padding ion-text-capitalize" sizeLg="4" size="12">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">APY Breakdown</div>
-        <div class="yield-asset">
+        <div class="yield-asset break-down">
           <div>
 
             <ion-img src="/assets/images/icons/solana-logo.webp"></ion-img>
           </div>
           <span>
-            Base 6.6% SOL staking rewards
+            Base 6.9% SOL staking rewards
           </span>
         </div>
-        <div class="yield-asset">
+        <div class="yield-asset break-down">
           <div>
             <ion-img src="/assets/images/icons/mnde.webp"></ion-img>
           </div>
           <span>
-            Base 0.5% MNDE from supply mMSOL liquidity on solend
+            Base 0.6% MNDE from supply mMSOL liquidity on solend
           </span>
 
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col sizeLg="8"></ion-col>
-      <ion-col id="risk-info" class="data-box ion-padding ion-text-capitalize" sizeLg="4" size="12">
+    <ion-row class="ion-justify-content-between">
+      <ion-col sizeLg="7.7" class="data-box ion-padding ion-text-capitalize">
+        <div class="heading-4 ion-margin-bottom ion-text-uppercase">Strategy Breakdown</div>
+        <div class=" break-down">
+          <span>  deposit SOL to marinade liquid staking pool</span>
+        </div>
+        <div class=" break-down">
+          <span>get mSOL in return</span>
+        </div>
+        <div class=" break-down">
+          <span>deposit mSOL into solend and supply liquidity on mSOL pool</span>
+        </div>
+ 
+
+        <div class="heading-4 ion-margin-bottom ion-text-uppercase">Total transactions required</div>
+        <p>2</p>
+      </ion-col>
+      <ion-col id="risk-info" class="data-box ion-padding ion-text-capitalize" sizeLg="4">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">RISK Breakdown</div>
-        <div class="risk">
-          <span class="low"></span> <p>audited smart contract</p>
+        <div class="risk break-down">
+          <span class="low"></span>
+          <p>audited smart contract</p>
         </div>
-        <div class="risk">
-          <span class="low "></span> <p>single asset yield(no impermanent loss)</p>
+        <div class="risk break-down">
+          <span class="low "></span>
+          <p>single asset yield(no impermanent loss)</p>
         </div>
-        <div class="risk">
-          <span class="medium"></span> <p>high volatility on MNDE USD value</p>
+        <div class="risk break-down">
+          <span class="medium"></span>
+          <p>high volatility on MNDE USD value</p>
         </div>
-        <div class="risk">
-          <span class="high"></span> <p>multiple smart contract exposure</p>
+        <div class="risk break-down">
+          <span class="high"></span>
+          <p>multiple smart contract exposure</p>
         </div>
 
       </ion-col>
     </ion-row>
-    </ion-grid>
-  </ion-content>
+  </ion-grid>
+</ion-content>
