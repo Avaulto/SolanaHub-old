@@ -95,7 +95,7 @@ h5{
     align-items: flex-start;
     height: 70px;
     width: 60%;
-    background: var(--apr-box);
+    // background: var(--apr-box);
     border-radius: 6px;
     padding: 9px 10px;
     ion-img {
@@ -114,10 +114,10 @@ h5{
     margin-inline-end: 3px;
     display: inline-block;
     &.low{
-        background: var(--ion-color-success);
+        background: var(--ion-color-danger);
     }
     &.medium{
-        background: var(--ion-color-warning);
+        background: var(--ion-color-danger);
     }
     &.high{
         background: var(--ion-color-danger);

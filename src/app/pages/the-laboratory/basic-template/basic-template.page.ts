@@ -7,6 +7,7 @@ import bn from 'bn.js'
 import { LAMPORTS_PER_SOL, PublicKey, Transaction, TransactionInstruction } from '@solana/web3.js';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LaboratoryStoreService } from '../laboratory-store.service';
+import { MarinadePlusService } from '../strategies-builder/marinade-plus.service';
 
 @Component({
   selector: 'app-basic-template',
@@ -45,16 +46,17 @@ export class BasicTemplatePage implements OnInit {
     private _stakePoolStore: StakePoolStoreService,
     private _solanaUtilsService: SolanaUtilsService,
     private _fb: FormBuilder,
-    private _lab: LaboratoryStoreService,
+    // private _lab: LaboratoryStoreService,
     private _txInterceptService: TxInterceptService,
-    private _apiService:ApiService
+    private _apiService:ApiService,
+    private _marinadePlusService:MarinadePlusService
   ) { }
   public walletExtended$: Observable<WalletExtended> = this._solanaUtilsService.walletExtended$.pipe(
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async (wallet) => {
       if (wallet) {
         this._stakePoolStore.initMarinade(wallet);
-        this._lab.initSolendMarket(wallet)
+        // this._lab.initSolendMarket(wallet)
         return wallet;
       } else {
 
@@ -75,25 +77,25 @@ export class BasicTemplatePage implements OnInit {
   // deposit msol to solend
 
   async submit() {
-    let { amount } = this.depositForm.value;
-    const wallet = this._solanaUtilsService.getCurrentWallet();
-    const sol = new bn((amount - 0.001) * LAMPORTS_PER_SOL);
-    const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol, { directToValidatorVoteAddress: this.avaultoVoteKey });
+    // let { amount } = this.depositForm.value;
+    // const wallet = this._solanaUtilsService.getCurrentWallet();
+    // const sol = new bn((amount - 0.001) * LAMPORTS_PER_SOL);
+    // const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol, { directToValidatorVoteAddress: this.avaultoVoteKey });
     
-    await this._txInterceptService.sendTx([transaction], wallet.publicKey)
+    // await this._txInterceptService.sendTx([transaction], wallet.publicKey)
     
-    const assetRatio = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/price_sol'))
-    const msol = new bn(((amount- 0.001) * 0.99) / assetRatio * LAMPORTS_PER_SOL); 
-    const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._lab.depositMsol(msol, wallet.publicKey)).getTransactions()
-        // Execute the transactions
-        const arrayOfTx: Transaction[] = []
-        for (let transaction of [preLendingTxn, lendingTxn, postLendingTxn].filter(Boolean)) {
-          if (!transaction) {
-            continue;
-          }
-          arrayOfTx.push(transaction)
-        }
-    await this._txInterceptService.sendTx([...arrayOfTx], wallet.publicKey)
+    // const assetRatio = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/price_sol'))
+    // const msol = new bn(((amount- 0.001) * 0.99) / assetRatio * LAMPORTS_PER_SOL); 
+    // const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._lab.depositMsol(msol, wallet.publicKey)).getTransactions()
+    //     // Execute the transactions
+    //     const arrayOfTx: Transaction[] = []
+    //     for (let transaction of [preLendingTxn, lendingTxn, postLendingTxn].filter(Boolean)) {
+    //       if (!transaction) {
+    //         continue;
+    //       }
+    //       arrayOfTx.push(transaction)
+    //     }
+    // await this._txInterceptService.sendTx([...arrayOfTx], wallet.publicKey)
   }
 
 }

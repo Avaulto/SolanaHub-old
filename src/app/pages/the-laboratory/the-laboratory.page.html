@@ -50,7 +50,14 @@
       </ion-col>
       <ion-col sizeLg="3" size="6" class="strategy-risk">
         <h5>risk</h5>
-        <div class="risk" [ngClass]="product.riskLevel" *ngFor="let risk of [0,1,2,3]">
+        <div class="risk"
+            [ngClass]="{
+                    'low': product.riskLevel == 'low' && i == 0,
+                    'medium': product.riskLevel =='medium' && i < 2,
+                    'high': product.riskLevel == 'high' && i < 3
+                    }"
+      
+          *ngFor="let risk of [0,1,2,3]; let i = index">
 
         </div>
       </ion-col>
