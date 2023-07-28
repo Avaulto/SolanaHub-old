@@ -24,19 +24,6 @@
 
     <ion-row *ngFor="let product of labProduct" class="lab-product ion-padding ion-justify-content-between data-box"
       (click)="goToStrategy(product)">
-      <!-- <ion-col sizeLg="2" size="6">
-        <div class="strategy-assets">
-          <div class="assets-images">
-            <ion-img *ngFor="let assetImg of product.depositAssetImgs" [src]="assetImg"></ion-img>
-          </div>
-          <div class="assets-symbol">
-            <div *ngFor="let symbol of product.assetsSymbol; let i = index">
-
-              {{symbol}}<span *ngIf="i < product.assetsSymbol.length">-</span>
-            </div>
-          </div>
-        </div>
-      </ion-col> -->
       <ion-col sizeLg="2.5" size="6">
         <h5>protocols</h5>
         <div class="strategy-protocols">

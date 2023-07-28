@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { DefiApp, Token } from 'src/app/models';
 import { DefiLab, LabIntro } from 'src/app/models/defiLab.model';
 import { JupiterStoreService } from 'src/app/services';
+import { MarinadePlusService } from './strategies-builder/marinade-plus.service';
 
 @Component({
   selector: 'app-the-laboratory',
@@ -11,11 +12,14 @@ import { JupiterStoreService } from 'src/app/services';
 })
 export class TheLaboratoryPage implements OnInit {
 
-  constructor
-  (private nav: NavController,
+  constructor(
+    private nav: NavController,
+    private _marinadePlusService:MarinadePlusService
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    const apy = await this._marinadePlusService.getStrategyAPY()
+    this.labProduct[0].apy = apy;
   }
   public searchTerm: string = "";
   public searchItem(term: any) {
@@ -26,7 +30,7 @@ export class TheLaboratoryPage implements OnInit {
   public labProduct: LabIntro[] = [
     {
       strategy: 'marinade-plus',
-      apy: 7.5,
+      apy: null,
       depositAssetImgs: ['/assets/images/icons/solana-logo.webp'],
       // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
       defiParticipate: ['marinade','solend'],

@@ -17,28 +17,7 @@ import { MarinadePlusService } from '../strategies-builder/marinade-plus.service
 export class BasicTemplatePage implements OnInit {
   public menu: string[] = ['deposit', 'withdraw', 'claim'];
   public currentTab: string = this.menu[0]
-  strategyStats: DefiStat[] = [
-    {
-      title: 'YOUR SOL BALANCE',
-      loading: true,
-      desc: null
-    },
-    {
-      title: 'YOUR CLAIMED REWARDS',
-      loading: true,
-      desc: null
-    },
-    {
-      title: 'projected APY',
-      loading: false,
-      desc: "7.5%"
-    },
-    {
-      title: 'TVL',
-      loading: false,
-      desc: "2,432,777"
-    },
-  ]
+  public strategyStats: DefiStat[] = this._marinadePlusService.strategyStats;
   public depositForm: FormGroup;
   public formSubmitted: boolean = false;
   protected avaultoVoteKey = new PublicKey('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh');
@@ -65,7 +44,6 @@ export class BasicTemplatePage implements OnInit {
         this.strategyStats[1].desc = claimedRewards.toFixedNoRounding(3) + ' MNDE';
         this.strategyStats[1].loading = false;
 
-
         // const projectedAPY = await this._marinadePlusService.getStrategyAPY();
         // this.strategyStats[2].desc = projectedAPY + '%';
         // this.strategyStats[2].loading = false;
@@ -80,7 +58,11 @@ export class BasicTemplatePage implements OnInit {
   )
 
   async ionViewWillEnter() {
+    this.strategyStats[2].desc = await this._marinadePlusService.getStrategyAPY() + '%'
+    this.strategyStats[2].loading = false;
 
+    this.strategyStats[3].desc = await this._marinadePlusService.getTVL()
+    this.strategyStats[3].loading = false;
 
   }
   ngOnInit() {

@@ -5,7 +5,7 @@ export interface DefiLab {
 
 export interface LabIntro {
     // assetsSymbol: string[],
-    apy: number,
+    apy: number | any,
     depositAssetImgs: string[],
     defiParticipate: string[],
     strategies: string[],

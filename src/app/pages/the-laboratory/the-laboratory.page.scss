@@ -55,7 +55,7 @@
 .strategies-items{
     display: flex;
     flex-wrap: wrap;
-}
+
 .strategies {
     color: rgb(170, 185, 191);
     background: rgba(250, 253, 251, 0.1);
@@ -66,26 +66,8 @@
     margin-inline-end: 7px;
     margin-block-end: 7px;
 }
-
-.strategy-assets{
-    display: flex;
-    .assets-images{
-        ion-img {
-            width: 30px;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-        ion-img:not(:first-child){
-            transform: translate(-9px, 0px);
-        }
-    } 
-    .assets-images {
-        display: flex;
-    }
-    .assets-symbol {
-        display: flex;
-    }
 }
+
 h5{
     margin-top: 0px;
     text-transform: uppercase;

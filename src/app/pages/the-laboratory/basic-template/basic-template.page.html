@@ -12,7 +12,7 @@
         <div [ngSwitch]="currentTab" class="ion-padding">
           <form *ngSwitchCase="'deposit'" [formGroup]="depositForm" id="deposit-box">
             <ion-row class="ion-margin-bottom" id="deposit-apr-box">
-              <div>{{strategyStats[2].desc}}<span>APY</span>
+              <div>{{strategyStats[2]?.desc}}<span>APY</span>
                 <span id="mev-reward">SOL + MNDE rewards</span>
               </div>
               <p id="">marinade liquid staking + soled pool strategy</p>
