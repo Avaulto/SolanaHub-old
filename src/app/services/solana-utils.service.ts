@@ -46,7 +46,7 @@ export class SolanaUtilsService {
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async ([wallet, accountStateChange]: any) => {
       if (wallet) {
-        wallet.balance = ((await this.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL);
+        wallet.balance = ((await this.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL).toFixedNoRounding(3);
       }
       return wallet;
     }),

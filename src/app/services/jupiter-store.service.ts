@@ -88,19 +88,23 @@ export class JupiterStoreService {
     return bestRoute
   }
   public async swapTx(routeInfo: RouteInfo): Promise<Transaction[]> {
-
-    const { transactions } = await this._jupiter.exchange({
-      routeInfo
-    });
-
-    // Execute the transactions
-    const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
     const arrayOfTx: Transaction[] = []
-    for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
-      if (!transaction) {
-        continue;
+    console.log(routeInfo)
+    try {
+      const { transactions } = await this._jupiter.exchange({
+        routeInfo
+      });
+
+      // Execute the transactions
+      const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
+      for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
+        if (!transaction) {
+          continue;
+        }
+        arrayOfTx.push(transaction)
       }
-      arrayOfTx.push(transaction)
+    } catch (error) {
+      console.warn(error)
     }
     return arrayOfTx
   }

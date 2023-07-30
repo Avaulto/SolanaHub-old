@@ -38,7 +38,9 @@ import {
   OptionsPopupComponent,
   TabsComponent,
   MessageBoxComponent,
-  DefiStatsComponent
+  DefiStatsComponent,
+  AssetsBalanceComponent,
+  DefiTourComponent,
 } from "./components";
 
 // // import directives
@@ -87,7 +89,9 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     OptionsPopupComponent,
     TabsComponent,
     MessageBoxComponent,
-    DefiStatsComponent
+    DefiStatsComponent,
+    AssetsBalanceComponent,
+    DefiTourComponent
   ],
   imports: [
     CommonModule,
@@ -143,7 +147,9 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     OptionsPopupComponent,
     TabsComponent,
     MessageBoxComponent,
-    DefiStatsComponent
+    DefiStatsComponent,
+    AssetsBalanceComponent,
+    DefiTourComponent
   ]
 })
 export class SharedModule {}

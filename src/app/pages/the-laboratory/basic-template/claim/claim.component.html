@@ -1,0 +1,24 @@
+<form id="claim-box">
+
+  <ion-row class="ion-margin-bottom" id="deposit-apr-box">
+    <div>{{claimAsset?.amount || 0}} <span> {{claimAsset?.name || ''}}</span>
+    </div>
+    <span id="reward">
+      <span>
+        Claimable rewards 
+      </span>
+      <app-icon-tooltip *ngIf="claimAsset?.name === 'MNDE'" tip="Rewards are claimable at 0:00 UTC on the 3rd of every month."></app-icon-tooltip></span>
+  </ion-row>
+
+  <ion-row class="ion-justify-content-center">
+    <ng-container *ngIf="walletExtended$; else elseTemplate">
+      <ion-button [disabled]="claimAsset?.amount <= 0" (click)="claimReward()" type="button"
+      class="ion-text-capitalize">claim</ion-button>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+    </ng-template>
+    
+  </ion-row>
+  
+</form>

@@ -1,7 +1,7 @@
 
 export * from './logo/logo.component'
 export * from './data-box/data-box.component'
-export * from '../../pages/wallet/assets-balance/assets-balance.component'
+export * from './assets-balance/assets-balance.component'
 export * from './go-back-btn/go-back-btn.component'
 export * from './wallet-connect/wallet-connect.component'
 export * from './wallet-connect/wallet-adapter-options/wallet-adapter-options.component'
@@ -19,7 +19,7 @@ export * from './nft-preview/nft-send/nft-send.component'
 export * from './chart/chart.component';
 export * from './wallet-not-connected-state/wallet-not-connected-state.component'
 export * from './stake/stake.component';
-export * from './stake/apy-calc/apy-calc.component';
+export * from './apy-calc/apy-calc.component';
 export * from './search-input/search-input.component';
 export * from './dapp-head/dapp-head.component'
 export * from './icon-tooltip/icon-tooltip.component'
@@ -28,3 +28,5 @@ export * from './settings/options-popup/options-popup.component'
 export * from './tabs/tabs.component'
 export * from './message-box/message-box.component'
 export * from './defi-stats/defi-stats.component'
+export * from './assets-balance/assets-balance.component'
+export * from './defi-tour/defi-tour.component'

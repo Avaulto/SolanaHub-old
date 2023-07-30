@@ -1,7 +1,6 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
-    <app-dapp-head name="marinade & solend"
-      imgPath="/assets/images/icons/strategies-icons/msol-solend-mnde.png"></app-dapp-head>
+    <app-dapp-head name="marinade & solend" [imgPath]="strategyConfiguration?.strategyIcon"></app-dapp-head>
     <app-defi-stats [stats]="strategyStats"></app-defi-stats>
 
     <ion-row class="ion-justify-content-between">
@@ -9,98 +8,58 @@
 
       <ion-col class="data-box" sizeLg="7.7" size="12">
         <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
-        <div [ngSwitch]="currentTab" class="ion-padding">
-          <form *ngSwitchCase="'deposit'" [formGroup]="depositForm" id="deposit-box">
-            <ion-row class="ion-margin-bottom" id="deposit-apr-box">
-              <div>{{strategyStats[2]?.desc}}<span>APY</span>
-                <span id="mev-reward">SOL + MNDE rewards</span>
-              </div>
-              <p id="">marinade liquid staking + soled pool strategy</p>
-            </ion-row>
-            <app-label-layout
-              [layoutConfig]="{title: 'Deposit SOL', balance: (walletExtended$ | async)?.balance | number: '1.2-2'}">
-              <app-icon-tooltip
-                tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
-            </app-label-layout>
+        <ng-container [ngSwitch]="currentTab" class="ion-padding">
 
-            <ion-row id="deposit-amount">
-              <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
-              <span class="heading-6">MAX</span>
-            </ion-row>
+          <app-deposit 
+             *ngSwitchCase="'deposit'" 
+            [walletExtended$]="walletExtended$ | async"
+            [strategyAPY]="strategyStats[2]?.desc"
+            [strategyConfiguration]="strategyConfiguration">
+          </app-deposit>
+          <app-withdraw 
+            *ngSwitchCase="'withdraw'"
+            [walletExtended$]="walletExtended$ | async"
+            [strategyConfiguration]="strategyConfiguration">
+          </app-withdraw>
+          <app-claim 
+          *ngSwitchCase="'claim'" 
+          [walletExtended$]="walletExtended$ | async"
+            [claimAsset]="{
+              name:strategyConfiguration.claimAssets.name,
+               amount: strategyConfiguration.claimAssets.amount
+              }">
+          </app-claim>
 
-
-            <ion-row class="ion-justify-content-center">
-              <ng-container *ngIf="walletExtended$ | async; else elseTemplate">
-                <ion-button [disabled]="formSubmitted || depositForm.invalid" (click)="submit()" type="button"
-                  class="ion-text-capitalize">yield now</ion-button>
-                <!-- {{wallet.tokens}} -->
-              </ng-container>
-              <ng-template #elseTemplate>
-                <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
-              </ng-template>
-
-            </ion-row>
-          </form>
-        </div>
+          </ng-container>
       </ion-col>
       <ion-col class="data-box ion-padding ion-text-capitalize" sizeLg="4" size="12">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">APY Breakdown</div>
-        <div class="yield-asset break-down">
+        <div class="yield-asset break-down" *ngFor="let apyItem of strategyConfiguration?.APY_breakdown">
           <div>
 
-            <ion-img src="/assets/images/icons/solana-logo.webp"></ion-img>
+            <ion-img [src]="apyItem.icon"></ion-img>
           </div>
           <span>
-            Base 6.9% SOL staking rewards
+            {{apyItem.description}}
           </span>
-        </div>
-        <div class="yield-asset break-down">
-          <div>
-            <ion-img src="/assets/images/icons/mnde.webp"></ion-img>
-          </div>
-          <span>
-            Base 0.6% MNDE from supply mMSOL liquidity on solend
-          </span>
-
         </div>
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-between">
       <ion-col sizeLg="7.7" class="data-box ion-padding ion-text-capitalize">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">Strategy Breakdown</div>
-        <div class=" break-down">
-          <span>  deposit SOL to marinade liquid staking pool</span>
+        <div class=" break-down" *ngFor="let strategyItem of strategyConfiguration?.strategy_breakdown">
+          <span>{{strategyItem}}</span>
         </div>
-        <div class=" break-down">
-          <span>get mSOL in return</span>
-        </div>
-        <div class=" break-down">
-          <span>deposit mSOL into solend and supply liquidity on mSOL pool</span>
-        </div>
- 
-
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">Total transactions required</div>
-        <p>2</p>
+        <p>{{strategyConfiguration?.totalTransactions}}</p>
       </ion-col>
       <ion-col id="risk-info" class="data-box ion-padding ion-text-capitalize" sizeLg="4">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">RISK Breakdown</div>
-        <div class="risk break-down">
-          <span class="low"></span>
-          <p>audited smart contract</p>
+        <div class="risk break-down" *ngFor="let riskItem of strategyConfiguration?.risk_breakdown">
+          <span [class]="riskItem.riskLevel"></span>
+          <p>{{riskItem.description}}</p>
         </div>
-        <div class="risk break-down">
-          <span class="low "></span>
-          <p>single asset yield(no impermanent loss)</p>
-        </div>
-        <div class="risk break-down">
-          <span class="medium"></span>
-          <p>high volatility on MNDE USD value</p>
-        </div>
-        <div class="risk break-down">
-          <span class="high"></span>
-          <p>multiple smart contract exposure</p>
-        </div>
-
       </ion-col>
     </ion-row>
   </ion-grid>

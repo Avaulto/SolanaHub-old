@@ -7,7 +7,7 @@
       </div>
       <p id="">Earn passive income from your crypto by staking it.</p>
     </ion-row>
-    <app-label-layout [layoutConfig]="{title: 'stake', balance: (wallet$ | async)?.balance | number: '1.2-2'}">
+    <app-label-layout [layoutConfig]="{title: 'stake', balance: (wallet$ | async)?.balance}">
       <app-icon-tooltip tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
     </app-label-layout>
 

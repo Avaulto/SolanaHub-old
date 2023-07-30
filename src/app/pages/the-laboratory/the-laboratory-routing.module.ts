@@ -10,7 +10,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'basic-template',
+    path: ':strategy',
     loadChildren: () => import('./basic-template/basic-template.module').then( m => m.BasicTemplatePageModule)
   }
 ];

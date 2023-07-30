@@ -8,12 +8,15 @@ import { BasicTemplatePageRoutingModule } from './basic-template-routing.module'
 
 import { BasicTemplatePage } from './basic-template.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ClaimComponent } from './claim/claim.component';
+import { WithdrawComponent } from './withdraw/withdraw.component';
+import { DepositComponent } from './deposit/deposit.component';
 
 @NgModule({
   imports: [
-SharedModule,
+    SharedModule,
     BasicTemplatePageRoutingModule
   ],
-  declarations: [BasicTemplatePage]
+  declarations: [BasicTemplatePage, DepositComponent, WithdrawComponent, ClaimComponent]
 })
-export class BasicTemplatePageModule {}
+export class BasicTemplatePageModule { }

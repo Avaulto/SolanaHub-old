@@ -7,59 +7,6 @@
     }
 }
 
-#deposit-box {
-    display: block;
-    width: 450px;
-    max-width: 100%;
-    margin: 8px auto;
-}
-
-#deposit-apr-box {
-    height: 99px;
-    background: var(--apr-box);
-    border-radius: 6px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    text-transform: capitalize;
-
-    div {
-        font-weight: 600;
-        font-size: 24px;
-    }
-
-    span {
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    p {
-        margin-top: 4px;
-        font-size: 12px;
-    }
-
-    #mev-reward {
-        display: block;
-        font-size: 12px;
-        position: relative;
-        bottom: 7px;
-        color: gold;
-    }
-}
-
-#deposit-amount {
-    position: relative;
-
-    span {
-        cursor: pointer;
-        position: absolute;
-        color: var(--ion-color-primary);
-        z-index: 2;
-        right: 15px;
-        top: 12px;
-    }
-}
 
 .yield-asset {
     div{
