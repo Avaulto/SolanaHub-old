@@ -37,6 +37,16 @@ export class StakePoolStoreService {
 
   // avaliable stake pool providers to select
   public providers: StakePoolProvider[] = [{
+    poolName: 'Risk.lol',
+    apy: null,
+    exchangeRate: null,
+    tokenSymbol: "riskSOL",
+    tokenMint: new PublicKey("C4kq9QRFLAqwYHK7p4Ez54KMZLZNw2yLsiT3KN4FSmdH"),
+    tokenImageURL: 'https://arweave.net/FG1nqKGeIZ2K8HyaoVw5PmEjSN2U4vklELDW8MaVMcQ?ext=gif',
+    poolPublicKey: new PublicKey("F8h46pYkaqPJNP2MRkUUUtRkf8efCkpoqehn9g1bTTm7"),
+    MEVDelegation: false,
+    website: "https://risk.lol/"
+  },{
     poolName: 'Marinade',
     apy: null,
     exchangeRate: null,
@@ -141,12 +151,13 @@ export class StakePoolStoreService {
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
       publicKey: wallet.publicKey,
-      referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
+      referralCode: new PublicKey('6X3oVE5Hq923M2UEJregoA7zLxuc2jXcJJegpy24pb2T'),
     })
     this.marinadeSDK = new Marinade(config)
   }
   public async getStakePoolsInfo(): Promise<void> {
     try {
+      /*
       this.providers = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.map((provider: StakePoolProvider) => {
         provider.poolName == 'BlazeStake' ? provider.poolName = 'SolBlaze' : provider.poolName
         provider.poolPublicKey = new PublicKey(provider.poolPublicKey)
@@ -154,7 +165,7 @@ export class StakePoolStoreService {
         return provider
       })
       .filter(provider => provider.poolName != "DAO Pool")
-      .sort((a, b) => a.tokenMintSupply > b.tokenMintSupply ? -1 : 1)
+      .sort((a, b) => a.tokenMintSupply > b.tokenMintSupply ? -1 : 1) */
     } catch (error) {
       console.error(error)
     }
