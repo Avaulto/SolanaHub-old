@@ -4,7 +4,7 @@ import { StakePoolStoreService } from '../../defi/dapps/liquid-stake/stake-pool-
 import { Observable, firstValueFrom, forkJoin, map, shareReplay } from 'rxjs';
 import { SolendAction, SolendMarket, SolendWallet } from '@solendprotocol/solend-sdk';
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
-import { DefiStat, JupiterPriceFeed, Token } from 'src/app/models';
+import { DefiStat, JupiterPriceFeed, Token, WalletExtended } from 'src/app/models';
 import { LabStrategyConfiguration } from 'src/app/models/defiLab.model';
 import { LaboratoryStoreService } from '../laboratory-store.service';
 import BN from 'bn.js';
@@ -50,7 +50,6 @@ export class MarinadePlusService {
     private _stakePoolStore: StakePoolStoreService,
     private _jupiterStore: JupiterStoreService,
     private _utilService: UtilsService,
-    private _laboratoryStore: LaboratoryStoreService,
     private _txInterceptService: TxInterceptService,
   ) {
 
@@ -120,11 +119,11 @@ export class MarinadePlusService {
       'Deposit MSOL Into Solend And Supply Liquidity On MSOL Pool'
     ],
     totalTransactions: 2,
-    claimAssets: { 
+    claimAssets: {
       name: 'MNDE',
-     amount: 0,
-     toBeClaim: 0
-   },
+      amount: 0,
+      toBeClaim: 0
+    },
     assetHoldings: [
       {
         name: 'MSOL',
@@ -136,37 +135,46 @@ export class MarinadePlusService {
     ]
   }
   public async initStrategyStats(): Promise<void> {
-    const apy = await this.getStrategyAPY();
-    this.strategyStats[2].desc = apy.strategyAPY + '%'
-    this.strategyStats[2].loading = false;
+    try {
+      const apy = await this.getStrategyAPY();
+      this.strategyStats[2].desc = apy.strategyAPY + '%'
+      this.strategyStats[2].loading = false;
 
-    this.strategyStats[3].desc = await this.getTVL() + ' $'
-    this.strategyStats[3].loading = false;
+      this.strategyStats[3].desc = await this.getTVL() + ' $'
+      this.strategyStats[3].loading = false;
 
-    this.strategyConfiguration.APY_breakdown[0].description = `Base ${apy.marinadeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
-    this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.lpAPY.toFixedNoRounding(2)}% MNDE From Supply MMSOL Liquidity On Solend`
+      this.strategyConfiguration.APY_breakdown[0].description = `Base ${apy.marinadeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
+      this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.lpAPY.toFixedNoRounding(2)}% MNDE From Supply MMSOL Liquidity On Solend`
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   // init all required function for the strategy 
   public async initStrategyStatefulStats(): Promise<void> {
-    const wallet = this._solanaUtilsService.getCurrentWallet() as any;
-    await this._stakePoolStore.initMarinade(wallet);
-    this._solendWallet = await SolendWallet.initialize(wallet, this._solanaUtilsService.connection);
+    try {
 
-    const deposits = await this.getOnwerMsolDeposit();
-    this.strategyStats[0].desc = deposits.SOL_holding.toFixedNoRounding(3) + ' SOL';
-    this.strategyStats[0].loading = false;
+      const wallet = this._solanaUtilsService.getCurrentWallet() as any;
+      await this._stakePoolStore.initMarinade(wallet);
+      this._solendWallet = await SolendWallet.initialize(wallet, this._solanaUtilsService.connection);
 
-    const rewards = await this.getMndeRewards();
-    this.strategyStats[1].desc = rewards.claimed_MNDE.toFixedNoRounding(3) + ' MNDE';
-    this.strategyStats[1].loading = false;
+      const deposits = await this.getOnwerMsolDeposit();
+      this.strategyStats[0].desc = deposits.SOL_holding.toFixedNoRounding(3) + ' SOL';
+      this.strategyStats[0].loading = false;
 
-    this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
+      const rewards = await this.getMndeRewards();
+      this.strategyStats[1].desc = rewards.claimed_MNDE.toFixedNoRounding(3) + ' MNDE';
+      this.strategyStats[1].loading = false;
 
-    const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
-    this.strategyConfiguration.assetHoldings[0].balance = deposits.mSOL_holding
-    this.strategyConfiguration.assetHoldings[0].totalUsdValue = mSOLPrice * deposits.mSOL_holding
-    this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = 100;
+      this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
+
+      const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+      this.strategyConfiguration.assetHoldings[0].balance = deposits.mSOL_holding
+      this.strategyConfiguration.assetHoldings[0].totalUsdValue = mSOLPrice * deposits.mSOL_holding
+      this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = 100;
+    } catch (error) {
+      console.warn(error)
+    }
   }
   // get marinade + solend TVL
   public async getTVL(): Promise<number> {
@@ -225,7 +233,7 @@ export class MarinadePlusService {
     const solendAvg30daysAPY = currentAPY * slot / 446 * 100
 
     // strategy APY
-    const strategyAPY = ((solendAvg30daysAPY + marinadeAPY)).toFixedNoRounding(2)
+    const strategyAPY = Number(((solendAvg30daysAPY + marinadeAPY)).toFixedNoRounding(2))
     return { strategyAPY, marinadeAPY, lpAPY: solendAvg30daysAPY };
 
   }
@@ -254,6 +262,7 @@ export class MarinadePlusService {
 
     return { SOL_holding, mSOL_holding };
   }
+
   // convert back to msol/sol ratio
   private async _msolConverter(side: 'SOL' | 'mSOL', amount: number): Promise<number> {
     const assetRatio = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/price_sol'))
@@ -384,31 +393,58 @@ export class MarinadePlusService {
   }
 
   // claim all rewards from solend
-  public async claimMNDE(walletOwner: PublicKey) {
+  public async claimMNDE(walletOwner: WalletExtended, swapToSol: boolean = false) {
 
-    const solendWallet = await SolendWallet.initialize(walletOwner as any, this._solanaUtilsService.connection);
+    let ixs = []
+    try {
 
-    // Claim rewards
-    const mndeRewards = solendWallet.rewards[this._mnde.toBase58()];
-    // console.log(
-    //   "Claimable rewards:",
-    //   mndeRewards.claimableAmount
-    // );
+      const solendWallet = await SolendWallet.initialize(walletOwner as any, this._solanaUtilsService.connection);
 
-    const sig1 = await mndeRewards.rewardClaims
-      .find((claim) => !claim.metadata.claimedAt)
-      ?.claim();
+      // Claim rewards
+      const mndeRewards = solendWallet.rewards[this._mnde.toBase58()];
+      // console.log(
+      //   "Claimable rewards:",
+      //   mndeRewards.claimableAmount
+      // );
 
-    // Exercise options (after claiming)
-    const slndOptionClaim = solendWallet.rewards["SLND_OPTION"].rewardClaims.find(
-      (claim) => claim.metadata.optionMarket.userBalance
-    );
+      const sig1 = await mndeRewards.rewardClaims
+        .find((claim) => !claim.metadata.claimedAt)
+        ?.claim();
+      console.log(sig1, mndeRewards)
 
-    // const sig2 = await slndOptionClaim.exercise(
-    //   slndOptionClaim.optionMarket.userBalance
-    // );
+      // // Exercise options (after claiming)
+      // const slndOptionClaim = solendWallet.rewards["SLND_OPTION"].rewardClaims.find(
+      //   (claim) => claim.metadata.optionMarket.userBalance
+      // );
 
-    const [setupIxs, claimIxs] = await solendWallet.getClaimAllIxs();
+      // const sig2 = await slndOptionClaim.exercise(
+      //   slndOptionClaim.optionMarket.userBalance
+      // );
+
+      const [setupIxs, claimIxs] = await solendWallet.getClaimAllIxs();
+      ixs.push(setupIxs, claimIxs)
+
+
+      if (swapToSol) {
+        const inputToken = {
+          "address": this._mnde.toBase58(),
+          "decimals": 9,
+          "symbol": "MNDE",
+          "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
+        }
+        const outputToken = {
+          "address": "So11111111111111111111111111111111111111112",
+          "decimals": 9,
+          "symbol": "SOL",
+        }
+        const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
+        const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
+        ixs.push(...transaction)
+      }
+      await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
+    } catch (error) {
+      console.warn(error)
+    }
     // Claim all claimable rewards
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {  SolanaUtilsService} from 'src/app/services';
+import {  JupiterStoreService, SolanaUtilsService} from 'src/app/services';
 import { Observable, shareReplay, switchMap } from 'rxjs';
 import { DefiStat, LabStrategyConfiguration, WalletExtended } from 'src/app/models';
 
@@ -20,6 +20,7 @@ export class BasicTemplatePage implements OnInit {
     private _solanaUtilsService: SolanaUtilsService,
     private _marinadePlusService: MarinadePlusService,
     private _router: ActivatedRoute,
+    private _jupiterStore: JupiterStoreService
   ) { }
   public strategyName: string = '';
   async ionViewWillEnter() {
@@ -32,6 +33,7 @@ export class BasicTemplatePage implements OnInit {
   public walletExtended$: Observable<WalletExtended> = this._solanaUtilsService.walletExtended$.pipe(
     switchMap(async (wallet) => {
       if (wallet) {
+        this._jupiterStore.initJup(wallet)
         if (this.strategyName === 'marinade-plus') {
           await this._marinadePlusService.initStrategyStatefulStats()
         }

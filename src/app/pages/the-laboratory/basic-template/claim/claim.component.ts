@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WalletExtended } from 'src/app/models';
+import { MarinadePlusService } from '../../strategies-builder/marinade-plus.service';
 
 @Component({
   selector: 'app-claim',
@@ -9,10 +10,14 @@ import { WalletExtended } from 'src/app/models';
 export class ClaimComponent  implements OnInit {
   @Input() walletExtended$: WalletExtended;
   @Input() claimAsset: {amount: number, name: string};
-  constructor() { }
+  public swapToSol: boolean = false;
+  constructor(private _marinadePlusService:MarinadePlusService) { }
 
   ngOnInit() {}
-  claimReward(){
-
+  public updateSelection(ev): void{
+    this.swapToSol = ev.detail.checked
+  }
+  public claimReward(): void{
+    this._marinadePlusService.claimMNDE(this.walletExtended$,this.swapToSol)
   }
 }

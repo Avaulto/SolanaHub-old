@@ -3,6 +3,7 @@ import { NavController, PopoverController } from '@ionic/angular';
 import { DefiApp, LabIntro } from 'src/app/models';
 import { MarinadePlusService } from './strategies-builder/marinade-plus.service';
 import { DefiTourComponent } from 'src/app/shared/components';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-the-laboratory',
@@ -18,8 +19,10 @@ export class TheLaboratoryPage implements OnInit {
     ) { }
 
   async ngOnInit() {
-    const apy = await this._marinadePlusService.getStrategyAPY()
+    const apy = await this._marinadePlusService.getStrategyAPY();
+    // const userDeposit = await (await this._marinadePlusService.getOnwerMsolDeposit()).mSOL_holding > 0;
     this.labProduct[0].apy = apy.strategyAPY;
+    // this.labProduct[0].userDeposit = userDeposit
   }
   public searchTerm: string = "";
   public searchItem(term: any) {
@@ -29,17 +32,20 @@ export class TheLaboratoryPage implements OnInit {
   //strategy = defi protocol participate + 
   public labProduct: LabIntro[] = [
     {
+      id:1,
       strategy: 'marinade-plus',
-      apy: null,
+      apy:async () =>  await this._marinadePlusService.getStrategyAPY(),
       // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
       defiParticipate: ['marinade','solend'],
       strategies: ['staking', 'liquidity provider'],
       rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/mnde.webp'],
       learnMoreLink: 'https://solana.org/stake-pools',
       active: true,
-      riskLevel: 'low',
+      riskLevel: 1,
+      userDeposit: async () => (await this._marinadePlusService.getOnwerMsolDeposit()).mSOL_holding > 0
     },
     {
+      id:2,
       strategy: 'solblaze-farmer',
       apy: 13.1,
       // description: `dual yield for farmerers, taking SOL and stake with bSOL, and deposit SOL & bSOL into metora bSOL-sol pool for additional APY`,
@@ -48,16 +54,24 @@ export class TheLaboratoryPage implements OnInit {
       rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/blze.png'],
       learnMoreLink: 'https://solana.org/stake-pools',
       active: true,
-      riskLevel:'medium',
+      riskLevel:2,
+      userDeposit: null
     },
   ]
+  public labProduct$: BehaviorSubject<LabIntro[]> = new BehaviorSubject(this.labProduct as LabIntro[]);
 
-
+  public onSortChange(ev){
+    console.log(ev);
+    const trigger = ev.detail.value
+    const sortedLabProduct = this.labProduct.sort((p1,p2) => p1[trigger] > p2[trigger] ? -1 : 1
+    );
+    this.labProduct$.next(sortedLabProduct);
+  }
   public goToStrategy(dapp: LabIntro) {
     this.nav.navigateForward('/the-laboratory/' +dapp.strategy)
   }
 
-  defiTour = [{
+  public defiTour = [{
     title: 'welcome to CompactDeFi Laboratory',
     description: `Don't let your hard-earned assets sit idle – let us empower you to reach new 1-click yield strategies! and btw, we do not involves any smart contract from our end`,
   },
@@ -97,4 +111,16 @@ export class TheLaboratoryPage implements OnInit {
     await popover.present();
   }
 
+  showOnlyDeposit(ev){
+    console.log(ev);
+    const showDepositsStrategy = ev.detail.checked;
+    
+    if(showDepositsStrategy){
+      const filteredStrategies = this.labProduct.filter(p => p.userDeposit);
+      console.log(filteredStrategies)
+      this.labProduct$.next(filteredStrategies)
+    }else{
+      this.labProduct$.next(this.labProduct)
+    }
+  }
 }

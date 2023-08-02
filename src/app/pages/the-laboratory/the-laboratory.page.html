@@ -7,23 +7,24 @@
     <ion-row class="ion-justify-content-between ion-margin-bottom" id="lab-header">
       <ion-col>
         <app-search-input (search)="searchItem($event)" [value]="searchTerm"
-          [placeholder]="'Search strategy'"></app-search-input>
+          [placeholder]="'Search by strategy name'"></app-search-input>
       </ion-col>
-      <!-- <ion-col>
-        <ion-select placeholder="sort by" icon="chevron-down-outline" aria-label="sort by" interface="popover">
-          <ion-select-option value="all">all</ion-select-option>
-          <ion-select-option value="single">single asset</ion-select-option>
-          <ion-select-option value="multi">multi assets</ion-select-option>
+      <ion-col>
+        <ion-select placeholder="sort by" icon="chevron-down-outline" (ionChange)="onSortChange($event)" aria-label="sort by" interface="popover">
+          <ion-select-option value="id">newest</ion-select-option>
+          <ion-select-option value="apy">APY</ion-select-option>
+          <ion-select-option value="riskLevel">RISK</ion-select-option>
         </ion-select>
       </ion-col>
       <ion-col id="my-deposits">
-        <ion-toggle></ion-toggle>
+        <ion-toggle (ionChange)="showOnlyDeposit($event)"></ion-toggle>
         <ion-label>My deposits</ion-label>
-      </ion-col> -->
+      </ion-col>
     </ion-row>
 
-    <ion-row *ngFor="let product of labProduct| filter:'strategy':searchTerm;" class="lab-product ion-padding ion-justify-content-between data-box"
+    <ion-row *ngFor="let product of labProduct$ | async" class="lab-product ion-padding data-box"
       (click)="goToStrategy(product)">
+
       <ion-col sizeLg="2.5" size="6">
         <h5>protocols</h5>
         <div class="strategy-protocols">
@@ -47,7 +48,7 @@
         <span>
           <!-- <ion-skeleton-text *ngIf="!product.apy" animated></ion-skeleton-text> -->
           <app-loader  *ngIf="!product.apy"></app-loader>
-          <span>
+          <span *ngIf="product.apy">
             {{product.apy}}%
           </span>
         </span>
@@ -55,9 +56,9 @@
       <ion-col sizeLg="2" size="6" class="strategy-risk">
         <h5>risk</h5>
         <div class="risk" [ngClass]="{
-                    'low': product.riskLevel == 'low' && i == 0,
-                    'medium': product.riskLevel =='medium' && i < 2,
-                    'high': product.riskLevel == 'high' && i < 3
+                    'low': product.riskLevel === 1 && i == 0,
+                    'medium': product.riskLevel === 2 && i < 2,
+                    'high': product.riskLevel === 3 && i < 3
                     }" *ngFor="let risk of [0,1,2,3]; let i = index">
 
         </div>

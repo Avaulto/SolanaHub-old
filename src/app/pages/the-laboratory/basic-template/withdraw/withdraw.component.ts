@@ -13,14 +13,10 @@ export class WithdrawComponent  implements OnChanges {
   @Input() strategyConfiguration: LabStrategyConfiguration;
   constructor(
     private _marinadePlusService: MarinadePlusService,
-    private _jupiterStoreService:JupiterStoreService
      ) { }
 
      ngOnChanges(changes): void {
-      console.log(this.walletExtended$)
-      if(this.walletExtended$){
-        this._jupiterStoreService.initJup(this.walletExtended$)
-      }
+
      }
 
   public withdraw(): void{

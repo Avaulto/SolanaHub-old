@@ -6,6 +6,7 @@ export interface DefiLab {
 }
 
 export interface LabIntro {
+  id:number,
   // assetsSymbol: string[],
   apy: number | any,
   defiParticipate: string[],
@@ -14,7 +15,14 @@ export interface LabIntro {
   learnMoreLink: string,
   strategy: string,
   active: boolean,
-  riskLevel: 'low' | 'medium' | 'high',
+  riskLevel: 1 | 2 | 3 //  'low' | 'medium' | 'high',
+  userDeposit: any
+}
+enum riskLevel {
+  Up = 1,
+  Down,
+  Left,
+  Right,
 }
 export interface LabStrategyConfiguration {
   strategyName: string,

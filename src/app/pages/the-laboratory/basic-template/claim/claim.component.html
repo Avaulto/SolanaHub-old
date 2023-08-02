@@ -10,6 +10,11 @@
       <app-icon-tooltip *ngIf="claimAsset?.name === 'MNDE'" tip="Rewards are claimable at 0:00 UTC on the 3rd of every month."></app-icon-tooltip></span>
   </ion-row>
 
+  <ion-row id="claim-as-sol-wrapper">
+    <span>Claim and swap to $SOL?</span>
+    <ion-toggle [checked]="swapToSol" (ionChange)="updateSelection($event)" style="height: 25px;" ></ion-toggle>
+  </ion-row>
+
   <ion-row class="ion-justify-content-center">
     <ng-container *ngIf="walletExtended$; else elseTemplate">
       <ion-button [disabled]="claimAsset?.amount <= 0" (click)="claimReward()" type="button"
