@@ -35,9 +35,13 @@ export interface RewardRateElement {
 @Injectable({
   providedIn: 'root'
 })
+
+// marinade and solend strategy
+// 1. deposit sol for msol
+// 2. deposit msol into solend
+// 3. get liquid stake rewards + mnde rewards
 export class MarinadePlusService {
   private _solendWallet: SolendWallet;
-  protected solblazePoolAddress = new PublicKey("stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi");
   protected avaultoVoteKey = new PublicKey('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh');
   protected solendStakedSolPool = new PublicKey('HPzmDcPDCXAarsAxx3qXPG7aWx447XUVYwYsW4awUSPy');
   protected _msol = new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So");
@@ -85,6 +89,7 @@ export class MarinadePlusService {
   public strategyConfiguration: LabStrategyConfiguration = {
     strategyName: 'marinade-plus',
     title: 'Marinade Plus Strategy',
+    protocolsTitle: 'marinade & solend',
     rewardsSlogan: 'SOL + MNDE rewards',
     description: 'Marinade Liquid Staking + Soled Pool Strategy',
     strategyIcon: '/assets/images/icons/strategies-icons/msol-solend-mnde.png',
@@ -119,11 +124,11 @@ export class MarinadePlusService {
       'Deposit MSOL Into Solend And Supply Liquidity On MSOL Pool'
     ],
     totalTransactions: 2,
-    claimAssets: {
+    claimAssets: [{
       name: 'MNDE',
       amount: 0,
       toBeClaim: 0
-    },
+    }],
     assetHoldings: [
       {
         name: 'MSOL',
@@ -134,51 +139,50 @@ export class MarinadePlusService {
       }
     ]
   }
-  public async initStrategyStats(): Promise<void> {
+  public async initStrategyStats(): Promise<{apy, tvl}> {
     try {
       const apy = await this.getStrategyAPY();
-      this.strategyStats[2].desc = apy.strategyAPY + '%'
-      this.strategyStats[2].loading = false;
-
-      this.strategyStats[3].desc = await this.getTVL() + ' $'
-      this.strategyStats[3].loading = false;
+      const tvl = await this.getTVL()
 
       this.strategyConfiguration.APY_breakdown[0].description = `Base ${apy.marinadeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
       this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.lpAPY.toFixedNoRounding(2)}% MNDE From Supply MMSOL Liquidity On Solend`
+      return {apy, tvl}
     } catch (error) {
       console.warn(error)
     }
   }
 
   // init all required function for the strategy 
-  public async initStrategyStatefulStats(): Promise<void> {
+  public async initStrategyStatefulStats(): Promise<{userHoldings}> {
     try {
 
       const wallet = this._solanaUtilsService.getCurrentWallet() as any;
       await this._stakePoolStore.initMarinade(wallet);
       this._solendWallet = await SolendWallet.initialize(wallet, this._solanaUtilsService.connection);
 
-      const deposits = await this.getOnwerMsolDeposit();
-      this.strategyStats[0].desc = deposits.SOL_holding.toFixedNoRounding(3) + ' SOL';
-      this.strategyStats[0].loading = false;
+      const deposits = await this.getTotalBalance();
+      // this.strategyStats[0].desc = deposits.SOL_holding.toFixedNoRounding(3) + ' SOL';
+      // this.strategyStats[0].loading = false;
 
       const rewards = await this.getMndeRewards();
-      this.strategyStats[1].desc = rewards.claimed_MNDE.toFixedNoRounding(3) + ' MNDE';
-      this.strategyStats[1].loading = false;
+      // this.strategyStats[1].desc = rewards.claimed_MNDE.toFixedNoRounding(3) + ' MNDE';
+      // this.strategyStats[1].loading = false;
 
-      this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
+      // this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
 
       const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
       this.strategyConfiguration.assetHoldings[0].balance = deposits.mSOL_holding
       this.strategyConfiguration.assetHoldings[0].totalUsdValue = mSOLPrice * deposits.mSOL_holding
       this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = 100;
+
+      return {userHoldings: deposits.SOL_holding}
     } catch (error) {
       console.warn(error)
     }
   }
   // get marinade + solend TVL
-  public async getTVL(): Promise<number> {
-    let tvl = 0
+  public async getTVL(): Promise<{SOL, USD}> {
+    let tvl = {SOL: 0, USD:0}
     try {
       const marinade_TVL = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/tlv'))).staked_usd;
       const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
@@ -193,7 +197,8 @@ export class MarinadePlusService {
       const mSOLReserve = market.reserves.find((reserve) => reserve.config.liquidityToken.symbol == "mSOL")
       const mSOL_deposits = Number(mSOLReserve.stats.totalDepositsWads.toString()) / 10 ** 18 / 10 ** 9;
       const solendMsolTVL = mSOL_deposits * mSOLPrice
-      tvl = this._utilService.numFormater(marinade_TVL + solendMsolTVL);
+      tvl.SOL = marinade_TVL + solendMsolTVL / mSOLPrice
+      tvl.USD =  marinade_TVL + solendMsolTVL
     } catch (error) {
       console.warn(error);
     }
@@ -233,14 +238,16 @@ export class MarinadePlusService {
     const solendAvg30daysAPY = currentAPY * slot / 446 * 100
 
     // strategy APY
-    const strategyAPY = Number(((solendAvg30daysAPY + marinadeAPY)).toFixedNoRounding(2))
+    const strategyAPY = Number((solendAvg30daysAPY + marinadeAPY))
     return { strategyAPY, marinadeAPY, lpAPY: solendAvg30daysAPY };
 
   }
-  public async getOnwerMsolDeposit(): Promise<{ SOL_holding: number, mSOL_holding: number }> {
+  public async getTotalBalance(): Promise<{ SOL_holding: number,  USD_worth: number, mSOL_holding?: number}> {
     let SOL_holding = 0
     let mSOL_holding = 0
+    let USD_worth = 0
     try {
+      const SOLPrice = await (await this._jupiterStore.fetchPriceFeed('SOL')).data['SOL'].price
       const market = await SolendMarket.initialize(
         this._solanaUtilsService.connection,
         "production", // optional environment argument
@@ -254,13 +261,14 @@ export class MarinadePlusService {
         // convert to readable numbers
         mSOL_holding = depositBalance;
         SOL_holding = await this._msolConverter('SOL', mSOL_holding);
+        USD_worth = SOLPrice * SOL_holding;
       }
     } catch (error) {
       console.warn(error);
     }
 
 
-    return { SOL_holding, mSOL_holding };
+    return { SOL_holding, mSOL_holding, USD_worth };
   }
 
   // convert back to msol/sol ratio

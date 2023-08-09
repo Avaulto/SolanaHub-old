@@ -1,9 +1,10 @@
-#claim-box{
+#claim-box {
     display: block;
     width: 450px;
     max-width: 100%;
     margin: 8px auto;
 }
+
 #deposit-apr-box {
     height: 99px;
     background: var(--apr-box);
@@ -13,6 +14,12 @@
     justify-content: center;
     text-align: center;
     text-transform: capitalize;
+
+    #rewards-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     div {
         font-weight: 600;
@@ -25,9 +32,13 @@
     font-size: 12px;
     position: relative;
     bottom: 7px;
+}
+
+.reward-color {
     color: gold;
 }
-#claim-as-sol-wrapper{
+
+#claim-as-sol-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;

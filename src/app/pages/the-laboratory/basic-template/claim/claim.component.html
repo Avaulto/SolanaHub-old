@@ -1,23 +1,27 @@
 <form id="claim-box">
 
   <ion-row class="ion-margin-bottom" id="deposit-apr-box">
-    <div>{{claimAsset?.amount || 0}} <span> {{claimAsset?.name || ''}}</span>
+    <div id="rewards-wrapper">
+      <div *ngFor="let reward of claimAssets; let i = index">{{reward?.amount || 0}} 
+        <span> {{reward?.name || ''}}</span> 
+        <small style="    margin-inline: 10px;" *ngIf="claimAssets.length > i + 1" class="reward-color"> &</small>
+      </div>
     </div>
-    <span id="reward">
-      <span>
-        Claimable rewards 
+      <span id="reward" class="reward-color">
+        <span>
+          Claimable rewards 
+        </span>
       </span>
-      <app-icon-tooltip *ngIf="claimAsset?.name === 'MNDE'" tip="Rewards are claimable at 0:00 UTC on the 3rd of every month."></app-icon-tooltip></span>
   </ion-row>
 
-  <ion-row id="claim-as-sol-wrapper">
+  <!-- <ion-row id="claim-as-sol-wrapper">
     <span>Claim and swap to $SOL?</span>
     <ion-toggle [checked]="swapToSol" (ionChange)="updateSelection($event)" style="height: 25px;" ></ion-toggle>
-  </ion-row>
+  </ion-row> -->
 
   <ion-row class="ion-justify-content-center">
     <ng-container *ngIf="walletExtended$; else elseTemplate">
-      <ion-button [disabled]="claimAsset?.amount <= 0" (click)="claimReward()" type="button"
+      <ion-button [disabled]="claimAssets[0]?.amount <= 0" (click)="claimReward()" type="button"
       class="ion-text-capitalize">claim</ion-button>
     </ng-container>
     <ng-template #elseTemplate>

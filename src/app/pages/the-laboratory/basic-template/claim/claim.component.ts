@@ -1,23 +1,38 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { WalletExtended } from 'src/app/models';
+import { LabStrategyConfiguration, StrategyClaimableAsset, WalletExtended } from 'src/app/models';
 import { MarinadePlusService } from '../../strategies-builder/marinade-plus.service';
+import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.service';
 
 @Component({
   selector: 'app-claim',
   templateUrl: './claim.component.html',
   styleUrls: ['./claim.component.scss'],
 })
-export class ClaimComponent  implements OnInit {
+export class ClaimComponent implements OnInit {
   @Input() walletExtended$: WalletExtended;
-  @Input() claimAsset: {amount: number, name: string};
+  @Input() strategyConfiguration: LabStrategyConfiguration
+  public claimAssets: StrategyClaimableAsset[]
   public swapToSol: boolean = false;
-  constructor(private _marinadePlusService:MarinadePlusService) { }
+  constructor(
+    private _solblazeFarmerService:SolblazeFarmerService
+  ) { }
 
-  ngOnInit() {}
-  public updateSelection(ev): void{
+  async ngOnInit() {
+    console.log('rewards init', this.claimAssets)
+  }
+  ngOnChanges(): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    this.claimAssets = this.strategyConfiguration.claimAssets
+  }
+  public updateSelection(ev): void {
     this.swapToSol = ev.detail.checked
   }
-  public claimReward(): void{
-    this._marinadePlusService.claimMNDE(this.walletExtended$,this.swapToSol)
+  public async claimReward() {
+    if (this.strategyConfiguration.strategyName === 'solblaze-farmer') {
+      console.log(this.swapToSol)
+      await this._solblazeFarmerService.claimRewards(this.swapToSol)
+
+    }
   }
 }

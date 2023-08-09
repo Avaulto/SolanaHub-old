@@ -43,8 +43,6 @@ export class LaboratoryStoreService {
       amount
     )
     try {
-
-
       let memo = JSON.stringify({
         type: "cls/validator_stake/lamports",
         value: {

@@ -11,12 +11,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ClaimComponent } from './claim/claim.component';
 import { WithdrawComponent } from './withdraw/withdraw.component';
 import { DepositComponent } from './deposit/deposit.component';
+import { StrategyStatsComponent } from './strategy-stats/strategy-stats.component';
 
 @NgModule({
   imports: [
     SharedModule,
     BasicTemplatePageRoutingModule
   ],
-  declarations: [BasicTemplatePage, DepositComponent, WithdrawComponent, ClaimComponent]
+  declarations: [BasicTemplatePage,StrategyStatsComponent, DepositComponent, WithdrawComponent, ClaimComponent]
 })
 export class BasicTemplatePageModule { }

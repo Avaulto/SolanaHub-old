@@ -1,6 +1,6 @@
 <form id="withdraw-box">
   <ion-row >
-    <small>position holding:</small>
+    <h6 class="ion-text-capitalize">position holding:</h6>
     <app-assets-balance [asset]="asset" *ngFor="let asset of strategyConfiguration.assetHoldings"></app-assets-balance>
   </ion-row>
 

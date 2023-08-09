@@ -1,8 +1,13 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
-    <app-dapp-head name="marinade & solend" [imgPath]="strategyConfiguration?.strategyIcon"></app-dapp-head>
-    <app-defi-stats [stats]="strategyStats"></app-defi-stats>
-
+    <app-dapp-head [name]="strategyConfiguration.protocolsTitle"
+     [imgPath]="strategyConfiguration?.strategyIcon"></app-dapp-head>
+    <!-- <app-defi-stats [stats]="strategyStats"></app-defi-stats> -->
+    <app-strategy-stats
+     [strategyName]="strategyName"
+     [userHoldings]="userHoldings"
+     (onApyReady)="apy = $event"
+     ></app-strategy-stats>
     <ion-row class="ion-justify-content-between">
 
 
@@ -13,7 +18,7 @@
           <app-deposit 
              *ngSwitchCase="'deposit'" 
             [walletExtended$]="walletExtended$ | async"
-            [strategyAPY]="strategyStats[2]?.desc"
+            [strategyAPY]="apy / 100 | percent:'1.0-2' "
             [strategyConfiguration]="strategyConfiguration">
           </app-deposit>
           <app-withdraw 
@@ -24,10 +29,7 @@
           <app-claim 
           *ngSwitchCase="'claim'" 
           [walletExtended$]="walletExtended$ | async"
-            [claimAsset]="{
-              name:strategyConfiguration.claimAssets.name,
-               amount: strategyConfiguration.claimAssets.amount
-              }">
+          [strategyConfiguration]="strategyConfiguration">
           </app-claim>
 
           </ng-container>

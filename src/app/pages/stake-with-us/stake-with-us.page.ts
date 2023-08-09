@@ -75,7 +75,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
         }]
       }
         ;
-      delegetors = await this._solanaUtilsService.connection.getProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
+      delegetors = await this._solanaUtilsService.connection.getProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config) as any
     } catch (error) {
       console.warn(error);
     }

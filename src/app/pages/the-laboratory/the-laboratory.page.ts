@@ -4,6 +4,7 @@ import { DefiApp, LabIntro } from 'src/app/models';
 import { MarinadePlusService } from './strategies-builder/marinade-plus.service';
 import { DefiTourComponent } from 'src/app/shared/components';
 import { BehaviorSubject } from 'rxjs';
+import { SolblazeFarmerService } from './strategies-builder/solblaze-farmer.service';
 
 @Component({
   selector: 'app-the-laboratory',
@@ -15,14 +16,20 @@ export class TheLaboratoryPage implements OnInit {
   constructor(
     private nav: NavController,
     private _popoverController:PopoverController,
-    private _marinadePlusService:MarinadePlusService
+    private _marinadePlusService:MarinadePlusService,
+    private _solblazeFarmerService:SolblazeFarmerService
     ) { }
 
   async ngOnInit() {
-    const apy = await this._marinadePlusService.getStrategyAPY();
     // const userDeposit = await (await this._marinadePlusService.getOnwerMsolDeposit()).mSOL_holding > 0;
-    this.labProduct[0].apy = apy.strategyAPY;
+    // this.labProduct[0].apy = await this._marinadePlusService.getStrategyAPY();
+
+    // init solblaze strategy APY
+      const apy = (await this._solblazeFarmerService.getStrategyAPY()).strategyAPY
+      this.labProduct[0].apy = apy
+
     // this.labProduct[0].userDeposit = userDeposit
+
   }
   public searchTerm: string = "";
   public searchItem(term: any) {
@@ -31,23 +38,23 @@ export class TheLaboratoryPage implements OnInit {
 
   //strategy = defi protocol participate + 
   public labProduct: LabIntro[] = [
-    {
-      id:1,
-      strategy: 'marinade-plus',
-      apy:async () =>  await this._marinadePlusService.getStrategyAPY(),
-      // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
-      defiParticipate: ['marinade','solend'],
-      strategies: ['staking', 'liquidity provider'],
-      rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/mnde.webp'],
-      learnMoreLink: 'https://solana.org/stake-pools',
-      active: true,
-      riskLevel: 1,
-      userDeposit: async () => (await this._marinadePlusService.getOnwerMsolDeposit()).mSOL_holding > 0
-    },
+    // {
+    //   id:1,
+    //   strategy: 'marinade-plus',
+    //   apy: 0,
+    //   // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
+    //   defiParticipate: ['marinade','solend'],
+    //   strategies: ['staking', 'liquidity provider'],
+    //   rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/mnde.webp'],
+    //   learnMoreLink: 'https://solana.org/stake-pools',
+    //   active: true,
+    //   riskLevel: 1,
+    //   userDeposit: async () => (await this._marinadePlusService.getTotalBalance()).mSOL_holding > 0
+    // },
     {
       id:2,
       strategy: 'solblaze-farmer',
-      apy: 13.1,
+      apy: 0,
       // description: `dual yield for farmerers, taking SOL and stake with bSOL, and deposit SOL & bSOL into metora bSOL-sol pool for additional APY`,
       defiParticipate: ['solblaze','meteora'],
       strategies: ['staking', 'farming', 'liquidity provider'],

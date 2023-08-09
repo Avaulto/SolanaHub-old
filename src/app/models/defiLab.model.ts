@@ -27,6 +27,7 @@ enum riskLevel {
 export interface LabStrategyConfiguration {
   strategyName: string,
   title: string,
+  protocolsTitle: string,
   rewardsSlogan: string,
   description: string,
   strategyIcon: string,
@@ -34,7 +35,7 @@ export interface LabStrategyConfiguration {
   risk_breakdown: Risk_breakdown[],
   strategy_breakdown: string[],
   totalTransactions: number,
-  claimAssets: claimAsset,
+  claimAssets: StrategyClaimableAsset[],
   assetHoldings: Asset[]
 }
 
@@ -46,7 +47,7 @@ interface Risk_breakdown {
   riskLevel: string,
   description: string,
 }
-interface claimAsset {
+export interface StrategyClaimableAsset {
   name: string,
   amount: number,
   toBeClaim?: number
