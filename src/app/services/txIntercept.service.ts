@@ -285,14 +285,14 @@ export class TxInterceptService {
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
       
       let signedTx = await firstValueFrom(this._walletStore.signTransaction(transaction));
-      if (extraSigners?.length > 0) signedTx.partialSign(...extraSigners);
+      // if (extraSigners?.length > 0) signedTx.partialSign(...extraSigners);
 
-      //LMT: check null signatures
-      for (let i = 0; i < signedTx.signatures.length; i++) {
-        if (!signedTx.signatures[i].signature) {
-          throw Error(`missing signature for ${signedTx.signatures[i].publicKey.toString()}. Check .isSigner=true in tx accounts`)
-        }
-      }
+      // //LMT: check null signatures
+      // for (let i = 0; i < signedTx.signatures.length; i++) {
+      //   if (!signedTx.signatures[i].signature) {
+      //     throw Error(`missing signature for ${signedTx.signatures[i].publicKey.toString()}. Check .isSigner=true in tx accounts`)
+      //   }
+      // }
       const rawTransaction = signedTx.serialize({ requireAllSignatures: false });
       const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
       const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`

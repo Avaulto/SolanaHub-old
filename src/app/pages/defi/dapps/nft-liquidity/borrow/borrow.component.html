@@ -2,7 +2,7 @@
   <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
     <ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
       <ion-row *ngIf="collateralNfts.length">
-        <ion-slides [options]="slideOpts">
+        <!-- <ion-slides [options]="slideOpts">
           <ion-slide class="nft-wrapper" *ngFor="let collateral of collateralNfts | filter:'name':searchTerm;">
 
             <app-collateral-nft [nft]="collateral" type="borrow"
@@ -15,7 +15,7 @@
             </app-collateral-nft>
 
           </ion-slide>
-        </ion-slides>
+        </ion-slides> -->
 
       </ion-row>
       <div id="no-nfts" *ngIf="collateralNfts.length == 0">

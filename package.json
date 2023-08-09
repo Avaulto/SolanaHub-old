@@ -25,7 +25,7 @@
     "@angular/platform-browser-dynamic": "16.1.5",
     "@angular/router": "16.1.5",
     "@frakt-protocol/frakt-sdk": "^0.8.21",
-
+    "@heavy-duty/wallet-adapter": "^0.7.1",
     "@ionic/angular": "7.2.2",
     "@jup-ag/core": "^2.0.0-beta.3",
     "@marinade.finance/marinade-ts-sdk": "^5.0.0",
@@ -64,7 +64,6 @@
     "@angular/cli": "~16.1.5",
     "@angular/compiler-cli": "16.1.5",
     "@angular/language-service": "16.1.5",
-
     "@ionic/angular-toolkit": "^9.0.0",
     "@ionic/cli": "6.19.0",
     "@types/node": "^12.11.1",

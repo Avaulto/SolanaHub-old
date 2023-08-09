@@ -8,7 +8,7 @@
     <div style="text-align: center;" *ngIf="(dataset | async)?.length == 0">
       No results
     </div>
-    <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm"
+    <!-- <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm"
       approxItemHeight="54px">
       <div *virtualItem="let item">
         <app-select-item [item]="item" [searchTerm]="searchTerm" (onSelect)="setSelectedItem($event)"
@@ -16,7 +16,7 @@
 
         </app-select-item>
       </div>
-    </ion-virtual-scroll>
+    </ion-virtual-scroll> -->
   </ion-content>
 
 </div>

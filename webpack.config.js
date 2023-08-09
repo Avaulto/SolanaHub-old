@@ -10,6 +10,9 @@ module.exports = (config) => {
 		assert: false,
 		stream: false,
 		zlib: false,
+		url: false,
+		http:false,
+		https:false
 	};
 
 	return config;
