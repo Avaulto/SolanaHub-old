@@ -1,0 +1,39 @@
+<form [formGroup]="depositForm" id="deposit-box">
+  <ion-row class="ion-margin-bottom" id="deposit-apr-box">
+    <div>~{{strategyAPY}} <span> APY</span>
+      <span id="rewards">{{strategyConfiguration?.rewardsSlogan}}</span>
+    </div>
+    <p id="">{{strategyConfiguration?.description}}</p>
+  </ion-row>
+  <app-label-layout
+    [layoutConfig]="{title: 'Deposit SOL', balance: walletExtended$?.balance}">
+    <app-icon-tooltip
+      tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+  </app-label-layout>
+
+  <ion-row id="deposit-amount">
+    <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount" ></ion-input>
+    <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
+  </ion-row>
+  <ion-row id="notes" class="ion-align-items-center ion-justify-content-between">
+   <ion-col>Maximum slippage</ion-col>
+   <ion-col>0.1%</ion-col>
+  </ion-row>
+
+  <ion-row class="ion-justify-content-center">
+    <ng-container *ngIf="walletExtended$; else elseTemplate">
+      <ion-button [disabled]="formSubmitted || depositForm.invalid" (click)="submit()" type="button"
+        class="ion-text-capitalize">
+        <span>
+          yield now
+        </span>
+        <ion-spinner name="dots" *ngIf="loader"></ion-spinner>
+
+      </ion-button>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+    </ng-template>
+
+  </ion-row>
+</form>

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { DefiTourComponent } from './defi-tour.component';
+import { DefiStatsComponent } from './defi-stats.component';
 
-describe('DefiTourComponent', () => {
-  let component: DefiTourComponent;
-  let fixture: ComponentFixture<DefiTourComponent>;
+describe('DefiStatsComponent', () => {
+  let component: DefiStatsComponent;
+  let fixture: ComponentFixture<DefiStatsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DefiTourComponent ],
+      declarations: [ DefiStatsComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DefiTourComponent);
+    fixture = TestBed.createComponent(DefiStatsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

@@ -41,7 +41,7 @@ export class HomePage implements OnInit, OnDestroy {
   ) {
   }
   ionViewWillEnter(){
-    this._titleService.setTitle('CompactDeFi - swap tokens')
+    this._titleService.setTitle('CompactDeFi - home')
   }
   async ngOnInit() {
     const getSupply = await this._solanaUtilsService.getSupply();

@@ -13,7 +13,6 @@ import { UtilsService } from 'src/app/services';
   providers:[DecimalPipe]
 })
 export class AssetsBalanceComponent implements OnInit {
-  @Input() title: string; 
   @Input() asset: Asset
   @Input() mergeCondition: boolean = false;
   public rentAccountSize = 2039280;

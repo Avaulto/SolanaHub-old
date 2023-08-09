@@ -166,7 +166,6 @@ export class TokenSwapPage implements OnInit {
   public flipPairs() {
     const tempInput = this.swapForm.value.inputToken;
     const tempOutput = this.swapForm.value.outputToken;
-
     this.swapForm.controls.outputToken.setValue(tempInput);
     this.swapForm.controls.inputToken.setValue(tempOutput);
   }
@@ -175,7 +174,6 @@ export class TokenSwapPage implements OnInit {
     this.calcLoader.next(true);
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
     try {
-
       this.bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken, slippage);
       if (this.bestRoute) {
         // prep output amount on UI

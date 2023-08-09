@@ -1,0 +1,19 @@
+<form id="withdraw-box">
+  <ion-row >
+    <h6 class="ion-text-capitalize">position holding:</h6>
+    <app-assets-balance [asset]="asset" *ngFor="let asset of strategyConfiguration.assetHoldings"></app-assets-balance>
+  </ion-row>
+
+  <ion-row class="ion-justify-content-center">
+    <ng-container *ngIf="walletExtended$; else elseTemplate">
+      <ion-button [disabled]="strategyConfiguration.assetHoldings[0].totalUsdValue === 0" (click)="withdraw()" type="button"
+      class="ion-text-capitalize">withdraw all</ion-button>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+    </ng-template>
+
+
+  </ion-row>
+
+</form>

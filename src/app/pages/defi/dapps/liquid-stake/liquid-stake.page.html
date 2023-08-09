@@ -75,6 +75,17 @@
                                 {{currentProvider.commission}}%
                             </div>
                         </ion-row>
+                        <ion-row id="exchange-rate" *ngIf="currentProvider.poolName.toLowerCase() === 'marinade'" class="ion-justify-content-between ion-align-items-center">
+                            <div style="display: flex; align-items:center;">
+                                <span>
+                                    platform fee
+                                </span>
+
+                            </div>
+                            <div>
+                                0.02%
+                            </div>
+                        </ion-row>
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
                             <div style="display: flex; align-items:center;">
                                 <span>

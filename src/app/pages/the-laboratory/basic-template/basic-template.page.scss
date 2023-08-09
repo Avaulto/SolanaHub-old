@@ -1,0 +1,55 @@
+::ng-deep app-dapp-head {
+    #dapp-logo ion-img {
+        width: 100px !important;
+        margin-inline-start: 8px;
+        overflow: hidden;
+        border-radius: 0% !important;
+    }
+}
+
+
+.yield-asset {
+    div{
+        margin-inline-end: 6px;
+    }
+    ion-img {
+        width: 30px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+}
+
+.break-down{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #d3d3d354;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    span {
+        font-size: 13px;
+        font-weight: 100;
+    }
+}
+#risk-info {
+    .risk {
+        span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-inline-end: 10px;
+            &.low {
+                background: var(--ion-color-success);
+            }
+
+            &.medium {
+                background: var(--ion-color-warning);
+            }
+
+            &.high {
+                background: var(--ion-color-danger);
+            }
+        }
+
+
+    }
+}

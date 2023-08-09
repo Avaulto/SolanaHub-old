@@ -4,7 +4,7 @@ import { PublicKey, Transaction } from '@solana/web3.js';
 import JSBI from 'jsbi';
 
 import { catchError, Observable, throwError } from 'rxjs';
-import { JupiterPriceFeed, Token } from '../models';
+import { JupiterPriceFeed, Token, WalletExtended } from '../models';
 import { ApiService, SolanaUtilsService, ToasterService } from './';
 import { environment } from 'src/environments/environment';
 
@@ -29,7 +29,7 @@ export class JupiterStoreService {
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService
   ) { }
-  public async initJup(wallet) {
+  public async initJup(wallet: WalletExtended) {
     if (!this._jupiter) {
       const connection = this._solanaUtilsService.connection;
       const pk = wallet.publicKey
@@ -88,19 +88,23 @@ export class JupiterStoreService {
     return bestRoute
   }
   public async swapTx(routeInfo: RouteInfo): Promise<Transaction[]> {
-
-    const { transactions } = await this._jupiter.exchange({
-      routeInfo
-    });
-
-    // Execute the transactions
-    const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
     const arrayOfTx: Transaction[] = []
-    for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
-      if (!transaction) {
-        continue;
+    console.log(routeInfo)
+    try {
+      const { transactions } = await this._jupiter.exchange({
+        routeInfo
+      });
+
+      // Execute the transactions
+      const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
+      for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
+        if (!transaction) {
+          continue;
+        }
+        arrayOfTx.push(transaction)
       }
-      arrayOfTx.push(transaction)
+    } catch (error) {
+      console.warn(error)
     }
     return arrayOfTx
   }

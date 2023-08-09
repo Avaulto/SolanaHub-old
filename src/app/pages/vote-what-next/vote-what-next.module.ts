@@ -1,9 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
-import { IonicModule } from '@ionic/angular';
-
 import { VoteWhatNextPageRoutingModule } from './vote-what-next-routing.module';
 
 import { VoteWhatNextPage } from './vote-what-next.page';

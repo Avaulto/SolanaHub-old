@@ -186,6 +186,24 @@ export class TxInterceptService {
       this._formatErrors(error)
     }
   }
+  public createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey) => {
+
+    const fromPubkey = stakeAccountOwner;
+    const newStakeAccount = new Keypair();
+    const authorizedPubkey = stakeAccountOwner;
+    const authorized = new Authorized(authorizedPubkey, authorizedPubkey);
+    // const lockup = new Lockup(lockuptime, 0, fromPubkey);
+    const lamports = lamportToSend;
+    const stakeAccountIns: CreateStakeAccountParams = {
+      fromPubkey,
+      stakePubkey: newStakeAccount.publicKey,
+      authorized,
+      // lockup,
+      lamports
+    }
+    const newStakeAccountIns = StakeProgram.createAccount(stakeAccountIns)
+    return { newStakeAccountIns, newStakeAccount }
+  }
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime?: number) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
       StakeProgram.space,
@@ -194,6 +212,7 @@ export class TxInterceptService {
       return this._formatErrors({ message: `minimum size for stake account creation is: ${minimumAmount / LAMPORTS_PER_SOL} sol` })
     }
 
+<<<<<<< HEAD
     const createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey) => {
 
       const fromPubkey = stakeAccountOwner;
@@ -212,8 +231,10 @@ export class TxInterceptService {
       const newStakeAccountIns = StakeProgram.createAccount(stakeAccountIns)
       return { newStakeAccountIns, newStakeAccount }
     }
+=======
+>>>>>>> laboratory
     try {
-      const stakeAccountData = await createStakeAccount(lamportsToDelegate, walletOwnerPk)
+      const stakeAccountData = await this.createStakeAccount(lamportsToDelegate, walletOwnerPk)
       const stakeAcc: Keypair = stakeAccountData.newStakeAccount;
       const instruction: DelegateStakeParams = {
         stakePubkey: stakeAcc.publicKey,

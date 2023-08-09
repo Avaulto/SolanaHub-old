@@ -10,7 +10,7 @@ import {
   SlopeWalletAdapter,
   SolflareWalletAdapter
 } from '@solana/wallet-adapter-wallets';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 import { SolanaUtilsService, UtilsService } from './services';
@@ -40,10 +40,12 @@ export class AppComponent {
       this._solanaUtilsService.onAccountChangeCB(wallet.publicKey)
     })
     connectionConfigProviderFactory({
-      commitment: "confirmed",
+      commitment: "confirmed"
     })
 
-    this._connectionStore.setEndpoint(environment.solanaCluster)
+
+      this._connectionStore.setEndpoint(environment.solanaCluster)
+
     this._walletStore.setAdapters([
       new PhantomWalletAdapter(),
       new BackpackWalletAdapter,

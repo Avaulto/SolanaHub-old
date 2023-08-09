@@ -1,0 +1,31 @@
+<ion-row class="ion-justify-content-between ion-text-capitalize">
+  <ion-col class="data-box ion-padding"  sizeMd="2.8" size="5">
+      <app-data-box title="Strategy SOL balance" [loading]="!strategyStats?.userHoldings?.SOL && strategyStats?.userHoldings?.SOL != 0"
+          [desc]="strategyStats?.userHoldings?.SOL | number : '1.2-2'">
+          <div class="heading-5">= ${{strategyStats?.userHoldings?.USD |  number : '1.2-2'}}</div>
+      </app-data-box>
+  </ion-col>
+
+  <ion-col class="data-box ion-padding"  sizeMd="2.8" size="5">
+    <app-data-box title="Protocols loop" [loading]="!strategyStats?.protocolLoop"
+        [desc]="strategyStats?.protocolLoop">
+    </app-data-box>
+</ion-col>
+
+  <ion-col class="data-box ion-padding"  sizeMd="2.8" size="5">
+      <app-data-box title="Projected APY" [loading]="!strategyStats?.apy"
+          [desc]="strategyStats?.apy  / 100 | percent:'1.0-2'  ">
+      </app-data-box>
+  </ion-col>
+
+
+
+  <ion-col class="data-box ion-padding"  sizeMd="2.8" size="5">
+    <app-data-box title="Total value locked" [loading]="!strategyStats?.TVL?.USD"
+        [desc]="strategyStats?.TVL?.USD | currency">
+        <!-- <div class="heading-5">= ${{strategyStats?.TVL?.USD |  number : '1.2-2'}}</div> -->
+    </app-data-box>
+</ion-col>
+
+
+</ion-row>

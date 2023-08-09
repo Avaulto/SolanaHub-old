@@ -13,22 +13,22 @@
             <span class="global-selected-pair">
               {{asset.totalUsdValue | currency}}
             </span>
-            <span class="sub">{{formatNumber(asset.balance)}}</span>
+            <span class="sub">{{formatNumber(asset.balance || 0)}}</span>
           </div>
         </div>
 
       </div>
       <ng-container *ngIf="!mergeCondition; else elseTemplate">
         <div id="balance-base">
-          <div>{{asset.baseOfPortfolio | number : '1.2-2'}}%</div>
+          <div>{{asset.baseOfPortfolio || 0 | number : '1.2-2'}}%</div>
           <div id="bar-wrapper">
-            <span class="bar" [style]="'width:' + asset.baseOfPortfolio + '%'"></span>
+            <span class="bar" [style]="'width:' + asset.baseOfPortfolio  || 0+ '%'"></span>
           </div>
         </div>
       </ng-container>
       <ng-template #elseTemplate>
-        <span class="sub" *ngIf="totalBalanceLamport > rentAccountSize">{{asset.totalSolValue | number : '1.1'}} ◎</span>
-        <span style="z-index: 11;" class="sub" *ngIf="totalBalanceLamport < rentAccountSize">{{rentAccountSizeInSOL  | number : '1.1'}} ◎  
+        <span class="sub" *ngIf="totalBalanceLamport > rentAccountSize">{{asset.totalSolValue || 0 | number : '1.1'}} ◎</span>
+        <span style="z-index: 11;" class="sub" *ngIf="totalBalanceLamport < rentAccountSize">{{rentAccountSizeInSOL  || 0 | number : '1.1'}} ◎  
           <app-icon-tooltip style="margin-inline-start: 5px;" tip="Rent account have greater balance then token balance"></app-icon-tooltip></span>
          
       </ng-template>
