@@ -89,17 +89,10 @@ export class SendComponent implements OnInit {
     // const seed = (new TextEncoder()).encode(SEED_MESSAGE) as Buffer;
 
 
-<<<<<<< HEAD
-    // // sign wallet owner
-    // const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
-
-    // // init elusiv SDK
-=======
     // sign wallet owner
     // const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
 
     // init elusiv SDK
->>>>>>> laboratory
     // const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection, 'mainnet-beta');
     // Top up our private balance with 1 SOL
     // const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
