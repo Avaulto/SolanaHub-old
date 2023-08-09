@@ -290,8 +290,8 @@ export class MarinadePlusService {
       await this._solendWallet.loadRewards();
       // Claim rewards
       const mndeRewards = this._solendWallet.rewards[this._mnde.toBase58()];
-      claimed_MNDE = mndeRewards.claimedAmount / 10 ** mndeRewards.decimals;
-      claimable_MNDE = mndeRewards.claimableAmount / 10 ** mndeRewards.decimals;
+      // claimed_MNDE = mndeRewards.claimedAmount / 10 ** mndeRewards.decimals;
+      // claimable_MNDE = mndeRewards.claimableAmount / 10 ** mndeRewards.decimals;
       console.log(mndeRewards)
     } catch (error) {
       console.warn(error);
@@ -433,23 +433,23 @@ export class MarinadePlusService {
       ixs.push(setupIxs, claimIxs)
 
 
-      if (swapToSol) {
-        const inputToken = {
-          "address": this._mnde.toBase58(),
-          "decimals": 9,
-          "symbol": "MNDE",
-          "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
-        }
-        const outputToken = {
-          "address": "So11111111111111111111111111111111111111112",
-          "decimals": 9,
-          "symbol": "SOL",
-        }
-        const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-        const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
-        ixs.push(...transaction)
-      }
-      await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
+      // if (swapToSol) {
+      //   const inputToken = {
+      //     "address": this._mnde.toBase58(),
+      //     "decimals": 9,
+      //     "symbol": "MNDE",
+      //     "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
+      //   }
+      //   const outputToken = {
+      //     "address": "So11111111111111111111111111111111111111112",
+      //     "decimals": 9,
+      //     "symbol": "SOL",
+      //   }
+      //   const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
+      //   const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
+      //   ixs.push(...transaction)
+      // }
+      // await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
     } catch (error) {
       console.warn(error)
     }
