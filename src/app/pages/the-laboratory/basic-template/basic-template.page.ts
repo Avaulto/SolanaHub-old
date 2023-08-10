@@ -45,7 +45,6 @@ ngOnInit(): void {
           // await this._marinadePlusService.initStrategyStatefulStats()
         }
         if (this.strategyName === 'solblaze-farmer') {
-          console.log('fetch user data')
           this.userHoldings = { SOL: null, USD: null }
           this.fetchUserData()
       

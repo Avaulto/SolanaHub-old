@@ -22,7 +22,6 @@ export class StrategyStatsComponent implements  OnChanges {
   constructor(
     private _solblazeFarmerService: SolblazeFarmerService,
     private _marinadePlusService: MarinadePlusService,
-    private _utilsService:UtilsService
   ) { }
 
 
@@ -31,7 +30,6 @@ export class StrategyStatsComponent implements  OnChanges {
     if(loadStats){
       await this.fetchStrategyStats(this.strategyName);
     }
-    console.log(this.userHoldings)
     this.strategyStats.userHoldings = this.userHoldings
   }
   async fetchStrategyStats(strategyName: string) {
