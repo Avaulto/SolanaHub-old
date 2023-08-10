@@ -11,7 +11,7 @@ import { MarinadePlusService } from '../../strategies-builder/marinade-plus.serv
 })
 export class StrategyStatsComponent implements  OnChanges {
   @Output() onApyReady = new EventEmitter()
-  @Input() userHoldings = { SOL: null, USD: null };
+  @Input() userHoldings = { SOL: 0, USD: 0 };
   @Input() strategyName: string = '';
   public strategyStats = {
     userHoldings: this.userHoldings,
@@ -31,6 +31,7 @@ export class StrategyStatsComponent implements  OnChanges {
     if(loadStats){
       await this.fetchStrategyStats(this.strategyName);
     }
+    console.log(this.userHoldings)
     this.strategyStats.userHoldings = this.userHoldings
   }
   async fetchStrategyStats(strategyName: string) {

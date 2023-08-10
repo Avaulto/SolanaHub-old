@@ -18,7 +18,6 @@ export class BasicTemplatePage implements OnInit {
   public currentTab: string = this.menu[0];
   public apy: number = 0;
   public strategyName: string = '';
-  public runStatefulData: boolean = false;
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _solblazeFarmerService: SolblazeFarmerService,
@@ -27,7 +26,7 @@ export class BasicTemplatePage implements OnInit {
     private _router: ActivatedRoute,
     private _jupiterStore: JupiterStoreService
   ) { }
-  public userHoldings = { SOL: null, USD: null }
+  public userHoldings = { SOL: 0, USD: 0 }
   async ionViewWillEnter() {
     this.strategyName = this._router.snapshot.paramMap.get('strategy')
     if (this.strategyName === 'solblaze-farmer') {
@@ -46,6 +45,8 @@ ngOnInit(): void {
           // await this._marinadePlusService.initStrategyStatefulStats()
         }
         if (this.strategyName === 'solblaze-farmer') {
+          console.log('fetch user data')
+          this.userHoldings = { SOL: null, USD: null }
           this.fetchUserData()
       
           this._solblazeFarmerService.fetchUserHoldings$
@@ -56,6 +57,7 @@ ngOnInit(): void {
         }
         return wallet;
       } else {
+        this.userHoldings = { SOL: 0, USD: 0 }
         return null
       }
     }),

@@ -302,7 +302,7 @@ export class SolblazeFarmerService {
 
       const balances = await this.getTotalBalanceBreakDown()
       userHoldings = { SOL: balances.position_balance.SOL, USD: balances.position_balance.USD }
-   
+      
       const solUSDbalance = balances.position_holding.SOL * balances.assetRatio;;
 
       this.strategyConfiguration.assetHoldings[0].balance = balances.position_holding.SOL

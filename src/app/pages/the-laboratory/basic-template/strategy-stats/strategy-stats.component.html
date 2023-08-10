@@ -1,6 +1,7 @@
 <ion-row class="ion-justify-content-between ion-text-capitalize">
   <ion-col class="data-box ion-padding"  sizeMd="2.8" size="5">
-      <app-data-box title="Strategy SOL balance" [loading]="!strategyStats?.userHoldings?.SOL && strategyStats?.userHoldings?.SOL != 0"
+      <app-data-box title="Strategy SOL balance"
+       [loading]="!strategyStats?.userHoldings?.SOL && strategyStats?.userHoldings?.SOL != 0"
           [desc]="strategyStats?.userHoldings?.SOL | number : '1.2-2'">
           <div class="heading-5">= ${{strategyStats?.userHoldings?.USD |  number : '1.2-2'}}</div>
       </app-data-box>
