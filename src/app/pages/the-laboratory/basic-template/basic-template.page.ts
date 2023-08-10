@@ -46,13 +46,11 @@ ngOnInit(): void {
           // await this._marinadePlusService.initStrategyStatefulStats()
         }
         if (this.strategyName === 'solblaze-farmer') {
-          console.log('wallet runs')
           this.fetchUserData()
       
           this._solblazeFarmerService.fetchUserHoldings$
           .pipe(this._utilsService.isNotUndefined, this._utilsService.isNotUndefined)
           .subscribe(async doFetch => {
-            console.log("fetch user data:", doFetch)
             this.fetchUserData()
           })
         }

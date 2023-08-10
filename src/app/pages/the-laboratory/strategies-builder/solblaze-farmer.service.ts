@@ -218,7 +218,10 @@ export class SolblazeFarmerService {
       const farmLpBalance = await this.strategySDK.farm.getUserBalance(walletOwner);
       const txIx1 = await this.strategySDK.farm.withdraw(walletOwner, farmLpBalance);
 
-      await this._txInterceptService.sendTx([txIx1], walletOwner)
+      const tx1Res = await this._txInterceptService.sendTx([txIx1], walletOwner)
+      if (!tx1Res) {
+        return
+      }
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx2 = await this._withdrawFromMeteoraPool(poolLpBalance, walletOwner)
       await this._txInterceptService.sendTx([txIx2], walletOwner)
@@ -236,7 +239,7 @@ export class SolblazeFarmerService {
       false,
       1
     );
-    console.log("out:", poolTokenAmountOut.toString(), "in a:", tokenAInAmount.toString(), "im b:", tokenBInAmount.toString())
+    // console.log("out:", poolTokenAmountOut.toString(), "in a:", tokenAInAmount.toString(), "im b:", tokenBInAmount.toString())
     const depositTx = await this.strategySDK.pool.deposit(walletOwner, tokenAInAmount, tokenBInAmount, poolTokenAmountOut);
     return depositTx;
   }
@@ -255,12 +258,12 @@ export class SolblazeFarmerService {
       new PublicKey(this.strategySDK.pool.tokenA.address),
       // false
     );
-    console.log("out:", poolTokenAmountIn.toString(),
-      "minTokenAOutAmount:", minTokenAOutAmount.toString(),
-      "minTokenBOutAmount:", minTokenBOutAmount.toString(),
-      "tokenAOutAmount:", tokenAOutAmount,
-      "tokenBOutAmount:", tokenBOutAmount
-    )
+    // console.log("out:", poolTokenAmountIn.toString(),
+    //   "minTokenAOutAmount:", minTokenAOutAmount.toString(),
+    //   "minTokenBOutAmount:", minTokenBOutAmount.toString(),
+    //   "tokenAOutAmount:", tokenAOutAmount,
+    //   "tokenBOutAmount:", tokenBOutAmount
+    // )
     const depositTx = await this.strategySDK.pool.withdraw(walletOwner, withdrawLpAmount, tokenAOutAmount, tokenBOutAmount);
     return depositTx;
   }
@@ -270,11 +273,9 @@ export class SolblazeFarmerService {
       this._meteoraSolBsolPoolAPI = await this._getAMMbSOLpool()
       const apy = await this.getStrategyAPY();
       const tvl = await this.getTVL()
-      // console.log(this._meteoraSolBsolPoolAPI)
       this.strategyConfiguration.APY_breakdown[0].description = `Base half of ${apy.solblazeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
       this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.meteoraAPY.pool.toFixedNoRounding(2)}% APY From activity on lending platforms + trading fees`
       this.strategyConfiguration.APY_breakdown[2].description = `Base ${apy.meteoraAPY.farm.toFixedNoRounding(2)}% APY bSOL/BLZE From Supply LP Liquidity On the farm`
-      console.log(apy)
       return { apy, tvl }
     } catch (error) {
       console.warn(error)
@@ -283,6 +284,7 @@ export class SolblazeFarmerService {
 
   // init all required function for the strategy 
   public async initStrategyStatefulStats(): Promise<{ userHoldings, strategyConfiguration }> {
+    let userHoldings = { SOL: 0, USD: 0 }
     try {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
       await this.initPoolSDK()
@@ -297,9 +299,8 @@ export class SolblazeFarmerService {
       this.strategyConfiguration.claimAssets[1].amount = rewardAmountB;
 
       const balances = await this.getTotalBalanceBreakDown()
-      const userHoldings = { SOL: balances.position_balance.SOL, USD: balances.position_balance.USD }
-      console.log(balances)
-      const totalBalanceUSD = balances.position_balance.USD
+      userHoldings = { SOL: balances.position_balance.SOL, USD: balances.position_balance.USD }
+   
       const solUSDbalance = balances.position_holding.SOL * balances.assetRatio;;
 
       this.strategyConfiguration.assetHoldings[0].balance = balances.position_holding.SOL
@@ -310,10 +311,10 @@ export class SolblazeFarmerService {
       this.strategyConfiguration.assetHoldings[1].balance = balances.position_holding.bSOL
       this.strategyConfiguration.assetHoldings[1].totalUsdValue = bsolUSDbalance
       this.strategyConfiguration.assetHoldings[1].baseOfPortfolio = balances.position_holding.baseOfPortfolio.bSOL
-      return { userHoldings, strategyConfiguration: this.strategyConfiguration };
     } catch (error) {
       console.warn(error)
     }
+    return { userHoldings, strategyConfiguration: this.strategyConfiguration };
   }
   // get marinade + solend TVL
   public async getTVL(): Promise<{ SOL, USD }> {
@@ -372,7 +373,6 @@ export class SolblazeFarmerService {
   public async getTotalBalanceBreakDown(): Promise<{ position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } }, position_balance: { SOL: number, USD: number }, assetRatio }> {
 
 
-    console.log('get balance')
     try {
       let position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } } = { SOL: 0, bSOL: 0, baseOfPortfolio: { SOL: 0, bSOL: 0 } };
       let position_balance: { SOL: number, USD: number } = { SOL: 0, USD: 0 };
@@ -395,13 +395,13 @@ export class SolblazeFarmerService {
       const SOLbase = position_holding.SOL * SOLprice / position_balance.USD * 100;
       position_holding.baseOfPortfolio.SOL = SOLbase
 
-      console.log(
-        // 'lp:', poolTokenAmountIn.toString(),
-        'farm balance:', farmBalance.toString(),
-        'sol:', position_holding.SOL,
-        'bsol:', position_holding.bSOL,
-        'bsol converted:', converterAsset
-      )
+      // console.log(
+      //   // 'lp:', poolTokenAmountIn.toString(),
+      //   'farm balance:', farmBalance.toString(),
+      //   'sol:', position_holding.SOL,
+      //   'bsol:', position_holding.bSOL,
+      //   'bsol converted:', converterAsset
+      // )
       return { position_holding, position_balance, assetRatio };
     } catch (error) {
       console.warn(error)
@@ -487,7 +487,6 @@ export class SolblazeFarmerService {
 
     // Swap bSOL → SOL
     const swapQuote = this.strategySDK.pool.getSwapQuote(new PublicKey(this.strategySDK.pool.tokenB.address), inAmountLamport, 1);
-    console.log(swapQuote)
     const swapTx = await this.strategySDK.pool.swap(
       walletOwner,
       new PublicKey(this.strategySDK.pool.tokenB.address),

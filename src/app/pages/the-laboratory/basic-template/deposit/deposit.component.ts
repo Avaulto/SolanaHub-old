@@ -15,7 +15,6 @@ export class DepositComponent implements OnInit {
   @Input() strategyAPY: number | string = 0;
   @Input() walletExtended$: WalletExtended;
   public loader: boolean = false;
-  @Output() runReload = new EventEmitter()
   public depositForm: FormGroup;
   public formSubmitted: boolean = false;
   constructor(

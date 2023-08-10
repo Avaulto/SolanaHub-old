@@ -13,6 +13,7 @@ export class ClaimComponent implements OnInit {
   @Input() strategyConfiguration: LabStrategyConfiguration
   public claimAssets: StrategyClaimableAsset[]
   public swapToSol: boolean = false;
+  public loader: boolean = false;
   constructor(
     private _solblazeFarmerService:SolblazeFarmerService
   ) { }
@@ -31,7 +32,9 @@ export class ClaimComponent implements OnInit {
   public async claimReward() {
     if (this.strategyConfiguration.strategyName === 'solblaze-farmer') {
       console.log(this.swapToSol)
+      this.loader = true
       await this._solblazeFarmerService.claimRewards(this.swapToSol)
+      this.loader = false
 
     }
   }

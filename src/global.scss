@@ -178,6 +178,7 @@ ion-textarea,
 ion-select {
     border: 2px solid transparent;
     box-sizing: border-box;
+    min-height: 42px !important;
     border-radius: 4px;
     width: inherit;
     margin-bottom: 16px;
@@ -191,13 +192,13 @@ ion-select {
     --placeholder-color: white;
     --placeholder-opacity: 1 !important;
 
-    &.has-focus {
-        border: 2px solid var(--ion-color-primary);
-    }
+    // &.has-focus {
+    //     border: 2px solid var(--ion-color-primary);
+    // }
 
-    &.error {
-        border: 2px solid var(--ion-color-danger);
-    }
+    // &.error {
+    //     border: 2px solid var(--ion-color-danger);
+    // }
 
     &::placeholder {
         color: white;

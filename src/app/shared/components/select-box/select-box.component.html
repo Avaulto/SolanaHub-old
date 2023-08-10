@@ -8,15 +8,19 @@
     <div style="text-align: center;" *ngIf="(dataset | async)?.length == 0">
       No results
     </div>
-    <ion-virtual-scroll [items]="dataset | async | filter: filterBy:searchTerm"
-      approxItemHeight="54px">
-      <div *virtualItem="let item">
-        <app-select-item [item]="item" [searchTerm]="searchTerm" (onSelect)="setSelectedItem($event)"
+
+    <cdk-virtual-scroll-viewport itemSize="56" minBufferPx="900" maxBufferPx="1350">
+      <ion-list>
+        <ion-item *cdkVirtualFor="let item of dataset | async | filter: filterBy:searchTerm">
+          <app-select-item [item]="item" [searchTerm]="searchTerm" (onSelect)="setSelectedItem($event)"
           [showDropDownIcon]="false">
 
         </app-select-item>
-      </div>
-    </ion-virtual-scroll>
+        </ion-item>
+      </ion-list>
+    </cdk-virtual-scroll-viewport>
+
+
   </ion-content>
 
 </div>

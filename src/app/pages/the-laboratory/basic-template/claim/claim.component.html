@@ -22,7 +22,12 @@
   <ion-row class="ion-justify-content-center">
     <ng-container *ngIf="walletExtended$; else elseTemplate">
       <ion-button [disabled]="claimAssets[0]?.amount <= 0" (click)="claimReward()" type="button"
-      class="ion-text-capitalize">claim</ion-button>
+      class="ion-text-capitalize">
+      <span>
+        claim
+      </span>
+      <ion-spinner name="dots" *ngIf="loader"></ion-spinner>
+    </ion-button>
     </ng-container>
     <ng-template #elseTemplate>
       <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>

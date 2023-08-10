@@ -31,7 +31,6 @@ export class StrategyStatsComponent implements  OnChanges {
     if(loadStats){
       await this.fetchStrategyStats(this.strategyName);
     }
-    console.log(changes,this.userHoldings)
     this.strategyStats.userHoldings = this.userHoldings
   }
   async fetchStrategyStats(strategyName: string) {
