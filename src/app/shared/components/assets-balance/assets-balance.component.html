@@ -20,9 +20,9 @@
       </div>
       <ng-container *ngIf="!mergeCondition; else elseTemplate">
         <div id="balance-base">
-          <div>{{asset.baseOfPortfolio || 0 | number : '1.2-2'}}%</div>
+          <div>{{asset.baseOfPortfolio | number : '1.2-2'}}%</div>
           <div id="bar-wrapper">
-            <span class="bar" [style]="'width:' + asset.baseOfPortfolio  || 0+ '%'"></span>
+            <span class="bar" [style]="'width:' + asset.baseOfPortfolio + '%'"></span>
           </div>
         </div>
       </ng-container>

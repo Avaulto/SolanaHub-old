@@ -12,6 +12,7 @@ import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.
 export class WithdrawComponent implements OnChanges {
   @Input() walletExtended$: WalletExtended;
   @Input() strategyConfiguration: LabStrategyConfiguration;
+  public loader: boolean = false;
   constructor(
     private _marinadePlusService: MarinadePlusService,
     private _solblazeFarmerService: SolblazeFarmerService
@@ -27,9 +28,10 @@ export class WithdrawComponent implements OnChanges {
       this._marinadePlusService.withdraw(mSOL_holding)
     }
     if (this.strategyConfiguration.strategyName === 'solblaze-farmer') {
-
+      this.loader = true
       await this._solblazeFarmerService.withdraw()
       this._solblazeFarmerService.fetchUserHoldings$.next(true)
+      this.loader = false
     }
   }
 }

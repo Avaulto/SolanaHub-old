@@ -7,7 +7,13 @@
   <ion-row class="ion-justify-content-center">
     <ng-container *ngIf="walletExtended$; else elseTemplate">
       <ion-button [disabled]="strategyConfiguration.assetHoldings[0].totalUsdValue === 0" (click)="withdraw()" type="button"
-      class="ion-text-capitalize">withdraw all</ion-button>
+      class="ion-text-capitalize">
+      <span>
+        withdraw all
+      </span>
+      <ion-spinner name="dots" *ngIf="loader"></ion-spinner>
+
+    </ion-button>
     </ng-container>
     <ng-template #elseTemplate>
       <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>

@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // import pipes
 import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
@@ -100,8 +100,8 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     HttpClientModule,
     RouterModule,
     IonicModule,
-    TooltipModule
-    // TooltipModule,
+    TooltipModule,
+    ScrollingModule
     
   ],
   providers:[
@@ -113,6 +113,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ScrollingModule,
     IonicModule,
     RouterModule,
     FilterPipe,
@@ -149,7 +150,8 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     MessageBoxComponent,
     DefiStatsComponent,
     AssetsBalanceComponent,
-    DefiTourComponent
+    DefiTourComponent,
+    
   ]
 })
 export class SharedModule {}
