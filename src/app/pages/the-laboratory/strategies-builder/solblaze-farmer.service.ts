@@ -9,7 +9,7 @@ import { TokenInfo } from '@solana/spl-token-registry';
 import bn from 'bn.js'
 import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { PoolFarmImpl } from '@mercurial-finance/farming-sdk';
-
+import va from '@vercel/analytics';
 
 interface MeteoraAMMpool {
   pool_address: string;
@@ -202,6 +202,8 @@ export class SolblazeFarmerService {
       const txIx3 = await this.strategySDK.farm.deposit(walletOwner, poolLpBalance);
 
       await this._txInterceptService.sendTx([txIx3], walletOwner)
+
+      va.track('solblaze-farmer strategy', { type: 'deposit', size: SOL_amount });
     } catch (error) {
       console.warn(error);
     }
@@ -225,7 +227,7 @@ export class SolblazeFarmerService {
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx2 = await this._withdrawFromMeteoraPool(poolLpBalance, walletOwner)
       await this._txInterceptService.sendTx([txIx2], walletOwner)
-
+      va.track('solblaze-farmer strategy', { type: 'withdraw' });
     } catch (error) {
       console.warn(error);
     }

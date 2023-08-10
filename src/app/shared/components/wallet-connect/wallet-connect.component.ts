@@ -6,7 +6,6 @@ import { SolanaUtilsService, ToasterService, UtilsService } from 'src/app/servic
 import { WalletAdapterOptionsComponent } from './wallet-adapter-options/wallet-adapter-options.component';
 import { WalletConnectedDropdownComponent } from './wallet-connected-dropdown/wallet-connected-dropdown.component';
 
-
 import va from '@vercel/analytics';
 
 @Component({
