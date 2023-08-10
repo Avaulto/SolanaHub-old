@@ -438,16 +438,16 @@ export class MarinadePlusService {
           "address": this._mnde.toBase58(),
           "decimals": 9,
           "symbol": "MNDE",
-          "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
+          // "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
         }
         const outputToken = {
           "address": "So11111111111111111111111111111111111111112",
           "decimals": 9,
           "symbol": "SOL",
         }
-        const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-        const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
-        ixs.push(...transaction)
+        // const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
+        // const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
+        // ixs.push(...transaction)
       }
       await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
     } catch (error) {
