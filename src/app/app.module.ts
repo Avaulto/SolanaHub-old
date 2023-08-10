@@ -15,11 +15,12 @@ import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 import { inject } from '@vercel/analytics';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-
-// inject({mode: "auto"});
+inject({mode: "auto"});
 
 @NgModule({
+    schemas: [ CUSTOM_ELEMENTS_SCHEMA],
     declarations: [
         AppComponent,
         SideMenuPage,

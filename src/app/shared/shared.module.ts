@@ -1,6 +1,6 @@
 import { IonicModule } from "@ionic/angular";
 import { CommonModule, DecimalPipe } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
@@ -91,7 +91,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     MessageBoxComponent,
     DefiStatsComponent,
     AssetsBalanceComponent,
-    DefiTourComponent
+    // DefiTourComponent
   ],
   imports: [
     CommonModule,
@@ -150,7 +150,7 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     MessageBoxComponent,
     DefiStatsComponent,
     AssetsBalanceComponent,
-    DefiTourComponent,
+    // DefiTourComponent,
     
   ]
 })

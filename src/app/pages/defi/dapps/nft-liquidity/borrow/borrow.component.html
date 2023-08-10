@@ -1,4 +1,4 @@
-<ion-row  class="ion-justify-content-between ion-align-items-start">
+<ion-row class="ion-justify-content-between ion-align-items-start">
   <ion-col sizeLg="5.9" size="12" class="data-box ion-padding">
     <ng-container *ngIf="collateralNfts$ | async as collateralNfts; else elseTemplate">
       <ion-row *ngIf="collateralNfts.length">
@@ -16,7 +16,18 @@
 
           </ion-slide>
         </ion-slides> -->
-
+        <!-- <swiper-container>
+          <swiper-slide class="nft-wrapper" *ngFor="let collateral of collateralNfts | filter:'name':searchTerm;">
+            <app-collateral-nft [nft]="collateral" type="borrow"
+              [ngClass]="{'selected-nft': collateral == selectedCollateral}">
+              <ion-button fill="outline" expand="block"
+                [color]="collateral == selectedCollateral ? 'secondary' : 'primary'" (click)="toggleBorrow(collateral)">
+                <span *ngIf="collateral != selectedCollateral">select</span>
+                <span *ngIf="collateral == selectedCollateral">selected</span>
+              </ion-button>
+            </app-collateral-nft>
+          </swiper-slide>
+        </swiper-container> -->
       </ion-row>
       <div id="no-nfts" *ngIf="collateralNfts.length == 0">
         <ion-icon id="icon-placeholder" name="image-outline"></ion-icon>
@@ -38,44 +49,44 @@
       </ion-row>
 
 
-   
-        <app-label-layout [layoutConfig]="{title: 'Choose Duration'}"> </app-label-layout>
-        <div class="ion-margin-bottom">
 
-          <app-select-item [item]="selectedDuration" (click)="showDurationDropDown = !showDurationDropDown"
-            [isDropDownOpen]="showDurationDropDown">
-          </app-select-item>
-          <app-select-box *ngIf="showDurationDropDown" [dataset]="durationOptions" [filterBy]="'name'"
-            (onSelectItem)="setSelectedDuration($event);">
-          </app-select-box>
+      <app-label-layout [layoutConfig]="{title: 'Choose Duration'}"> </app-label-layout>
+      <div class="ion-margin-bottom">
 
-        </div>
-   
-  
-        <span *ngIf="selectedDuration" class="ion-margin-bottom">
+        <app-select-item [item]="selectedDuration" (click)="showDurationDropDown = !showDurationDropDown"
+          [isDropDownOpen]="showDurationDropDown">
+        </app-select-item>
+        <app-select-box *ngIf="showDurationDropDown" [dataset]="durationOptions" [filterBy]="'name'"
+          (onSelectItem)="setSelectedDuration($event);">
+        </app-select-box>
 
-          <app-label-layout [layoutConfig]="{title: 'Avaliable to borrow', balance:getMaxBorrow()  + '◎'}">
-          </app-label-layout>
-          <ion-row id="yield-amount">
-            <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
-            <span class="heading-6"
-            (click)="setMaxAmount(getMaxBorrow())">MAX</span>
-          </ion-row>
+      </div>
 
-          <app-message-box type="warning" message="It may take a few minutes for your loan to become active"></app-message-box>
-        </span>
-   
-        <ion-row class="ion-justify-content-center ">
-          <ng-container *ngIf="collateralNfts$ | async; else notLogged">
-            <ion-button [disabled]="formSubmitted || borrowForm.invalid" (click)="submitBorrowForm()" type="button"
+
+      <span *ngIf="selectedDuration" class="ion-margin-bottom">
+
+        <app-label-layout [layoutConfig]="{title: 'Avaliable to borrow', balance:getMaxBorrow()  + '◎'}">
+        </app-label-layout>
+        <ion-row id="yield-amount">
+          <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount"></ion-input>
+          <span class="heading-6" (click)="setMaxAmount(getMaxBorrow())">MAX</span>
+        </ion-row>
+
+        <app-message-box type="warning"
+          message="It may take a few minutes for your loan to become active"></app-message-box>
+      </span>
+
+      <ion-row class="ion-justify-content-center ">
+        <ng-container *ngIf="collateralNfts$ | async; else notLogged">
+          <ion-button [disabled]="formSubmitted || borrowForm.invalid" (click)="submitBorrowForm()" type="button"
             class="ion-text-capitalize">Borrow</ion-button>
-            
-            
-          </ng-container>
-          <ng-template #notLogged>
-            <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
-          </ng-template>
-          
+
+
+        </ng-container>
+        <ng-template #notLogged>
+          <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
+        </ng-template>
+
       </ion-row>
     </form>
 

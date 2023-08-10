@@ -14,8 +14,8 @@ import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 import { SolanaUtilsService, UtilsService } from './services';
-
-
+import { register } from 'swiper/element/bundle';
+register();
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
