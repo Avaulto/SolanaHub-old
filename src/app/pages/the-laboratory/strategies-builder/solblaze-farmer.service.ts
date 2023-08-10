@@ -183,7 +183,6 @@ export class SolblazeFarmerService {
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     try {
       const { txIns, signers } = await this._bSolStake(sol);
-
       const tx1Res = await this._txInterceptService.sendTx(txIns, walletOwner, signers)
       if (!tx1Res) {
         return
