@@ -68,7 +68,6 @@ export class TheLaboratoryPage implements OnInit {
   public labProduct$: BehaviorSubject<LabIntro[]> = new BehaviorSubject(this.labProduct as LabIntro[]);
 
   public onSortChange(ev){
-    console.log(ev);
     const trigger = ev.detail.value
     const sortedLabProduct = this.labProduct.sort((p1,p2) => p1[trigger] > p2[trigger] ? -1 : 1
     );
@@ -119,12 +118,10 @@ export class TheLaboratoryPage implements OnInit {
   }
 
   showOnlyDeposit(ev){
-    console.log(ev);
     const showDepositsStrategy = ev.detail.checked;
     
     if(showDepositsStrategy){
       const filteredStrategies = this.labProduct.filter(p => p.userDeposit);
-      console.log(filteredStrategies)
       this.labProduct$.next(filteredStrategies)
     }else{
       this.labProduct$.next(this.labProduct)

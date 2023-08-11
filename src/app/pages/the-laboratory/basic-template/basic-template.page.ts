@@ -21,47 +21,57 @@ export class BasicTemplatePage implements OnInit {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _solblazeFarmerService: SolblazeFarmerService,
-    private _utilsService:UtilsService,
+    private _utilsService: UtilsService,
     private _router: ActivatedRoute,
   ) { }
   public userHoldings = { SOL: 0, USD: 0 }
   async ionViewWillEnter() {
     this.strategyName = this._router.snapshot.paramMap.get('strategy')
     if (this.strategyName === 'solblaze-farmer') {
-    this.strategyConfiguration = this._solblazeFarmerService.strategyConfiguration
+      this.strategyConfiguration = this._solblazeFarmerService.strategyConfiguration
     }
   }
-ngOnInit(): void {
-  
-}
+  ngOnInit(): void {
+    this.strategyName = this._router.snapshot.paramMap.get('strategy');
+    this._solblazeFarmerService.fetchUserHoldings$
+      .pipe(this._utilsService.isNotUndefined, this._utilsService.isNotUndefined)
+      .subscribe(async doFetch => {
+        if (doFetch) {
 
+          this.fetchUserData()
+        }
+      })
+  }
+  initialFetch = true;
   public walletExtended$: Observable<WalletExtended> = this._solanaUtilsService.walletExtended$.pipe(
     switchMap(async (wallet) => {
+
       if (wallet) {
         if (this.strategyName === 'marinade-plus') {
           // await this._marinadePlusService.initStrategyStatefulStats()
         }
+
         if (this.strategyName === 'solblaze-farmer') {
           this.userHoldings = { SOL: null, USD: null }
-          this.fetchUserData()
-      
-          this._solblazeFarmerService.fetchUserHoldings$
-          .pipe(this._utilsService.isNotUndefined, this._utilsService.isNotUndefined)
-          .subscribe(async doFetch => {
+          if (this.initialFetch) {
             this.fetchUserData()
-          })
+          }
+
+
+          this.initialFetch = false
         }
         return wallet;
       } else {
         this.userHoldings = { SOL: 0, USD: 0 }
+        this.initialFetch = true
         return null
       }
     }),
     shareReplay(),
   )
 
-  async fetchUserData(){
-    const {userHoldings, strategyConfiguration} = await this._solblazeFarmerService.initStrategyStatefulStats()
+  async fetchUserData() {
+    const { userHoldings, strategyConfiguration } = await this._solblazeFarmerService.initStrategyStatefulStats()
     this.strategyConfiguration = strategyConfiguration
     this.userHoldings = userHoldings
   }

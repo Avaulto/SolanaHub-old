@@ -210,7 +210,7 @@ export class SolblazeFarmerService {
         this.txStatus$.next({...this.txStatus$.value, start: false})
         return
       }
-      this.txStatus$.next({...this.txStatus$.value, finishTx: 2})
+      this.txStatus$.next({...this.txStatus$.value, finishTx: 3})
       setTimeout(() => {
         this.txStatus$.next({...this.txStatus$.value, start: false})
       }, 2000);
@@ -306,12 +306,13 @@ export class SolblazeFarmerService {
 
   // init all required function for the strategy 
   public async initStrategyStatefulStats(): Promise<{ userHoldings, strategyConfiguration }> {
-    console.log('fetch StrategyStatefulStats')
 
     let userHoldings = { SOL: 0, USD: 0 }
     try {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
-      await this.initPoolSDK()
+      if(!this.strategySDK.pool){
+        await this.initPoolSDK()
+      }
 
       const rewards = await this.strategySDK.farm.getClaimableReward(walletOwner);
       const rewardAmountA = rewards.amountA.toNumber() / LAMPORTS_PER_SOL;

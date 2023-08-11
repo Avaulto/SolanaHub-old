@@ -38,7 +38,6 @@ export class StrategyStatsComponent implements  OnChanges {
        stats = await this._marinadePlusService.initStrategyStats();
     }
     if (this.strategyName.toLowerCase() === 'solblaze-farmer') {
-      console.log('fetch strategy stats')
       this.strategyStats.protocolLoop = 2
        stats = await this._solblazeFarmerService.initStrategyStats();
     }
