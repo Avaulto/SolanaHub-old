@@ -37,7 +37,6 @@ export class ActiveDepositsComponent  implements OnInit {
       this.loans = loans
       loans.map(loan =>{
         if(loan.userDeposit?.depositAmount > 0){
-         console.log(loan)
          this.activePools.push({name:loan.name, amount: 'YOUR LIQUIDITY: ' + Number(loan.userDeposit.depositAmount).toFixedNoRounding(2) +' ◎'})
         }
         
