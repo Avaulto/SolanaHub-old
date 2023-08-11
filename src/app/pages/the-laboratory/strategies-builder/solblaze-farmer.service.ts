@@ -306,6 +306,8 @@ export class SolblazeFarmerService {
 
   // init all required function for the strategy 
   public async initStrategyStatefulStats(): Promise<{ userHoldings, strategyConfiguration }> {
+    console.log('fetch StrategyStatefulStats')
+
     let userHoldings = { SOL: 0, USD: 0 }
     try {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
@@ -342,16 +344,17 @@ export class SolblazeFarmerService {
   public async getTVL(): Promise<{ SOL, USD }> {
     let tvl = { SOL: 0, USD: 0 }
     try {
-      let info = await stakePoolInfo(this._solanaUtilsService.connection, this._solblazePoolAddress);
-      const bSOLprice = await (await this._jupiterStore.fetchPriceFeed(info.poolMint)).data[info.poolMint].price;
-      let totalStake = info.details.reserveStakeLamports;
-      for (let i = 0; i < info.details.stakeAccounts.length; i++) {
-        totalStake += parseInt(info.details.stakeAccounts[i].validatorLamports);
-      }
-      let tokenAmount = info.poolTokenSupply;
-      this.convertRatio = totalStake / Number(tokenAmount);
-      const solPrice = bSOLprice / this.convertRatio
-      const solblazePoolTvl = totalStake / LAMPORTS_PER_SOL * solPrice;
+      const bSOLprice = await (await this._jupiterStore.fetchPriceFeed('bSOL')).data['bSOL'].price;
+      const poolData = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.find(p => p.tokenSymbol === 'bSOL');
+      let totalStake = poolData.totalStakedSol;
+      // let info = await stakePoolInfo(this._solanaUtilsService.connection, this._solblazePoolAddress);
+      // for (let i = 0; i < info.details.stakeAccounts.length; i++) {
+      //   totalStake += parseInt(info.details.stakeAccounts[i].validatorLamports);
+      // }
+      // let tokenAmount = info.poolTokenSupply;
+      // this.convertRatio = poolData.totalStakedSol / Number(tokenAmount);
+      const solPrice = bSOLprice / poolData.exchangeRate;
+      const solblazePoolTvl = totalStake * solPrice;
       const meteoraPoolTvl = Number(this._meteoraSolBsolPoolAPI.pool_tvl);
       const meteoraFarmTvl = Number(this._meteoraSolBsolPoolAPI.farm_tvl);
       tvl.USD = solblazePoolTvl + meteoraPoolTvl + meteoraFarmTvl;

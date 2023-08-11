@@ -15,11 +15,14 @@ export class WithdrawComponent implements OnChanges {
   public loader: boolean = false;
   constructor(
     private _marinadePlusService: MarinadePlusService,
-    private _solblazeFarmerService: SolblazeFarmerService
+    private _solblazeFarmerService: SolblazeFarmerService,
+    private _jupiterStore: JupiterStoreService,
   ) { }
 
   ngOnChanges(changes): void {
-
+    if(this.walletExtended$){
+      this._jupiterStore.initJup(this.walletExtended$)
+    }
   }
 
   public async withdraw() {

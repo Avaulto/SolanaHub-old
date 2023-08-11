@@ -21,10 +21,8 @@ export class BasicTemplatePage implements OnInit {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _solblazeFarmerService: SolblazeFarmerService,
-    private _marinadePlusService: MarinadePlusService,
     private _utilsService:UtilsService,
     private _router: ActivatedRoute,
-    private _jupiterStore: JupiterStoreService
   ) { }
   public userHoldings = { SOL: 0, USD: 0 }
   async ionViewWillEnter() {
@@ -40,7 +38,6 @@ ngOnInit(): void {
   public walletExtended$: Observable<WalletExtended> = this._solanaUtilsService.walletExtended$.pipe(
     switchMap(async (wallet) => {
       if (wallet) {
-        this._jupiterStore.initJup(wallet)
         if (this.strategyName === 'marinade-plus') {
           // await this._marinadePlusService.initStrategyStatefulStats()
         }

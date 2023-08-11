@@ -13,7 +13,6 @@
           (click)="setRPC(rpc.url)">
           <div class="select-group">
             <ion-img
-              [ngStyle]="{'filter': rpc.name === 'helius' ? 'brightness(0) invert(1)' : ''}"
               [src]="rpc.imageUrl"></ion-img>
 
             <ion-checkbox mode="ios" [checked]="currentRPC == rpc.url" color="primary"></ion-checkbox>
