@@ -292,7 +292,6 @@ export class MarinadePlusService {
       const mndeRewards = this._solendWallet.rewards[this._mnde.toBase58()];
       // claimed_MNDE = mndeRewards.claimedAmount / 10 ** mndeRewards.decimals;
       // claimable_MNDE = mndeRewards.claimableAmount / 10 ** mndeRewards.decimals;
-      console.log(mndeRewards)
     } catch (error) {
       console.warn(error);
     }
@@ -418,7 +417,6 @@ export class MarinadePlusService {
       const sig1 = await mndeRewards.rewardClaims
         .find((claim) => !claim.metadata.claimedAt)
         ?.claim();
-      console.log(sig1, mndeRewards)
 
       // // Exercise options (after claiming)
       // const slndOptionClaim = solendWallet.rewards["SLND_OPTION"].rewardClaims.find(

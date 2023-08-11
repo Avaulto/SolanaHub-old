@@ -72,6 +72,7 @@ export class SolblazeFarmerService {
   public strategySDK: StrategySDK = { farm: null, pool: null };
   public convertRatio = 0;
   public fetchUserHoldings$ = new Subject()
+  public txStatus$ = new BehaviorSubject({totalTx:3,finishTx:0, start: false})
   constructor(
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -182,12 +183,14 @@ export class SolblazeFarmerService {
     const sol = new bn((SOL_amount) * LAMPORTS_PER_SOL);
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     try {
+      this.txStatus$.next({totalTx:3, finishTx: 0,start: true})
       const { txIns, signers } = await this._bSolStake(sol);
       const tx1Res = await this._txInterceptService.sendTx(txIns, walletOwner, signers)
       if (!tx1Res) {
+        this.txStatus$.next({...this.txStatus$.value, start: false})
         return
       }
-
+      this.txStatus$.next({...this.txStatus$.value, finishTx: 1})
       const deposit_bSOL = await this._bsolConverter('SOL', SOL_amount);
       const slippage = 0.999 // 0.1 %
       const bSOL = new bn((deposit_bSOL.converterAsset * slippage) * LAMPORTS_PER_SOL);
@@ -195,18 +198,29 @@ export class SolblazeFarmerService {
 
       const tx2Res = await this._txInterceptService.sendTx([txIx2], walletOwner)
       if (!tx2Res) {
+        this.txStatus$.next({...this.txStatus$.value, start: false})
         return
       }
+      this.txStatus$.next({...this.txStatus$.value, finishTx: 2})
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx3 = await this.strategySDK.farm.deposit(walletOwner, poolLpBalance);
 
-      await this._txInterceptService.sendTx([txIx3], walletOwner)
-
+      const res3= await this._txInterceptService.sendTx([txIx3], walletOwner)
+      if (!res3) {
+        this.txStatus$.next({...this.txStatus$.value, start: false})
+        return
+      }
+      this.txStatus$.next({...this.txStatus$.value, finishTx: 2})
+      setTimeout(() => {
+        this.txStatus$.next({...this.txStatus$.value, start: false})
+      }, 2000);
       va.track('solblaze-farmer strategy', { type: 'deposit', size: SOL_amount });
     } catch (error) {
       console.warn(error);
     }
   }
+
+
   // withdraw strategy flow:
   //step 0 - get get farm LP
   // stap 1 - withdraw LP balance from the farm
@@ -216,16 +230,23 @@ export class SolblazeFarmerService {
 
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     try {
+      this.txStatus$.next({totalTx:2, finishTx: 0,start: true})
       const farmLpBalance = await this.strategySDK.farm.getUserBalance(walletOwner);
       const txIx1 = await this.strategySDK.farm.withdraw(walletOwner, farmLpBalance);
 
       const tx1Res = await this._txInterceptService.sendTx([txIx1], walletOwner)
       if (!tx1Res) {
+        this.txStatus$.next({...this.txStatus$.value, start: false})
         return
       }
+      this.txStatus$.next({...this.txStatus$.value, finishTx: 1})
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx2 = await this._withdrawFromMeteoraPool(poolLpBalance, walletOwner)
       await this._txInterceptService.sendTx([txIx2], walletOwner)
+      this.txStatus$.next({...this.txStatus$.value, finishTx: 2})
+      setTimeout(() => {
+        this.txStatus$.next({...this.txStatus$.value, start: false})
+      }, 2000);
       va.track('solblaze-farmer strategy', { type: 'withdraw' });
     } catch (error) {
       console.warn(error);

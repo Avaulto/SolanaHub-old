@@ -1,0 +1,34 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+#tx-status-wrapper {
+    background: var(--deep-background);
+    display: block;
+    width: 100%;
+    margin-block-start: 20px;
+    margin-block-end: 10px;
+    text-align: center;
+    border-radius: 4px;
+    height: 20px;
+    position: relative;
+
+    div {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        line-height: 20px;
+    }
+}
+
+
+ion-progress-bar {
+    height: 20px;
+    transition: 1s ease-in-out;
+    .buffer-circles {
+        background-size: 20px 20px;
+    }
+  }

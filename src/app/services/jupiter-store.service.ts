@@ -89,7 +89,6 @@ export class JupiterStoreService {
   }
   public async swapTx(routeInfo: RouteInfo): Promise<Transaction[]> {
     const arrayOfTx: Transaction[] = []
-    console.log(routeInfo)
     try {
       const { transactions } = await this._jupiter.exchange({
         routeInfo

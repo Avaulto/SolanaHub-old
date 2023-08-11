@@ -20,9 +20,9 @@ export class OptionsPopupComponent implements OnInit {
 
   public RPC_list = [
     {
-      name:'quick-node',
-      imageUrl: 'assets/images/icons/QuickNode-Logo.png',
-      url:'https://evocative-aged-wish.solana-mainnet.discover.quiknode.pro/a9aa5c76f9878b168043cc3452d267e0bda9dfdb/'
+      name:'helius',
+      imageUrl: 'assets/images/icons/helius-logo.png',
+      url:'https://rpc.helius.xyz/?api-key=fdfa656e-52a7-426c-a92c-7ba543750c52'
     },
     {
       name:'extrnode',

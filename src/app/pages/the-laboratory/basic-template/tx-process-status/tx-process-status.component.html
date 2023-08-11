@@ -1,0 +1,4 @@
+<div id="tx-status-wrapper" *ngIf="txStatus.start" >
+  <div id="tx-counter">{{txStatus.finishTx}}/{{txStatus.totalTx}}</div>
+  <ion-progress-bar  [buffer]="txStatus.finishTx / txStatus.totalTx   " color="secondary"></ion-progress-bar>
+</div>

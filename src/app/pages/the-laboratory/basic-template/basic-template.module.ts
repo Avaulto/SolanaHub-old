@@ -12,12 +12,13 @@ import { ClaimComponent } from './claim/claim.component';
 import { WithdrawComponent } from './withdraw/withdraw.component';
 import { DepositComponent } from './deposit/deposit.component';
 import { StrategyStatsComponent } from './strategy-stats/strategy-stats.component';
+import { TxProcessStatusComponent } from './tx-process-status/tx-process-status.component';
 
 @NgModule({
   imports: [
     SharedModule,
     BasicTemplatePageRoutingModule
   ],
-  declarations: [BasicTemplatePage,StrategyStatsComponent, DepositComponent, WithdrawComponent, ClaimComponent]
+  declarations: [BasicTemplatePage,TxProcessStatusComponent,StrategyStatsComponent, DepositComponent, WithdrawComponent, ClaimComponent]
 })
 export class BasicTemplatePageModule { }
