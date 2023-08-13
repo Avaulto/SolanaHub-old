@@ -19,7 +19,6 @@ export class ClaimComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    console.log('rewards init', this.claimAssets)
   }
   ngOnChanges(): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
@@ -31,7 +30,7 @@ export class ClaimComponent implements OnInit {
   }
   public async claimReward() {
     if (this.strategyConfiguration.strategyName === 'solblaze-farmer') {
-      console.log(this.swapToSol)
+
       this.loader = true
       await this._solblazeFarmerService.claimRewards(this.swapToSol)
       this.loader = false

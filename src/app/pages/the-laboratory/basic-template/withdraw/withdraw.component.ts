@@ -16,12 +16,12 @@ export class WithdrawComponent implements OnChanges {
   constructor(
     private _marinadePlusService: MarinadePlusService,
     private _solblazeFarmerService: SolblazeFarmerService,
-    private _jupiterStore: JupiterStoreService,
+    private _jupStore: JupiterStoreService,
   ) { }
 
   ngOnChanges(changes): void {
     if(this.walletExtended$){
-      this._jupiterStore.initJup(this.walletExtended$)
+      this._jupStore.initJup(this.walletExtended$)
     }
   }
 

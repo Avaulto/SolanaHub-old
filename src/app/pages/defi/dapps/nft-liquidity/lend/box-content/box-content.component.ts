@@ -6,7 +6,7 @@ import { WalletExtended } from 'src/app/models';
 import { ApiService, UtilsService } from 'src/app/services';
 import { FraktStoreService } from '../../frakt-store.service';
 import { FraktNftItemWithLiquidity, FraktNftMetadata, PoolIO, UserDeposit } from '../../frakt.model';
-import { io } from "socket.io-client";
+
 
 @Component({
   selector: 'app-box-content',

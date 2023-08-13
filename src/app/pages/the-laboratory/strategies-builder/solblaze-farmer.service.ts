@@ -77,7 +77,7 @@ export class SolblazeFarmerService {
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
     private _stakePoolStore: StakePoolStoreService,
-    private _jupiterStore: JupiterStoreService,
+    private _jupStore: JupiterStoreService,
     private _utilService: UtilsService,
     private _txInterceptService: TxInterceptService,
   ) {
@@ -162,7 +162,7 @@ export class SolblazeFarmerService {
 
 
   async initPoolSDK() {
-    const tokenList = await firstValueFrom(this._jupiterStore.fetchTokenList());
+    const tokenList = await firstValueFrom(this._jupStore.fetchTokenList());
     const SOL = tokenList.find((token) => token.address === 'So11111111111111111111111111111111111111112');
     const bSOL = tokenList.find((token) => token.address === this._bSOL.toBase58());
 
@@ -345,7 +345,7 @@ export class SolblazeFarmerService {
   public async getTVL(): Promise<{ SOL, USD }> {
     let tvl = { SOL: 0, USD: 0 }
     try {
-      const bSOLprice = await (await this._jupiterStore.fetchPriceFeed('bSOL')).data['bSOL'].price;
+      const bSOLprice = await (await this._jupStore.fetchPriceFeed('bSOL')).data['bSOL'].price;
       const poolData = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.find(p => p.tokenSymbol === 'bSOL');
       let totalStake = poolData.totalStakedSol;
       // let info = await stakePoolInfo(this._solanaUtilsService.connection, this._solblazePoolAddress);
@@ -436,8 +436,8 @@ export class SolblazeFarmerService {
 
   // convert back to msol/sol ratio
   private async _bsolConverter(side: 'SOL' | 'bSOL', amount: number): Promise<{ converterAsset: number, assetRatio: number, SOLprice }> {
-    const bSOLprice = await (await this._jupiterStore.fetchPriceFeed('bSOL')).data['bSOL'].price
-    const SOLprice = await (await this._jupiterStore.fetchPriceFeed('SOL')).data['SOL'].price
+    const bSOLprice = await (await this._jupStore.fetchPriceFeed('bSOL')).data['bSOL'].price
+    const SOLprice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price
     const slippage = 0.999; // 0.01%
     try {
       const assetRatio = SOLprice / bSOLprice * slippage

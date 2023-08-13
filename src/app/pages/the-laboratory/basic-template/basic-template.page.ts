@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { JupiterStoreService, SolanaUtilsService, UtilsService } from 'src/app/services';
+import {  SolanaUtilsService, UtilsService } from 'src/app/services';
 import { Observable, shareReplay, switchMap } from 'rxjs';
 import { DefiStat, LabStrategyConfiguration, WalletExtended } from 'src/app/models';
-
-import { MarinadePlusService } from '../strategies-builder/marinade-plus.service';
 import { ActivatedRoute } from '@angular/router';
 import { SolblazeFarmerService } from '../strategies-builder/solblaze-farmer.service';
 

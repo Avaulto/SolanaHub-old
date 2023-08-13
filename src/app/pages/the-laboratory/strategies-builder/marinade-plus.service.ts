@@ -52,7 +52,7 @@ export class MarinadePlusService {
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
     private _stakePoolStore: StakePoolStoreService,
-    private _jupiterStore: JupiterStoreService,
+    private _jupStore: JupiterStoreService,
     private _utilService: UtilsService,
     private _txInterceptService: TxInterceptService,
   ) {
@@ -170,7 +170,7 @@ export class MarinadePlusService {
 
       // this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
 
-      const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+      const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
       this.strategyConfiguration.assetHoldings[0].balance = deposits.mSOL_holding
       this.strategyConfiguration.assetHoldings[0].totalUsdValue = mSOLPrice * deposits.mSOL_holding
       this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = 100;
@@ -185,7 +185,7 @@ export class MarinadePlusService {
     let tvl = {SOL: 0, USD:0}
     try {
       const marinade_TVL = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/tlv'))).staked_usd;
-      const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+      const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
       const market = await SolendMarket.initialize(
         this._solanaUtilsService.connection,
       );
@@ -209,8 +209,8 @@ export class MarinadePlusService {
   public async getStrategyAPY(): Promise<{ strategyAPY, marinadeAPY: number, lpAPY: number }> {
     // get external market data
     const marinadeAPY = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/apy/30d'))).value * 100;
-    const mndePrice = await (await this._jupiterStore.fetchPriceFeed('MNDE')).data['MNDE'].price
-    const mSOLPrice = await (await this._jupiterStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+    const mndePrice = await (await this._jupStore.fetchPriceFeed('MNDE')).data['MNDE'].price
+    const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
     // const slot = await this._solanaUtilsService.connection.getSlot()
     const rewardStats: Promise<RewardStats[]> = await firstValueFrom(this._apiService.get('https://api.solend.fi/liquidity-mining/external-reward-stats-v2?flat=true'));
     const market = await SolendMarket.initialize(
@@ -247,7 +247,7 @@ export class MarinadePlusService {
     let mSOL_holding = 0
     let USD_worth = 0
     try {
-      const SOLPrice = await (await this._jupiterStore.fetchPriceFeed('SOL')).data['SOL'].price
+      const SOLPrice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price
       const market = await SolendMarket.initialize(
         this._solanaUtilsService.connection,
         "production", // optional environment argument
@@ -358,8 +358,8 @@ export class MarinadePlusService {
         "symbol": "SOL",
       }
 
-      const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-      const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
+      const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
+      const transaction: Transaction[] = await this._jupStore.swapTx(bestRoute);
       await this._txInterceptService.sendTx(transaction, walletOwner);
 
     } catch (error) {
@@ -443,8 +443,8 @@ export class MarinadePlusService {
           "decimals": 9,
           "symbol": "SOL",
         }
-        // const bestRoute = await this._jupiterStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-        // const transaction: Transaction[] = await this._jupiterStore.swapTx(bestRoute);
+        // const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
+        // const transaction: Transaction[] = await this._jupStore.swapTx(bestRoute);
         // ixs.push(...transaction)
       }
       await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
