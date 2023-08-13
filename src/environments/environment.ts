@@ -3,14 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  ga:'',
   production: false,
-  solanaEnv: 'devnet',
-  orcaWhirlPool: {programId:'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',config:'FcrweFY1G9HJAHG5inkGB6pKg1HZ6x9UC2WioAfWrGkR', poolAPI: 'https://api.devnet.orca.so/v1/whirlpool/list'},
-  solanaCluster: 'https://devnet.helius-rpc.com/?api-key=fdfa656e-52a7-426c-a92c-7ba543750c52',// 'https://api.devnet.solana.com',//
-  serverlessAPI: 'https://dev.compact-defi.xyz',
+  solanaEnv: 'mainnet-beta',
+  solanaCluster: 'https://mb-avaulto-cc28.mainnet.rpcpool.com/190dce2e-b99d-475e-8e0f-3207a5c97e8b',
+  serverlessAPI: 'https://beta.compact-defi.xyz',
   platformFeeCollector:'81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1'
-
 };
 
 /*
