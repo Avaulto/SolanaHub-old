@@ -17,15 +17,6 @@ constructor(
 ) {
   this.msg.subscribe((toastData: toastData) => this.presentToastWithOptions(toastData.message,toastData.btnText, toastData.segmentClass,toastData.duration,  toastData.cb));
 }
-// async presentToast(text: string, segmentClass: string) {
-//   const toast = await this.toastController.create({
-//     cssClass: `toastStyle ${segmentClass}`,
-//     message: text,
-//     duration: 5000,
-//     animated: true,
-//   });
-//   toast.present();
-// }
 async presentToastWithOptions(message: string,btnText: string, segmentClass: string, duration?: number, cb?: Function) {
   let toastOptions:ToastOptions = {
     cssClass: `toastStyle ${segmentClass}`,
@@ -49,5 +40,8 @@ async presentToastWithOptions(message: string,btnText: string, segmentClass: str
 
   const toast = await this.toastController.create(toastOptions);
   toast.present();
+}
+public closeToast(){
+  this.toastController.dismiss()
 }
 }

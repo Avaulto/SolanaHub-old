@@ -10,7 +10,7 @@ import {
   SlopeWalletAdapter,
   SolflareWalletAdapter
 } from '@solana/wallet-adapter-wallets';
-import { environment } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { distinctUntilChanged } from 'rxjs';
 import { SolanaUtilsService, UtilsService } from './services';

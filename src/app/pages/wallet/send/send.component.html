@@ -12,26 +12,29 @@
 
     <app-label-layout [layoutConfig]="{title: 'Amount', balance: (wallet$ | async)?.balance}">
       <app-icon-tooltip tip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+      <div *ngIf="sendCoinForm.controls.privateTx.value == true" id="private-balance">
+        private balance: <span>{{privateBalance}}</span>
+        <app-icon-tooltip tip="Any funds within your private balance will be utilized first."></app-icon-tooltip>
+      </div>
+
     </app-label-layout>
 
-
-
     <ion-row id="send-amount" style="margin-bottom:8px;">
-      <ion-input class="button-text" formControlName="amount" placeholder="Amount"></ion-input>
+      <ion-input class="button-text" type="number" formControlName="amount" placeholder="Amount"></ion-input>
       <span class="heading-6" (click)="setMaxAmount()">MAX</span>
     </ion-row>
-<!-- <ion-row id="private-tx-wrapper">
+    <ion-row id="private-tx-wrapper" *ngIf="wallet$ | async;">
 
-  <app-label-layout [layoutConfig]="{title: 'Private Transaction'}">
-    
-  </app-label-layout>
-  <ion-toggle style="height: 25px;" formControlName="privateTx"></ion-toggle>
-</ion-row> -->
+      <app-label-layout [layoutConfig]="{title: 'Private Transaction'}">
+      </app-label-layout>
+      <ion-toggle (ionChange)="_initElusivSDK($event)" style="height: 25px;" formControlName="privateTx"></ion-toggle>
+    </ion-row>
 
-    <ion-row class="ion-justify-content-center ion-margin-end">
-      <ng-container *ngIf="wallet$; else elseTemplate">
+    <ion-row class="ion-justify-content-center">
+      <ng-container *ngIf="wallet$ | async; else elseTemplate">
         <ion-button (click)="send()" [disabled]="formSubmitted || sendCoinForm.invalid" class="ion-text-capitalize">
           submit
+          <ion-spinner *ngIf="formSubmitted" name="dots"></ion-spinner>
         </ion-button>
       </ng-container>
       <ng-template #elseTemplate>

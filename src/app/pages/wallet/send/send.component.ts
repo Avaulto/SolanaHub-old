@@ -2,15 +2,16 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { WalletStore } from '@heavy-duty/wallet-adapter';
 
-import { Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
-import { firstValueFrom } from 'rxjs';
-// import { Elusiv, SEED_MESSAGE, TokenType } from "@elusiv/sdk";
+import { Cluster, Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
+import { firstValueFrom, shareReplay, switchMap } from 'rxjs';
+import { Elusiv, SEED_MESSAGE, TokenType } from "@elusiv/sdk";
 
-import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
+import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService, ToasterService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
+import { toastData } from 'src/app/models';
 
 // @ts-ignore
-// process.browser = true;
+process.browser = true;
 
 @Component({
   selector: 'app-send',
@@ -18,7 +19,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./send.component.scss'],
 })
 export class SendComponent implements OnInit {
-  public wallet$ = this._solanaUtilsService.walletExtended$;
+  private _elusiv: Elusiv;
+  public privateBalance: number = 0 // private balance in SOL
+  public wallet$ = this._solanaUtilsService.walletExtended$.pipe(
+    switchMap(async (wallet) => {
+
+      if (wallet) {
+
+        return wallet;
+      } else {
+
+        return null
+      }
+    }),
+    shareReplay(),
+  );
   public showValidatorList: boolean = false;
   public sendCoinForm: FormGroup;
   public formSubmitted: boolean = false;
@@ -31,12 +46,17 @@ export class SendComponent implements OnInit {
     private _txInterceptService: TxInterceptService,
     private _utilsService: UtilsService,
     private _wallet: WalletStore,
+    private _toasterService: ToasterService,
   ) { }
   ngOnInit() {
     this.sendCoinForm = this._fb.group({
       amount: ['', [Validators.required]],
       targetAddress: ['', [Validators.required]],
       privateTx: [false]
+    })
+
+    this.sendCoinForm.valueChanges.subscribe(form => {
+      console.log(form, this.sendCoinForm)
     })
   }
   async pkVerifyValidator() {
@@ -50,9 +70,6 @@ export class SendComponent implements OnInit {
       if (!isValid) {
         return null;
       }
-
-
-
       return
     }
   }
@@ -70,58 +87,102 @@ export class SendComponent implements OnInit {
     try {
       // try {
       if (privateTx) {
-        // this._sendPrivateTx(SOL, targetAddress, targetPk)
+        await this._sendPrivateTx(SOL, targetPk)
       } else {
         await this._txInterceptService.sendSol(SOL, targetPk, this._solanaUtilsService.getCurrentWallet().publicKey)
       }
     } catch (error) {
       console.error(error)
     }
-    // } catch (error) {
-    //   console.warn(error)
-    // }
     this.formSubmitted = false;
   }
-  private async _sendPrivateTx(SOL, walletOwnerPublicKey, targetPk) {
+  private async _sendPrivateTx(SOL: number, targetPk: PublicKey) {
+    let toasterMessage: toastData = {
+      message: 'Building topup',
+      segmentClass: "toastInfo",
+      duration: 10000
+    }
     // maximum fee payable
     const maxFee = 5000 * 100;
-    // generate seed buffer
-    // const seed = (new TextEncoder()).encode(SEED_MESSAGE) as Buffer;
+    try {
+      console.time('private-tx')
+      const privateBalanceSOL = Number(this.privateBalance * LAMPORTS_PER_SOL) || 0
+      // Top up our private balance only if the balance size is less than what user ask to send
+      if (SOL > privateBalanceSOL) {
+        console.log('need more balance')
+        this._toasterService.msg.next(toasterMessage)
+        const topupTxData = await this._elusiv.buildTopUpTx(SOL - privateBalanceSOL, 'LAMPORTS');
+        const signedTx = await firstValueFrom(this._wallet.signTransaction(topupTxData.tx)) as Transaction;
+        topupTxData.setSignedTx(signedTx)
 
+        // SHOW ALERT
+        toasterMessage.message = 'Topuping up your private account'
+        console.log('Topuping up your private account')
+        this._toasterService.msg.next(toasterMessage)
+        const topupSig = await this._elusiv.sendElusivTx(topupTxData)
+        // update balance on UI
+        this._getPrivateBalance()
+      }
+      // send http tx Through warden
+      toasterMessage.message = 'Sending your SOL privately...'
+      toasterMessage.duration = 500000 // 50sec
+      this._toasterService.msg.next(toasterMessage)
 
-    // sign wallet owner
-    // const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
+      // Since this the topup, the funds still come from our original wallet. This is just
+      // Send SOL, privately 😎
+      const sendTx = await this._elusiv.buildSendTx(SOL - maxFee, targetPk, 'LAMPORTS');
+      await this._elusiv.sendElusivTx(sendTx);
+      // close previous toast
+      this._toasterService.closeToast()
+      // update balance on UI
+      this._getPrivateBalance()
+      // show message notification
+      toasterMessage.message = 'Transaction Completed';
+      toasterMessage.duration = 3000
+      this._toasterService.msg.next(toasterMessage)
 
-    // init elusiv SDK
-    // const elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwnerPublicKey, this._solanaUtilsService.connection, 'mainnet-beta');
-    // Top up our private balance with 1 SOL
-    // const topupTxData = await elusiv.buildTopUpTx(SOL, 'LAMPORTS');
-
-    // // Since this the topup, the funds still come from our original wallet. This is just
-    // // a regular Solana transaction in this case.
-    // await firstValueFrom(this._wallet.signTransaction(topupTxData.tx));
-
-    // // send http tx Through warden
-    // const topupSig = await elusiv.sendElusivTx(topupTxData)
-
-
-    // // wait for confimartion for users
-    // await this._solanaUtilsService.connection.confirmTransaction({
-    //   signature: topupSig.signature,
-    //   lastValidBlockHeight: topupTxData.tx.lastValidBlockHeight!,
-    //   blockhash: topupTxData.tx.recentBlockhash!
-    // }, "finalized")
-
-    // // tx confimed
-    // await topupSig.confirmationStatus
-
-    // // // Send SOL, privately 😎
-    // const sendTx = await elusiv.buildSendTx(SOL / 2 , targetPk, 'LAMPORTS');
-    // // send http tx Through warden
-    // const sendTxSig = await elusiv.sendElusivTx(sendTx);
-
-    // // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
-    // await sendTxSig.confirmationStatus;
+      console.timeEnd('private-tx')
+      // console.log(`Performed topup with sig ${topupSig.signature} and send with sig ${sendSig.signature}`);
+      // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
+      // await sendTxSig.confirmationStatus;
+    } catch (error) {
+      console.error(error)
+    }
   }
 
+  public async _initElusivSDK(ev) {
+
+    try {
+      if (!this._elusiv && ev.detail.checked) {
+        console.log('elusiv init')
+        // generate seed buffer
+        const seed = (new TextEncoder()).encode(SEED_MESSAGE) as Buffer;
+        const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
+        // sign wallet owner
+        const signedSeed = await firstValueFrom(this._wallet.signMessage(seed));
+        // init elusiv SDK
+        this._elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwner, this._solanaUtilsService.connection, environment.solanaEnv as Cluster);
+        // init private balance
+        this._getPrivateBalance()
+      }
+    } catch (error) {
+      console.error(error)
+      this.sendCoinForm.controls.privateTx.setValue(false)
+    }
+
+  }
+  private async _getPrivateBalance() {
+    try {
+      const balanceBN = (await this._elusiv.getLatestPrivateBalance("LAMPORTS")).toString() || 0;
+      this.privateBalance = (Number(balanceBN) / LAMPORTS_PER_SOL).toFixedNoRounding(3);
+
+    } catch (error) {
+      console.log(error)
+      let toasterMessage: toastData = {
+        message: error,
+        segmentClass: "toastError"
+      }
+      this._toasterService.msg.next(toasterMessage)
+    }
+  }
 }

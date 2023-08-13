@@ -7,7 +7,7 @@ export const environment = {
   production: false,
   solanaEnv: 'devnet',
   orcaWhirlPool: {programId:'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',config:'FcrweFY1G9HJAHG5inkGB6pKg1HZ6x9UC2WioAfWrGkR', poolAPI: 'https://api.devnet.orca.so/v1/whirlpool/list'},
-  solanaCluster: 'https://rpc-devnet.helius.xyz/?api-key=fdfa656e-52a7-426c-a92c-7ba543750c52',// 'https://api.devnet.solana.com',//
+  solanaCluster: 'https://devnet.helius-rpc.com/?api-key=fdfa656e-52a7-426c-a92c-7ba543750c52',// 'https://api.devnet.solana.com',//
   serverlessAPI: 'https://dev.compact-defi.xyz',
   platformFeeCollector:'81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1'
 

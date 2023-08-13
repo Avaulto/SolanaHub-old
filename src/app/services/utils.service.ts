@@ -117,6 +117,7 @@ export class UtilsService {
     }
 
   }
+  public sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay))
   public numFormater(number: number): any {
     return Intl.NumberFormat('en-US', {
       notation: "compact",
