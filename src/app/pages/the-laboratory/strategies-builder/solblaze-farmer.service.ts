@@ -5,9 +5,7 @@ import { ApiService, DataAggregatorService, JupiterStoreService, SolanaUtilsServ
 import { StakePoolStoreService } from '../../defi/dapps/liquid-stake/stake-pool-store.service';
 import { BehaviorSubject, Subject, firstValueFrom } from 'rxjs';
 import AmmImpl, { MAINNET_POOL } from '@mercurial-finance/dynamic-amm-sdk';
-import { TokenInfo } from '@solana/spl-token-registry';
 import bn from 'bn.js'
-import { stakePoolInfo } from '@solana/spl-stake-pool';
 import { PoolFarmImpl } from '@mercurial-finance/farming-sdk';
 import va from '@vercel/analytics';
 
