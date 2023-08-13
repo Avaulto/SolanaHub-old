@@ -42,19 +42,5 @@ export class ActiveDepositsComponent  implements OnInit {
 
 
     })
-    // const conn = io('wss://api.frakt.xyz',{ transports: ['websocket'] });
-    //   conn.emit('lending-subscribe', this._solanaUtilsService.getCurrentWallet().publicKey.toBase58());
-    //   conn.on('lending', (loans: PoolIO[]) => {
-    //     console.log(loans)
-    //     this.loans = loans
-    //     loans.map(loan =>{
-    //      if(loan.userDeposit?.depositAmount > 0){
-    //        this.activePools.push({name:loan.name, amount: 'YOUR LIQUIDITY: ' + Number(loan.userDeposit.depositAmount).toFixedNoRounding(2) +' ◎'})
-    //       }
-          
-    //     })
-       
-    //     conn.close()
-    //       })
   }
 }
