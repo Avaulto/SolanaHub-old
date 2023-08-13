@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
-import { io } from "socket.io-client";
 import { ApiService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import { PoolIO, UserDeposit } from '../../frakt.model';
 import { FraktStoreService } from '../../frakt-store.service';

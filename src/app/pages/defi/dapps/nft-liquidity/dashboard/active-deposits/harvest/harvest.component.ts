@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { io } from "socket.io-client";
 import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import { PoolIO, UserDeposit } from '../../../frakt.model';
 import { FraktStoreService } from '../../../frakt-store.service';

@@ -54,10 +54,6 @@ export class SendComponent implements OnInit {
       targetAddress: ['', [Validators.required]],
       privateTx: [false]
     })
-
-    this.sendCoinForm.valueChanges.subscribe(form => {
-      console.log(form, this.sendCoinForm)
-    })
   }
   async pkVerifyValidator() {
 
@@ -105,11 +101,9 @@ export class SendComponent implements OnInit {
     // maximum fee payable
     const maxFee = 5000 * 100;
     try {
-      console.time('private-tx')
       const privateBalanceSOL = Number(this.privateBalance * LAMPORTS_PER_SOL) || 0
       // Top up our private balance only if the balance size is less than what user ask to send
       if (SOL > privateBalanceSOL) {
-        console.log('need more balance')
         this._toasterService.msg.next(toasterMessage)
         const topupTxData = await this._elusiv.buildTopUpTx(SOL - privateBalanceSOL, 'LAMPORTS');
         const signedTx = await firstValueFrom(this._wallet.signTransaction(topupTxData.tx)) as Transaction;
@@ -117,7 +111,6 @@ export class SendComponent implements OnInit {
 
         // SHOW ALERT
         toasterMessage.message = 'Topuping up your private account'
-        console.log('Topuping up your private account')
         this._toasterService.msg.next(toasterMessage)
         const topupSig = await this._elusiv.sendElusivTx(topupTxData)
         // update balance on UI
@@ -141,7 +134,6 @@ export class SendComponent implements OnInit {
       toasterMessage.duration = 3000
       this._toasterService.msg.next(toasterMessage)
 
-      console.timeEnd('private-tx')
       // console.log(`Performed topup with sig ${topupSig.signature} and send with sig ${sendSig.signature}`);
       // Wait for the send to be confirmed (have your UI do something else here, this takes a little)
       // await sendTxSig.confirmationStatus;
@@ -172,6 +164,7 @@ export class SendComponent implements OnInit {
 
   }
   private async _getPrivateBalance() {
+    console.log(this._elusiv)
     try {
       const balanceBN = (await this._elusiv.getLatestPrivateBalance("LAMPORTS")).toString() || 0;
       this.privateBalance = (Number(balanceBN) / LAMPORTS_PER_SOL).toFixedNoRounding(3);
