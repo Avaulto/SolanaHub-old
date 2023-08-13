@@ -137,7 +137,8 @@ export class MarinadePlusService {
         totalUsdValue: 0,
         baseOfPortfolio: 0
       }
-    ]
+    ],
+    fees:[]
   }
   public async initStrategyStats(): Promise<{apy, tvl}> {
     try {

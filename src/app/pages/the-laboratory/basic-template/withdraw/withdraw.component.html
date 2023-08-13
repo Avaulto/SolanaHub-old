@@ -6,7 +6,7 @@
 
   <ion-row class="ion-justify-content-center">
     <ng-container *ngIf="walletExtended$; else elseTemplate">
-      <ion-button [disabled]="strategyConfiguration.assetHoldings[0].totalUsdValue === 0" (click)="withdraw()" type="button"
+      <ion-button  (click)="withdraw()" type="button"
       class="ion-text-capitalize">
       <span>
         withdraw all

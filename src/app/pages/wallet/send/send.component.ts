@@ -155,7 +155,9 @@ export class SendComponent implements OnInit {
         // init elusiv SDK
         this._elusiv = await Elusiv.getElusivInstance(signedSeed, walletOwner, this._solanaUtilsService.connection, environment.solanaEnv as Cluster);
         // init private balance
-        this._getPrivateBalance()
+        setTimeout(() => {
+          this._getPrivateBalance()
+        }, 1500);
       }
     } catch (error) {
       console.error(error)

@@ -15,9 +15,13 @@
     <ion-input class="button-text" formControlName="amount" type="number" placeholder="Amount" ></ion-input>
     <span class="heading-6" (click)="setMaxAmountSOL()">MAX</span>
   </ion-row>
-  <ion-row id="notes" class="ion-align-items-center ion-justify-content-between">
-   <ion-col>Maximum slippage</ion-col>
-   <ion-col id="max-slippage">0.1%</ion-col>
+  <ion-row id="notes" class="ion-align-items-center ion-justify-content-between" *ngFor="let fee of strategyConfiguration.fees">
+   <ion-col>
+    {{fee.name}} <app-icon-tooltip [tooltip]="fee.desc"></app-icon-tooltip>
+
+
+   </ion-col>
+   <ion-col id="max-slippage">{{fee.value / 100 | percent:'1.0-4'}}</ion-col>
   </ion-row>
 
   <ion-row class="ion-justify-content-center">

@@ -70,7 +70,7 @@ export class SolblazeFarmerService {
   public strategySDK: StrategySDK = { farm: null, pool: null };
   public convertRatio = 0;
   public fetchUserHoldings$ = new Subject()
-  public txStatus$ = new BehaviorSubject({totalTx:3,finishTx:0, start: false})
+  public txStatus$ = new BehaviorSubject({ totalTx: 3, finishTx: 0, start: false })
   constructor(
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -155,6 +155,23 @@ export class SolblazeFarmerService {
         totalUsdValue: 0,
         baseOfPortfolio: 0
       }
+    ],
+    fees: [
+      {
+        name: 'Maximum slippage',
+        desc: 'slippage that may cause for swapping different assets',
+        value: 0.01
+      },
+      {
+        name: 'Liquidity Provider Fee',
+        desc: 'the amount of fees charged on each trade that goes to the LPs',
+        value: 0.0075
+      },
+      {
+        name: 'Admin Fee',
+        desc: 'the amount of fees charged on each trade that goes to the protocol',
+        value: 0.0025
+      }
     ]
   }
 
@@ -181,14 +198,14 @@ export class SolblazeFarmerService {
     const sol = new bn((SOL_amount) * LAMPORTS_PER_SOL);
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     try {
-      this.txStatus$.next({totalTx:3, finishTx: 0,start: true})
+      this.txStatus$.next({ totalTx: 3, finishTx: 0, start: true })
       const { txIns, signers } = await this._bSolStake(sol);
       const tx1Res = await this._txInterceptService.sendTx(txIns, walletOwner, signers)
       if (!tx1Res) {
-        this.txStatus$.next({...this.txStatus$.value, start: false})
+        this.txStatus$.next({ ...this.txStatus$.value, start: false })
         return
       }
-      this.txStatus$.next({...this.txStatus$.value, finishTx: 1})
+      this.txStatus$.next({ ...this.txStatus$.value, finishTx: 1 })
       const deposit_bSOL = await this._bsolConverter('SOL', SOL_amount);
       const slippage = 0.999 // 0.1 %
       const bSOL = new bn((deposit_bSOL.converterAsset * slippage) * LAMPORTS_PER_SOL);
@@ -196,21 +213,21 @@ export class SolblazeFarmerService {
 
       const tx2Res = await this._txInterceptService.sendTx([txIx2], walletOwner)
       if (!tx2Res) {
-        this.txStatus$.next({...this.txStatus$.value, start: false})
+        this.txStatus$.next({ ...this.txStatus$.value, start: false })
         return
       }
-      this.txStatus$.next({...this.txStatus$.value, finishTx: 2})
+      this.txStatus$.next({ ...this.txStatus$.value, finishTx: 2 })
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx3 = await this.strategySDK.farm.deposit(walletOwner, poolLpBalance);
 
-      const res3= await this._txInterceptService.sendTx([txIx3], walletOwner)
+      const res3 = await this._txInterceptService.sendTx([txIx3], walletOwner)
       if (!res3) {
-        this.txStatus$.next({...this.txStatus$.value, start: false})
+        this.txStatus$.next({ ...this.txStatus$.value, start: false })
         return
       }
-      this.txStatus$.next({...this.txStatus$.value, finishTx: 3})
+      this.txStatus$.next({ ...this.txStatus$.value, finishTx: 3 })
       setTimeout(() => {
-        this.txStatus$.next({...this.txStatus$.value, start: false})
+        this.txStatus$.next({ ...this.txStatus$.value, start: false })
       }, 2000);
       va.track('solblaze-farmer strategy', { type: 'deposit', size: SOL_amount });
     } catch (error) {
@@ -228,22 +245,22 @@ export class SolblazeFarmerService {
 
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     try {
-      this.txStatus$.next({totalTx:2, finishTx: 0,start: true})
+      this.txStatus$.next({ totalTx: 2, finishTx: 0, start: true })
       const farmLpBalance = await this.strategySDK.farm.getUserBalance(walletOwner);
       const txIx1 = await this.strategySDK.farm.withdraw(walletOwner, farmLpBalance);
 
       const tx1Res = await this._txInterceptService.sendTx([txIx1], walletOwner)
       if (!tx1Res) {
-        this.txStatus$.next({...this.txStatus$.value, start: false})
+        this.txStatus$.next({ ...this.txStatus$.value, start: false })
         return
       }
-      this.txStatus$.next({...this.txStatus$.value, finishTx: 1})
+      this.txStatus$.next({ ...this.txStatus$.value, finishTx: 1 })
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx2 = await this._withdrawFromMeteoraPool(poolLpBalance, walletOwner)
       await this._txInterceptService.sendTx([txIx2], walletOwner)
-      this.txStatus$.next({...this.txStatus$.value, finishTx: 2})
+      this.txStatus$.next({ ...this.txStatus$.value, finishTx: 2 })
       setTimeout(() => {
-        this.txStatus$.next({...this.txStatus$.value, start: false})
+        this.txStatus$.next({ ...this.txStatus$.value, start: false })
       }, 2000);
       va.track('solblaze-farmer strategy', { type: 'withdraw' });
     } catch (error) {
@@ -274,11 +291,11 @@ export class SolblazeFarmerService {
       tokenBOutAmount
     } = this.strategySDK.pool.getWithdrawQuote(
       withdrawLpAmount, // bSOL
-      1,
+      0.01,
       new PublicKey(this.strategySDK.pool.tokenA.address),
       // false
     );
-    // console.log("out:", poolTokenAmountIn.toString(),
+    // console.log("in:", poolTokenAmountIn.toString(),
     //   "minTokenAOutAmount:", minTokenAOutAmount.toString(),
     //   "minTokenBOutAmount:", minTokenBOutAmount.toString(),
     //   "tokenAOutAmount:", tokenAOutAmount,
@@ -308,7 +325,7 @@ export class SolblazeFarmerService {
     let userHoldings = { SOL: 0, USD: 0 }
     try {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
-      if(!this.strategySDK.pool){
+      if (!this.strategySDK.pool) {
         await this.initPoolSDK()
       }
 
@@ -323,14 +340,14 @@ export class SolblazeFarmerService {
 
       const balances = await this.getTotalBalanceBreakDown()
       userHoldings = { SOL: balances.position_balance.SOL, USD: balances.position_balance.USD }
-      
-      const solUSDbalance = balances.position_holding.SOL * balances.assetRatio;;
+
+      const solUSDbalance = balances.position_holding.SOL * balances.SOLprice
 
       this.strategyConfiguration.assetHoldings[0].balance = balances.position_holding.SOL
       this.strategyConfiguration.assetHoldings[0].totalUsdValue = solUSDbalance
       this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = balances.position_holding.baseOfPortfolio.SOL
 
-      const bsolUSDbalance = balances.position_holding.bSOL / balances.assetRatio;
+      const bsolUSDbalance = balances.position_holding.bSOL / balances.assetRatio * balances.SOLprice;
       this.strategyConfiguration.assetHoldings[1].balance = balances.position_holding.bSOL
       this.strategyConfiguration.assetHoldings[1].totalUsdValue = bsolUSDbalance
       this.strategyConfiguration.assetHoldings[1].baseOfPortfolio = balances.position_holding.baseOfPortfolio.bSOL
@@ -376,7 +393,7 @@ export class SolblazeFarmerService {
   public async getStrategyAPY(): Promise<{ strategyAPY, solblazeAPY: number, meteoraAPY: { pool: number, farm: number } }> {
     let strategyAPY, solblazeAPY, meteoraPoolAPY, meteoraFarmAPY = 0;
     try {
-      if(!this._meteoraSolBsolPoolAPI){
+      if (!this._meteoraSolBsolPoolAPI) {
         this._meteoraSolBsolPoolAPI = await this._getAMMbSOLpool()
       }
 
@@ -394,7 +411,7 @@ export class SolblazeFarmerService {
     return { strategyAPY, solblazeAPY, meteoraAPY: { pool: meteoraPoolAPY, farm: meteoraFarmAPY } };
 
   }
-  public async getTotalBalanceBreakDown(): Promise<{ position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } }, position_balance: { SOL: number, USD: number }, assetRatio }> {
+  public async getTotalBalanceBreakDown(): Promise<{ position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } }, position_balance: { SOL: number, USD: number }, assetRatio,SOLprice }> {
 
 
     try {
@@ -403,21 +420,19 @@ export class SolblazeFarmerService {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
       // const lpBalance = await this._getUserLpDeposit()
       const farmBalance = await this.strategySDK.farm.getUserBalance(walletOwner)
-      const slippage = 1 // 0.1%
+      const slippage = 0.01 
       const { poolTokenAmountIn, tokenAOutAmount, tokenBOutAmount } = this.strategySDK.pool.getWithdrawQuote(farmBalance, slippage); // use lp balance for full withdrawal
-      position_holding.SOL = Number(tokenAOutAmount.toString()) / LAMPORTS_PER_SOL
-      position_holding.bSOL = Number(tokenBOutAmount.toString()) / LAMPORTS_PER_SOL
       const { converterAsset, assetRatio, SOLprice } = await this._bsolConverter('bSOL', Number(tokenBOutAmount.toString()) / LAMPORTS_PER_SOL)
-
+     
+      position_holding.SOL = Number(tokenAOutAmount.toString()) / LAMPORTS_PER_SOL || 0
+      position_holding.bSOL = Number(tokenBOutAmount.toString()) / LAMPORTS_PER_SOL || 0
       position_balance.SOL = converterAsset + position_holding.SOL
       position_balance.USD = position_balance.SOL * SOLprice
-      position_holding.SOL = Number(tokenAOutAmount.toString()) / LAMPORTS_PER_SOL
-      position_holding.bSOL = Number(tokenBOutAmount.toString()) / LAMPORTS_PER_SOL
-      const bSOLbase = position_holding.bSOL * assetRatio * SOLprice / position_balance.USD * 100;
-      position_holding.baseOfPortfolio.bSOL = bSOLbase
+      const bSOLbase =  tokenBOutAmount.toNumber() * ((1 - assetRatio )+1) / farmBalance.toNumber() *100  || 0 
+      position_holding.baseOfPortfolio.bSOL = Math.floor(bSOLbase)
 
-      const SOLbase = position_holding.SOL * SOLprice / position_balance.USD * 100;
-      position_holding.baseOfPortfolio.SOL = SOLbase
+      const SOLbase = tokenAOutAmount.toNumber() / farmBalance.toNumber() * 100  || 0
+      position_holding.baseOfPortfolio.SOL = Math.ceil(SOLbase)
 
       // console.log(
       //   // 'lp:', poolTokenAmountIn.toString(),
@@ -426,7 +441,7 @@ export class SolblazeFarmerService {
       //   'bsol:', position_holding.bSOL,
       //   'bsol converted:', converterAsset
       // )
-      return { position_holding, position_balance, assetRatio };
+      return { position_holding, position_balance, assetRatio, SOLprice };
     } catch (error) {
       console.warn(error)
     }

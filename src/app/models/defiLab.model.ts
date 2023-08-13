@@ -36,9 +36,15 @@ export interface LabStrategyConfiguration {
   strategy_breakdown: string[],
   totalTransactions: number,
   claimAssets: StrategyClaimableAsset[],
-  assetHoldings: Asset[]
+  assetHoldings: Asset[],
+  fees: Fee[]
 }
 
+interface Fee{
+  name: string,
+  desc: string,
+  value:number
+}
 interface APY_breakdown {
   icon: string,
   description: string
