@@ -160,18 +160,18 @@ export class SolblazeFarmerService {
       {
         name: 'Maximum slippage',
         desc: 'slippage that may cause for swapping different assets',
-        value: 0.01
+        value: 0.1
       },
-      {
-        name: 'Liquidity Provider Fee',
-        desc: 'the amount of fees charged on each trade that goes to the LPs',
-        value: 0.0075
-      },
-      {
-        name: 'Admin Fee',
-        desc: 'the amount of fees charged on each trade that goes to the protocol',
-        value: 0.0025
-      }
+      // {
+      //   name: 'Liquidity Provider Fee',
+      //   desc: 'the amount of fees charged on each trade that goes to the LPs',
+      //   value: 0.0075
+      // },
+      // {
+      //   name: 'Admin Fee',
+      //   desc: 'the amount of fees charged on each trade that goes to the protocol',
+      //   value: 0.0025
+      // }
     ]
   }
 
@@ -274,14 +274,14 @@ export class SolblazeFarmerService {
       new bn(0), // SOL
       depositAmount, // bSOL
       false,
-      1
+      0.1
     );
     // console.log("out:", poolTokenAmountOut.toString(), "in a:", tokenAInAmount.toString(), "im b:", tokenBInAmount.toString())
     const depositTx = await this.strategySDK.pool.deposit(walletOwner, tokenAInAmount, tokenBInAmount, poolTokenAmountOut);
     return depositTx;
   }
 
-  async _withdrawFromMeteoraPool(withdrawLpAmount: bn, walletOwner: PublicKey): Promise<Transaction> {
+  private async _withdrawFromMeteoraPool(withdrawLpAmount: bn, walletOwner: PublicKey): Promise<Transaction> {
     // Get deposit quote for constant product
     const {
       poolTokenAmountIn,
@@ -291,16 +291,10 @@ export class SolblazeFarmerService {
       tokenBOutAmount
     } = this.strategySDK.pool.getWithdrawQuote(
       withdrawLpAmount, // bSOL
-      0.01,
+      0.1,
       new PublicKey(this.strategySDK.pool.tokenA.address),
       // false
     );
-    // console.log("in:", poolTokenAmountIn.toString(),
-    //   "minTokenAOutAmount:", minTokenAOutAmount.toString(),
-    //   "minTokenBOutAmount:", minTokenBOutAmount.toString(),
-    //   "tokenAOutAmount:", tokenAOutAmount,
-    //   "tokenBOutAmount:", tokenBOutAmount
-    // )
     const depositTx = await this.strategySDK.pool.withdraw(walletOwner, withdrawLpAmount, tokenAOutAmount, tokenBOutAmount);
     return depositTx;
   }
@@ -525,7 +519,7 @@ export class SolblazeFarmerService {
     const inAmountLamport = new bn(amount * 10 ** this.strategySDK.pool.tokenB.decimals); // bSOL
 
     // Swap bSOL → SOL
-    const swapQuote = this.strategySDK.pool.getSwapQuote(new PublicKey(this.strategySDK.pool.tokenB.address), inAmountLamport, 1);
+    const swapQuote = this.strategySDK.pool.getSwapQuote(new PublicKey(this.strategySDK.pool.tokenB.address), inAmountLamport, 0.1);
     const swapTx = await this.strategySDK.pool.swap(
       walletOwner,
       new PublicKey(this.strategySDK.pool.tokenB.address),
