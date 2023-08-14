@@ -118,11 +118,11 @@ export class MarinadePlusService {
       riskLevel: 'high',
       description: 'Multiple Smart Contract Exposure',
     }],
-    strategy_breakdown: [
-      'Deposit SOL To Marinade Liquid Staking Pool',
-      'Get MSOL In Return',
-      'Deposit MSOL Into Solend And Supply Liquidity On MSOL Pool'
-    ],
+    // strategy_breakdown: [
+    //   'Deposit SOL To Marinade Liquid Staking Pool',
+    //   'Get MSOL In Return',
+    //   'Deposit MSOL Into Solend And Supply Liquidity On MSOL Pool'
+    // ],
     totalTransactions: 2,
     claimAssets: [{
       name: 'MNDE',

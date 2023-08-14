@@ -122,11 +122,21 @@ export class SolblazeFarmerService {
       description: 'Multiple Smart Contract Exposure',
     }],
     strategy_breakdown: [
-      'Deposit SOL To Solblaze Liquid Staking Pool',
-      'Get bSOL In Return',
-      'Deposit bSOL + SOL to Meteora pool',
-      'GET SOL-bSOL LP in return',
-      'Deposit SOL-bSOL LP into Meteora SOL-bSOL farm'
+      {
+        step: 1,
+        action: 'Deposit SOL To Solblaze Pool',
+        outcome: 'Get bSOL In Return',
+      },
+      {
+        step: 2,
+        action: 'Deposit into Meteora pool',
+        outcome: 'GET SOL-bSOL LP in return',
+      },
+      {
+        step: 3,
+        action: 'Deposit SOL-bSOL LP into Meteora SOL-bSOL farm',
+        outcome: ''
+      },
     ],
     totalTransactions: 3,
     claimAssets: [{
@@ -405,7 +415,7 @@ export class SolblazeFarmerService {
     return { strategyAPY, solblazeAPY, meteoraAPY: { pool: meteoraPoolAPY, farm: meteoraFarmAPY } };
 
   }
-  public async getTotalBalanceBreakDown(): Promise<{ position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } }, position_balance: { SOL: number, USD: number }, assetRatio,SOLprice }> {
+  public async getTotalBalanceBreakDown(): Promise<{ position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } }, position_balance: { SOL: number, USD: number }, assetRatio, SOLprice }> {
 
 
     try {
@@ -414,18 +424,18 @@ export class SolblazeFarmerService {
       const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
       // const lpBalance = await this._getUserLpDeposit()
       const farmBalance = await this.strategySDK.farm.getUserBalance(walletOwner)
-      const slippage = 0.01 
+      const slippage = 0.01
       const { poolTokenAmountIn, tokenAOutAmount, tokenBOutAmount } = this.strategySDK.pool.getWithdrawQuote(farmBalance, slippage); // use lp balance for full withdrawal
       const { converterAsset, assetRatio, SOLprice } = await this._bsolConverter('bSOL', Number(tokenBOutAmount.toString()) / LAMPORTS_PER_SOL)
-     
+
       position_holding.SOL = Number(tokenAOutAmount.toString()) / LAMPORTS_PER_SOL || 0
       position_holding.bSOL = Number(tokenBOutAmount.toString()) / LAMPORTS_PER_SOL || 0
       position_balance.SOL = converterAsset + position_holding.SOL
       position_balance.USD = position_balance.SOL * SOLprice
-      const bSOLbase =  tokenBOutAmount.toNumber() * ((1 - assetRatio )+1) / farmBalance.toNumber() *100  || 0 
+      const bSOLbase = tokenBOutAmount.toNumber() * ((1 - assetRatio) + 1) / farmBalance.toNumber() * 100 || 0
       position_holding.baseOfPortfolio.bSOL = Math.floor(bSOLbase)
 
-      const SOLbase = tokenAOutAmount.toNumber() / farmBalance.toNumber() * 100  || 0
+      const SOLbase = tokenAOutAmount.toNumber() / farmBalance.toNumber() * 100 || 0
       position_holding.baseOfPortfolio.SOL = Math.ceil(SOLbase)
 
       // console.log(

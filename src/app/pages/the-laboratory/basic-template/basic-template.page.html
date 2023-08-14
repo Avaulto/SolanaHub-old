@@ -1,40 +1,30 @@
 <ion-content scroll-y style="--background:transparent;">
   <ion-grid class="ion-padding">
     <app-dapp-head [name]="strategyConfiguration.protocolsTitle"
-     [imgPath]="strategyConfiguration?.strategyIcon"></app-dapp-head>
+      [imgPath]="strategyConfiguration?.strategyIcon"></app-dapp-head>
     <!-- <app-defi-stats [stats]="strategyStats"></app-defi-stats> -->
-    <app-strategy-stats
-     [strategyName]="strategyName"
-     [userHoldings]="userHoldings"
-     (onApyReady)="apy = $event"
-     ></app-strategy-stats>
+    <app-strategy-stats [strategyName]="strategyName" [userHoldings]="userHoldings"
+      (onApyReady)="apy = $event"></app-strategy-stats>
     <ion-row class="ion-justify-content-between">
 
 
-      <ion-col class="data-box" sizeLg="7.7" size="12">
+      <ion-col class="data-box" sizeMd="7.7" size="12">
         <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
         <ng-container [ngSwitch]="currentTab" class="ion-padding">
 
-          <app-deposit 
-             *ngSwitchCase="'deposit'" 
-            [walletExtended$]="walletExtended$ | async"
-            [strategyAPY]="apy / 100 | percent:'1.0-2' "
-            [strategyConfiguration]="strategyConfiguration">
+          <app-deposit *ngSwitchCase="'deposit'" [walletExtended$]="walletExtended$ | async"
+            [strategyAPY]="apy / 100 | percent:'1.0-2' " [strategyConfiguration]="strategyConfiguration">
           </app-deposit>
-          <app-withdraw 
-            *ngSwitchCase="'withdraw'"
-            [walletExtended$]="walletExtended$ | async"
+          <app-withdraw *ngSwitchCase="'withdraw'" [walletExtended$]="walletExtended$ | async"
             [strategyConfiguration]="strategyConfiguration">
           </app-withdraw>
-          <app-claim 
-          *ngSwitchCase="'claim'" 
-          [walletExtended$]="walletExtended$ | async"
-          [strategyConfiguration]="strategyConfiguration">
+          <app-claim *ngSwitchCase="'claim'" [walletExtended$]="walletExtended$ | async"
+            [strategyConfiguration]="strategyConfiguration">
           </app-claim>
 
-          </ng-container>
+        </ng-container>
       </ion-col>
-      <ion-col class="data-box ion-padding ion-text-capitalize" sizeLg="4" size="12">
+      <ion-col class="data-box ion-padding ion-text-capitalize" sizeMd="4" size="12">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">APY Breakdown</div>
         <div class="yield-asset break-down" *ngFor="let apyItem of strategyConfiguration?.APY_breakdown">
           <div>
@@ -48,11 +38,25 @@
       </ion-col>
     </ion-row>
     <ion-row class="ion-justify-content-between">
-      <ion-col sizeLg="7.7" class="data-box ion-padding ion-text-capitalize">
+      <ion-col sizeMd="7.7" class="data-box ion-padding ion-text-capitalize">
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">Strategy Breakdown</div>
-        <div class=" break-down" *ngFor="let strategyItem of strategyConfiguration?.strategy_breakdown">
-          <span>{{strategyItem}}</span>
-        </div>
+        <ion-row class="strategy-breakdown ion-justify-content-between">
+        <ion-col size="12" sizeMd="3.8"  *ngFor="let strategyItem of strategyConfiguration?.strategy_breakdown; let i = index">
+          <div class="break-down-inner">
+
+            <span class="bd-step"> {{strategyItem.step}}</span>
+            
+            <div class="bd-action">
+              <span>{{strategyItem.action}}</span>
+            </div>
+            <ion-icon name="swap-vertical-outline" *ngIf="strategyItem.outcome"></ion-icon>
+            <div class="bd-outcome" *ngIf="strategyItem.outcome">
+              <span>{{strategyItem.outcome}}</span>
+            </div>
+          </div>
+          <!-- <ion-icon *ngIf="strategyConfiguration?.strategy_breakdown.length -1 > i" name="caret-forward-outline"></ion-icon> -->
+        </ion-col>
+      </ion-row>
         <div class="heading-4 ion-margin-bottom ion-text-uppercase">Total transactions required</div>
         <p>{{strategyConfiguration?.totalTransactions}}</p>
       </ion-col>

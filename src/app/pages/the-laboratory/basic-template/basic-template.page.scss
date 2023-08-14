@@ -9,9 +9,10 @@
 
 
 .yield-asset {
-    div{
+    div {
         margin-inline-end: 6px;
     }
+
     ion-img {
         width: 30px;
         border-radius: 50%;
@@ -19,17 +20,19 @@
     }
 }
 
-.break-down{
+.break-down {
     display: flex;
     align-items: center;
     border-bottom: 1px solid #d3d3d354;
     margin-bottom: 10px;
     padding-bottom: 10px;
+
     span {
         font-size: 13px;
         font-weight: 100;
     }
 }
+
 #risk-info {
     .risk {
         span {
@@ -37,6 +40,7 @@
             height: 10px;
             border-radius: 50%;
             margin-inline-end: 10px;
+
             &.low {
                 background: var(--ion-color-success);
             }
@@ -51,5 +55,37 @@
         }
 
 
+    }
+}
+
+.strategy-breakdown {
+    .break-down-inner {
+    position: relative;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 16px;
+    border-radius: 4px;
+    padding: 10px 8px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100px;
+    justify-content: center;
+    }
+
+    .bd-step {
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        background: var(--ion-color-secondary);
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        font-size: 11px;
+    }
+
+    ion-icon {
+        color: var(--ion-color-primary);
     }
 }
