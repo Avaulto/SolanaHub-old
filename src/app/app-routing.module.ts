@@ -34,10 +34,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/stake-with-us/stake-with-us.module').then( m => m.StakeWithUsPageModule)
   },
   {
-    path: 'stake-gen2',
-    loadChildren: () => import('./pages/staking-gen2/staking-gen2.module').then( m => m.StakingGen2PageModule)
-  },
-  {
     path: 'the-laboratory',
     loadChildren: () => import('./pages/the-laboratory/the-laboratory.module').then( m => m.TheLaboratoryPageModule)
   },
