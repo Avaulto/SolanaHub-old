@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { getPlatformFeeAccounts, Jupiter, PlatformFeeAndAccounts, RouteInfo } from '@jup-ag/core';
+
 import { PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
 import va from '@vercel/analytics';
 
 import { catchError, firstValueFrom, Observable, throwError } from 'rxjs';
 import { JupiterPriceFeed, JupRoute, Token, WalletExtended } from '../models';
 import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService } from './';
-import { environment } from 'src/environments/environment';
-import { WalletStore } from '@heavy-duty/wallet-adapter';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +22,11 @@ export class JupiterStoreService {
     return throwError((() => error))
   }
 
-  protected _jupiterAPI = 'https://quote-api.jup.ag/v4'
-  private _jupiter: Jupiter;
   constructor(
     private _txInterceptService: TxInterceptService,
     private _toasterService: ToasterService,
     private _apiService: ApiService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _walletStore: WalletStore,
   ) { }
 
   public async computeBestRoute(inputAmount: number,
@@ -99,7 +95,7 @@ export class JupiterStoreService {
   public async fetchPriceFeed(mintAddress: string, vsAmount: number = 1): Promise<JupiterPriceFeed> {
     let data: JupiterPriceFeed = null
     try {
-      const res = await fetch(`${this._jupiterAPI}/price?ids=${mintAddress}&vsAmount=${vsAmount}`);
+      const res = await fetch(`https://quote-api.jup.ag/v4/price?ids=${mintAddress}&vsAmount=${vsAmount}`);
       data = await res.json();
     } catch (error) {
       console.warn(error);
