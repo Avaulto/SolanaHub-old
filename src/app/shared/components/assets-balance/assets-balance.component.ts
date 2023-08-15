@@ -20,7 +20,6 @@ export class AssetsBalanceComponent implements OnInit {
   public totalBalanceLamport;
   @Input() isChecked: boolean;
   @Output() onClickAsset: EventEmitter<any> = new EventEmitter();
-  @ViewChild('checkbox') checkbox: IonCheckbox;
   constructor( private _utilsService:UtilsService) { }
 
   ngOnInit() {
@@ -30,6 +29,7 @@ export class AssetsBalanceComponent implements OnInit {
     return this._utilsService.formatBigNumbers(n) ;
   };
   appendAssetData(){
-    this.onClickAsset.emit({ asset:this.asset, assetCheckbox:this.checkbox})
+    this.isChecked = !this.isChecked;
+    this.onClickAsset.emit({ asset:this.asset, assetCheckbox:this.isChecked })
   }
 }

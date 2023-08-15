@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { getPlatformFeeAccounts, Jupiter, PlatformFeeAndAccounts, RouteInfo } from '@jup-ag/core';
-import { PublicKey, Transaction } from '@solana/web3.js';
-import JSBI from 'jsbi';
+import { PublicKey, Transaction, VersionedTransaction } from '@solana/web3.js';
+import va from '@vercel/analytics';
 
-import { catchError, Observable, throwError } from 'rxjs';
-import { JupiterPriceFeed, Token, WalletExtended } from '../models';
-import { ApiService, SolanaUtilsService, ToasterService } from './';
+import { catchError, firstValueFrom, Observable, throwError } from 'rxjs';
+import { JupiterPriceFeed, JupRoute, Token, WalletExtended } from '../models';
+import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService } from './';
 import { environment } from 'src/environments/environment';
+import { WalletStore } from '@heavy-duty/wallet-adapter';
 
 @Injectable({
   providedIn: 'root'
@@ -25,61 +26,27 @@ export class JupiterStoreService {
   protected _jupiterAPI = 'https://quote-api.jup.ag/v4'
   private _jupiter: Jupiter;
   constructor(
+    private _txInterceptService: TxInterceptService,
     private _toasterService: ToasterService,
     private _apiService: ApiService,
-    private _solanaUtilsService: SolanaUtilsService
+    private _solanaUtilsService: SolanaUtilsService,
+    private _walletStore: WalletStore,
   ) { }
-  public async initJup(wallet: WalletExtended) {
-    if (!this._jupiter) {
-      const connection = this._solanaUtilsService.connection;
-      const pk = wallet.publicKey
-      try {
-        //   const platformFeeAndAccounts: PlatformFeeAndAccounts = {
-        //     feeBps: 50,
-        //     feeAccounts: new Map<string, PublicKey>([
-        //       ["So11111111111111111111111111111111111111112", new PublicKey('81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1')]
-        //   ])
-        // };
 
-
-        const platformFeeAndAccounts = {
-          feeBps: 10,
-          feeAccounts: await getPlatformFeeAccounts(
-            connection,
-            new PublicKey(environment.platformFeeCollector) // The platform fee account owner
-          ) // map of mint to token account pubkey
-        };
-        this._jupiter = await Jupiter.load({
-          connection,
-          wrapUnwrapSOL: true,
-          cluster: 'mainnet-beta',
-          user: pk, // or public key
-          // platformFeeAndAccounts,
-          routeCacheDuration: 10_000, // Will not refetch data on computeRoutes for up to 10 seconds
-        });
-      } catch (error) {
-        console.error(error)
-      }
-    }
-
-  }
-  public async computeBestRoute(inputAmount: number, inputToken, outputToken, slippage: number, LegacyTx: boolean = false): Promise<RouteInfo> {
-    let bestRoute: RouteInfo = null;
+  public async computeBestRoute(inputAmount: number,
+    inputToken,
+    outputToken,
+    slippage: number): Promise<JupRoute> {
+    let bestRoute: JupRoute = null;
     const inputAmountInSmallestUnits = inputToken
       ? Math.round(Number(inputAmount) * 10 ** inputToken.decimals)
       : 0;
     try {
-      const routes = await this._jupiter.computeRoutes({
-        inputMint: new PublicKey(inputToken.address),
-        outputMint: new PublicKey(outputToken.address),
-        amount: JSBI.BigInt(inputAmountInSmallestUnits),
-        onlyDirectRoutes: false,
-        slippage: slippage, // 1 = 1%
-        forceFetch: true, // (optional) to force fetching routes and not use the cache
-        // intermediateTokens, if provided will only find routes that use the intermediate tokens
-        feeBps: 0
-      });
-      bestRoute = routes.routesInfos[0]
+
+      bestRoute = await (
+        await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=${inputToken.address}&outputMint=${outputToken.address}&amount=${inputAmountInSmallestUnits}&slippageBps=${slippage}`)
+      ).json();
+
     } catch (error) {
       console.warn(error)
     }
@@ -87,25 +54,41 @@ export class JupiterStoreService {
     //return best route
     return bestRoute
   }
-  public async swapTx(routeInfo: RouteInfo): Promise<Transaction[]> {
-    const arrayOfTx: Transaction[] = []
+  public async swapTx(routeInfo: JupRoute): Promise<void> {
+    // const arrayOfTx: Transaction[] = []
     try {
-      const { transactions } = await this._jupiter.exchange({
-        routeInfo
-      });
+      const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
+      const { swapTransaction } = await (
+        await fetch('https://quote-api.jup.ag/v6/swap', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            // asLegacyTransaction: true,
+            // quoteResponse from /quote api
+            quoteResponse: routeInfo,
+            // user public key to be used for the swap
+            userPublicKey: walletOwner.toString(),
+            // auto wrap and unwrap SOL. default is true
+            wrapUnwrapSOL: true,
+            // feeAccount is optional. Use if you want to charge a fee.  feeBps must have been passed in /quote API.
+            // feeAccount: "fee_account_public_key"
+          })
+        })
+      ).json();
+      const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+      var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
 
-      // Execute the transactions
-      const { setupTransaction, swapTransaction, cleanupTransaction } = transactions
-      for (let transaction of [setupTransaction, swapTransaction, cleanupTransaction].filter(Boolean)) {
-        if (!transaction) {
-          continue;
-        }
-        arrayOfTx.push(transaction)
-      }
+      await this._txInterceptService.sendTxV2(transaction);
+
+      va.track('jupiter', { type: `simple swap` });
     } catch (error) {
       console.warn(error)
     }
-    return arrayOfTx
+
+
+
   }
   public fetchTokenList(): Observable<Token[]> {
     //const env = TOKEN_LIST_URL[environment.solanaEnv]//environment.solanaEnv

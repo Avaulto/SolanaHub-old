@@ -12,7 +12,7 @@
       <ion-row class="ion-text-capitalize ion-justify-content-between ion-align-items-center">
         <h4 class="heading-4 ion-text-capitalize">select assets to swap</h4>
         <div style="display: flex;align-items: center;">
-          <ion-checkbox style="margin-inline-end: 5px;" [checked]="true" (click)="toggleCheck()"></ion-checkbox>
+          <ion-checkbox style="margin-inline-end: 5px;" [checked]="true" (ionChange)="toggleCheck()"></ion-checkbox>
           <ion-label>select all</ion-label> 
         </div>
       </ion-row>

@@ -322,4 +322,39 @@ export class TxInterceptService {
       // onMsg('transaction failed', 'error')
     }
   }
+  public async sendTxV2(txParam: VersionedTransaction) {
+    try {
+      const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
+
+      let signedTx = await firstValueFrom(this._walletStore.signTransaction(txParam));
+
+      const rawTransaction = signedTx.serialize({ requireAllSignatures: false });
+      const signature = await this.solanaUtilsService.connection.sendRawTransaction(rawTransaction);
+      const url = `${this._utilsService.explorer}/tx/${signature}?cluster=${environment.solanaEnv}`
+      const txSend: toastData = {
+        message: `Transaction Submitted`,
+        btnText: `view on explorer`,
+        segmentClass: "toastInfo",
+        duration: 10000,
+        cb: () => window.open(url)
+      }
+      this.toasterService.msg.next(txSend)
+      const config: BlockheightBasedTransactionConfirmationStrategy = {
+        signature, blockhash, lastValidBlockHeight//.lastValidBlockHeight
+      }
+      await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
+      const txCompleted: toastData = {
+        message: 'Transaction Completed',
+        segmentClass: "toastInfo"
+      }
+      this.toasterService.msg.next(txCompleted)
+
+      return signature
+
+    } catch (error) {
+      console.warn(error)
+      return null
+      // onMsg('transaction failed', 'error')
+    }
+  }
 }

@@ -6,12 +6,12 @@ import { LAMPORTS_PER_SOL, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, combineLatestWith, distinctUntilChanged, filter, firstValueFrom, interval, Observable, ReplaySubject, shareReplay, Subject, switchMap, tap } from 'rxjs';
 import { SolanaUtilsService, JupiterStoreService, UtilsService, TxInterceptService } from 'src/app/services';
 
-import { Token, TokenBalance } from '../../../../models';
+import { JupRoute, Token, TokenBalance } from '../../../../models';
 import { SwapDetail } from 'src/app/models/swapDetails.model';
-import Decimal from "decimal.js";
+
 
 import { Title } from '@angular/platform-browser';
-import va from '@vercel/analytics';
+
 
 @Component({
   selector: 'app-token-swap',
@@ -26,16 +26,16 @@ export class TokenSwapPage implements OnInit {
     private _jupStore: JupiterStoreService,
     private _txInterceptService: TxInterceptService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _titleService: Title,  
-  ) { 
+    private _titleService: Title,
+  ) {
   }
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this._titleService.setTitle('CompactDeFi - swap tokens')
   }
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet
 
-  public bestRoute: RouteInfo = null;
+  public bestRoute: JupRoute = null;
   private _swapDetail$: ReplaySubject<SwapDetail> = new ReplaySubject(1);
   public calcLoader: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean)
   public outputAmount: number;
@@ -48,7 +48,7 @@ export class TokenSwapPage implements OnInit {
     switchMap(async ([tokens, wallet]) => {
       if (wallet) {
         this.wallet = wallet
-        this._jupStore.initJup(wallet)
+       
         // reload tokens list
       } else {
         this.wallet = null;
@@ -73,7 +73,7 @@ export class TokenSwapPage implements OnInit {
       inputToken: ['', [Validators.required]],
       outputToken: ['', [Validators.required]],
       inputAmount: ['', [Validators.required]],
-      slippage: [0.5, [Validators.required]]
+      slippage: [50, [Validators.required]]
     })
     this.swapForm.valueChanges.subscribe(form => {
       this.pairOne = form.inputToken?.extensions?.coingeckoId || 'not found';
@@ -97,7 +97,7 @@ export class TokenSwapPage implements OnInit {
 
   private async _getTokenBalance(token: Token): Promise<TokenBalance[]> {
     try {
-      const walletOwner =this._solanaUtilService.getCurrentWallet().publicKey;
+      const walletOwner = this._solanaUtilService.getCurrentWallet().publicKey;
       const walletBalance = await this._solanaUtilService.connection.getBalance(walletOwner) / LAMPORTS_PER_SOL;
       const solTokenBalance = { tokenPubkey: walletOwner.toBase58(), mintAddress: this.wSOL, balance: walletBalance }
       const accountsBalance = await this._solanaUtilService.getTokenAccountsBalance(this.wallet.publicKey.toBase58(), 'token');
@@ -114,10 +114,10 @@ export class TokenSwapPage implements OnInit {
       let tokenBalance = this.wallet ? tokensWithOwnerBalance.find(account => account.mintAddress == token.address)?.balance || 0 : 0;
       const name = token.name == 'Wrapped SOL' ? 'Solana' : token.name;
       const tokenListItem: any = { ...token, name, selectable: true, image: token.logoURI, extraData: { symbol: token.symbol } }
-      if(this.wallet){
+      if (this.wallet) {
         tokenListItem.extraData.balance = this._utilService.formatBigNumbers(tokenBalance)
         tokenListItem.balance = tokenBalance
-      }else{
+      } else {
         delete tokenListItem.extraData.balance;
         delete tokenListItem.balance
       }
@@ -175,12 +175,10 @@ export class TokenSwapPage implements OnInit {
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
     try {
       this.bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken, slippage);
+      console.log(this.bestRoute)
       if (this.bestRoute) {
         // prep output amount on UI
-        const calcOutputDecimal = new Decimal(this.bestRoute.outAmount.toString()).div(10 ** outputToken.decimals).toString()
-        const platformFee = new Decimal(this.bestRoute.marketInfos[0].platformFee.amount.toString()).div(10 ** outputToken.decimals).toFixed(3).toString() + " " + outputToken.symbol
-        this.outputAmount = Number(calcOutputDecimal).toFixedNoRounding(2);
-        const swapDetails = await this._prepSwapDetails(this.bestRoute, this.outputAmount, platformFee);
+        const swapDetails = await this._prepSwapDetails(this.bestRoute);
         this._swapDetail$.next(swapDetails);
       }
     } catch (error) {
@@ -195,27 +193,28 @@ export class TokenSwapPage implements OnInit {
   }
   public async submitSwap(): Promise<void> {
 
-    const transactions: Transaction[] = await this._jupStore.swapTx(this.bestRoute);
-
-    await this._txInterceptService.sendTx(transactions, this.wallet.publicKey);
-
-    va.track('jupiter', { type: `swap ${this.swapForm.value.inputToken?.extensions?.coingeckoId +'-'+ this.swapForm.value.outputToken?.extensions?.coingeckoId}` });
+    await this._jupStore.swapTx(this.bestRoute);
   }
-  private async _prepSwapDetails(routeInfo: RouteInfo, outputAmount: number, platformFees: string) {
-    const { marketInfos } = routeInfo
-    try {
-      const txFees = await routeInfo.getDepositAndFee();
-      // const feesByToken: Token = this.tokenList$.value.filter(token => token.address == marketInfos[0].lpFee.mint)[0] || null;
+  private async _prepSwapDetails(routeInfo: JupRoute) {
 
-      const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) * -1;
-      const minimumRecived = Number(outputAmount * slippagePercentage).toFixedNoRounding(2)
-      const priceImpact = marketInfos[0].priceImpactPct
+    try {
+      const outputDecimal = 10 ** this.swapForm.value.outputToken.decimals
+      const txFees = 0 // await routeInfo.getDepositAndFee();
+      const routePlans = routeInfo.routePlan.map(p => Number(p.swapInfo.feeAmount));
+      console.log(routePlans)
+      const AMMfeesCalc: number = routePlans.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+      ) / LAMPORTS_PER_SOL;
+      // const slippagePercentage = ((this.swapForm.value.slippage / 100) - 1) * -1;
+      const minimumRecived = Number(routeInfo.outAmount) / outputDecimal
+      const priceImpact = routeInfo.priceImpactPct
       const swapDetail: SwapDetail = {
-        priceImpact,
+        priceImpact: Number(priceImpact),
         minimumRecived,
-        transactionFee: txFees.signatureFee / LAMPORTS_PER_SOL + ' ' + 'SOL',
-        AMMfees: (marketInfos[0].lpFee.pct).toFixed(6) + ' ' + 'SOL',
-        platformFees
+        transactionFee: txFees / LAMPORTS_PER_SOL + ' ' + 'SOL',
+        AMMfees: AMMfeesCalc.toFixed(6) + ' ' + 'SOL',
+        platformFees: 0 + ' ' + 'SOL',
       }
       return swapDetail;
     } catch (error) {

@@ -6,7 +6,7 @@ export * from './stakeAccountData.model'
 export * from './swapDetails.model';
 export * from './tokenBalance.model'
 export * from './validatorData.model'
-export * from './jupiter-price-feed.model'
+export * from './jupiter.model'
 export * from './vote.model'
 export * from './defiApp.model'
 export * from './defiStat.model'

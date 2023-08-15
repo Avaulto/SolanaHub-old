@@ -360,8 +360,7 @@ export class MarinadePlusService {
       }
 
       const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-      const transaction: Transaction[] = await this._jupStore.swapTx(bestRoute);
-      await this._txInterceptService.sendTx(transaction, walletOwner);
+       await this._jupStore.swapTx(bestRoute);
 
     } catch (error) {
       console.warn(error)
@@ -444,9 +443,7 @@ export class MarinadePlusService {
           "decimals": 9,
           "symbol": "SOL",
         }
-        // const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-        // const transaction: Transaction[] = await this._jupStore.swapTx(bestRoute);
-        // ixs.push(...transaction)
+
       }
       await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
     } catch (error) {

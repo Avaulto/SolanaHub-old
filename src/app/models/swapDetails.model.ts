@@ -1,6 +1,6 @@
 export interface SwapDetail {
     priceImpact: number;
-    minimumRecived: string;
+    minimumRecived: number;
     transactionFee: string;
     AMMfees: string;
     platformFees: any;

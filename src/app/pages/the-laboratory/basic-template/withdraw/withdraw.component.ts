@@ -20,9 +20,7 @@ export class WithdrawComponent implements OnChanges {
   ) { }
 
   ngOnChanges(changes): void {
-    if(this.walletExtended$){
-      this._jupStore.initJup(this.walletExtended$)
-    }
+
   }
 
   public async withdraw() {

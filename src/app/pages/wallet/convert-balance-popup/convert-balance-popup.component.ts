@@ -59,7 +59,8 @@ export class ConvertBalancePopupComponent implements OnInit {
     return filterTokens;
   }
   public storeSelection(selectedAsset: { asset: Asset, assetCheckbox }) {
-    if (selectedAsset.assetCheckbox.el.checked) {
+    console.log(selectedAsset)
+    if (selectedAsset.assetCheckbox) {
       this.selectedAssets.push(selectedAsset.asset)
     } else {
       const filterAcc = this.selectedAssets.filter((asset: Asset) => asset.name != selectedAsset.asset.name)
@@ -68,6 +69,7 @@ export class ConvertBalancePopupComponent implements OnInit {
     this.calcTotalConvert();
   }
   public toggleCheck() {
+    console.log(this.checkAll)
     this.checkAll = !this.checkAll;
     if (this.checkAll) {
       this.selectedAssets = this.assetsListCanSwap;
@@ -91,8 +93,7 @@ export class ConvertBalancePopupComponent implements OnInit {
   }
 
   public async convert(): Promise<void> {
-    // init jupiter
-    await this._jupStore.initJup(this.wallet)
+
     // create array of TXS
     const swapTxs: (Transaction | TransactionInstruction)[] = []
     const closeAtaIns: TransactionInstruction[] = [];
@@ -103,9 +104,9 @@ export class ConvertBalancePopupComponent implements OnInit {
           // calc best route on jupiter
           const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, this.wSOL, 1);
           // built transaction instance
-          const transactions: Transaction[] = await this._jupStore.swapTx(bestRoute);
+          await this._jupStore.swapTx(bestRoute);
           // append to array of VersionedTransactions
-          swapTxs.push(...transactions)
+          // swapTxs.push(...transactions)
         } else {
           const instruction: TransactionInstruction[] = await this.closeATA(inputToken)
           closeAtaIns.push(...instruction)

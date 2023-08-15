@@ -28,7 +28,7 @@ import {
 export class SlippageComponent implements OnInit {
   public showSlippageOptions: boolean = false;
   @Input() form: FormGroup = {} as FormGroup;
-  public currentSlippage: number = 0.5
+  public currentSlippage: number = 50 // 0.5%
   constructor() { }
 
   ngOnInit() {}
