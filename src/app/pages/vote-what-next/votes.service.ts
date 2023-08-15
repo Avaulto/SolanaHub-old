@@ -46,7 +46,7 @@ export class VotesService {
   }
 
   public addVote(proposalId: string, voter: voter): Observable<boolean> {
-    return this.apiService.post(`http://localhost:8000/addVote`, {proposalId, voter}).pipe(
+    return this.apiService.post(`${this.votesProxy}/api/votes/addVote`, {proposalId, voter}).pipe(
       map(res =>{
         const toasterMessage: toastData = {
           message: res.message,

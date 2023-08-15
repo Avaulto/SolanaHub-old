@@ -17,6 +17,7 @@ const client = new MongoClient(uri, {
 
 
 export default async function newProposal(request, response) {
+  console.log(request.body)
   const { proposal } = request.body
   try {
     await client.connect();
