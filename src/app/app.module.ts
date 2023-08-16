@@ -12,10 +12,17 @@ import { SharedModule } from './shared/shared.module';
 
 
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
-import { SideMenuPage } from './shared/components/side-menu/side-menu.page';
+import { SideMenuPage } from './side-menu/side-menu.page';
 import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 import { inject } from '@vercel/analytics';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule, DecimalPipe } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { LogoComponent } from './side-menu/logo/logo.component';
+import { OptionsPopupComponent } from './settings/options-popup/options-popup.component';
+import { SettingsComponent } from './settings/settings.component';
+import { LoaderComponent } from './shared/components';
+import { WalletModule } from './shared/wallet.module';
 
 inject({mode: "auto"});
 
@@ -23,11 +30,17 @@ inject({mode: "auto"});
     schemas: [ CUSTOM_ELEMENTS_SCHEMA],
     declarations: [
         AppComponent,
+        LogoComponent,
         SideMenuPage,
-        TabsMenuComponent
+        TabsMenuComponent,
+        OptionsPopupComponent,
+        SettingsComponent,
     ],
     imports: [
-        SharedModule,
+        WalletModule,
+        HttpClientModule,
+        IonicModule,
+        CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         IonicModule.forRoot(),
@@ -35,6 +48,7 @@ inject({mode: "auto"});
         HdWalletAdapterModule.forRoot({ autoConnect: true })
     ],
     providers: [
+        DecimalPipe,
         { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     ],
     bootstrap: [AppComponent]

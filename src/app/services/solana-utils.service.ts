@@ -3,7 +3,7 @@ import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
 import { AccountInfo, clusterApiUrl, ConfirmedSignatureInfo, Connection, GetProgramAccountsFilter, LAMPORTS_PER_SOL, ParsedAccountData, PublicKey, StakeActivationData, Transaction } from '@solana/web3.js';
 import { BehaviorSubject, firstValueFrom, Observable, Subject, throwError } from 'rxjs';
 import { catchError, combineLatestWith, map, shareReplay, switchMap, tap } from 'rxjs/operators';
-import { TOKEN_PROGRAM_ID } from '../../../node_modules/@solana/spl-token';
+import { TOKEN_PROGRAM_ID } from 'node_modules/@solana/spl-token';
 import { ApiService, UtilsService, ToasterService } from './';
 import { ValidatorData, StakeAccountExtended, TokenBalance, WalletExtended } from '../models';
 import { PopoverController } from '@ionic/angular';

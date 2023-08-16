@@ -6,7 +6,7 @@ import {
   getAssociatedTokenAddress,
   createAssociatedTokenAccountInstruction,
   TokenOwnerOffCurveError
-} from '../../../node_modules/@solana/spl-token';;
+} from 'node_modules/@solana/spl-token';;
 import {
   Authorized,
   AuthorizeStakeParams,

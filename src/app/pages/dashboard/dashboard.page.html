@@ -58,9 +58,8 @@
           <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{(assets | async)?.length}} tokens</div>
           <ng-container *ngIf="assets | async as assets; else elseTemplate">
             <div id="assets-list">
-              <!-- <ion-item button detail="false" *ngFor="let asset of tokens"> -->
                 <app-assets-balance *ngFor="let asset of assets" [asset]="asset"></app-assets-balance>
-              <!-- </ion-item> -->
+    
             </div>
             <ion-row class="ion-justify-content-center ion-margin-top">
               <ion-button (click)="openSwapSmallBalancePopup()" fill="outline">Convert Small Balance to

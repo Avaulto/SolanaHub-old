@@ -7,7 +7,7 @@ import {
   createBurnInstruction,
   createCloseAccountInstruction,
 
-} from "../../../../../../node_modules/@solana/spl-token";
+} from "node_modules/@solana/spl-token";
 @Component({
   selector: 'app-nft-burn',
   templateUrl: './nft-burn.component.html',

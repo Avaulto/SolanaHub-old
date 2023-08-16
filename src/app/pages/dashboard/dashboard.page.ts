@@ -9,11 +9,11 @@ import { JupiterStoreService } from 'src/app/services/jupiter-store.service';
 import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-balance-popup.component';
 
 @Component({
-  selector: 'app-wallet',
-  templateUrl: './wallet.page.html',
-  styleUrls: ['./wallet.page.scss'],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.page.html',
+  styleUrls: ['./dashboard.page.scss'],
 })
-export class WalletPage implements OnInit, OnDestroy {
+export class DashboardPage implements OnInit, OnDestroy {
   private _assets: Asset[] = []
   private wallet: {
     publicKey: PublicKey;

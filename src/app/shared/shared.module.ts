@@ -1,6 +1,6 @@
 import { IonicModule } from "@ionic/angular";
 import { CommonModule, DecimalPipe } from "@angular/common";
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
+import {  NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
@@ -12,18 +12,10 @@ import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
 // import componenets
 import {
   DataBoxComponent,
-  LogoComponent,
-  WalletNotConnectedStateComponent,
-  GoBackBtnComponent,
-  WalletConnectComponent,
-  WalletAdapterOptionsComponent,
-  WalletConnectedDropdownComponent,
-  LoaderComponent,
   SelectBoxComponent,
   SelectItemComponent,
   LabelLayoutComponent,
   NftPreviewComponent,
-  TransactionReviewComponent,
   ImagePlaceholderComponent,
   NftBurnComponent,
   NftListingComponent,
@@ -34,13 +26,9 @@ import {
   SearchInputComponent,
   DappHeadComponent,
   IconTooltipComponent,
-  SettingsComponent,
-  OptionsPopupComponent,
   TabsComponent,
-  MessageBoxComponent,
-  DefiStatsComponent,
   AssetsBalanceComponent,
-  DefiTourComponent,
+  LoaderComponent,
 } from "./components";
 
 // // import directives
@@ -55,45 +43,33 @@ import { CustomInterceptor } from "../services";
 // import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
 import { CopyTextDirective } from "./directives/copy-text.directive";
 import { TooltipModule } from "./components/tooltip/tooltip.module";
+import { WalletModule } from "./wallet.module";
 @NgModule({
   declarations: [
     FilterPipe,
     SafePipe,
     ReversePipe,
-    ReversePipe,
     DataBoxComponent,
-    LogoComponent,
-    GoBackBtnComponent,
-    WalletConnectComponent,
-    WalletAdapterOptionsComponent,
-    WalletConnectedDropdownComponent,
-    LoaderComponent,
     SelectBoxComponent,
     SelectItemComponent,
     LabelLayoutComponent,
     NftPreviewComponent,
-    TransactionReviewComponent,
     ImagePlaceholderComponent,
     NftBurnComponent,
     NftListingComponent,
     NftSendComponent,
     ChartComponent,
-    WalletNotConnectedStateComponent,
     StakeComponent,
     ApyCalcComponent,
     SearchInputComponent,
     CopyTextDirective,
     DappHeadComponent,
     IconTooltipComponent,
-    SettingsComponent,
-    OptionsPopupComponent,
     TabsComponent,
-    MessageBoxComponent,
-    DefiStatsComponent,
     AssetsBalanceComponent,
-    // DefiTourComponent
   ],
   imports: [
+    LoaderComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -101,14 +77,15 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     RouterModule,
     IonicModule,
     TooltipModule,
-    ScrollingModule
-    
+    ScrollingModule,
+    WalletModule
   ],
   providers:[
     DecimalPipe,
     { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true },
   ],
   exports: [
+    LoaderComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -120,38 +97,26 @@ import { TooltipModule } from "./components/tooltip/tooltip.module";
     SafePipe,
     ReversePipe,
     DataBoxComponent,
-    LogoComponent,
-    GoBackBtnComponent,
     TooltipModule,
-    WalletConnectComponent,
-    WalletAdapterOptionsComponent,
-    WalletConnectedDropdownComponent,
-    LoaderComponent,
+    WalletModule,
     SelectBoxComponent,
     SelectItemComponent,
     LabelLayoutComponent,
     NftPreviewComponent,
-    TransactionReviewComponent,
     ImagePlaceholderComponent,
     NftBurnComponent,
     NftListingComponent,
     NftSendComponent,
     ChartComponent,
-    WalletNotConnectedStateComponent,
+
     StakeComponent,
     ApyCalcComponent,
     SearchInputComponent,
     CopyTextDirective,
     DappHeadComponent,
     IconTooltipComponent,
-    SettingsComponent,
-    OptionsPopupComponent,
     TabsComponent,
-    MessageBoxComponent,
-    DefiStatsComponent,
     AssetsBalanceComponent,
-    // DefiTourComponent,
-    
   ]
 })
 export class SharedModule {}

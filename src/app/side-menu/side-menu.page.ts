@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { IonPopover, MenuController } from '@ionic/angular';
-import { pages } from '../../helpers/menu';
+import { pages } from '../shared/helpers/menu';
 
 
 @Component({

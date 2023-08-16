@@ -8,7 +8,7 @@ import { JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsServi
 import {
   createBurnInstruction,
   createCloseAccountInstruction,
-} from "../../../../../node_modules/@solana/spl-token";
+} from "node_modules/@solana/spl-token";
 import va from '@vercel/analytics';
 
 @Component({

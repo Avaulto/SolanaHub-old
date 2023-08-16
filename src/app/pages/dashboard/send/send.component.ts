@@ -4,7 +4,7 @@ import { WalletStore } from '@heavy-duty/wallet-adapter';
 
 import { Cluster, Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { firstValueFrom, shareReplay, switchMap } from 'rxjs';
-import { Elusiv, SEED_MESSAGE, TokenType } from "@elusiv/sdk";
+import { Elusiv, SEED_MESSAGE } from "@elusiv/sdk";
 
 import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService, ToasterService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
