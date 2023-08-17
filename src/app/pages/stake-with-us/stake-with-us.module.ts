@@ -8,12 +8,17 @@ import { StakeWithUsPageRoutingModule } from './stake-with-us-routing.module';
 
 import { StakeWithUsPage } from './stake-with-us.page';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { AccountsModule } from 'src/app/shared/layouts/accounts/accounts.module';
 
 @NgModule({
   imports: [
-SharedModule,
-StakeWithUsPageRoutingModule
+    SharedModule,
+    AccountsModule,
+    StakeWithUsPageRoutingModule
   ],
-  declarations: [StakeWithUsPage]
+  declarations: [
+    StakeWithUsPage,
+
+  ]
 })
-export class StakeWithUsPageModule {}
+export class StakeWithUsPageModule { }

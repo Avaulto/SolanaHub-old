@@ -1,13 +1,21 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { firstValueFrom, lastValueFrom, map, observable, Observable, Subscriber, switchMap } from 'rxjs';
+import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
+import { firstValueFrom, lastValueFrom, map, observable, Observable, of, Subscriber, switchMap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 import { ActivatedRoute } from '@angular/router';
 
 import va from '@vercel/analytics';
+import { StakePoolStoreService } from 'src/app/pages/defi/dapps/liquid-stake/stake-pool-store.service';
+import { depositSol } from '@solana/spl-stake-pool';
+import bn from 'bn.js'
 
+interface StakePool {
+  logo: string,
+  name: string,
+  // apy: number,
+}
 
 @Component({
   selector: 'app-stake',
@@ -28,13 +36,16 @@ export class StakeComponent implements OnInit {
   }
   public selectedValidator: ValidatorData;
   public searchTerm = '';
-
+  private _stakePools: StakePool[] = [{ name: 'Marinade', logo: 'assets/images/icons/marinade-logo.png' }, { name: 'SolBlaze', logo: 'assets/images/icons/solblaze-logo.png' }]
+  public stakePools$: Observable<StakePool[]> = of(this._stakePools)
+  private _selectedStakePool = null;
   constructor(
     public loaderService: LoaderService,
     private _fb: FormBuilder,
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
-    private _activeRoute: ActivatedRoute
+    private _activeRoute: ActivatedRoute,
+    private _stakePoolStore: StakePoolStoreService
   ) { }
   async ngOnInit() {
 
@@ -64,9 +75,16 @@ export class StakeComponent implements OnInit {
     }
   }
 
+  private _addStakePoolControl() {
+    const stakePoolControl = new FormControl('', Validators.required)
+    this.stakeForm.addControl('stakePool', stakePoolControl)
+  }
+  private _removeStakePoolControl() {
+    this.stakeForm.removeControl('stakePool')
+  }
   public setMaxAmount(): void {
     const fixedAmount = this._solanaUtilsService.getCurrentWallet().balance - 0.0001
-    this.stakeForm.controls.amount.setValue(fixedAmount);
+    this.stakeForm.controls.amount.setValue(fixedAmount.toFixedNoRounding(3));
   }
 
   private async _preSelectValidator(validators: ValidatorData[], validatorVoteKey: string) {
@@ -82,21 +100,55 @@ export class StakeComponent implements OnInit {
 
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
   }
+
+  // public setSelectedStakePool(pool: StakePool): void {
+
+
+  //   this._selectedStakePool = pool;
+
+  //   this.stakeForm.controls.sta.setValue(validator.vote_identity);
+  // }
+
+
   public async submitNewStake(): Promise<void> {
 
 
-    let { amount, voteAccount, monthLockuptime } = this.stakeForm.value;
-    const walletOwnerPublicKey = this._solanaUtilsService.getCurrentWallet().publicKey;
-    // const testnetvoteAccount = '87QuuzX6cCuWcKQUFZFm7vP9uJ72ayQD5nr6ycwWYWBG'
+    let { amount, voteAccount, monthLockuptime, stakePool } = this.stakeForm.value;
+    const walletOwner = this._solanaUtilsService.getCurrentWallet();
+    if (this.stakingType === 'native') {
+      await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
+    } else {
+      await this._liquidStake(stakePool, amount, voteAccount)
+    }
+  }
+
+  private async _liquidStake(poolName: string, amount, validatorVoteAccount) {
+    const sol = new bn((amount - 0.001) * LAMPORTS_PER_SOL);
+    this._stakePoolStore.stakeSOL(poolName.toLowerCase(), sol, validatorVoteAccount)
+  }
+  private async _nativeStake(monthLockuptime, amount, walletOwnerPublicKey, voteAccount) {
     if (monthLockuptime) {
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
     await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
-    va.track(`stake with ${voteAccount}`);
+    va.track(`native stake with ${voteAccount}`);
   }
   private _getLockuptimeMilisecond(months: number): number {
     const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();
     const unixTime = Math.floor(lockupDateInSecond / 1000);
     return unixTime;
+  }
+
+
+  public stakingType: 'native' | 'liquid' = 'native'
+  public selectStakePath(option: 'native' | 'liquid'): void {
+    this.stakingType = option
+    if (option === 'liquid') {
+      this._addStakePoolControl()
+    } else {
+      this._removeStakePoolControl()
+    }
+
+    console.log(this.stakeForm)
   }
 }

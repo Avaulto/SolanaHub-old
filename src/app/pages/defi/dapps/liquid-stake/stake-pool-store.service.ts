@@ -3,11 +3,14 @@
 import { Injectable } from '@angular/core';
 import { firstValueFrom, Observable, shareReplay, Subject, throwError } from 'rxjs';
 import { StakePoolProvider } from './stake-pool.model';
-import { UtilsService, SolanaUtilsService, ToasterService, ApiService } from 'src/app/services';
-import { PublicKey } from '@solana/web3.js';
-import { Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk';
+import { UtilsService, SolanaUtilsService, ToasterService, ApiService, TxInterceptService } from 'src/app/services';
+import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
+import {  BN, Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk';
 import * as StakePoolSDK from '@solana/spl-stake-pool';
-import { toastData } from 'src/app/models';
+
+import { depositSol, withdrawStake } from '@solana/spl-stake-pool';
+import va from '@vercel/analytics';
+import { toastData, WalletExtended } from 'src/app/models';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +24,8 @@ export class StakePoolStoreService {
     private _solanaUtilsService: SolanaUtilsService,
     private _utilService: UtilsService,
     private _toasterService: ToasterService,
-    private _apiService: ApiService
+    private _apiService: ApiService,
+    private _txInterceptService: TxInterceptService,
   ) {
 
   }
@@ -137,13 +141,14 @@ export class StakePoolStoreService {
     this._provider$.next(provider)
   }
 
-  async initMarinade(wallet): Promise<void> {
+  async initMarinade(wallet: WalletExtended): Promise<void> {
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
       publicKey: wallet.publicKey,
       referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
     })
     this.marinadeSDK = new Marinade(config)
+    console.log(this.marinadeSDK)
   }
   public async getStakePoolsInfo(): Promise<void> {
     try {
@@ -159,4 +164,65 @@ export class StakePoolStoreService {
       console.error(error)
     }
   }
+
+  public async stakeSOL(pool:string, sol: BN, validatorVoteAccount?: string){
+    const walletOwner = this._solanaUtilsService.getCurrentWallet()
+    if(pool === 'marinade'){
+      if(!this.marinadeSDK){
+        await this.initMarinade(walletOwner)
+       }
+      await this._marinadeStakeSOL(sol,walletOwner, validatorVoteAccount)
+    }else{
+      const selectedPool:StakePoolProvider = this.providers.find(p => p.poolName.toLowerCase() === pool);
+      await this._stakePoolStakeSOL(selectedPool.poolPublicKey, walletOwner,sol, validatorVoteAccount)
+    }
+
+    va.track('liquid staking', { pool,type: `direct stake with ${validatorVoteAccount}` });
+  }
+
+
+  private async _marinadeStakeSOL(sol: BN, walletOwner, validatorVoteAccount: string){
+      const directToValidatorVoteAddress = validatorVoteAccount ? new PublicKey(validatorVoteAccount) : null;
+      const { transaction } = await this.marinadeSDK.deposit(sol, {directToValidatorVoteAddress});
+      await this._txInterceptService.sendTx([transaction], walletOwner.publicKey)
+  }
+  private async _stakePoolStakeSOL(poolPublicKey: PublicKey,walletOwner:WalletExtended,sol: BN,validatorVoteAccount: string){
+    let ix = await depositSol(
+      this._solanaUtilsService.connection,
+      poolPublicKey,
+      walletOwner.publicKey,
+      Number(sol),
+      undefined,
+      // referral
+    );
+    const stakeCLS = (validatorVoteAccount: string) => {
+
+        let memo = JSON.stringify({
+          type: "cls/validator_stake/lamports",
+          value: {
+            validator: new PublicKey(validatorVoteAccount)
+          }
+        });
+        let memoInstruction = new TransactionInstruction({
+          keys: [{
+            pubkey: walletOwner.publicKey,
+            isSigner: true,
+            isWritable: true
+          }],
+          programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+          data: (new TextEncoder()).encode(memo) as Buffer
+        })
+        return memoInstruction
+
+    }
+    let ixs: any[] = [ix]
+    if(validatorVoteAccount){
+      const ix2 = stakeCLS(validatorVoteAccount);
+      ixs.push(ix2)
+    }
+    const txId = await this._txInterceptService.sendTx(ixs, walletOwner.publicKey, ix.signers);
+    await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
+
+  }
+
 }

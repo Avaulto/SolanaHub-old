@@ -11,13 +11,11 @@
                 <app-data-box [title]="'stake'" [loading]="(getValidatorInfo | async) == null"
                     [desc]="(getValidatorInfo | async)?.activated_stake | number: '1.2-2'">
                     <span *ngIf="(stakeChange | async) as sc">
-                        <span class="stake-change" 
-                        [ngClass]="{
+                        <span class="stake-change" [ngClass]="{
                             'stake-change-up': sc[0]?.activating_stake > sc[0]?.deactivating_stake,
-                            'stake-change-down': sc[0]?.activating_stake < sc[0]?.deactivating_stake}"
-                            >
-                                        {{(sc[0]?.activating_stake - sc[0]?.deactivating_stake).toFixed(0) }}◎
-                                    </span>
+                            'stake-change-down': sc[0]?.activating_stake < sc[0]?.deactivating_stake}">
+                            {{(sc[0]?.activating_stake - sc[0]?.deactivating_stake).toFixed(0) }}◎
+                        </span>
                     </span>
                 </app-data-box>
             </ion-col>
@@ -34,13 +32,20 @@
         </ion-row>
         <ion-row>
             <ion-col id="delegate-with-us" class="data-box ion-padding" size="12">
-                <p>Stake your SOL on Avaulto and earn a {{apy}}% APY yield on your SOL, while supporting CompactDeFi founders to work on new features!</p>
+                <p>Stake your SOL on Avaulto and earn a {{apy}}% APY yield on your SOL, while supporting CompactDeFi
+                    founders to work on new features!</p>
             </ion-col>
         </ion-row>
-        <ion-row class="ion-justify-content-center">
-            <ion-col size="12" sizeMd="7" class="data-box ion-padding">
-                <app-stake [validatorsData]="getValidatorInfo" [privateValidatorPage]="true" [avgApy]="apy"
-                    ></app-stake>
+        <ion-row class="ion-justify-content-between">
+            <ion-col size="12" sizeMd="7.5" class="data-box ion-padding">
+                <app-stake [validatorsData]="getValidatorInfo" [privateValidatorPage]="true" [avgApy]="apy"></app-stake>
+            </ion-col>
+            <ion-col size="12" sizeMd="4" class="data-box ion-padding">
+                <div class="heading-4 ion-margin-bottom ion-text-uppercase">Your Stake</div>
+                    <div id="account-list">
+                        <app-accounts [privateValidatorPage]="true" ></app-accounts>    
+                    </div>
+   
             </ion-col>
         </ion-row>
     </ion-grid>

@@ -42,7 +42,7 @@ import {
 import { CustomInterceptor } from "../services";
 // import { TooltipModule } from "@cloudfactorydk/ng2-tooltip-directive";
 import { CopyTextDirective } from "./directives/copy-text.directive";
-import { TooltipModule } from "./components/tooltip/tooltip.module";
+import { TooltipModule } from "./layouts/tooltip/tooltip.module";
 import { WalletModule } from "./wallet.module";
 @NgModule({
   declarations: [

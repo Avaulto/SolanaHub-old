@@ -101,7 +101,7 @@ export class LiquidStakePage {
   async ionViewWillEnter() {
     this._titleService.setTitle('CompactDeFi - Liquid staking')
     this._queryParam$ = this.initConfigStartup();
-    await this.stakePoolStore.getStakePoolsInfo()
+    this.stakePoolStore.getStakePoolsInfo()
   }
   ionViewWillLeave() {
     this._queryParam$.unsubscribe();

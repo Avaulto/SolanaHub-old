@@ -8,7 +8,8 @@
       <p id="">Earn passive income from your crypto by staking it.</p>
     </ion-row>
     <app-label-layout [layoutConfig]="{title: 'stake', balance: (wallet$ | async)?.balance}">
-      <app-icon-tooltip tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
+      <app-icon-tooltip
+        tooltip="A ◎ 0.0001 is reduced from maximum balance to prevent missing tx fee."></app-icon-tooltip>
     </app-label-layout>
 
     <ion-row id="stake-amount">
@@ -27,28 +28,61 @@
           [isDropDownOpen]="showValidatorList" [showDropDownIcon]="!privateValidatorPage">
         </app-select-item>
 
-        <app-select-box 
-          *ngIf="showValidatorList" 
-          [disabled]="privateValidatorPage" 
-          [dataset]="validatorsData" 
+        <app-select-box *ngIf="showValidatorList" [disabled]="privateValidatorPage" [dataset]="validatorsData"
           [filterBy]="'name'"
           (onSelectItem)="setSelectedValidator($event); this.showValidatorList = !this.showValidatorList">
         </app-select-box>
 
       </div>
     </ion-row>
-    <ion-row class="heading-6 ion-justify-content-between">
+    <!-- <ion-row class="heading-6 ion-justify-content-between">
       <div class="aligned">lockup 
         <app-icon-tooltip tooltip="feeling bulish? lock your stake account and commit to yourself"></app-icon-tooltip>
       </div>
       <div>
         months: {{stakeForm.value.monthLockuptime}}
       </div>
-    </ion-row>
-    <ion-row id="commitment-amount">
+    </ion-row> 
+      <ion-row id="commitment-amount">
       <ion-range formControlName="monthLockuptime" [min]="0" [max]="32" [pin]="true" [ticks]="true" [snaps]="true">
       </ion-range>
     </ion-row>
+  -->
+
+    <ion-row id="btn-controls" class="ion-margin-bottom ion-align-items-center ion-margin-bottom ion-justify-content-between">
+
+      <ion-col sizeLg="5.8" sizeMd="12" class="stake-by" [ngClass]="{'selected-path': stakingType == 'native'}"
+        (click)="selectStakePath('native')">
+        <div class="select-group">
+          <span>
+            native
+            <ion-icon name="lock-closed-outline"></ion-icon>
+          </span>
+          <ion-checkbox mode="ios" [checked]="stakingType == 'native'" color="primary"></ion-checkbox>
+        </div>
+
+      </ion-col>
+      <ion-col sizeLg="5.8" sizeMd="12" class="stake-by" [ngClass]="{'selected-path': stakingType == 'liquid'}"
+        (click)="selectStakePath('liquid')">
+        <div class="select-group">
+          <span>
+            liquid
+            <ion-icon name="water-outline"></ion-icon>
+          </span>
+          <ion-checkbox mode="ios" [checked]="stakingType == 'liquid'" color="primary">
+          </ion-checkbox>
+        </div>
+      </ion-col>
+    </ion-row>
+<ion-row  *ngIf="stakingType === 'liquid'"class="ion-margin-bottom">
+
+  <ion-select formControlName="stakePool" aria-label="stake-pool" placeholder="select pool" interface="popover">
+    <ion-select-option value="marinade">
+      <app-image-placeholder imagePath="assets/images/icons/marinade-logo.png"></app-image-placeholder>
+      marinade</ion-select-option>
+    <ion-select-option value="solblaze">solblaze</ion-select-option>
+  </ion-select>
+</ion-row>
     <ion-row class="ion-justify-content-center">
       <ng-container *ngIf="wallet$ | async; else elseTemplate">
         <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"

@@ -27,3 +27,11 @@
         background: var(--ion-color-tertiary);
     }
 }
+
+
+// current stake STYLE
+::ng-deep{
+    .account-status.validator-stake, .validator-info{
+        display: none !important;
+    }
+}

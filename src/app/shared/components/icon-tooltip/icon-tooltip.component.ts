@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TooltipPosition, TooltipTheme } from '../tooltip/tooltip.enums';
+import { TooltipPosition, TooltipTheme } from '../../layouts/tooltip/tooltip.enums';
 
 @Component({
   selector: 'app-icon-tooltip',

@@ -170,7 +170,7 @@ ion-button {
     }
 }
 
-ion-input,ion-select{
+ion-input{
     height: 41px;
 }
 ion-input,
@@ -185,20 +185,20 @@ ion-select {
     text-transform: capitalize;
     width: 100%;
     background: var(--deep-background) !important;
-    --background: var(--deep-background) !important;
+    // --background: var(--deep-background) !important;
     --padding-start: 16px !important;
     --padding-end: 16px !important;
     padding-inline-start: 16px !important;
     --placeholder-color: white;
     --placeholder-opacity: 1 !important;
 
-    // &.has-focus {
-    //     border: 2px solid var(--ion-color-primary);
-    // }
+    &.has-focus, :host(.ion-valid) {
+        caret-color:var(--ion-color-primary) !important;
+    }
 
-    // &.error {
-    //     border: 2px solid var(--ion-color-danger);
-    // }
+    &.error {
+        caret-color: var(--ion-color-danger);
+    }
 
     &::placeholder {
         color: white;

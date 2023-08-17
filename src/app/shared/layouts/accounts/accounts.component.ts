@@ -10,11 +10,22 @@ import { ActionsComponent } from './actions/actions.component';
   styleUrls: ['./accounts.component.scss']
 })
 export class AccountsComponent implements OnChanges {
+  @Input()privateValidatorPage: boolean = false;
+  private AvaultoVoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   public stakeAccounts$ = this._solanaUtilsService.walletExtended$.pipe(
     switchMap(async wallet =>{
       if(wallet){
         await this._solanaUtilsService.fetchAndUpdateStakeAccount(wallet.publicKey);
-        return this._solanaUtilsService.getStakeAccountsExtended()
+        let accounts = this._solanaUtilsService.getStakeAccountsExtended();
+        if(this.privateValidatorPage){
+          accounts = accounts.filter(acc => {
+            if(acc.validatorVoteKey === this.AvaultoVoteKey){
+              acc.validatorData.image = 'assets/images/icons/solana-logo.webp'
+              return acc
+            }
+          })
+        }
+        return accounts
       }else{
         return null
       }

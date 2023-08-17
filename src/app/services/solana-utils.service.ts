@@ -105,7 +105,7 @@ export class SolanaUtilsService {
         if (vote_identity) {
           result = {
             name: data.name || '',
-            image: data.image || '/assets/images/icons/node-placeholder.svg',
+            image: data.image || '/assets/images/icons/placeholder.svg',
             vote_identity: data.vote_identity,
             website: data.website,
             wizScore: data.wiz_score,
@@ -125,7 +125,7 @@ export class SolanaUtilsService {
 
             return {
               name: validator.name || '',
-              image: validator.image || '/assets/images/icons/node-placeholder.svg',
+              image: validator.image || '/assets/images/icons/placeholder.svg',
               vote_identity: validator.vote_identity,
               website: validator.website,
               wizScore: validator.wiz_score,

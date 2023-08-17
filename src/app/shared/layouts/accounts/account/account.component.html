@@ -3,7 +3,7 @@
   <div class="flex-item-center">
     <div class="table-icon" [ngStyle]="{'background': mergeCondition ? 'transparent' : ''}">
       <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
-      <ion-checkbox #accCheckbox *ngIf="mergeCondition"></ion-checkbox>
+      <ion-checkbox #accCheckbox *ngIf="mergeCondition" [checked]="isChecked"></ion-checkbox>
     </div>
     <div class="validator-info heading-6">
       {{account?.validatorData?.name || 'name not found'}} <br>

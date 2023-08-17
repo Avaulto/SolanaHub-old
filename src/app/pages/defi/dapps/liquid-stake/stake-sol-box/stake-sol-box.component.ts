@@ -7,7 +7,7 @@ import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, withdrawStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { toastData } from 'src/app/models';
-import { TooltipPosition } from 'src/app/shared/components/tooltip/tooltip.enums';
+import { TooltipPosition } from 'src/app/shared/layouts/tooltip/tooltip.enums';
 import { StakePoolStoreService } from '../stake-pool-store.service';
 import { environment } from 'src/environments/environment';
 import va from '@vercel/analytics';
@@ -76,73 +76,12 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     let referral = new PublicKey(environment.platformFeeCollector);
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
     const sol = new bn((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
-    if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
+    this._stakePoolStore.stakeSOL(this.selectedProvider.poolName.toLowerCase(), sol, validatorVoteAccount)
 
-
-      const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(sol, { directToValidatorVoteAddress: validatorVoteAccount });
-
-        this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
-
-    } else {
-      let depositTx = await depositSol(
-        this._solanaUtilsService.connection,
-        this.selectedProvider.poolPublicKey,
-        this.wallet.publicKey,
-        Number(sol),
-        undefined,
-        // referral
-      );
-      // custom stake to a validator using solblaze pool
-      if (validatorVoteAccount) {
-        this.stakeCLS(depositTx, validatorVoteAccount);
-      } else {
-
-  
-        await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers)
-        
-      }
-    }
-    va.track('liquid staking', { type: `stake SOL` });
 
   }
   // stake custom validator
-  public async stakeCLS(txs, validatorVoteAccount: string) {
 
-    const validator = new PublicKey(validatorVoteAccount);
-
-    const wallet = this.wallet.publicKey;
-
-    try {
-   
-
-      let memo = JSON.stringify({
-        type: "cls/validator_stake/lamports",
-        value: {
-          validator
-        }
-      });
-      let memoInstruction = new TransactionInstruction({
-        keys: [{
-          pubkey: wallet,
-          isSigner: true,
-          isWritable: true
-        }],
-        programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
-        data: (new TextEncoder()).encode(memo) as Buffer
-      })
-
-      const txId = await this._txInterceptService.sendTx([txs, memoInstruction], this.wallet.publicKey, txs.signers);
-      await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
-
-      va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount}` });
-    } catch (error) {
-      const toasterMessage: toastData = {
-        message: error.toString().substring(6),
-        segmentClass: "merinadeErr"
-      }
-      this._toasterService.msg.next(toasterMessage)
-    }
-  }
   public async liquidUnstake() {
 
     const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);

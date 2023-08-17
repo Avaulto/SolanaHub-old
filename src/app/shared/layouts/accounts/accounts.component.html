@@ -19,12 +19,12 @@
               </div>
               <div class="account-status">
                 <span>account address: </span>
-                <span class="sub">{{account?.addr}} <ion-icon name="copy-outline" trigger="click" tooltip="coppied"
+                <span class="sub">{{account?.shortAddr}} <ion-icon name="copy-outline" trigger="click" tooltip="coppied"
                     appCopyText [copyText]="account.addr"></ion-icon>
                 </span>
               </div>
-              <div class="account-status">
-                <span>validator vote key: </span>
+              <div class="account-status validator-stake">
+                <span class="validator">validator vote key: </span>
                 <span class="sub">{{account?.validatorVoteKey}} <ion-icon name="copy-outline" trigger="click"
                     tooltip="coppied" appCopyText [copyText]="account.validatorVoteKey"></ion-icon>
                 </span>
@@ -42,14 +42,9 @@
       </ion-accordion-group>
     </ng-container>
     <ng-template #loaderTemplate>
-      <!-- <app-loader></app-loader> -->
       <app-wallet-not-connected-state></app-wallet-not-connected-state>
     </ng-template>
 
 
-  <!-- </ng-container> -->
-  <!-- <ng-template #elseTemplate>
-    <app-wallet-not-connected-state></app-wallet-not-connected-state>
-  </ng-template> -->
 
 </ion-grid>

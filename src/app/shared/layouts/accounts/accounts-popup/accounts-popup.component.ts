@@ -48,12 +48,14 @@ export class AccountsPopupComponent implements OnInit {
     return filterAccounts;
   }
   public storeSelection(accountData: {account:StakeAccountExtended, accCheckbox}){
-    if(accountData.accCheckbox.el.checked){
+    console.log(accountData.accCheckbox)
+    if(accountData.accCheckbox){
       this.selectedAccounts.push(accountData.account)
     }else{
       const filterAcc = this.selectedAccounts.filter((account:StakeAccountExtended) => account.addr == accountData.account.addr)
       this.selectedAccounts = filterAcc;
     }
+    console.log(this.selectedAccounts)
   }
   public async submit(): Promise<void> {
     const walletOwner = this.wallet.publicKey

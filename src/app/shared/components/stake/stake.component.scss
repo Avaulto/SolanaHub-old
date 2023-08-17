@@ -61,3 +61,30 @@
 }
 
 
+
+.stake-by {
+    transition: 0.3s ease;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    background: var(--deep-background);
+    padding: 12px;
+    cursor: pointer;
+    justify-content: space-evenly;
+    border: 1px solid transparent;
+
+    &.selected-path {
+        border: 1px solid var(--ion-color-primary);
+    }
+
+    .select-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        ion-checkbox {
+            --size: 14px;
+        }
+    }
+}

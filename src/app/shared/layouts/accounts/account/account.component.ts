@@ -11,11 +11,12 @@ export class AccountComponent implements OnInit {
   @Input() account: StakeAccountExtended;
   @Input() mergeCondition: boolean = false;
   @Output() onClickAccount: EventEmitter<any> = new EventEmitter();
-  @ViewChild('accCheckbox') accCheckbox: IonCheckbox;
+  @Input() isChecked: boolean = false;
   constructor() { }
 
   ngOnInit() {}
   appendAccountData(){
-    this.onClickAccount.emit({ account:this.account, accCheckbox:this.accCheckbox})
+    this.isChecked = !this.isChecked;
+    this.onClickAccount.emit({ account:this.account, accCheckbox:this.isChecked})
   }
 }
