@@ -45,7 +45,7 @@ export class TheLaboratoryPage implements OnInit {
     //   // description: `Simple strategy that stake your SOL with mariande platform, get mSOL in return, and deposit them on solend for extra MNDE reward`,
     //   defiParticipate: ['marinade','solend'],
     //   strategies: ['staking', 'liquidity provider'],
-    //   rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/mnde.webp'],
+    //   rewardAsssets: ['/assets/images/icons/solana-logo.webp', '/assets/images/icons/marinade-logo-small.svg'],
     //   learnMoreLink: 'https://solana.org/stake-pools',
     //   active: true,
     //   riskLevel: 1,

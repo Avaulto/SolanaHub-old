@@ -146,7 +146,6 @@ export class SendComponent implements OnInit {
 
     try {
       if (!this._elusiv && ev.detail.checked) {
-        console.log('elusiv init')
         // generate seed buffer
         const seed = (new TextEncoder()).encode(SEED_MESSAGE) as Buffer;
         const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey
@@ -166,7 +165,6 @@ export class SendComponent implements OnInit {
 
   }
   private async _getPrivateBalance() {
-    console.log(this._elusiv)
     try {
       const balanceBN = (await this._elusiv.getLatestPrivateBalance("LAMPORTS")).toString() || 0;
       this.privateBalance = (Number(balanceBN) / LAMPORTS_PER_SOL).toFixedNoRounding(3);

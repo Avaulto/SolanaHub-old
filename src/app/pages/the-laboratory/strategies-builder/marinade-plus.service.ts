@@ -98,7 +98,7 @@ export class MarinadePlusService {
       description: 'Base 0% SOL Staking Rewards'
     },
     {
-      icon: '/assets/images/icons/mnde.webp',
+      icon: '/assets/images/icons/marinade-logo-small.svg',
       description: 'Base 0% MNDE From Supply MMSOL Liquidity On Solend'
     }
     ],

@@ -1,6 +1,6 @@
 <div class="list-item" (click)="onSelectItem(item)" [ngClass]="{'not-supported': item && item?.selectable == false}">
   <div class="list-item-img">
-    <ion-img [src]="item?.image || '/assets/images/icons/node-placeholder.png'"></ion-img>
+    <ion-img [src]="item?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
   </div>
   <div class="list-item-info">
     <div class="list-item-name ButtonText">{{item?.name || 'select here'}}</div>
