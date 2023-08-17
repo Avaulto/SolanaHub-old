@@ -149,6 +149,5 @@ export class StakeComponent implements OnInit {
       this._removeStakePoolControl()
     }
 
-    console.log(this.stakeForm)
   }
 }

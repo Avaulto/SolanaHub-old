@@ -174,7 +174,6 @@ export class TokenSwapPage implements OnInit {
     const { slippage, outputToken, inputToken, inputAmount } = this.swapForm.value;
     try {
       this.bestRoute = await this._jupStore.computeBestRoute(inputAmount, inputToken, outputToken, slippage);
-      console.log(this.bestRoute)
       if (this.bestRoute) {
         // prep output amount on UI
         const swapDetails = await this._prepSwapDetails(this.bestRoute);
@@ -200,7 +199,6 @@ export class TokenSwapPage implements OnInit {
       const outputDecimal = 10 ** this.swapForm.value.outputToken.decimals
       const txFees = 0 // await routeInfo.getDepositAndFee();
       const routePlans = routeInfo.routePlan.map(p => Number(p.swapInfo.feeAmount));
-      console.log(routePlans)
       const AMMfeesCalc: number = routePlans.reduce(
         (accumulator, currentValue) => accumulator + currentValue,
         0

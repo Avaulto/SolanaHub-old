@@ -59,7 +59,6 @@ export class ConvertBalancePopupComponent implements OnInit {
     return filterTokens;
   }
   public storeSelection(selectedAsset: { asset: Asset, assetCheckbox }) {
-    console.log(selectedAsset)
     if (selectedAsset.assetCheckbox) {
       this.selectedAssets.push(selectedAsset.asset)
     } else {
@@ -69,7 +68,6 @@ export class ConvertBalancePopupComponent implements OnInit {
     this.calcTotalConvert();
   }
   public toggleCheck() {
-    console.log(this.checkAll)
     this.checkAll = !this.checkAll;
     if (this.checkAll) {
       this.selectedAssets = this.assetsListCanSwap;

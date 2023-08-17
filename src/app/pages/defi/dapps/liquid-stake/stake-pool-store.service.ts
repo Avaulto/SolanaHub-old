@@ -148,7 +148,6 @@ export class StakePoolStoreService {
       referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
     })
     this.marinadeSDK = new Marinade(config)
-    console.log(this.marinadeSDK)
   }
   public async getStakePoolsInfo(): Promise<void> {
     try {
