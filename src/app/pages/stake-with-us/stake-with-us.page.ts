@@ -4,6 +4,7 @@ import { ContactInfo, GetProgramAccountsConfig, GetProgramAccountsFilter, LAMPOR
 import { map, mergeMap, Observable, shareReplay, Subscription, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
+import { StakePoolStoreService } from '../defi/dapps/liquid-stake/stake-pool-store.service';
 interface ValidatorRank {
   rank: number;
   numOfValidators: number;
@@ -32,7 +33,8 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   constructor(
     private _utilsService: UtilsService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _titleService: Title  
+    private _titleService: Title,
+    private _stakePoolStoreService:StakePoolStoreService
     ) {   
 
   }

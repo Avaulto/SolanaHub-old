@@ -48,28 +48,7 @@ export class ChartComponent implements OnChanges {
       this.hasPairData = false
       console.warn(error)
     }
-    // .subscribe({
-    //   next: chartHistory => {
-    //     this.hasPairData = true;
-    //     this.createLineChart(chartHistory[0], chartHistory[1]);
-    //   },
-    //   error: err => {
-    //     this.hasPairData = false;
-    //     console.error(err);
-    //   }
-    // })
-
-    // this.dataAggregator.getCoinChartHistory(pairOne, 'usd', duration)
-    // .subscribe({
-    //   next: chartHistory => {
-    //     this.hasPairData = true;
-    //     this.createLineChart(chartHistory[0], chartHistory[1]);
-    //   },
-    //   error: err => {
-    //     this.hasPairData = false;
-    //     console.error(err);
-    //   }
-    // })
+ 
   }
   private createLineChart(labels, data) {
     this.lines = new Chart(this.lineChart.nativeElement, {
@@ -91,7 +70,7 @@ export class ChartComponent implements OnChanges {
           fill: true,
           data,
           backgroundColor: 'rgb(12 218 196 / 20%)', // array should have same number of elements as number of dataset
-          borderColor: 'rgb(0, 0, 0)',// array should have same number of elements as number of dataset
+          borderColor: '#395DF0',// array should have same number of elements as number of dataset
           borderWidth: 1
         }]
       },
