@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LabStrategyConfiguration, StrategyClaimableAsset, WalletExtended } from 'src/app/models';
-import { MarinadePlusService } from '../../strategies-builder/marinade-plus.service';
 import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.service';
 
 @Component({

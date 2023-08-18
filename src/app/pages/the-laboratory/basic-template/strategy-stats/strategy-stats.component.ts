@@ -2,7 +2,6 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Outpu
 import { DefiStat, WalletExtended } from 'src/app/models';
 import { JupiterStoreService, SolanaUtilsService, UtilsService } from 'src/app/services';
 import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.service';
-import { MarinadePlusService } from '../../strategies-builder/marinade-plus.service';
 
 @Component({
   selector: 'app-strategy-stats',
@@ -21,7 +20,6 @@ export class StrategyStatsComponent implements  OnChanges {
   };
   constructor(
     private _solblazeFarmerService: SolblazeFarmerService,
-    private _marinadePlusService: MarinadePlusService,
   ) { }
 
 
@@ -35,7 +33,6 @@ export class StrategyStatsComponent implements  OnChanges {
   async fetchStrategyStats(strategyName: string) {
     let stats;
     if (strategyName.toLowerCase() === 'marinade-plus') {
-       stats = await this._marinadePlusService.initStrategyStats();
     }
     if (this.strategyName.toLowerCase() === 'solblaze-farmer') {
       this.strategyStats.protocolLoop = 2

@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Asset, LabStrategyConfiguration, WalletExtended } from 'src/app/models';
-import { MarinadePlusService } from '../../strategies-builder/marinade-plus.service';
 import { JupiterStoreService } from 'src/app/services';
 import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.service';
 
@@ -14,7 +13,6 @@ export class WithdrawComponent implements OnChanges {
   @Input() strategyConfiguration: LabStrategyConfiguration;
   public loader: boolean = false;
   constructor(
-    private _marinadePlusService: MarinadePlusService,
     private _solblazeFarmerService: SolblazeFarmerService,
     private _jupStore: JupiterStoreService,
   ) { }
@@ -26,7 +24,6 @@ export class WithdrawComponent implements OnChanges {
   public async withdraw() {
     if (this.strategyConfiguration.strategyName === 'marinade-plus') {
       const mSOL_holding = this.strategyConfiguration.assetHoldings[0].balance;
-      this._marinadePlusService.withdraw(mSOL_holding)
     }
     if (this.strategyConfiguration.strategyName === 'solblaze-farmer') {
       this.loader = true
