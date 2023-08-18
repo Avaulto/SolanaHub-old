@@ -91,7 +91,7 @@ export class ChartComponent implements OnChanges {
           fill: true,
           data,
           backgroundColor: 'rgb(12 218 196 / 20%)', // array should have same number of elements as number of dataset
-          borderColor: 'rgb(0, 0, 0)',// array should have same number of elements as number of dataset
+          borderColor: '#395DF0',// array should have same number of elements as number of dataset
           borderWidth: 1
         }]
       },
