@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import va from '@vercel/analytics';
 import { StakePoolStoreService } from 'src/app/pages/defi/dapps/liquid-stake/stake-pool-store.service';
 import { depositSol } from '@solana/spl-stake-pool';
-import bn from 'bn.js'
+import {  BN } from '@marinade.finance/marinade-ts-sdk';
 
 interface StakePool {
   logo: string,
@@ -123,7 +123,7 @@ export class StakeComponent implements OnInit {
   }
 
   private async _liquidStake(poolName: string, amount, validatorVoteAccount) {
-    const sol = new bn((amount - 0.001) * LAMPORTS_PER_SOL);
+    const sol = new BN((amount - 0.001) * LAMPORTS_PER_SOL);
     this._stakePoolStore.stakeSOL(poolName.toLowerCase(), sol, validatorVoteAccount)
   }
   private async _nativeStake(monthLockuptime, amount, walletOwnerPublicKey, voteAccount) {

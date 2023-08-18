@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
-import bn from 'bn.js'
+
 
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, withdrawStake } from '@solana/spl-stake-pool';
@@ -10,7 +10,7 @@ import { toastData } from 'src/app/models';
 import { TooltipPosition } from 'src/app/shared/layouts/tooltip/tooltip.enums';
 import { StakePoolStoreService } from '../stake-pool-store.service';
 import { environment } from 'src/environments/environment';
-import va from '@vercel/analytics';
+import {  BN } from '@marinade.finance/marinade-ts-sdk';
 @Component({
   selector: 'app-stake-sol-box',
   templateUrl: './stake-sol-box.component.html',
@@ -75,7 +75,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   async liquidStake() {
     let referral = new PublicKey(environment.platformFeeCollector);
     let { stakeAmount, validatorVoteAccount } = this.stakeForm.value;
-    const sol = new bn((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
+    const sol = new BN((stakeAmount - 0.001) * LAMPORTS_PER_SOL);
     this._stakePoolStore.stakeSOL(this.selectedProvider.poolName.toLowerCase(), sol, validatorVoteAccount)
 
 
@@ -84,7 +84,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
 
   public async liquidUnstake() {
 
-    const sol = new bn(this.unStakeAmount * LAMPORTS_PER_SOL);
+    const sol = new BN(this.unStakeAmount * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
       const { transaction } = await this._stakePoolStore.marinadeSDK.liquidUnstake(sol)
 
