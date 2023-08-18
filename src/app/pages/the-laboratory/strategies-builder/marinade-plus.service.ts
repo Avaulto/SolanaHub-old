@@ -1,453 +1,453 @@
-import { Injectable } from '@angular/core';
-import { ApiService, DataAggregatorService, JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
-import { StakePoolStoreService } from '../../defi/dapps/liquid-stake/stake-pool-store.service';
-import { Observable, firstValueFrom, forkJoin, map, shareReplay } from 'rxjs';
-import { SolendAction, SolendMarket, SolendWallet } from '@solendprotocol/solend-sdk';
-import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
-import { DefiStat, JupiterPriceFeed, Token, WalletExtended } from 'src/app/models';
-import { LabStrategyConfiguration } from 'src/app/models/defiLab.model';
-import {  BN } from '@marinade.finance/marinade-ts-sdk';
+// import { Injectable } from '@angular/core';
+// import { ApiService, DataAggregatorService, JupiterStoreService, SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
+// import { StakePoolStoreService } from '../../defi/dapps/liquid-stake/stake-pool-store.service';
+// import { Observable, firstValueFrom, forkJoin, map, shareReplay } from 'rxjs';
+// import { SolendAction, SolendMarket, SolendWallet } from '@solendprotocol/solend-sdk';
+// import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
+// import { DefiStat, JupiterPriceFeed, Token, WalletExtended } from 'src/app/models';
+// import { LabStrategyConfiguration } from 'src/app/models/defiLab.model';
+// import {  BN } from '@marinade.finance/marinade-ts-sdk';
 
 
-export interface RewardStats {
-  rewardsPerShare: string;
-  totalBalance: string;
-  lastSlot: number;
-  side: string;
-  tokenMint: string;
-  reserveID: string;
-  market: string;
-  mint: string;
-  rewardMint: string;
-  rewardSymbol: string;
-  rewardRates: RewardRateElement[];
-  incentivizer: string;
-}
+// export interface RewardStats {
+//   rewardsPerShare: string;
+//   totalBalance: string;
+//   lastSlot: number;
+//   side: string;
+//   tokenMint: string;
+//   reserveID: string;
+//   market: string;
+//   mint: string;
+//   rewardMint: string;
+//   rewardSymbol: string;
+//   rewardRates: RewardRateElement[];
+//   incentivizer: string;
+// }
 
-export interface RewardRateElement {
-  beginningSlot: number;
-  rewardRate: number | string;
-  name: string;
-}
-
-
-@Injectable({
-  providedIn: 'root'
-})
-
-// marinade and solend strategy
-// 1. deposit sol for msol
-// 2. deposit msol into solend
-// 3. get liquid stake rewards + mnde rewards
-export class MarinadePlusService {
-  private _solendWallet: SolendWallet;
-  protected avaultoVoteKey = new PublicKey('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh');
-  protected solendStakedSolPool = new PublicKey('HPzmDcPDCXAarsAxx3qXPG7aWx447XUVYwYsW4awUSPy');
-  protected _msol = new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So");
-  protected _mnde = new PublicKey("MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey");
-  protected _wSOL = new PublicKey("So11111111111111111111111111111111111111112");
-  public wSOL = { address: "So11111111111111111111111111111111111111112" };
-  constructor(
-    private _apiService: ApiService,
-    private _solanaUtilsService: SolanaUtilsService,
-    private _stakePoolStore: StakePoolStoreService,
-    private _jupStore: JupiterStoreService,
-    private _utilService: UtilsService,
-    private _txInterceptService: TxInterceptService,
-  ) {
-
-  }
-  // to read more about marinade plus strategy, please refer to https://docs.avaulto.com/strategies/marinade-plus
-  // get marinade APY
-  // get solend APY on provide msol liquidity
+// export interface RewardRateElement {
+//   beginningSlot: number;
+//   rewardRate: number | string;
+//   name: string;
+// }
 
 
+// @Injectable({
+//   providedIn: 'root'
+// })
 
-  public strategyStats: DefiStat[] = [
-    {
-      title: 'STRATEGY BALANCE',
-      loading: true,
-      desc: null
-    },
-    {
-      title: 'YOUR CLAIMED REWARDS',
-      loading: true,
-      desc: null
-    },
-    {
-      title: 'projected APY',
-      loading: true,
-      desc: null
-    },
-    {
-      title: 'Total value locked',
-      loading: true,
-      desc: null
-    },
-  ]
-  public strategyConfiguration: LabStrategyConfiguration = {
-    strategyName: 'marinade-plus',
-    title: 'Marinade Plus Strategy',
-    protocolsTitle: 'marinade & solend',
-    rewardsSlogan: 'SOL + MNDE rewards',
-    description: 'Marinade Liquid Staking + Soled Pool Strategy',
-    strategyIcon: '/assets/images/icons/strategies-icons/msol-solend-mnde.png',
-    APY_breakdown: [{
-      icon: '/assets/images/icons/solana-logo.webp',
-      description: 'Base 0% SOL Staking Rewards'
-    },
-    {
-      icon: '/assets/images/icons/marinade-logo-small.svg',
-      description: 'Base 0% MNDE From Supply MMSOL Liquidity On Solend'
-    }
-    ],
-    risk_breakdown: [{
-      riskLevel: 'low',
-      description: 'Audited Smart Contract',
-    },
-    {
-      riskLevel: 'low',
-      description: 'Single Asset Yield(No Impermanent Loss)',
-    },
-    {
-      riskLevel: 'medium',
-      description: 'High Volatility On MNDE USD Value',
-    },
-    {
-      riskLevel: 'high',
-      description: 'Multiple Smart Contract Exposure',
-    }],
-    // strategy_breakdown: [
-    //   'Deposit SOL To Marinade Liquid Staking Pool',
-    //   'Get MSOL In Return',
-    //   'Deposit MSOL Into Solend And Supply Liquidity On MSOL Pool'
-    // ],
-    totalTransactions: 2,
-    claimAssets: [{
-      name: 'MNDE',
-      amount: 0,
-      toBeClaim: 0
-    }],
-    assetHoldings: [
-      {
-        name: 'MSOL',
-        balance: 0,
-        icon: '/assets/images/icons/marinade-logo.png',
-        totalUsdValue: 0,
-        baseOfPortfolio: 0
-      }
-    ],
-    fees:[]
-  }
-  public async initStrategyStats(): Promise<{apy, tvl}> {
-    try {
-      const apy = await this.getStrategyAPY();
-      const tvl = await this.getTVL()
+// // marinade and solend strategy
+// // 1. deposit sol for msol
+// // 2. deposit msol into solend
+// // 3. get liquid stake rewards + mnde rewards
+// export class MarinadePlusService {
+//   private _solendWallet: SolendWallet;
+//   protected avaultoVoteKey = new PublicKey('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh');
+//   protected solendStakedSolPool = new PublicKey('HPzmDcPDCXAarsAxx3qXPG7aWx447XUVYwYsW4awUSPy');
+//   protected _msol = new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So");
+//   protected _mnde = new PublicKey("MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey");
+//   protected _wSOL = new PublicKey("So11111111111111111111111111111111111111112");
+//   public wSOL = { address: "So11111111111111111111111111111111111111112" };
+//   constructor(
+//     private _apiService: ApiService,
+//     private _solanaUtilsService: SolanaUtilsService,
+//     private _stakePoolStore: StakePoolStoreService,
+//     private _jupStore: JupiterStoreService,
+//     private _utilService: UtilsService,
+//     private _txInterceptService: TxInterceptService,
+//   ) {
 
-      this.strategyConfiguration.APY_breakdown[0].description = `Base ${apy.marinadeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
-      this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.lpAPY.toFixedNoRounding(2)}% MNDE From Supply MMSOL Liquidity On Solend`
-      return {apy, tvl}
-    } catch (error) {
-      console.warn(error)
-    }
-  }
-
-  // init all required function for the strategy 
-  public async initStrategyStatefulStats(): Promise<{userHoldings}> {
-    try {
-
-      const wallet = this._solanaUtilsService.getCurrentWallet() as any;
-      await this._stakePoolStore.initMarinade(wallet);
-      this._solendWallet = await SolendWallet.initialize(wallet, this._solanaUtilsService.connection);
-
-      const deposits = await this.getTotalBalance();
-      // this.strategyStats[0].desc = deposits.SOL_holding.toFixedNoRounding(3) + ' SOL';
-      // this.strategyStats[0].loading = false;
-
-      const rewards = await this.getMndeRewards();
-      // this.strategyStats[1].desc = rewards.claimed_MNDE.toFixedNoRounding(3) + ' MNDE';
-      // this.strategyStats[1].loading = false;
-
-      // this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
-
-      const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
-      this.strategyConfiguration.assetHoldings[0].balance = deposits.mSOL_holding
-      this.strategyConfiguration.assetHoldings[0].totalUsdValue = mSOLPrice * deposits.mSOL_holding
-      this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = 100;
-
-      return {userHoldings: deposits.SOL_holding}
-    } catch (error) {
-      console.warn(error)
-    }
-  }
-  // get marinade + solend TVL
-  public async getTVL(): Promise<{SOL, USD}> {
-    let tvl = {SOL: 0, USD:0}
-    try {
-      const marinade_TVL = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/tlv'))).staked_usd;
-      const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
-      const market = await SolendMarket.initialize(
-        this._solanaUtilsService.connection,
-      );
-
-      // Read on-chain accounts for reserve data and cache
-      await market.loadReserves();
-
-      // calculate msol deposit
-      const mSOLReserve = market.reserves.find((reserve) => reserve.config.liquidityToken.symbol == "mSOL")
-      const mSOL_deposits = Number(mSOLReserve.stats.totalDepositsWads.toString()) / 10 ** 18 / 10 ** 9;
-      const solendMsolTVL = mSOL_deposits * mSOLPrice
-      tvl.SOL = marinade_TVL + solendMsolTVL / mSOLPrice
-      tvl.USD =  marinade_TVL + solendMsolTVL
-    } catch (error) {
-      console.warn(error);
-    }
-    return tvl
-  }
-
-  // get marinade + solend APY
-  public async getStrategyAPY(): Promise<{ strategyAPY, marinadeAPY: number, lpAPY: number }> {
-    // get external market data
-    const marinadeAPY = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/apy/30d'))).value * 100;
-    const mndePrice = await (await this._jupStore.fetchPriceFeed('MNDE')).data['MNDE'].price
-    const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
-    // const slot = await this._solanaUtilsService.connection.getSlot()
-    const rewardStats: Promise<RewardStats[]> = await firstValueFrom(this._apiService.get('https://api.solend.fi/liquidity-mining/external-reward-stats-v2?flat=true'));
-    const market = await SolendMarket.initialize(
-      this._solanaUtilsService.connection,
-    );
-
-    // Read on-chain accounts for reserve data and cache
-    await market.loadReserves();
-
-    // calculate msol deposit
-    const mSOLReserve = market.reserves.find((reserve) => reserve.config.liquidityToken.symbol == "mSOL")
-    const mSOL_deposits = Number(mSOLReserve.stats.totalDepositsWads.toString()) / 10 ** 18 / 10 ** 9;
-    // reminder! solend calc APY per sol price(not mSOL)
-    const totalUsd_mSOL = mSOL_deposits * await this._msolConverter('mSOL', mSOLPrice);
-
-    // calculate reward rates
-    const rewardRates = (await rewardStats).find(r => r.rewardMint === this._mnde.toBase58()).rewardRates;
-    const totalMNDERewards = Number(rewardRates[rewardRates.length - 1].rewardRate) / 10 ** 36;
-    const totalUsd_rewards = totalMNDERewards * mndePrice;
-    // const totalUsd_Deposits = mSOL_deposits * price_per_unit;
-
-    // calculate mnde APY
-    const slot = 500;
-    const currentAPY = totalUsd_rewards / totalUsd_mSOL
-    const solendAvg30daysAPY = currentAPY * slot / 446 * 100
-
-    // strategy APY
-    const strategyAPY = Number((solendAvg30daysAPY + marinadeAPY))
-    return { strategyAPY, marinadeAPY, lpAPY: solendAvg30daysAPY };
-
-  }
-  public async getTotalBalance(): Promise<{ SOL_holding: number,  USD_worth: number, mSOL_holding?: number}> {
-    let SOL_holding = 0
-    let mSOL_holding = 0
-    let USD_worth = 0
-    try {
-      const SOLPrice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price
-      const market = await SolendMarket.initialize(
-        this._solanaUtilsService.connection,
-        "production", // optional environment argument
-        // new PublicKey("7RCz8wb6WXxUhAigok9ttgrVgDFFFbibcirECzWSBauM") // optional market address (TURBO SOL). Defaults to 'Main' market
-      );
-
-      const obligation = await market.fetchObligationByWallet(new PublicKey(this._solanaUtilsService.getCurrentWallet().publicKey));
-      const depositBalance = obligation.deposits.find(deposit => deposit.mintAddress === this._msol.toBase58()).amount.toNumber() / LAMPORTS_PER_SOL
-
-      if (depositBalance > 0.00001) {
-        // convert to readable numbers
-        mSOL_holding = depositBalance;
-        SOL_holding = await this._msolConverter('SOL', mSOL_holding);
-        USD_worth = SOLPrice * SOL_holding;
-      }
-    } catch (error) {
-      console.warn(error);
-    }
+//   }
+//   // to read more about marinade plus strategy, please refer to https://docs.avaulto.com/strategies/marinade-plus
+//   // get marinade APY
+//   // get solend APY on provide msol liquidity
 
 
-    return { SOL_holding, mSOL_holding, USD_worth };
-  }
 
-  // convert back to msol/sol ratio
-  private async _msolConverter(side: 'SOL' | 'mSOL', amount: number): Promise<number> {
-    const assetRatio = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/price_sol'))
-    let converter;
-    if (side === 'SOL') {
-      converter = amount * assetRatio
-    }
-    if (side === 'mSOL') {
-      converter = amount / assetRatio
-    }
-    return converter
-  }
-  public async getMndeRewards(): Promise<{ claimed_MNDE, claimable_MNDE }> {
-    let claimed_MNDE = 0;
-    let claimable_MNDE = 0;
-    try {
-      await this._solendWallet.loadRewards();
-      // Claim rewards
-      const mndeRewards = this._solendWallet.rewards[this._mnde.toBase58()];
-      // claimed_MNDE = mndeRewards.claimedAmount / 10 ** mndeRewards.decimals;
-      // claimable_MNDE = mndeRewards.claimableAmount / 10 ** mndeRewards.decimals;
-    } catch (error) {
-      console.warn(error);
-    }
-    return { claimed_MNDE, claimable_MNDE };
+//   public strategyStats: DefiStat[] = [
+//     {
+//       title: 'STRATEGY BALANCE',
+//       loading: true,
+//       desc: null
+//     },
+//     {
+//       title: 'YOUR CLAIMED REWARDS',
+//       loading: true,
+//       desc: null
+//     },
+//     {
+//       title: 'projected APY',
+//       loading: true,
+//       desc: null
+//     },
+//     {
+//       title: 'Total value locked',
+//       loading: true,
+//       desc: null
+//     },
+//   ]
+//   public strategyConfiguration: LabStrategyConfiguration = {
+//     strategyName: 'marinade-plus',
+//     title: 'Marinade Plus Strategy',
+//     protocolsTitle: 'marinade & solend',
+//     rewardsSlogan: 'SOL + MNDE rewards',
+//     description: 'Marinade Liquid Staking + Soled Pool Strategy',
+//     strategyIcon: '/assets/images/icons/strategies-icons/msol-solend-mnde.png',
+//     APY_breakdown: [{
+//       icon: '/assets/images/icons/solana-logo.webp',
+//       description: 'Base 0% SOL Staking Rewards'
+//     },
+//     {
+//       icon: '/assets/images/icons/marinade-logo-small.svg',
+//       description: 'Base 0% MNDE From Supply MMSOL Liquidity On Solend'
+//     }
+//     ],
+//     risk_breakdown: [{
+//       riskLevel: 'low',
+//       description: 'Audited Smart Contract',
+//     },
+//     {
+//       riskLevel: 'low',
+//       description: 'Single Asset Yield(No Impermanent Loss)',
+//     },
+//     {
+//       riskLevel: 'medium',
+//       description: 'High Volatility On MNDE USD Value',
+//     },
+//     {
+//       riskLevel: 'high',
+//       description: 'Multiple Smart Contract Exposure',
+//     }],
+//     // strategy_breakdown: [
+//     //   'Deposit SOL To Marinade Liquid Staking Pool',
+//     //   'Get MSOL In Return',
+//     //   'Deposit MSOL Into Solend And Supply Liquidity On MSOL Pool'
+//     // ],
+//     totalTransactions: 2,
+//     claimAssets: [{
+//       name: 'MNDE',
+//       amount: 0,
+//       toBeClaim: 0
+//     }],
+//     assetHoldings: [
+//       {
+//         name: 'MSOL',
+//         balance: 0,
+//         icon: '/assets/images/icons/marinade-logo.png',
+//         totalUsdValue: 0,
+//         baseOfPortfolio: 0
+//       }
+//     ],
+//     fees:[]
+//   }
+//   public async initStrategyStats(): Promise<{apy, tvl}> {
+//     try {
+//       const apy = await this.getStrategyAPY();
+//       const tvl = await this.getTVL()
 
-  }
+//       this.strategyConfiguration.APY_breakdown[0].description = `Base ${apy.marinadeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
+//       this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.lpAPY.toFixedNoRounding(2)}% MNDE From Supply MMSOL Liquidity On Solend`
+//       return {apy, tvl}
+//     } catch (error) {
+//       console.warn(error)
+//     }
+//   }
 
-  // deposit strategy flow:
-  // stap 1 - stake sol for mSOL
-  // step 1.1 - get convert ratio from sol to msol
-  // stap 2 - deposit msol to solend
-  public async deposit(SOL_amount: number) {
-    const amountBn = new BN(SOL_amount * LAMPORTS_PER_SOL);
-    const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
-    try {
+//   // init all required function for the strategy 
+//   public async initStrategyStatefulStats(): Promise<{userHoldings}> {
+//     try {
 
-      const txIx1: Transaction = await this._mSolStake(amountBn);
+//       const wallet = this._solanaUtilsService.getCurrentWallet() as any;
+//       await this._stakePoolStore.initMarinade(wallet);
+//       this._solendWallet = await SolendWallet.initialize(wallet, this._solanaUtilsService.connection);
 
-      await this._txInterceptService.sendTx([txIx1], walletOwner)
+//       const deposits = await this.getTotalBalance();
+//       // this.strategyStats[0].desc = deposits.SOL_holding.toFixedNoRounding(3) + ' SOL';
+//       // this.strategyStats[0].loading = false;
 
-      const msolDepositRatio = await this._msolConverter('mSOL', SOL_amount * 0.99);
-      const mSOLamountBn = new BN(msolDepositRatio * LAMPORTS_PER_SOL);
-      const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._depositMsolToSolend(mSOLamountBn, walletOwner)).getTransactions()
-      const arrayOfTx: Transaction[] = []
-      for (let transaction of [preLendingTxn, lendingTxn, postLendingTxn].filter(Boolean)) {
-        if (!transaction) {
-          continue;
-        }
-        arrayOfTx.push(transaction)
-      }
+//       const rewards = await this.getMndeRewards();
+//       // this.strategyStats[1].desc = rewards.claimed_MNDE.toFixedNoRounding(3) + ' MNDE';
+//       // this.strategyStats[1].loading = false;
 
-      await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
-    } catch (error) {
-      console.warn(error);
-    }
-  }
+//       // this.strategyConfiguration.claimAssets.amount = rewards.claimable_MNDE.toFixedNoRounding(3);
 
-  // withdraw strategy flow:
-  // stap 1 - withdraw all mSOL from solend
-  // step 2 - convert msol to sol
-  public async withdraw(mSOL_amount: number) {
-    const mSOLamountBn = new BN(mSOL_amount * LAMPORTS_PER_SOL);
-    const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
-    try {
-      const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._withdrawMsolFromSolend(mSOLamountBn, walletOwner)).getTransactions()
-      const arrayOfTx: Transaction[] = []
-      for (let transaction of [preLendingTxn, lendingTxn, postLendingTxn].filter(Boolean)) {
-        if (!transaction) {
-          continue;
-        }
-        arrayOfTx.push(transaction)
-      }
+//       const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+//       this.strategyConfiguration.assetHoldings[0].balance = deposits.mSOL_holding
+//       this.strategyConfiguration.assetHoldings[0].totalUsdValue = mSOLPrice * deposits.mSOL_holding
+//       this.strategyConfiguration.assetHoldings[0].baseOfPortfolio = 100;
 
-      await this._txInterceptService.sendTx([...arrayOfTx], walletOwner);
-      const inputToken = {
-        "address": this._msol.toBase58(),
-        "decimals": 9,
-        "symbol": "mSOL",
-        "balance": mSOL_amount
-      }
-      const outputToken = {
-        "address": "So11111111111111111111111111111111111111112",
-        "decimals": 9,
-        "symbol": "SOL",
-      }
+//       return {userHoldings: deposits.SOL_holding}
+//     } catch (error) {
+//       console.warn(error)
+//     }
+//   }
+//   // get marinade + solend TVL
+//   public async getTVL(): Promise<{SOL, USD}> {
+//     let tvl = {SOL: 0, USD:0}
+//     try {
+//       const marinade_TVL = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/tlv'))).staked_usd;
+//       const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+//       const market = await SolendMarket.initialize(
+//         this._solanaUtilsService.connection,
+//       );
 
-      const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
-       await this._jupStore.swapTx(bestRoute);
+//       // Read on-chain accounts for reserve data and cache
+//       await market.loadReserves();
 
-    } catch (error) {
-      console.warn(error)
-    }
-  }
-  // stake with marinade pool for mSOL
-  private async _mSolStake(amount: any): Promise<Transaction | any> {
-    const directToValidatorVoteAddress = this.avaultoVoteKey;
-    const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(amount, { directToValidatorVoteAddress });
-    return transaction;
-  }
-  // deposit mSOL to solend pool
-  private async _depositMsolToSolend(amountBase: BN, walletOwner: PublicKey) {
-    const solendAction = await SolendAction
-      .buildDepositTxns(
-        this._solanaUtilsService.connection,
-        amountBase,
-        'mSOL',
-        walletOwner,
-        //environment.solanaEnv as any,
-      );
+//       // calculate msol deposit
+//       const mSOLReserve = market.reserves.find((reserve) => reserve.config.liquidityToken.symbol == "mSOL")
+//       const mSOL_deposits = Number(mSOLReserve.stats.totalDepositsWads.toString()) / 10 ** 18 / 10 ** 9;
+//       const solendMsolTVL = mSOL_deposits * mSOLPrice
+//       tvl.SOL = marinade_TVL + solendMsolTVL / mSOLPrice
+//       tvl.USD =  marinade_TVL + solendMsolTVL
+//     } catch (error) {
+//       console.warn(error);
+//     }
+//     return tvl
+//   }
 
-    return solendAction
+//   // get marinade + solend APY
+//   public async getStrategyAPY(): Promise<{ strategyAPY, marinadeAPY: number, lpAPY: number }> {
+//     // get external market data
+//     const marinadeAPY = (await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/apy/30d'))).value * 100;
+//     const mndePrice = await (await this._jupStore.fetchPriceFeed('MNDE')).data['MNDE'].price
+//     const mSOLPrice = await (await this._jupStore.fetchPriceFeed('mSOL')).data['mSOL'].price
+//     // const slot = await this._solanaUtilsService.connection.getSlot()
+//     const rewardStats: Promise<RewardStats[]> = await firstValueFrom(this._apiService.get('https://api.solend.fi/liquidity-mining/external-reward-stats-v2?flat=true'));
+//     const market = await SolendMarket.initialize(
+//       this._solanaUtilsService.connection,
+//     );
 
-  }
-  // withdraw mSOL to solend pool
-  private async _withdrawMsolFromSolend(amountBase: BN, walletOwner: PublicKey) {
-    const solendAction = await SolendAction
-      .buildWithdrawTxns(
-        this._solanaUtilsService.connection,
-        amountBase,
-        'mSOL',
-        walletOwner,
-      );
+//     // Read on-chain accounts for reserve data and cache
+//     await market.loadReserves();
 
-    return solendAction
-  }
+//     // calculate msol deposit
+//     const mSOLReserve = market.reserves.find((reserve) => reserve.config.liquidityToken.symbol == "mSOL")
+//     const mSOL_deposits = Number(mSOLReserve.stats.totalDepositsWads.toString()) / 10 ** 18 / 10 ** 9;
+//     // reminder! solend calc APY per sol price(not mSOL)
+//     const totalUsd_mSOL = mSOL_deposits * await this._msolConverter('mSOL', mSOLPrice);
 
-  // claim all rewards from solend
-  public async claimMNDE(walletOwner: WalletExtended, swapToSol: boolean = false) {
+//     // calculate reward rates
+//     const rewardRates = (await rewardStats).find(r => r.rewardMint === this._mnde.toBase58()).rewardRates;
+//     const totalMNDERewards = Number(rewardRates[rewardRates.length - 1].rewardRate) / 10 ** 36;
+//     const totalUsd_rewards = totalMNDERewards * mndePrice;
+//     // const totalUsd_Deposits = mSOL_deposits * price_per_unit;
 
-    let ixs = []
-    try {
+//     // calculate mnde APY
+//     const slot = 500;
+//     const currentAPY = totalUsd_rewards / totalUsd_mSOL
+//     const solendAvg30daysAPY = currentAPY * slot / 446 * 100
 
-      const solendWallet = await SolendWallet.initialize(walletOwner as any, this._solanaUtilsService.connection);
+//     // strategy APY
+//     const strategyAPY = Number((solendAvg30daysAPY + marinadeAPY))
+//     return { strategyAPY, marinadeAPY, lpAPY: solendAvg30daysAPY };
 
-      // Claim rewards
-      const mndeRewards = solendWallet.rewards[this._mnde.toBase58()];
-      // console.log(
-      //   "Claimable rewards:",
-      //   mndeRewards.claimableAmount
-      // );
+//   }
+//   public async getTotalBalance(): Promise<{ SOL_holding: number,  USD_worth: number, mSOL_holding?: number}> {
+//     let SOL_holding = 0
+//     let mSOL_holding = 0
+//     let USD_worth = 0
+//     try {
+//       const SOLPrice = await (await this._jupStore.fetchPriceFeed('SOL')).data['SOL'].price
+//       const market = await SolendMarket.initialize(
+//         this._solanaUtilsService.connection,
+//         "production", // optional environment argument
+//         // new PublicKey("7RCz8wb6WXxUhAigok9ttgrVgDFFFbibcirECzWSBauM") // optional market address (TURBO SOL). Defaults to 'Main' market
+//       );
 
-      const sig1 = await mndeRewards.rewardClaims
-        .find((claim) => !claim.metadata.claimedAt)
-        ?.claim();
+//       const obligation = await market.fetchObligationByWallet(new PublicKey(this._solanaUtilsService.getCurrentWallet().publicKey));
+//       const depositBalance = obligation.deposits.find(deposit => deposit.mintAddress === this._msol.toBase58()).amount.toNumber() / LAMPORTS_PER_SOL
 
-      // // Exercise options (after claiming)
-      // const slndOptionClaim = solendWallet.rewards["SLND_OPTION"].rewardClaims.find(
-      //   (claim) => claim.metadata.optionMarket.userBalance
-      // );
-
-      // const sig2 = await slndOptionClaim.exercise(
-      //   slndOptionClaim.optionMarket.userBalance
-      // );
-
-      const [setupIxs, claimIxs] = await solendWallet.getClaimAllIxs();
-      ixs.push(setupIxs, claimIxs)
+//       if (depositBalance > 0.00001) {
+//         // convert to readable numbers
+//         mSOL_holding = depositBalance;
+//         SOL_holding = await this._msolConverter('SOL', mSOL_holding);
+//         USD_worth = SOLPrice * SOL_holding;
+//       }
+//     } catch (error) {
+//       console.warn(error);
+//     }
 
 
-      if (swapToSol) {
-        const inputToken = {
-          "address": this._mnde.toBase58(),
-          "decimals": 9,
-          "symbol": "MNDE",
-          // "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
-        }
-        const outputToken = {
-          "address": "So11111111111111111111111111111111111111112",
-          "decimals": 9,
-          "symbol": "SOL",
-        }
+//     return { SOL_holding, mSOL_holding, USD_worth };
+//   }
 
-      }
-      await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
-    } catch (error) {
-      console.warn(error)
-    }
-    // Claim all claimable rewards
-  }
-}
+//   // convert back to msol/sol ratio
+//   private async _msolConverter(side: 'SOL' | 'mSOL', amount: number): Promise<number> {
+//     const assetRatio = await firstValueFrom(this._apiService.get('https://api.marinade.finance/msol/price_sol'))
+//     let converter;
+//     if (side === 'SOL') {
+//       converter = amount * assetRatio
+//     }
+//     if (side === 'mSOL') {
+//       converter = amount / assetRatio
+//     }
+//     return converter
+//   }
+//   public async getMndeRewards(): Promise<{ claimed_MNDE, claimable_MNDE }> {
+//     let claimed_MNDE = 0;
+//     let claimable_MNDE = 0;
+//     try {
+//       await this._solendWallet.loadRewards();
+//       // Claim rewards
+//       const mndeRewards = this._solendWallet.rewards[this._mnde.toBase58()];
+//       // claimed_MNDE = mndeRewards.claimedAmount / 10 ** mndeRewards.decimals;
+//       // claimable_MNDE = mndeRewards.claimableAmount / 10 ** mndeRewards.decimals;
+//     } catch (error) {
+//       console.warn(error);
+//     }
+//     return { claimed_MNDE, claimable_MNDE };
+
+//   }
+
+//   // deposit strategy flow:
+//   // stap 1 - stake sol for mSOL
+//   // step 1.1 - get convert ratio from sol to msol
+//   // stap 2 - deposit msol to solend
+//   public async deposit(SOL_amount: number) {
+//     const amountBn = new BN(SOL_amount * LAMPORTS_PER_SOL);
+//     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
+//     try {
+
+//       const txIx1: Transaction = await this._mSolStake(amountBn);
+
+//       await this._txInterceptService.sendTx([txIx1], walletOwner)
+
+//       const msolDepositRatio = await this._msolConverter('mSOL', SOL_amount * 0.99);
+//       const mSOLamountBn = new BN(msolDepositRatio * LAMPORTS_PER_SOL);
+//       const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._depositMsolToSolend(mSOLamountBn, walletOwner)).getTransactions()
+//       const arrayOfTx: Transaction[] = []
+//       for (let transaction of [preLendingTxn, lendingTxn, postLendingTxn].filter(Boolean)) {
+//         if (!transaction) {
+//           continue;
+//         }
+//         arrayOfTx.push(transaction)
+//       }
+
+//       await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+//     } catch (error) {
+//       console.warn(error);
+//     }
+//   }
+
+//   // withdraw strategy flow:
+//   // stap 1 - withdraw all mSOL from solend
+//   // step 2 - convert msol to sol
+//   public async withdraw(mSOL_amount: number) {
+//     const mSOLamountBn = new BN(mSOL_amount * LAMPORTS_PER_SOL);
+//     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
+//     try {
+//       const { preLendingTxn, lendingTxn, postLendingTxn } = await (await this._withdrawMsolFromSolend(mSOLamountBn, walletOwner)).getTransactions()
+//       const arrayOfTx: Transaction[] = []
+//       for (let transaction of [preLendingTxn, lendingTxn, postLendingTxn].filter(Boolean)) {
+//         if (!transaction) {
+//           continue;
+//         }
+//         arrayOfTx.push(transaction)
+//       }
+
+//       await this._txInterceptService.sendTx([...arrayOfTx], walletOwner);
+//       const inputToken = {
+//         "address": this._msol.toBase58(),
+//         "decimals": 9,
+//         "symbol": "mSOL",
+//         "balance": mSOL_amount
+//       }
+//       const outputToken = {
+//         "address": "So11111111111111111111111111111111111111112",
+//         "decimals": 9,
+//         "symbol": "SOL",
+//       }
+
+//       const bestRoute = await this._jupStore.computeBestRoute(inputToken.balance, inputToken, outputToken, 1);
+//        await this._jupStore.swapTx(bestRoute);
+
+//     } catch (error) {
+//       console.warn(error)
+//     }
+//   }
+//   // stake with marinade pool for mSOL
+//   private async _mSolStake(amount: any): Promise<Transaction | any> {
+//     const directToValidatorVoteAddress = this.avaultoVoteKey;
+//     const { transaction } = await this._stakePoolStore.marinadeSDK.deposit(amount, { directToValidatorVoteAddress });
+//     return transaction;
+//   }
+//   // deposit mSOL to solend pool
+//   private async _depositMsolToSolend(amountBase: BN, walletOwner: PublicKey) {
+//     const solendAction = await SolendAction
+//       .buildDepositTxns(
+//         this._solanaUtilsService.connection,
+//         amountBase,
+//         'mSOL',
+//         walletOwner,
+//         //environment.solanaEnv as any,
+//       );
+
+//     return solendAction
+
+//   }
+//   // withdraw mSOL to solend pool
+//   private async _withdrawMsolFromSolend(amountBase: BN, walletOwner: PublicKey) {
+//     const solendAction = await SolendAction
+//       .buildWithdrawTxns(
+//         this._solanaUtilsService.connection,
+//         amountBase,
+//         'mSOL',
+//         walletOwner,
+//       );
+
+//     return solendAction
+//   }
+
+//   // claim all rewards from solend
+//   public async claimMNDE(walletOwner: WalletExtended, swapToSol: boolean = false) {
+
+//     let ixs = []
+//     try {
+
+//       const solendWallet = await SolendWallet.initialize(walletOwner as any, this._solanaUtilsService.connection);
+
+//       // Claim rewards
+//       const mndeRewards = solendWallet.rewards[this._mnde.toBase58()];
+//       // console.log(
+//       //   "Claimable rewards:",
+//       //   mndeRewards.claimableAmount
+//       // );
+
+//       const sig1 = await mndeRewards.rewardClaims
+//         .find((claim) => !claim.metadata.claimedAt)
+//         ?.claim();
+
+//       // // Exercise options (after claiming)
+//       // const slndOptionClaim = solendWallet.rewards["SLND_OPTION"].rewardClaims.find(
+//       //   (claim) => claim.metadata.optionMarket.userBalance
+//       // );
+
+//       // const sig2 = await slndOptionClaim.exercise(
+//       //   slndOptionClaim.optionMarket.userBalance
+//       // );
+
+//       const [setupIxs, claimIxs] = await solendWallet.getClaimAllIxs();
+//       ixs.push(setupIxs, claimIxs)
+
+
+//       if (swapToSol) {
+//         const inputToken = {
+//           "address": this._mnde.toBase58(),
+//           "decimals": 9,
+//           "symbol": "MNDE",
+//           // "balance": mndeRewards.claimableAmount / 10 ** mndeRewards.decimals
+//         }
+//         const outputToken = {
+//           "address": "So11111111111111111111111111111111111111112",
+//           "decimals": 9,
+//           "symbol": "SOL",
+//         }
+
+//       }
+//       await this._txInterceptService.sendTx(ixs, walletOwner.publicKey);
+//     } catch (error) {
+//       console.warn(error)
+//     }
+//     // Claim all claimable rewards
+//   }
+// }

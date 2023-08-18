@@ -5,8 +5,8 @@ import { ApiService, DataAggregatorService, JupiterStoreService, SolanaUtilsServ
 import { StakePoolStoreService } from '../../defi/dapps/liquid-stake/stake-pool-store.service';
 import { BehaviorSubject, Subject, firstValueFrom } from 'rxjs';
 import AmmImpl, { MAINNET_POOL } from '@mercurial-finance/dynamic-amm-sdk';
-import { BN } from '@marinade.finance/marinade-ts-sdk';
 import { PoolFarmImpl } from '@mercurial-finance/farming-sdk';
+import { BN } from '@marinade.finance/marinade-ts-sdk';
 import va from '@vercel/analytics';
 
 interface MeteoraAMMpool {

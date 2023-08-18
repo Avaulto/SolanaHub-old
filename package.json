@@ -37,7 +37,6 @@
     "@solana/spl-token": "0.3.4",
     "@solana/wallet-adapter-wallets": "0.19.20",
     "@solana/web3.js": "1.78.3",
-    "@solendprotocol/solend-sdk": "0.6.25",
     "@types/node-fetch": "^2.6.2",
     "@types/readable-stream": "^2.3.13",
     "@vercel/analytics": "^1.0.0",

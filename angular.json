@@ -53,12 +53,12 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": false,
+              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "25mb"
+                  "maximumError": "10mb"
                 }
               ]
             },
@@ -72,7 +72,7 @@
               "aot": true
             },
             "ci": {
-              "progress": false
+              "progress": true
             }
           }
         },
