@@ -100,7 +100,6 @@ export class StakeAccountBoxComponent implements OnInit {
 
       }
     } catch (error) {
-      console.log(error)
       const toasterMessage: toastData = {
         message: error.toString().substring(6),
         segmentClass: "merinadeErr"
