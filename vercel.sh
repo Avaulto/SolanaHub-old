@@ -7,3 +7,6 @@ else
   echo "This is dev branch"
   npm run build:dev
 fi
+
+
+# sh vercel.sh
