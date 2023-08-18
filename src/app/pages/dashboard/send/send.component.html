@@ -23,12 +23,12 @@
       <ion-input class="button-text" type="number" formControlName="amount" placeholder="Amount"></ion-input>
       <span class="heading-6" (click)="setMaxAmount()">MAX</span>
     </ion-row>
-    <ion-row id="private-tx-wrapper" *ngIf="wallet$ | async;">
+    <!-- <ion-row id="private-tx-wrapper" *ngIf="wallet$ | async;">
 
       <app-label-layout [layoutConfig]="{title: 'Private Transaction'}">
       </app-label-layout>
       <ion-toggle (ionChange)="_initElusivSDK($event)" style="height: 25px;" formControlName="privateTx"></ion-toggle>
-    </ion-row>
+    </ion-row> -->
 
     <ion-row class="ion-justify-content-center">
       <ng-container *ngIf="wallet$ | async; else elseTemplate">
