@@ -1,8 +1,8 @@
 {
   "name": "compact-defi",
   "description": "Solana DeFi project",
-  "version": "1.0.3",
-  "author": "Avaulto",
+  "version": "1.0.2",
+  "author": "avaulto",
   "homepage": "https://avaulto.com/",
   "scripts": {
     "ng": "ng",
