@@ -1,7 +1,7 @@
 
 
 import { Injectable } from '@angular/core';
-import { firstValueFrom, map, Observable, shareReplay, Subject, throwError } from 'rxjs';
+import { firstValueFrom, Observable, shareReplay, Subject, throwError } from 'rxjs';
 import { StakePoolProvider } from './stake-pool.model';
 import { UtilsService, SolanaUtilsService, ToasterService, ApiService, TxInterceptService } from 'src/app/services';
 import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
@@ -38,9 +38,7 @@ export class StakePoolStoreService {
     this._toasterService.msg.next(toastData);
     return throwError((() => error))
   }
-  // public mSOLavaultoLST = this._apiService.get('https://snapshots-api.marinade.finance/v1/votes/msol/latest').pipe(map(res =>{
 
-  // }))
   // avaliable stake pool providers to select
   public providers: StakePoolProvider[] = [{
     poolName: 'Marinade',

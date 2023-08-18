@@ -6,8 +6,7 @@ import { SolendAction, SolendMarket, SolendWallet } from '@solendprotocol/solend
 import { LAMPORTS_PER_SOL, PublicKey, Transaction } from '@solana/web3.js';
 import { DefiStat, JupiterPriceFeed, Token, WalletExtended } from 'src/app/models';
 import { LabStrategyConfiguration } from 'src/app/models/defiLab.model';
-import { LaboratoryStoreService } from '../laboratory-store.service';
-import BN from 'bn.js';
+import {  BN } from '@marinade.finance/marinade-ts-sdk';
 
 
 export interface RewardStats {

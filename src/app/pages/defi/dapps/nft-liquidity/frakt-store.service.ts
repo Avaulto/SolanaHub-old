@@ -7,7 +7,7 @@ import {
   proposeLoanIx,
 } from '@frakt-protocol/frakt-sdk/lib/loans';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { BN } from 'bn.js';
+import {  BN } from '@marinade.finance/marinade-ts-sdk';
 
 import { catchError, map, observable, Observable, shareReplay, switchMap, throwError } from 'rxjs';
 import { toastData } from 'src/app/models';

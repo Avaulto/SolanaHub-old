@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MarinadePlusService } from '../../strategies-builder/marinade-plus.service';
 import { UtilsService } from 'src/app/services';
 import { LabStrategyConfiguration, WalletExtended } from 'src/app/models';
 import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.service';
@@ -20,7 +19,6 @@ export class DepositComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private _utilsService: UtilsService,
-    private _marinadePlusService: MarinadePlusService,
     private _solblazeFarmerService:SolblazeFarmerService
   ) { }
 
@@ -36,7 +34,7 @@ export class DepositComponent implements OnInit {
     let { amount } = this.depositForm.value;
     // const wallet = this._solanaUtilsService.getCurrentWallet();
     if (this.strategyConfiguration.strategyName === 'marinade-plus') {
-      this._marinadePlusService.deposit(amount)
+  
     }
     if (this.strategyConfiguration.strategyName === 'solblaze-farmer') {
       this.loader = true

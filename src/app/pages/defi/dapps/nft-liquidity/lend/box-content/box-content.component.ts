@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { BN } from 'bn.js';
+import {  BN } from '@marinade.finance/marinade-ts-sdk';
 import { WalletExtended } from 'src/app/models';
 import { ApiService, UtilsService } from 'src/app/services';
 import { FraktStoreService } from '../../frakt-store.service';

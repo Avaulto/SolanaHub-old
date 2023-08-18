@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, PopoverController } from '@ionic/angular';
 import { DefiApp, LabIntro } from 'src/app/models';
-import { MarinadePlusService } from './strategies-builder/marinade-plus.service';
 import { DefiTourComponent } from 'src/app/shared/components';
 import { BehaviorSubject } from 'rxjs';
 import { SolblazeFarmerService } from './strategies-builder/solblaze-farmer.service';
@@ -16,13 +15,10 @@ export class TheLaboratoryPage implements OnInit {
   constructor(
     private nav: NavController,
     private _popoverController:PopoverController,
-    private _marinadePlusService:MarinadePlusService,
     private _solblazeFarmerService:SolblazeFarmerService
     ) { }
 
   async ngOnInit() {
-    // const userDeposit = await (await this._marinadePlusService.getOnwerMsolDeposit()).mSOL_holding > 0;
-    // this.labProduct[0].apy = await this._marinadePlusService.getStrategyAPY();
 
     // init solblaze strategy APY
       const apy = (await this._solblazeFarmerService.getStrategyAPY()).strategyAPY

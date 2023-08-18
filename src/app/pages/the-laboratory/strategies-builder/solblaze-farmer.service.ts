@@ -5,7 +5,7 @@ import { ApiService, DataAggregatorService, JupiterStoreService, SolanaUtilsServ
 import { StakePoolStoreService } from '../../defi/dapps/liquid-stake/stake-pool-store.service';
 import { BehaviorSubject, Subject, firstValueFrom } from 'rxjs';
 import AmmImpl, { MAINNET_POOL } from '@mercurial-finance/dynamic-amm-sdk';
-import bn from 'bn.js'
+import { BN } from '@marinade.finance/marinade-ts-sdk';
 import { PoolFarmImpl } from '@mercurial-finance/farming-sdk';
 import va from '@vercel/analytics';
 
@@ -205,7 +205,7 @@ export class SolblazeFarmerService {
   // step 1.1 - deposit bsol/sol base on quote
   // stap 2 - deposit lp to meteora farm
   public async deposit(SOL_amount: number) {
-    const sol = new bn((SOL_amount) * LAMPORTS_PER_SOL);
+    const sol = new BN((SOL_amount) * LAMPORTS_PER_SOL);
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     try {
       this.txStatus$.next({ totalTx: 3, finishTx: 0, start: true })
@@ -218,7 +218,7 @@ export class SolblazeFarmerService {
       this.txStatus$.next({ ...this.txStatus$.value, finishTx: 1 })
       const deposit_bSOL = await this._bsolConverter('SOL', SOL_amount);
       const slippage = 0.999 // 0.1 %
-      const bSOL = new bn((deposit_bSOL.converterAsset * slippage) * LAMPORTS_PER_SOL);
+      const bSOL = new BN((deposit_bSOL.converterAsset * slippage) * LAMPORTS_PER_SOL);
       const txIx2 = await this._depositToMeteoraPool(bSOL, walletOwner)
 
       const tx2Res = await this._txInterceptService.sendTx([txIx2], walletOwner)
@@ -278,10 +278,10 @@ export class SolblazeFarmerService {
     }
   }
 
-  async _depositToMeteoraPool(depositAmount: bn, walletOwner: PublicKey): Promise<Transaction> {
+  async _depositToMeteoraPool(depositAmount: BN, walletOwner: PublicKey): Promise<Transaction> {
     // Get deposit quote for constant product
     const { poolTokenAmountOut, tokenAInAmount, tokenBInAmount } = this.strategySDK.pool.getDepositQuote(
-      new bn(0), // SOL
+      new BN(0), // SOL
       depositAmount, // bSOL
       false,
       0.1
@@ -291,7 +291,7 @@ export class SolblazeFarmerService {
     return depositTx;
   }
 
-  private async _withdrawFromMeteoraPool(withdrawLpAmount: bn, walletOwner: PublicKey): Promise<Transaction> {
+  private async _withdrawFromMeteoraPool(withdrawLpAmount: BN, walletOwner: PublicKey): Promise<Transaction> {
     // Get deposit quote for constant product
     const {
       poolTokenAmountIn,
@@ -471,7 +471,7 @@ export class SolblazeFarmerService {
     }
   }
 
-  private async _bSolStake(amount: bn): Promise<{ txIns: TransactionInstruction[], signers: any }> {
+  private async _bSolStake(amount: BN): Promise<{ txIns: TransactionInstruction[], signers: any }> {
     const validator = this._avaultoVoteKey;
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     const deposit = await this._stakePoolStore.stakePoolSDK.depositSol(
@@ -526,7 +526,7 @@ export class SolblazeFarmerService {
   }
 
   public async swap(amount, walletOwner: PublicKey) {
-    const inAmountLamport = new bn(amount * 10 ** this.strategySDK.pool.tokenB.decimals); // bSOL
+    const inAmountLamport = new BN(amount * 10 ** this.strategySDK.pool.tokenB.decimals); // bSOL
 
     // Swap bSOL → SOL
     const swapQuote = this.strategySDK.pool.getSwapQuote(new PublicKey(this.strategySDK.pool.tokenB.address), inAmountLamport, 0.1);
