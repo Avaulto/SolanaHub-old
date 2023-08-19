@@ -46,7 +46,7 @@ export class StakePoolStoreService {
     exchangeRate: null,
     tokenSymbol: "mSOL",
     tokenMint: new PublicKey("mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So"),
-    tokenImageURL: 'assets/images/icons/marinade-logo.png',
+    tokenImageURL: 'assets/images/icons/mSOL-logo.png',
     poolPublicKey: new PublicKey("stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi"),
     MEVDelegation: false,
     website: "https://stake.solblaze.org/"
@@ -90,7 +90,7 @@ export class StakePoolStoreService {
     exchangeRate: null,
     tokenSymbol: "bSOL",
     tokenMint: new PublicKey("bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1"),
-    tokenImageURL: 'assets/images/icons/solblaze-logo.png',
+    tokenImageURL: 'assets/images/icons/bSOL-logo.png',
     poolPublicKey: new PublicKey("stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi"),
     MEVDelegation: true,
     website: "https://stake.solblaze.org/"

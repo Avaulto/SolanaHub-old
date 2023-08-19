@@ -35,3 +35,25 @@
         display: none !important;
     }
 }
+
+ion-item{
+    --background: transparent;
+    --border-color: #00000052;
+}
+#liquid-stake-assets {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    align-items: center;
+}
+.table-icon {
+    width: 26px;
+    height: 26px;
+    margin-inline-end: 20px;
+    overflow: hidden;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}

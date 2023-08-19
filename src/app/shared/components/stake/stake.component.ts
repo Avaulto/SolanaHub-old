@@ -36,7 +36,7 @@ export class StakeComponent implements OnInit {
   }
   public selectedValidator: ValidatorData;
   public searchTerm = '';
-  private _stakePools: StakePool[] = [{ name: 'Marinade', logo: 'assets/images/icons/marinade-logo.png' }, { name: 'SolBlaze', logo: 'assets/images/icons/solblaze-logo.png' }]
+  private _stakePools: StakePool[] = [{ name: 'Marinade', logo: 'assets/images/icons/mSOL-logo.png' }, { name: 'SolBlaze', logo: 'assets/images/icons/bSOL-logo.png' }]
   public stakePools$: Observable<StakePool[]> = of(this._stakePools)
   private _selectedStakePool = null;
   constructor(

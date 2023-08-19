@@ -1,13 +1,43 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ContactInfo, GetProgramAccountsConfig, GetProgramAccountsFilter, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
-import { map, mergeMap, Observable, shareReplay, Subscription, switchMap, tap } from 'rxjs';
-import { Asset, ValidatorData } from 'src/app/models';
-import { SolanaUtilsService, UtilsService } from 'src/app/services';
-interface ValidatorRank {
-  rank: number;
-  numOfValidators: number;
+import { firstValueFrom, forkJoin, map, mergeMap, Observable, shareReplay, Subject, Subscription, switchMap, tap } from 'rxjs';
+import { Asset, ValidatorData, WalletExtended } from 'src/app/models';
+import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
+ interface mSOL_DirectStake {
+  mSolSnapshotCreatedAt: null;
+  voteRecordsCreatedAt: Date;
+  records: Record[];
 }
+
+ interface Record {
+  amount: null | string;
+  tokenOwner: string;
+  validatorVoteAccount: string;
+}
+
+interface bSOL_DirectStake {
+
+  success: boolean,
+  boost: {
+    staked: number,
+    pool: number,
+    match: number,
+    conversion: number
+  },
+  applied_stakes: {
+    [key: string]: { // validator identity
+      [key: string]: number // voter + amount stake
+    }
+  }
+}
+
+interface DirectStake{
+  symbol: string,
+  image: string,
+  amount: number
+}
+
 @Component({
   selector: 'app-stake-with-us',
   templateUrl: './stake-with-us.page.html',
@@ -17,10 +47,10 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   public apy: number;
   private AvaultoVoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   private anchorWallet$: Subscription;
-  public wallet: any;
+  public wallet: WalletExtended;
   public stakeChange = this._solanaUtilsService.getAvaultoStakeChange();
   public getValidatorInfo: Observable<ValidatorData | any> = this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh').pipe(
-    switchMap(async (validator:ValidatorData) => {
+    switchMap(async (validator: ValidatorData) => {
       validator.delegetors = await this._getDelegetors()
       validator.rank = await this._getRank()
       this.apy = validator.apy_estimate;
@@ -29,11 +59,25 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     }),
     shareReplay(),
   )
+
+  public getStakePoolDirectStake$: Observable<DirectStake[]> = this._solanaUtilsService.walletExtended$.pipe(
+    this._utilsService.isNotNull,
+    this._utilsService.isNotUndefined,
+    switchMap( async res =>{
+    let directStakeArr = []
+    const mSOLds = await firstValueFrom(this._getMSOLDirectStake())
+    const bSOLds = await firstValueFrom(this._getBSOLDirectStake())
+    directStakeArr.push(mSOLds,bSOLds)
+    return directStakeArr
+  }))
+  
+  
   constructor(
     private _utilsService: UtilsService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _titleService: Title  
-    ) {   
+    private _titleService: Title,
+    private _apiService: ApiService
+  ) {
 
   }
   async ionViewWillEnter() {
@@ -51,7 +95,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.anchorWallet$.unsubscribe();
   }
-  private async _getRank(){
+  private async _getRank() {
     const { current } = await this._solanaUtilsService.connection.getVoteAccounts();
     // const nodes: ContactInfo[] = await this._solanaUtilsService.connection.getClusterNodes();
     const sortedValidators = current.sort((a, b) => b.activatedStake - a.activatedStake);
@@ -81,4 +125,21 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     }
     return delegetors
   }
+
+
+  private _getMSOLDirectStake(): Observable<DirectStake> {
+    return this._apiService.get('https://snapshots-api.marinade.finance/v1/votes/msol/latest').pipe(map((r: mSOL_DirectStake) => {
+      const record = r.records.find(vote => vote.validatorVoteAccount === this.AvaultoVoteKey && vote.tokenOwner === this.wallet.publicKey.toBase58())
+      const directStake: DirectStake = {symbol: 'mSOL', image:'assets/images/icons/mSOL-logo.png', amount: Number(record.amount)}
+      return directStake
+    }))
+  }
+  private _getBSOLDirectStake(): Observable<DirectStake> {
+    return this._apiService.get('https://stake.solblaze.org/api/v1/cls_boost').pipe(map((snapshot: bSOL_DirectStake) => {
+      const amount =snapshot.applied_stakes[this.AvaultoVoteKey][this.wallet.publicKey.toBase58()]
+      const directStake: DirectStake = {symbol: 'bSOL', image:'assets/images/icons/bSOL-logo.png', amount}
+      return directStake
+    }))
+  }
+
 }

@@ -132,7 +132,7 @@
 //       {
 //         name: 'MSOL',
 //         balance: 0,
-//         icon: '/assets/images/icons/marinade-logo.png',
+//         icon: '/assets/images/icons/mSOL-logo.png',
 //         totalUsdValue: 0,
 //         baseOfPortfolio: 0
 //       }
