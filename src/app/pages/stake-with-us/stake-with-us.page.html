@@ -35,7 +35,7 @@
 
 
                 <div *ngIf="getStakePoolDirectStake$ | async as stakePoolDS;">
-                    <div class="heading-4 ion-text-uppercase" tooltip="The Liquid direct stake is updated once per epoch">Your Liquid Stake</div>
+                    <div class="heading-4 ion-text-uppercase" >Your Liquid Stake <app-icon-tooltip tip="The Liquid direct stake is updated once per epoch"></app-icon-tooltip></div>
                     <ion-item *ngFor="let ds of stakePoolDS">
                         <div id="liquid-stake-assets">
 
