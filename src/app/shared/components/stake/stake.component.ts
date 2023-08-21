@@ -1,14 +1,13 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
-import { firstValueFrom, lastValueFrom, map, observable, Observable, of, Subscriber, switchMap } from 'rxjs';
+import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
+import { firstValueFrom,  Observable, of, Subscriber, switchMap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
-import { LoaderService, UtilsService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
+import { LoaderService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 import { ActivatedRoute } from '@angular/router';
 
 import va from '@vercel/analytics';
 import { StakePoolStoreService } from 'src/app/pages/defi/dapps/liquid-stake/stake-pool-store.service';
-import { depositSol } from '@solana/spl-stake-pool';
 import {  BN } from '@marinade.finance/marinade-ts-sdk';
 
 interface StakePool {

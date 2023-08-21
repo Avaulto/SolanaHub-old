@@ -97,6 +97,10 @@ export class SolblazeFarmerService {
         description: 'Base half of 0% APY From SOL Staking Rewards'
       },
       {
+        icon: '/assets/images/icons/blze.png',
+        description: 'Base half 0% APY From SolBlaze DeFi boost'
+      },
+      {
         icon: '/assets/images/icons/solana-logo.webp',
         description: 'Base 0% APY From activity on lending platforms + trading fees'
       },
@@ -315,8 +319,9 @@ export class SolblazeFarmerService {
       const apy = await this.getStrategyAPY();
       const tvl = await this.getTVL()
       this.strategyConfiguration.APY_breakdown[0].description = `Base half of ${apy.solblazeAPY.toFixedNoRounding(2)}% SOL Staking Rewards`
-      this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.meteoraAPY.pool.toFixedNoRounding(2)}% APY From activity on lending platforms + trading fees`
-      this.strategyConfiguration.APY_breakdown[2].description = `Base ${apy.meteoraAPY.farm.toFixedNoRounding(2)}% APY bSOL/BLZE From Supply LP Liquidity On the farm`
+      this.strategyConfiguration.APY_breakdown[1].description = `Base ${apy.blzeDeFiBoostAPY.toFixedNoRounding(2)}% From SolBlaze DeFi boost`
+      this.strategyConfiguration.APY_breakdown[2].description = `Base ${apy.meteoraAPY.pool.toFixedNoRounding(2)}% APY From activity on lending platforms + trading fees`
+      this.strategyConfiguration.APY_breakdown[3].description = `Base ${apy.meteoraAPY.farm.toFixedNoRounding(2)}% APY bSOL/BLZE From Supply LP Liquidity On the farm`
       return { apy, tvl }
     } catch (error) {
       console.warn(error)
@@ -394,25 +399,26 @@ export class SolblazeFarmerService {
     }
     return sol_bsol_Pool
   }
-  public async getStrategyAPY(): Promise<{ strategyAPY, solblazeAPY: number, meteoraAPY: { pool: number, farm: number } }> {
-    let strategyAPY, solblazeAPY, meteoraPoolAPY, meteoraFarmAPY = 0;
+  public async getStrategyAPY(): Promise<{ strategyAPY, solblazeAPY: number,blzeDeFiBoostAPY: number, meteoraAPY: { pool: number, farm: number } }> {
+    let strategyAPY, solblazeAPY,blzeDeFiBoostAPY, meteoraPoolAPY, meteoraFarmAPY = 0;
     try {
       if (!this._meteoraSolBsolPoolAPI) {
         this._meteoraSolBsolPoolAPI = await this._getAMMbSOLpool()
       }
-
-      solblazeAPY = await (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/apy'))).apy;
+      const solblazeAPI = await (await firstValueFrom(this._apiService.get('https://stake.solblaze.org/api/v1/apy')))
+      solblazeAPY = solblazeAPI.base;
+      blzeDeFiBoostAPY = solblazeAPI.blze * 2
       const weekly_base_apy = this._meteoraSolBsolPoolAPI.weekly_base_apy;
       const trade_apy = this._meteoraSolBsolPoolAPI.trade_apy
       meteoraPoolAPY = Number(weekly_base_apy) + Number(trade_apy);
       meteoraFarmAPY = Number(this._meteoraSolBsolPoolAPI.farming_apy);
       const meteoraAPY = meteoraPoolAPY + meteoraFarmAPY;
       // solblaze apy divided by 2 because we stake only half the amount the user want to deposit to the whole strategy
-      strategyAPY = (solblazeAPY / 2) + meteoraAPY;
+      strategyAPY = (solblazeAPY / 2) +blzeDeFiBoostAPY+ meteoraAPY;
     } catch (error) {
       console.warn(error)
     }
-    return { strategyAPY, solblazeAPY, meteoraAPY: { pool: meteoraPoolAPY, farm: meteoraFarmAPY } };
+    return { strategyAPY, solblazeAPY,blzeDeFiBoostAPY, meteoraAPY: { pool: meteoraPoolAPY, farm: meteoraFarmAPY } };
 
   }
   public async getTotalBalanceBreakDown(): Promise<{ position_holding: { SOL: number, bSOL: number, baseOfPortfolio: { SOL: number, bSOL: number } }, position_balance: { SOL: number, USD: number }, assetRatio, SOLprice }> {
