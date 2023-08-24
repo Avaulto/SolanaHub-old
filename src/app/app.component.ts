@@ -32,6 +32,8 @@ export class AppComponent {
     private _solanaUtilsService: SolanaUtilsService
   ) { }
   async ngOnInit(): Promise<void> {
+
+    
     this._walletStore.anchorWallet$.pipe(
       this._utilsService.isNotNull,
       this._utilsService.isNotUndefined,
