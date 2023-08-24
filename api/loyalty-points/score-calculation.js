@@ -2,7 +2,7 @@
 
 import fetch from 'node-fetch';
 
-export default async function LoyaltyPoints(request, response) {
+export default async function GetScore(request, response) {
   /**
       @param loyaltyScore;
           group of loyalty score base on various ways to boost Avaulto validator node on Solana blockchain
@@ -73,8 +73,8 @@ export default async function LoyaltyPoints(request, response) {
       // how much % each stake control out of the total ds
       const singleVoteControlInPercentage = singleVote / totalVotes
       // how much total SOL the validator will recive 
-      const totalSOLForTheValidator = singleVoteControlInPercentage * mSOL_total_allocated_stake;
-      const stakeRatio = totalSOLForTheValidator / singleVote
+      const totalVotesForTheValidator = singleVoteControlInPercentage * mSOL_total_allocated_stake;
+      const stakeRatio = totalVotesForTheValidator / singleVote
       return stakeRatio
     } catch (error) {
       console.error(error)

@@ -135,32 +135,6 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     }))
   }
   private _getBSOLDirectStake(): Observable<DirectStake> {
-
-    setTimeout(async() => {
-     
-        try {
-          const mSOL_total_allocated_stake = (await (await fetch('https://api.marinade.finance/tlv')).json()).total_sol * 0.2;
-          const AvaultoVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
-          const mnde_votes = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json())
-          const totalVotes = mnde_votes.records.filter(record => record.amount).reduce(
-            (accumulator, currentValue) => accumulator + Number(currentValue.amount),
-            0
-          );
-          const singleVote = Number(mnde_votes.records.filter(record => record.amount > 0 && record.validatorVoteAccount === AvaultoVoteKey)[0].amount)
-    
-          // how much % each stake control out of the total ds
-          const singleVoteControlInPercentage = singleVote / totalVotes
-          // how much total SOL the validator will recive 
-          const totalSOLForTheValidator = singleVoteControlInPercentage * mSOL_total_allocated_stake;
-          const stakeRatio = totalSOLForTheValidator / singleVote
-          console.log(stakeRatio)
-          return stakeRatio
-        } catch (error) {
-          console.error(error)
-        }
-    
-      
-    }, 100);
     return this._apiService.get('https://stake.solblaze.org/api/v1/cls_boost').pipe(map((snapshot: bSOL_DirectStake) => {
       const amount = snapshot.applied_stakes[this.AvaultoVoteKey][this.wallet.publicKey.toBase58()]
       const directStake: DirectStake = { symbol: 'bSOL', image: 'assets/images/icons/bSOL-logo.png', amount }
