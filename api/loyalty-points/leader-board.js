@@ -1,6 +1,7 @@
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 
 export default async function GetLeaderBoard(request, response) {
+    const AvaultoVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
     async function _getMSOLDirectStake() {
         const snapshot = ((await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json()).snapshot
         const record = snapshot.records.find(vote => vote.validatorVoteAccount === AvaultoVoteKey)
@@ -9,7 +10,7 @@ export default async function GetLeaderBoard(request, response) {
     }
     async function _getBSOLDirectStake() {
         const snapshot = ((await fetch('https://stake.solblaze.org/api/v1/cls_boost')).json()).snapshot
-        const AvaultoDS = snapshot.applied_stakes[this.AvaultoVoteKey]
+        const AvaultoDS = snapshot.applied_stakes[AvaultoVoteKey]
         return AvaultoDS;
     }
     async function _getMNDEVotes(){
@@ -17,8 +18,23 @@ export default async function GetLeaderBoard(request, response) {
     }
     async function _getBLZEVotes(){
     }
+    async function _getScore(){
+        const mnde_votes = (await (await fetch('https://beta.compact-defi.xyz/api/loyalty-points/score-calculation')).json())
+    }
     async function calcScore(){
-
+        try {
+            const loyaltyScore =  _getScore()
+            const avaultoDelegators=  _getDelegetors();
+            const mSOL_directStake =  _getMSOLDirectStake();
+            const mnde_votes =  _getMNDEVotes();
+            const bSOL_directStake =  _getBSOLDirectStake();
+            const dataSet = await Promise.all({loyaltyScore,avaultoDelegators,mSOL_directStake,mnde_votes,bSOL_directStake})
+            // const blze_votes = await _getMNDEVotes(); 
+            // const leaderBoard = data
+            console.log(dataSet)
+        } catch (error) {
+            
+        }
     }
     try {
         
@@ -42,7 +58,7 @@ async function _getDelegetors() {
             }]
         }
             ;
-        delegetors = await new Connection('https://solana-mainnet.rpc.extrnode.com').getProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
+        delegetors = await new Connection('https://mb-avaulto-cc28.mainnet.rpcpool.com').getProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
     } catch (error) {
         console.warn(error);
     }
