@@ -4,13 +4,13 @@ import { ContactInfo, GetProgramAccountsConfig, GetProgramAccountsFilter, LAMPOR
 import { firstValueFrom, forkJoin, map, mergeMap, Observable, shareReplay, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData, WalletExtended } from 'src/app/models';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
- interface mSOL_DirectStake {
+interface mSOL_DirectStake {
   mSolSnapshotCreatedAt: null;
   voteRecordsCreatedAt: Date;
   records: Record[];
 }
 
- interface Record {
+interface Record {
   amount: null | string;
   tokenOwner: string;
   validatorVoteAccount: string;
@@ -32,7 +32,7 @@ interface bSOL_DirectStake {
   }
 }
 
-interface DirectStake{
+interface DirectStake {
   symbol: string,
   image: string,
   amount: number
@@ -63,15 +63,15 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   public getStakePoolDirectStake$: Observable<DirectStake[]> = this._solanaUtilsService.walletExtended$.pipe(
     this._utilsService.isNotNull,
     this._utilsService.isNotUndefined,
-    switchMap( async res =>{
-    let directStakeArr = []
-    const mSOLds = await firstValueFrom(this._getMSOLDirectStake())
-    const bSOLds = await firstValueFrom(this._getBSOLDirectStake())
-    directStakeArr.push(mSOLds,bSOLds)
-    return directStakeArr
-  }))
-  
-  
+    switchMap(async res => {
+      let directStakeArr = []
+      const mSOLds = await firstValueFrom(this._getMSOLDirectStake())
+      const bSOLds = await firstValueFrom(this._getBSOLDirectStake())
+      directStakeArr.push(mSOLds, bSOLds)
+      return directStakeArr
+    }))
+
+
   constructor(
     private _utilsService: UtilsService,
     private _solanaUtilsService: SolanaUtilsService,
@@ -130,14 +130,40 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   private _getMSOLDirectStake(): Observable<DirectStake> {
     return this._apiService.get('https://snapshots-api.marinade.finance/v1/votes/msol/latest').pipe(map((r: mSOL_DirectStake) => {
       const record = r.records.find(vote => vote.validatorVoteAccount === this.AvaultoVoteKey && vote.tokenOwner === this.wallet.publicKey.toBase58())
-      const directStake: DirectStake = {symbol: 'mSOL', image:'assets/images/icons/mSOL-logo.png', amount: Number(record.amount)}
+      const directStake: DirectStake = { symbol: 'mSOL', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.amount) }
       return directStake
     }))
   }
   private _getBSOLDirectStake(): Observable<DirectStake> {
+
+    setTimeout(async() => {
+     
+        try {
+          const mSOL_total_allocated_stake = (await (await fetch('https://api.marinade.finance/tlv')).json()).total_sol * 0.2;
+          const AvaultoVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
+          const mnde_votes = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json())
+          const totalVotes = mnde_votes.records.filter(record => record.amount).reduce(
+            (accumulator, currentValue) => accumulator + Number(currentValue.amount),
+            0
+          );
+          const singleVote = Number(mnde_votes.records.filter(record => record.amount > 0 && record.validatorVoteAccount === AvaultoVoteKey)[0].amount)
+    
+          // how much % each stake control out of the total ds
+          const singleVoteControlInPercentage = singleVote / totalVotes
+          // how much total SOL the validator will recive 
+          const totalSOLForTheValidator = singleVoteControlInPercentage * mSOL_total_allocated_stake;
+          const stakeRatio = totalSOLForTheValidator / singleVote
+          console.log(stakeRatio)
+          return stakeRatio
+        } catch (error) {
+          console.error(error)
+        }
+    
+      
+    }, 100);
     return this._apiService.get('https://stake.solblaze.org/api/v1/cls_boost').pipe(map((snapshot: bSOL_DirectStake) => {
-      const amount =snapshot.applied_stakes[this.AvaultoVoteKey][this.wallet.publicKey.toBase58()]
-      const directStake: DirectStake = {symbol: 'bSOL', image:'assets/images/icons/bSOL-logo.png', amount}
+      const amount = snapshot.applied_stakes[this.AvaultoVoteKey][this.wallet.publicKey.toBase58()]
+      const directStake: DirectStake = { symbol: 'bSOL', image: 'assets/images/icons/bSOL-logo.png', amount }
       return directStake
     }))
   }

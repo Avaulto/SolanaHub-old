@@ -370,15 +370,16 @@ export class SolblazeFarmerService {
     let tvl = { SOL: 0, USD: 0 }
     try {
       const bSOLprice = await (await this._jupStore.fetchPriceFeed('bSOL')).data['bSOL'].price;
-      const poolData = (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.find(p => p.tokenSymbol === 'bSOL');
-      let totalStake = poolData.totalStakedSol;
+      const poolData = await this._stakePoolStore.getStakePoolInfo(this._solblazePoolAddress)
+      // (await firstValueFrom(this._apiService.get('https://cogentcrypto.io/api/stakepoolinfo'))).stake_pool_data.find(p => p.tokenSymbol === 'bSOL');
+      let totalStake = poolData.totalStake;
       // let info = await stakePoolInfo(this._solanaUtilsService.connection, this._solblazePoolAddress);
       // for (let i = 0; i < info.details.stakeAccounts.length; i++) {
       //   totalStake += parseInt(info.details.stakeAccounts[i].validatorLamports);
       // }
       // let tokenAmount = info.poolTokenSupply;
       // this.convertRatio = poolData.totalStakedSol / Number(tokenAmount);
-      const solPrice = bSOLprice / poolData.exchangeRate;
+      const solPrice = bSOLprice / poolData.conversion;
       const solblazePoolTvl = totalStake * solPrice;
       const meteoraPoolTvl = Number(this._meteoraSolBsolPoolAPI.pool_tvl);
       const meteoraFarmTvl = Number(this._meteoraSolBsolPoolAPI.farm_tvl);
