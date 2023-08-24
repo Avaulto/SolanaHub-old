@@ -21,7 +21,7 @@ export default async function GetScore(request, response) {
     bSOL_DirectStakeBoost: null,
     veMNDE_Boost: null,
     veBLZE_Boost: null,
-    compactDeFi_Boost:null
+    compactDeFi_Boost:0.1
   }
 
 
