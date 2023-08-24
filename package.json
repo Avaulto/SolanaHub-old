@@ -37,7 +37,7 @@
     "@solana/spl-token": "0.3.4",
     "@solana/wallet-adapter-wallets": "0.19.20",
     "@solana/web3.js": "1.78.3",
-    "@types/node-fetch": "^2.6.2",
+    "@types/node-fetch": "^2.6.1",
     "@types/readable-stream": "^2.3.13",
     "@vercel/analytics": "^1.0.0",
     "angularx-qrcode": "16.0.1",
@@ -68,6 +68,7 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
     "eslint-plugin-prefer-arrow": "1.2.2",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "ts-node": "~8.3.0"
   }
 }

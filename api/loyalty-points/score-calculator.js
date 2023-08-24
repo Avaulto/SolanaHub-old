@@ -1,7 +1,4 @@
-
-
 import fetch from 'node-fetch';
-
 export default async function GetScore(request, response) {
   /**
       @param loyaltyScore;
