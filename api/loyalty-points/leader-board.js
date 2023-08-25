@@ -3,20 +3,19 @@ import { Connection, PublicKey } from "@solana/web3.js";
 export default async function GetLeaderBoard(request, response) {
     const { validatorVoteKey } = request.query;
     async function _getNativeDelegetors() {
-        const currentEpoch = (await new Connection.getEpochInfo()).epoch
+        const connection = new Connection('https://mb-avaulto-cc28.mainnet.rpcpool.com')
+        const currentEpoch = (await connection.getEpochInfo()).epoch
         let delegators = []
         try {
             const config = {
-                // encoding:'jsonParsed' as any,
                 filters: [{
-                    // dataSize: 200,    //size of account (bytes)
                     memcmp: {
                         offset: 124,     //location of our query in the account (bytes)
                         bytes: validatorVoteKey,  //our search criteria, a base58 encoded string
                     }
                 }]
             };
-            let delegatorsParsed = await new Connection.getParsedProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
+            let delegatorsParsed = await connection.getParsedProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
             delegators = delegatorsParsed.map(account => {
                 const accountData = account.account.data['parsed'].info
                 return {
