@@ -128,7 +128,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
 
 
   private _getMSOLDirectStake(): Observable<DirectStake> {
-   
+
     return this._apiService.get('https://snapshots-api.marinade.finance/v1/votes/msol/latest').pipe(map((r: mSOL_DirectStake) => {
       const record = r.records.find(vote => vote.validatorVoteAccount === this.AvaultoVoteKey && vote.tokenOwner === this.wallet.publicKey.toBase58())
       const directStake: DirectStake = { symbol: 'mSOL', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.amount) }
