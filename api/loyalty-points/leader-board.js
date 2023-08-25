@@ -3,7 +3,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 export default async function GetLeaderBoard(request, response) {
     const { validatorVoteKey } = request.query;
     async function _getNativeDelegetors() {
-        const currentEpoch = (await this._solanaUtilsService.connection.getEpochInfo()).epoch
+        const currentEpoch = (await new Connection.connection.getEpochInfo()).epoch
         let delegators = []
         try {
             const config = {
@@ -34,21 +34,21 @@ export default async function GetLeaderBoard(request, response) {
 
 
 
-    async function _getAvaultoMSOLDirectStake() {
+    async function _getValidatorMSOLDirectStake() {
         const snapshot = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
         const record = snapshot.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey)
-        const Avaulto_mSOL_DS = record
-        return Avaulto_mSOL_DS;
+        const Validator_mSOL_DS = record
+        return Validator_mSOL_DS;
     }
-    async function _getAvaultoBSOLDirectStake() {
+    async function _getValidatorBSOLDirectStake() {
         const snapshot = (await (await fetch('https://stake.solblaze.org/api/v1/cls_boost')).json())
-        const Avaulto_bSOL_DS = snapshot.applied_stakes[validatorVoteKey]
-        return Avaulto_bSOL_DS;
+        const Validator_bSOL_DS = snapshot.applied_stakes[validatorVoteKey]
+        return Validator_bSOL_DS;
     }
-    async function _getAvaultoMNDEVotes() {
+    async function _getValidatorMNDEVotes() {
         const mnde_votes = await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json()
-        const AvaultomSOL_Votes = mnde_votes.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey)
-        return AvaultomSOL_Votes
+        const ValidatormSOL_Votes = mnde_votes.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey)
+        return ValidatormSOL_Votes
     }
     async function _getBLZEVotes() {
     }
@@ -66,20 +66,20 @@ export default async function GetLeaderBoard(request, response) {
     // return the score & break down
     async function loyaltyPointsCalc() {
         try {
-            const [allScores, delegetors, Avaulto_mSOL_DS, Avaulto_mSOL_Votes, Avaulto_bSOL_DS] = await Promise.all([
+            const [allScores, delegetors, Validator_mSOL_DS, Validator_mSOL_Votes, Validator_bSOL_DS] = await Promise.all([
                 _getScore(),
                 _getNativeDelegetors(),
-                _getAvaultoMSOLDirectStake(),
-                _getAvaultoMNDEVotes(),
-                _getAvaultoBSOLDirectStake(),
+                _getValidatorMSOLDirectStake(),
+                _getValidatorMNDEVotes(),
+                _getValidatorBSOLDirectStake(),
             ]);
 
 
 
             const delegtorsExended = delegetors.map(staker => {
-                const mSOL_directStake = Avaulto_mSOL_DS.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
-                const mSOL_votePower = Avaulto_mSOL_Votes.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
-                const bSOL_directStake = Number(Avaulto_bSOL_DS[staker.walletOwner]) || 0;
+                const mSOL_directStake = Validator_mSOL_DS.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
+                const mSOL_votePower = Validator_mSOL_Votes.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
+                const bSOL_directStake = Number(Validator_bSOL_DS[staker.walletOwner]) || 0;
     
                 const nativeStake = { amount: staker.amount, ageInEpochs: staker.ageInEpochs, account: staker.account }
                 return { walletOwner: staker.walletOwner, nativeStake, mSOL_directStake, mSOL_votePower, bSOL_directStake }
