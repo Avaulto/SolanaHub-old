@@ -3,7 +3,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 export default async function GetLeaderBoard(request, response) {
     const { validatorVoteKey } = request.query;
     async function _getNativeDelegetors() {
-        const currentEpoch = (await new Connection.connection.getEpochInfo()).epoch
+        const currentEpoch = (await new Connection.getEpochInfo()).epoch
         let delegators = []
         try {
             const config = {
