@@ -87,7 +87,7 @@ export default async function GetLeaderBoard(request, response) {
     }
     try {
         const validatorsBribe = await validatorBribeData()
-        return response.status(200).json(loyaltyPoints);
+        return response.status(200).json(validatorsBribe);
     } catch (error) {
         console.error(error)
         // return response.status(500).json(error);
