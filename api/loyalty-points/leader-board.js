@@ -95,7 +95,7 @@ export default async function GetLeaderBoard(request, response) {
               })
               const ptsNoDuplication = Array.from(new Set(ptsCalc.map(s => s.walletOwner)))
                 .map(walletOwner => {
-                 const loyaltyPoints =   scoreCalc.filter(s => s.walletOwner === walletOwner).reduce(
+                 const loyaltyPoints = ptsCalc.filter(s => s.walletOwner === walletOwner).reduce(
                     (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),
                     0
                   );
