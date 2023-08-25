@@ -1,4 +1,4 @@
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey , LAMPORTS_PER_SOL} from "@solana/web3.js";
 
 export default async function GetLeaderBoard(request, response) {
     const { validatorVoteKey } = request.query;
