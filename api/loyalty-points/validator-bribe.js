@@ -51,10 +51,7 @@ export default async function GetLeaderBoard(request, response) {
     }
     async function _getBLZEVotes() {
     }
-    async function _getScore() {
-        const allScores = await (await fetch('https://dev.compact-defi.xyz/api/loyalty-points/score-calculator')).json()
-        return allScores
-    }
+
     // steps to calc
     // 1. fetch all delegators
     // 2. look up stakers from various staking options by wallet owner
@@ -66,7 +63,6 @@ export default async function GetLeaderBoard(request, response) {
     async function validatorBribeData() {
         try {
             const [delegetors, Validator_mSOL_DS, Validator_mSOL_Votes, Validator_bSOL_DS] = await Promise.all([
-                _getScore(),
                 _getNativeDelegetors(),
                 _getValidatorMSOLDirectStake(),
                 _getValidatorMNDEVotes(),

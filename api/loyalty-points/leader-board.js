@@ -36,7 +36,6 @@ export default async function GetLeaderBoard(request, response) {
                   }
                 })
             return ptsNoDuplication
-            return ptsNoDuplication
         } catch (error) {
             console.log(error)
         }
