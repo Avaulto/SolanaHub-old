@@ -3,7 +3,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 export default async function GetLeaderBoard(request, response) {
     const { validatorVoteKey } = request.query;
     async function _getNativeDelegetors() {
-        const connection = new Connection('https://mb-avaulto-cc28.mainnet.rpcpool.com')
+        const connection = new Connection('https://solana-mainnet.rpc.extrnode.com')
         const currentEpoch = (await connection.getEpochInfo()).epoch
         let delegators = []
         try {
