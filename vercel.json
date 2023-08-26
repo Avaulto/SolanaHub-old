@@ -12,7 +12,7 @@
     ],
       "crons": [
         {
-          "path": "/api/loyalty-points/update-validator-bribe",
+          "path": "/api/cron?key=pullData",
           "schedule": "* * * * *"
         }
       ]

@@ -15,13 +15,14 @@ export default async function GetLeaderBoard(request, response) {
             const [AvaultoLoyaltyScore, validatorsBribe] = await Promise.all([_getScore(),_getValidatorBribe() ])
 
             const ptsCalc = validatorsBribe.map(staker => {
-
-                let loyaltyPoints = (staker.nativeStake.amount * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
-                  + (staker.bSOL_directStake * AvaultoLoyaltyScore.bSOL_DirectStakeBoost)
-                  + (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
-                  * AvaultoLoyaltyScore.veMNDE_Boost
+                // stake account aging
+                const nativeStakePts =(staker.nativeStake.amount * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
+                const bSOLpts = (staker.bSOL_directStake * AvaultoLoyaltyScore.bSOL_DirectStakeBoost)
+                const mSOLpts = (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
+                const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)
+                let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts
                 //  AvaultoLoyaltyScore.compactDeFi_Boost;
-                return { walletOwner: staker.walletOwner, loyaltyPoints }
+                return { walletOwner: staker.walletOwner, loyaltyPoints, breakDown: {nativeStakePts,bSOLpts,mSOLpts,veMNDEpts} }
               })
               const ptsNoDuplication = Array.from(new Set(ptsCalc.map(s => s.walletOwner)))
                 .map(walletOwner => {
