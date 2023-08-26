@@ -1,4 +1,15 @@
 import { Connection, PublicKey , LAMPORTS_PER_SOL} from "@solana/web3.js";
+import { MongoClient, ServerApiVersion } from 'mongodb';
+const uri = process.env.MONGODB_URI;
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
 export default async function GetLeaderBoard(request, response) {
     const { validatorVoteKey } = request.query;
@@ -85,9 +96,25 @@ export default async function GetLeaderBoard(request, response) {
             console.log(error)
         }
     }
+    async function storeValidatorBribe(storeRecord){
+        try {
+            await client.connect();
+            const db = client.db("CDv1")
+            const collection = db.collection('validator-bribe')
+            await collection.insertOne(storeRecord);
+            return true
+          } catch (error) {
+            console.warn(error)
+            return response.status(500).json({ message: 'fail to create new proposal' });
+          } finally {
+            // Ensures that the client will close when you finish/error
+            await client.close();
+          }
+    }
     try {
         const validatorsBribe = await validatorBribeData()
-        return response.status(200).json(validatorsBribe);
+        storeValidatorBribe(validatorsBribe)
+        return response.status(200).json({message:'saved!'});
     } catch (error) {
         console.error(error)
         // return response.status(500).json(error);

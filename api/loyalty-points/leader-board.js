@@ -1,13 +1,12 @@
 
 
 export default async function GetLeaderBoard(request, response) {
-    const { validatorVoteKey } = request.query;
     async function _getScore() {
         const loyaltyScore = await (await fetch('https://dev.compact-defi.xyz/api/loyalty-points/score-calculator')).json()
         return loyaltyScore
     }
     async function _getValidatorBribe() {
-        const validatorBribe = await (await fetch(`https://dev.compact-defi.xyz/api/loyalty-points/validator-bribe?validatorVoteKey=${validatorVoteKey}`)).json()
+        const validatorBribe = await (await fetch(`https://dev.compact-defi.xyz/api/loyalty-points/getValidatorBribe`)).json()
         return validatorBribe
     }
   
