@@ -1,18 +1,19 @@
-import { Connection, PublicKey , LAMPORTS_PER_SOL} from "@solana/web3.js";
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { MongoClient, ServerApiVersion } from 'mongodb';
 const uri = process.env.MONGODB_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
+    serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true,
+    }
 });
 
-export default async function GetLeaderBoard(request, response) {
-    const { validatorVoteKey } = request.query;
+export default async function UpdateValidatorBribe(request, response) {
+
+    const validatorVoteKey='7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'
     async function _getNativeDelegetors() {
         const connection = new Connection('https://solana-mainnet.rpc.extrnode.com')
         const currentEpoch = (await connection.getEpochInfo()).epoch
@@ -86,38 +87,33 @@ export default async function GetLeaderBoard(request, response) {
                 const mSOL_directStake = Validator_mSOL_DS.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
                 const mSOL_votePower = Validator_mSOL_Votes.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
                 const bSOL_directStake = Number(Validator_bSOL_DS[staker.walletOwner]) || 0;
-    
+
                 const nativeStake = { amount: staker.amount, ageInEpochs: staker.ageInEpochs, account: staker.account }
                 return { walletOwner: staker.walletOwner, nativeStake, mSOL_directStake, mSOL_votePower, bSOL_directStake }
-              })
-    
-             return validatorsBribe
+            })
+
+            return validatorsBribe
         } catch (error) {
             console.log(error)
         }
     }
-    async function storeValidatorBribe(storeRecord){
-        try {
-            await client.connect();
-            const db = client.db("CDv1")
-            const collection = db.collection('validator-bribe')
-            await collection.insertOne(storeRecord);
-            return true
-          } catch (error) {
-            console.warn(error)
-            return response.status(500).json({ message: 'fail to create new proposal' });
-          } finally {
-            // Ensures that the client will close when you finish/error
-            await client.close();
-          }
+    async function storeValidatorBribe(storeRecord) {
+        await client.connect();
+        const db = client.db("CDv1")
+        const collection = db.collection('validator-bribe')
+        await collection.insertOne(storeRecord);
+        return true
     }
     try {
         const validatorsBribe = await validatorBribeData()
-        storeValidatorBribe(validatorsBribe)
-        return response.status(200).json({message:'saved!'});
+        await storeValidatorBribe(validatorsBribe)
+        return response.status(200).json({ message: 'saved!' });
     } catch (error) {
-        console.error(error)
-        // return response.status(500).json(error);
+        console.warn(error)
+        return response.status(500).json({ message: 'fail to save validator bribe data' });
+    } finally {
+        // Ensures that the client will close when you finish/error
+        await client.close();
     }
 }
 
