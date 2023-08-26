@@ -101,7 +101,7 @@ export default async function UpdateValidatorBribe(request, response) {
         await client.connect();
         const db = client.db("CDv1")
         const collection = db.collection('validator-bribe')
-        await collection.insertOne(storeRecord);
+        await collection.updateOne(storeRecord);
         return true
     }
     try {
