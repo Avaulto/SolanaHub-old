@@ -13,7 +13,7 @@
       "crons": [
         {
           "path": "/api/cron?key=pullData",
-          "schedule": "* * * * *"
+          "schedule": "0 0 * * *"
         }
       ]
   }
