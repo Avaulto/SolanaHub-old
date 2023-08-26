@@ -20,7 +20,7 @@ export default async function getValidatorBribe(request, response) {
         const latest = getValidatorBribe.validatorBribeData
         return response.status(200).json(latest);
     } catch (error) {
-        return response.status(500).json({ message: 'Fail to retrieve proposals', error });
+        return response.status(500).json({ message: 'Fail to retrieve validator bribe data', error });
     } finally {
         // Ensures that the client will close when you finish/error
         await client.close();
