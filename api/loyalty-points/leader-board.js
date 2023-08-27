@@ -16,7 +16,7 @@ export default async function GetLeaderBoard(request, response) {
 
             const ptsCalc = validatorsBribe.map(staker => {
                 // stake account aging
-                const nativeStakePts =(staker.nativeStake.amount * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
+                const nativeStakePts =(staker.nativeStake * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
                 const bSOLpts = (staker.bSOL_directStake * AvaultoLoyaltyScore.bSOL_DirectStakeBoost)
                 const mSOLpts = (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
                 const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)

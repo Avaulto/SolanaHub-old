@@ -82,6 +82,12 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   }
   async ionViewWillEnter() {
     this._titleService.setTitle('CompactDeFi - stake with us')
+    this.test();
+  }
+
+  test() {
+
+
   }
   async ngOnInit() {
     this.anchorWallet$ = this._solanaUtilsService.walletExtended$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(

@@ -13,54 +13,75 @@ const client = new MongoClient(uri, {
 
 export default async function UpdateValidatorBribe(request, response) {
    
-    const validatorVoteKey='7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'
+    const validatorVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'
     async function _getNativeDelegetors() {
-        const connection = new Connection('https://solana-mainnet.rpc.extrnode.com')
-        const currentEpoch = (await connection.getEpochInfo()).epoch
-        let delegators = []
-        try {
-            const config = {
-                filters: [{
-                    memcmp: {
-                        offset: 124,     //location of our query in the account (bytes)
-                        bytes: validatorVoteKey,  //our search criteria, a base58 encoded string
-                    }
-                }]
-            };
-            let delegatorsParsed = await connection.getParsedProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
-            delegators = delegatorsParsed.map(account => {
-                const accountData = account.account.data['parsed'].info
-                return {
-                    ageInEpochs: currentEpoch - accountData.stake.delegation.activationEpoch,
-                    account: account.pubkey.toBase58(),
-                    walletOwner: accountData.meta.authorized.withdrawer,
-                    amount: accountData.stake.delegation.stake / LAMPORTS_PER_SOL
-                }
-            })
-        } catch (error) {
-            console.warn(error);
-        }
-        return delegators
+      const connection = new Connection('https://solana-mainnet.rpc.extrnode.com')
+      const currentEpoch = (await connection.getEpochInfo()).epoch
+      let delegators = []
+      try {
+        const config = {
+          filters: [{
+            memcmp: {
+              offset: 124,     //location of our query in the account (bytes)
+              bytes: validatorVoteKey,  //our search criteria, a base58 encoded string
+            }
+          }]
+        };
+        let delegatorsParsed = await connection.getParsedProgramAccounts(new PublicKey('Stake11111111111111111111111111111111111111'), config)
+        delegators = delegatorsParsed.map(account => {
+          const accountData = account.account.data['parsed'].info
+          return {
+            ageInEpochs: currentEpoch - accountData.stake.delegation.activationEpoch,
+            account: account.pubkey.toBase58(),
+            walletOwner: accountData.meta.authorized.withdrawer,
+            amount: accountData.stake.delegation.stake / LAMPORTS_PER_SOL
+          }
+        })
+      } catch (error) {
+        console.warn(error);
+      }
+      return delegators
     }
 
 
 
     async function _getValidatorMSOLDirectStake() {
-        const snapshot = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
-        const record = snapshot.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey)
-        const Validator_mSOL_DS = record
-        return Validator_mSOL_DS;
-    }
-    async function _getValidatorBSOLDirectStake() {
-        const snapshot = (await (await fetch('https://stake.solblaze.org/api/v1/cls_boost')).json())
-        const Validator_bSOL_DS = snapshot.applied_stakes[validatorVoteKey]
-        return Validator_bSOL_DS;
+      const snapshot = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
+      const record = snapshot.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
+        return {
+          walletOwner: votes.tokenOwner,
+          mSOL_directStake: Number(votes.amount)
+        }
+      })
+      const Validator_mSOL_DS = record
+      return Validator_mSOL_DS;
     }
     async function _getValidatorMNDEVotes() {
-        const mnde_votes = await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json()
-        const ValidatormSOL_Votes = mnde_votes.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey)
-        return ValidatormSOL_Votes
+      const mnde_votes = await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json()
+      const ValidatormSOL_Votes = mnde_votes.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
+        return {
+          walletOwner: votes.tokenOwner,
+          mSOL_votePower: Number(votes.amount)
+        }
+      })
+      return ValidatormSOL_Votes
     }
+    async function _getValidatorBSOLDirectStake() {
+      const snapshot = (await (await fetch('https://stake.solblaze.org/api/v1/cls_boost')).json())
+      const Validator_bSOL_DS = snapshot.applied_stakes[validatorVoteKey]
+
+      let Validator_bSOL_DS_arr = Object.keys(Validator_bSOL_DS).map((v, i) => {
+        const walletOwner = v;
+        const amount = Number(Validator_bSOL_DS[walletOwner]);
+        let bSOL_directStake = {
+          walletOwner,
+          bSOL_directStake: amount,
+        }
+        return bSOL_directStake;
+      })
+      return Validator_bSOL_DS_arr;
+    }
+
     async function _getBLZEVotes() {
     }
 
@@ -73,29 +94,53 @@ export default async function UpdateValidatorBribe(request, response) {
     // 6. add multipliers
     // return the score & break down
     async function validatorBribeData() {
-        try {
-            const [delegetors, Validator_mSOL_DS, Validator_mSOL_Votes, Validator_bSOL_DS] = await Promise.all([
-                _getNativeDelegetors(),
-                _getValidatorMSOLDirectStake(),
-                _getValidatorMNDEVotes(),
-                _getValidatorBSOLDirectStake(),
-            ]);
+      try {
+        const [delegetors, Validator_mSOL_DS, Validator_mSOL_Votes, Validator_bSOL_DS] = await Promise.all([
+          _getNativeDelegetors(),
+          _getValidatorMSOLDirectStake(),
+          _getValidatorMNDEVotes(),
+          _getValidatorBSOLDirectStake(),
+        ]);
 
+        const stakerAll = [...delegetors, ...Validator_mSOL_DS, ...Validator_mSOL_Votes, ...Validator_bSOL_DS]
+        // pools order ['marinade','solblaze','jito', 'solana foundation']
+        const excludeStakePools = [
+        "9eG63CdHjsfhHmobHgLtESGC8GabbmRcaSpHAZrtmhco",
+        "6WecYymEARvjG5ZyqkrVQ6YkhPfujNzWpSPwNKXHCbV2",
+        "6iQKfEyhr3bZMotVkW6beNZz5CPAkiwvgV2CTje9pVSS",
+        "4ZJhPQAgUseCsWhKvJLTmmRRUV74fdoTpQLNfKoekbPY"
+      ]
+        
+    
+        const validatorsBribe = Array.from(new Set(stakerAll.map(s => s.walletOwner))).filter(s => !excludeStakePools.includes(s))
+          .map((walletOwner, i) => {
+            const demiNativeStake = {
+              ageInEpochs: 0,
+              account: null,
+              walletOwner: null,
+              amount: 0
+            }
+            // merge amount of multiple stake accounts owned by same wallet owner
+          const nativeStake =  delegetors.filter(s => s.walletOwner === walletOwner).reduce(
+            (accumulator, currentValue) => accumulator + Number(currentValue.amount),
+            0
+          ) || demiNativeStake;
+          const mSOL_directStake = Validator_mSOL_DS.find(s => s.walletOwner === walletOwner)?.mSOL_directStake || 0;
+          const mSOL_votePower = Validator_mSOL_Votes.find(s => s.walletOwner === walletOwner)?.mSOL_votePower || 0;
+          const bSOL_directStake = Validator_bSOL_DS.find(s => s.walletOwner === walletOwner)?.bSOL_directStake || 0;
+          return {
+            walletOwner,
+            nativeStake,
+            mSOL_directStake,
+            mSOL_votePower,
+            bSOL_directStake
+          }
+        })
 
-
-            const validatorsBribe = delegetors.map(staker => {
-                const mSOL_directStake = Validator_mSOL_DS.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
-                const mSOL_votePower = Validator_mSOL_Votes.find(ds => ds.tokenOwner === staker.walletOwner)?.amount || 0;
-                const bSOL_directStake = Number(Validator_bSOL_DS[staker.walletOwner]) || 0;
-
-                const nativeStake = { amount: staker.amount, ageInEpochs: staker.ageInEpochs, account: staker.account }
-                return { walletOwner: staker.walletOwner, nativeStake, mSOL_directStake, mSOL_votePower, bSOL_directStake }
-            })
-
-            return validatorsBribe
-        } catch (error) {
-            console.log(error)
-        }
+        return validatorsBribe
+      } catch (error) {
+        console.log(error)
+      }
     }
     async function storeValidatorBribe(storeRecord) {
         await client.connect();
