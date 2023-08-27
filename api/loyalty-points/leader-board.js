@@ -16,7 +16,7 @@ export default async function GetLeaderBoard(request, response) {
 
             const ptsCalc = validatorsBribe.map(staker => {
                 // stake account aging
-                const nativeStakePts =(staker.nativeStake * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
+                const nativeStakePts =(staker.nativeStake * staker.stakeAccountAging * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
                 const bSOLpts = (staker.bSOL_directStake * AvaultoLoyaltyScore.bSOL_DirectStakeBoost)
                 const mSOLpts = (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
                 const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)
@@ -24,18 +24,23 @@ export default async function GetLeaderBoard(request, response) {
                 //  AvaultoLoyaltyScore.compactDeFi_Boost;
                 return { walletOwner: staker.walletOwner, loyaltyPoints, breakDown: {nativeStakePts,bSOLpts,mSOLpts,veMNDEpts} }
               })
-              const ptsNoDuplication = Array.from(new Set(ptsCalc.map(s => s.walletOwner)))
-                .map(walletOwner => {
-                 const loyaltyPoints = ptsCalc.filter(s => s.walletOwner === walletOwner).reduce(
-                    (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),
-                    0
-                  );
-                  return {
-                    walletOwner,
-                    loyaltyPoints
-                  }
-                })
-            return ptsNoDuplication
+              const totalPts = ptsCalc.reduce(
+                (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),
+                0
+              );
+            //   const ptsNoDuplication = Array.from(new Set(ptsCalc.map(s => s.walletOwner)))
+            //     .map(walletOwner => {
+            //      const loyaltyPoints = ptsCalc.filter(s => s.walletOwner === walletOwner).reduce(
+            //         (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),
+            //         0
+            //       );
+            //       return {
+            //         walletOwner,
+            //         loyaltyPoints
+            //       }
+            //     })
+            console.log({ptsCalc,totalPts })
+            return {ptsCalc,totalPts }
         } catch (error) {
             console.log(error)
         }
