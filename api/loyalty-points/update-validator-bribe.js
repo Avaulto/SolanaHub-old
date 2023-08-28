@@ -12,7 +12,11 @@ const client = new MongoClient(uri, {
 });
 
 export default async function UpdateValidatorBribe(request, response) {
-
+    if (request.query.key !== 'pullData') {
+        response.status(404).end();
+        return;
+      }
+      
     const validatorVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'
     async function _getNativeDelegetors() {
         const connection = new Connection('https://solana-mainnet.rpc.extrnode.com')

@@ -15,8 +15,10 @@ export default async function GetLeaderBoard(request, response) {
             const [AvaultoLoyaltyScore, bribeRecord] = await Promise.all([_getScore(), _getValidatorBribe()])
 
             const ptsCalc = bribeRecord.validatorBribeData.map(staker => {
+                let agingBooster = staker.stakeAccountAging * AvaultoLoyaltyScore.nativeStakeLongTermBoost;
+                agingBooster = agingBooster > 0.50 ? 0.50 : agingBooster
                 // stake account aging
-                const nativeStakePts = (staker.nativeStake * staker.stakeAccountAging * (1 + AvaultoLoyaltyScore.nativeStakeLongTermBoost))
+                const nativeStakePts = (staker.nativeStake * (agingBooster + 1))
                 const bSOLpts = (staker.bSOL_directStake * AvaultoLoyaltyScore.bSOL_DirectStakeBoost)
                 const mSOLpts = (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
                 const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)
