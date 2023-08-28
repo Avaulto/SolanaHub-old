@@ -34,7 +34,7 @@ export default async function GetLeaderBoard(request, response) {
                 const prizePoolShare = totalPts / loyaltyStaker.loyaltyPoints * 100
                 return {...loyaltyStaker, prizePoolShare}
             })
-            return { ptsCalc, totalPts, snapshotDate: bribeRecord.date }
+            return { ptsCalcIncludePoolShare, totalPts, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)
         }
