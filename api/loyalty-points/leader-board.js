@@ -30,7 +30,10 @@ export default async function GetLeaderBoard(request, response) {
                 (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),
                 0
             );
-            console.log({ ptsCalc, totalPts })
+            const ptsCalcIncludePoolShare = ptsCalc.map(loyaltyStaker =>{
+                const prizePoolShare = totalPts / loyaltyStaker.loyaltyPoints * 100
+                return {...loyaltyStaker, prizePoolShare}
+            })
             return { ptsCalc, totalPts, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)
