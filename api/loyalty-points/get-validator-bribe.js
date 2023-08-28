@@ -14,9 +14,9 @@ export default async function getValidatorBribe(request, response) {
     try {
         await client.connect();
         // Sort in descending order by timestamp field
-        // const sortOptions = { timestampField: 1 };
+        const sortOptions = { timestampField: -1 };
 
-        const getValidatorBribe = await client.db("CDv1").collection("validator-bribe").find().sort({_id:-1}).limit(1);
+        const getValidatorBribe = await client.db("CDv1").collection("validator-bribe").find().sort( [['_id', -1]]).limit(1)
         const latest = getValidatorBribe.validatorBribeData
         return response.status(200).json(latest);
     } catch (error) {
