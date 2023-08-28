@@ -14,12 +14,12 @@ export default async function getValidatorBribe(request, response) {
     try {
         await client.connect();
         // Sort in descending order by timestamp field
-        const sortOptions = { timestampField: -1 };
+        const sortOptions = {sort:{$natural:-1}}
 
-        const getValidatorBribe = await client.db("CDv1").collection("validator-bribe").limit(1).sort({$natural:-1}) 
-        const latest = getValidatorBribe.validatorBribeData
-        return response.status(200).json(latest);
+        const getValidatorBribe = await client.db("CDv1").collection("validator-bribe").findOne({},sortOptions )
+        return response.status(200).json(getValidatorBribe);
     } catch (error) {
+        console.error(error)
         return response.status(500).json({ message: 'Fail to retrieve validator bribe data', error });
     } finally {
         // Ensures that the client will close when you finish/error
