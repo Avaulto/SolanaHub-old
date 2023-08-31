@@ -36,7 +36,8 @@ export default async function GetScore(request, response) {
 
   const getDirectStakeRatio_mSOL = async () => {
     try {
-      const mSOL_total_allocated_stake = (await (await fetch('https://api.marinade.finance/tlv')).json()).total_sol * 0.2;
+      const mSOLpoolSize = (await (await fetch('https://api.marinade.finance/tlv')).json());
+      const mSOL_total_allocated_stake = (mSOLpoolSize.staked_sol + mSOLpoolSize.marinade_native_stake_sol) * 0.2;
       const AvaultoVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
       const msol_votes_ds = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
       const totalDirectStake = msol_votes_ds.records.filter(record => record.amount).reduce(

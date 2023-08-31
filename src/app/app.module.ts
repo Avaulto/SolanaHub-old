@@ -21,8 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { LogoComponent } from './side-menu/logo/logo.component';
 import { OptionsPopupComponent } from './settings/options-popup/options-popup.component';
 import { SettingsComponent } from './settings/settings.component';
-import { LoaderComponent } from './shared/components';
 import { WalletModule } from './shared/wallet.module';
+import { LoyaltyModule } from './loyalty/loyalty.module';
 
 inject({mode: "auto"});
 
@@ -37,6 +37,7 @@ inject({mode: "auto"});
         SettingsComponent,
     ],
     imports: [
+        LoyaltyModule,
         WalletModule,
         HttpClientModule,
         IonicModule,
