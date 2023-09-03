@@ -31,7 +31,7 @@ export default async function GetLeaderBoard(request, response) {
                 0
             );
             const ptsCalcIncludePoolShare = ptsCalc.map(loyaltyStaker =>{
-                const prizePoolShare = loyaltyStaker.loyaltyPoints / totalPts * 100
+                const prizePoolShare = loyaltyStaker.loyaltyPoints / totalPts
                 return {...loyaltyStaker, prizePoolShare}
             })
             return { AvalutoLoyaltyPoints: ptsCalcIncludePoolShare, totalPoints:totalPts, snapshotDate: bribeRecord.date }

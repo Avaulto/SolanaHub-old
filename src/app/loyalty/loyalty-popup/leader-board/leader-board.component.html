@@ -1,24 +1,24 @@
-<ion-grid  class="data-box ion-padding ion-margin-top">
-  <app-private-score></app-private-score>
+<ion-grid class="data-box ion-padding ion-margin-top">
+  <app-private-score [wallet]="walletExtended$ | async"></app-private-score>
   <ion-row class="ion-justify-content-center ion-margin-bottom">
     <ion-label>
-      total points: 
+      total points:
     </ion-label>
     <ion-text>
-      <ion-icon name="sparkles-sharp"></ion-icon> 
+      <ion-icon name="sparkles-sharp"></ion-icon>
       <span>
         23,512
       </span>
     </ion-text>
   </ion-row>
-  <ion-row class="ion-justify-content-between leader-board"> 
+  <ion-row class="ion-justify-content-between leader-board">
     <ion-col class="sub-strong">
       rank
-    </ion-col >
+    </ion-col>
     <ion-col class="sub-strong">
       wallet address
-    </ion-col >
-    <ion-col class="sub-strong"> 
+    </ion-col>
+    <ion-col class="sub-strong">
       total points
     </ion-col>
     <ion-col class="sub-strong">
@@ -27,6 +27,14 @@
   </ion-row>
 
   <ion-row id="leader-board-table">
-    <app-item *ngFor="let item of loyaltyLeaderBoard$ | async;let i = index" [index]="i" ></app-item>
+    <ng-container *ngIf="loyaltyLeaderBoard$ | async as LDP; else elseTemplate">
+      <app-item *ngFor="let item of LDP;let i = index" 
+      [loyaltyScore]="item"
+      [wallet]="walletExtended$ | async"
+        [index]="i"></app-item>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-loader></app-loader>
+    </ng-template>
   </ion-row>
 </ion-grid>

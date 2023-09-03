@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoyaltyService } from '../../loyalty.service';
-import { Observable } from 'rxjs';
-import { LoyaltyLeaderBoard, PtsCalcIncludePoolShare } from 'src/app/models/avaulto-loyalty.model';
+import { Observable, map } from 'rxjs';
+import { LoyaltyLeaderBoard, AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
+import { SolanaUtilsService } from 'src/app/services';
 
 @Component({
   selector: 'app-leader-board',
@@ -10,8 +11,12 @@ import { LoyaltyLeaderBoard, PtsCalcIncludePoolShare } from 'src/app/models/avau
 })
 export class LeaderBoardComponent  implements OnInit {
 
-  constructor(private _loyaltyService:LoyaltyService) { }
-  public loyaltyLeaderBoard$: Observable<PtsCalcIncludePoolShare[]> = this._loyaltyService.getLoyaltyLeaderBoard()
+  constructor(
+    private _solanaUtilsService:SolanaUtilsService,
+    private _loyaltyService:LoyaltyService) { }
+  public loyaltyLeaderBoard$: Observable<AvalutoLoyaltyPoint[]> = this._loyaltyService.getLoyaltyLeaderBoard().pipe(
+    map(lb=> lb.sort((a, b) => b.loyaltyPoints - a.loyaltyPoints)))
+  public walletExtended$: Observable<any> = this._solanaUtilsService.walletExtended$
   ngOnInit() {}
 
 }

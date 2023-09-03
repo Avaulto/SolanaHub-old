@@ -10,5 +10,5 @@ export class LoyaltyPopupComponent  implements OnInit {
   constructor() { }
 
   ngOnInit() {}
-
+  
 }
