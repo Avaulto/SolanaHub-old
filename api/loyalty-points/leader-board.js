@@ -24,7 +24,7 @@ export default async function GetLeaderBoard(request, response) {
                 const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)
                 let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts
                 //  AvaultoLoyaltyScore.compactDeFi_Boost;
-                return { walletOwner: staker.walletOwner, loyaltyPoints, breakDown: { nativeStakePts, bSOLpts, mSOLpts, veMNDEpts } }
+                return { walletOwner: staker.walletOwner, loyaltyPoints, pointsBreakDown: { nativeStakePts, bSOLpts, mSOLpts, veMNDEpts } }
             })
             const totalPts = ptsCalc.reduce(
                 (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),
@@ -34,7 +34,7 @@ export default async function GetLeaderBoard(request, response) {
                 const prizePoolShare = loyaltyStaker.loyaltyPoints / totalPts * 100
                 return {...loyaltyStaker, prizePoolShare}
             })
-            return { ptsCalcIncludePoolShare, totalPts, snapshotDate: bribeRecord.date }
+            return { AvalutoLoyaltyScore: ptsCalcIncludePoolShare, totalPoints, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)
         }

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 import { UtilsService } from 'src/app/services';
+import { LoyaltyPopupComponent } from '../loyalty-popup/loyalty-popup.component';
 
 @Component({
   selector: 'app-loyalty-btn',
@@ -8,7 +10,26 @@ import { UtilsService } from 'src/app/services';
 })
 export class LoyaltyBtnComponent implements OnInit {
 
-  constructor(private _utilsService: UtilsService) { }
+  constructor(
+    private _utilsService: UtilsService,
+    private _popoverController: PopoverController
+  ) { }
+
+
+  async openLoyaltyPopup() {
+    const popover = await this._popoverController.create({
+      component: LoyaltyPopupComponent,
+      componentProps: null,
+      // event: e,
+      alignment: 'start',
+      // showBackdrop:false,
+      backdropDismiss: true,
+      // dismissOnSelect: true,
+      cssClass: 'loyalty-points-popup',
+    });
+    await popover.present();
+
+  }
   public points = null;
   ngOnInit() {
     console.log('loaded')

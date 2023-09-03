@@ -1,0 +1,44 @@
+ion-grid{
+    // max-width: 97%;
+    // margin-inline: auto;
+    text-transform: capitalize;
+    // margin-bottom: 0;
+}
+#loyalty-your-score{
+    height: 99px;
+    background: var(--apr-box);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    text-transform: capitalize;
+    margin-bottom: 20px;
+    width: 50%;
+    margin-inline: auto;
+    div {
+        font-weight: 600;
+        font-size: 24px;
+    }
+    #private-prize-share{
+        color: gold;
+        font-size: 16px;
+    }
+}
+.points-breakdown{
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 0;
+    min-height: 70px;
+    app-icon-tooltip {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+}
+ion-icon{
+    color: gold;
+}

@@ -132,13 +132,13 @@ a {
 
 .sub-strong {
     font-weight: 600;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 16px;
 }
 
 .sub {
     font-weight: 300;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 16px;
 }
 
@@ -266,6 +266,12 @@ textarea{
 .merge-accounts-popup{
     --width: 450px;
     --height:550px;
+    --max-width:98%;
+}
+
+.loyalty-points-popup{
+    --width: 1050px;
+    --height:1100px;
     --max-width:98%;
 }
 .tncPopup {

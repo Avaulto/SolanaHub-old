@@ -11,7 +11,12 @@ const client = new MongoClient(uri, {
 });
 
 // prize pool builder:
-// 
+// get direct stake msol/bsol
+// get vote direct stake mnde/blze
+// calc convert rate from mnde & blze to SOL
+// take 50% of direct stake rewards - example: 100 direct stake
+// sum the rewards from those direct stake + blze/mnde rewards
+
 
 export default async function getValidatorBribe(request, response) {
     try {

@@ -1,0 +1,21 @@
+
+ion-grid{
+    max-width: 97%;
+    margin-inline: auto;
+    text-transform: capitalize;
+    margin-bottom: 0;
+}
+ion-button{
+    float: right;
+}
+ion-title{
+    text-align: center;
+    font-size: 56px;
+    color: var(--ion-text-color);
+}
+ion-icon {
+    display: block;
+    width: 100%;
+    font-size: 80px;
+    color: gold;
+}

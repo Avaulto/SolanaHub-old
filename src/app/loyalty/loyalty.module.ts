@@ -4,6 +4,11 @@ import { LoyaltyComponent } from './loyalty.component';
 import { LoyaltyBtnComponent } from './loyalty-btn/loyalty-btn.component';
 import { LoyaltyPopupComponent } from './loyalty-popup/loyalty-popup.component';
 import { IonicModule } from '@ionic/angular';
+import { PrizePoolComponent } from './loyalty-popup/prize-pool/prize-pool.component';
+import { LeaderBoardComponent } from './loyalty-popup/leader-board/leader-board.component';
+import { ItemComponent } from './loyalty-popup/leader-board/item/item.component';
+import { PrivateScoreComponent } from './loyalty-popup/leader-board/private-score/private-score.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -11,16 +16,17 @@ import { IonicModule } from '@ionic/angular';
   declarations: [
     LoyaltyComponent,
     LoyaltyBtnComponent,
-    LoyaltyPopupComponent
+    LoyaltyPopupComponent,
+    PrizePoolComponent,
+    LeaderBoardComponent,
+    ItemComponent,
+    PrivateScoreComponent,
   ],
   imports: [
-    CommonModule,
-    IonicModule
+    SharedModule
   ],
   exports:[
-    LoyaltyComponent,
     LoyaltyBtnComponent,
-    LoyaltyPopupComponent
   ]
 })
 export class LoyaltyModule { }

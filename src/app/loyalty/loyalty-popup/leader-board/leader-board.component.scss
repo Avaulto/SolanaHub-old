@@ -1,0 +1,21 @@
+ion-grid{
+    max-width: 97%;
+    margin-inline: auto;
+    text-transform: capitalize;
+}
+ion-icon{
+    color: gold;
+}
+app-item{
+    display: block;
+    width: 100%;
+    margin-block-end: 3px;
+}
+.leader-board ion-col{
+    text-align: center;
+}
+
+#leader-board-table{
+    max-height: 450px;
+    overflow-y: auto;
+}
