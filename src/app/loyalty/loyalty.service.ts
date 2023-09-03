@@ -19,7 +19,7 @@ export class LoyaltyService {
   public getLoyaltyLeaderBoard(): Observable<LoyaltyLeaderBoard>{
     return this._apiService.get(`${this.api}/leader-board`).pipe(
       this._utilsService.isNotNull,
-       map(loyaltyLeaderBoard => {
+       map((loyaltyLeaderBoard: LoyaltyLeaderBoard) => {
         return loyaltyLeaderBoard
        }) 
     )}
