@@ -2,7 +2,7 @@
   <ion-col>
     <span *ngIf="index === 5">you</span>
     {{index}}</ion-col>
-  <ion-col>CdoF...PjyP</ion-col>
-  <ion-col>123</ion-col>
-  <ion-col>{{randomNum}} SOL</ion-col>
+  <ion-col>{{shortenAddr(loyaltyScore.walletOwner)}}</ion-col>
+  <ion-col>{{loyaltyScore.loyaltyPoints}}</ion-col>
+  <ion-col>{{(loyaltyScore.prizePoolShare * prizePool)}} SOL</ion-col>
 </ion-row>

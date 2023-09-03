@@ -34,13 +34,14 @@ export default async function GetLeaderBoard(request, response) {
                 const prizePoolShare = loyaltyStaker.loyaltyPoints / totalPts * 100
                 return {...loyaltyStaker, prizePoolShare}
             })
-            return { AvalutoLoyaltyScore: ptsCalcIncludePoolShare, totalPoints, snapshotDate: bribeRecord.date }
+            return { AvalutoLoyaltyPoints: ptsCalcIncludePoolShare, totalPoints:totalPts, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)
         }
     }
     try {
         const loyaltyPoints = await loyaltyPointsCalc()
+        console.log(loyaltyPoints)
         return response.status(200).json(loyaltyPoints);
     } catch (error) {
         console.error(error)
