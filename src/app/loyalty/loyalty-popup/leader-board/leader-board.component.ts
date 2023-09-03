@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoyaltyService } from '../../loyalty.service';
 import { Observable } from 'rxjs';
-import { LoyaltyLeaderBoard } from 'src/app/models/avaulto-loyalty.model';
+import { LoyaltyLeaderBoard, PtsCalcIncludePoolShare } from 'src/app/models/avaulto-loyalty.model';
 
 @Component({
   selector: 'app-leader-board',
@@ -11,7 +11,7 @@ import { LoyaltyLeaderBoard } from 'src/app/models/avaulto-loyalty.model';
 export class LeaderBoardComponent  implements OnInit {
 
   constructor(private _loyaltyService:LoyaltyService) { }
-  public loyaltyLeaderBoard$: Observable<LoyaltyLeaderBoard> = this._loyaltyService.getLoyaltyLeaderBoard()
+  public loyaltyLeaderBoard$: Observable<PtsCalcIncludePoolShare[]> = this._loyaltyService.getLoyaltyLeaderBoard()
   ngOnInit() {}
 
 }
