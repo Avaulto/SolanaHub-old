@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-   <img width="200" src="https://raw.githubusercontent.com/Avaulto/SolanaHub/master/src/assets/images/SolanaHub-logo.svg" alt="compact defi logo"/>
+   <img width="200" src="https://raw.githubusercontent.com/Avaulto/SolanaHub/master/src/assets/images/logo.svg" alt="SolanaHub logo"/>
   <br>
 </h1>
 
