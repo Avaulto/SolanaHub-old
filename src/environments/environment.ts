@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   solanaEnv: 'mainnet-beta',
   solanaCluster: 'https://mb-avaulto-cc28.mainnet.rpcpool.com',
-  serverlessAPI: 'https://beta.SolanaHub.xyz',
+  serverlessAPI: 'https://dev.SolanaHub.app',
   platformFeeCollector:'81QNHLve6e9N2fYNoLUnf6tfHWV8Uq4qWZkkuZ8sAfU1'
 };
 
