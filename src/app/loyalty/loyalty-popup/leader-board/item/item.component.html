@@ -1,11 +1,9 @@
 <ion-row [class.selected]="loyaltyScore?.walletOwner === wallet.publicKey.toBase58()" class="ion-justify-content-between">
-  <ion-col>
-    <span *ngIf="loyaltyScore?.walletOwner === wallet.publicKey.toBase58()">you</span>
-    {{index +1}}</ion-col>
+  <ion-col>{{index +1}}</ion-col>
   <ion-col>{{shortenAddr(loyaltyScore?.walletOwner)}}
     <ion-icon name="copy-outline" appCopyText [copyText]="loyaltyScore.walletOwner"
     class="ion-margin-end"></ion-icon>
   </ion-col>
   <ion-col>{{loyaltyScore?.loyaltyPoints | number : '1.2-2' }}</ion-col>
-  <ion-col>{{(loyaltyScore?.prizePoolShare / prizePool * 100 | number : '1.2-2')}} SOL</ion-col>
+  <ion-col>{{(prizePool * loyaltyScore?.prizePoolShare | number : '1.2-2')}} SOL</ion-col>
 </ion-row>

@@ -18,4 +18,9 @@ app-item{
 #leader-board-table{
     max-height: 450px;
     overflow-y: auto;
+    height: 400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

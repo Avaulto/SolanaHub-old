@@ -11,12 +11,11 @@ import { UtilsService } from 'src/app/services';
 export class ItemComponent  implements OnInit {
   @Input() index;
   @Input() loyaltyScore: AvalutoLoyaltyPoint;
-  @Input() prizePool: number = 1000;
+  @Input() prizePool: number = 0;
   @Input() wallet: WalletExtended;
   constructor(private _utilsService:UtilsService) { }
 
   ngOnInit() {
-    console.log(this.loyaltyScore)
   }
   public shortenAddr(addr: string){
     return this._utilsService.addrUtil(addr).addrShort

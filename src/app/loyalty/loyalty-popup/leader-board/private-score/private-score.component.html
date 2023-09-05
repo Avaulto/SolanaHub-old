@@ -1,51 +1,53 @@
 <ion-grid class="data-box ion-padding">
-  <ng-container *ngIf="wallet; else elseTemplate">
+  <ng-container *ngIf="wallet && leaderBoard; else elseTemplate">
 
     <ion-row id="loyalty-your-score">
       Avaulto loyalty Points
       <ion-col>
         <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> 12,001
+          <ion-icon name="sparkles-sharp"></ion-icon> {{myLoyaltyScore?.loyaltyPoints | number : '1.2-2'}}
         </div>
         <div id="private-prize-share">
           your prize pool share
-          46 SOL
+          {{(prizePool * myLoyaltyScore?.prizePoolShare || 0 | number : '1.2-2')}} SOL
         </div>
       </ion-col>
     </ion-row>
 
     <ion-row class="ion-justify-content-between">
-      <ion-col class="data-box points-breakdown" size="2">
+      <ion-col class="data-box points-breakdown" size="3.5">
         <app-icon-tooltip tooltip="Native stake SOL + stake account aging"></app-icon-tooltip>
         <div>
           native stake:
         </div>
         <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> 1200
+          <ion-icon name="sparkles-sharp"></ion-icon> {{ myLoyaltyScore?.pointsBreakDown?.nativeStakePts || 0 | number : '1.2-2'}}
         </div>
       </ion-col>
-      <ion-col class="data-box points-breakdown" size="2">
+      <ion-col class="data-box points-breakdown" size="3.5">
+        <app-icon-tooltip tooltip="mSOL & bSOL liquid staking"></app-icon-tooltip>
         <div>
-          marinade direct stake:
+          liquid stake:
         </div>
         <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> 5000
-        </div>
-      </ion-col>
-      <ion-col class="data-box points-breakdown" size="2">
-        <div>
-          MNDE DAO votes:
-        </div>
-        <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> 100
+          <ion-icon name="sparkles-sharp"></ion-icon>  {{ myLoyaltyScore?.pointsBreakDown?.mSOLpts + myLoyaltyScore?.pointsBreakDown?.bSOLpts || 0| number : '1.2-2'}}
         </div>
       </ion-col>
-      <ion-col class="data-box points-breakdown" size="2">
+      <ion-col class="data-box points-breakdown" size="3.5">
+        <app-icon-tooltip tooltip="veMNDE & veBLZE votes to allocate stake from the DAO"></app-icon-tooltip>
+        <div>
+          DAO votes:
+        </div>
+        <div>
+          <ion-icon name="sparkles-sharp"></ion-icon>  {{ myLoyaltyScore?.pointsBreakDown?.veMNDEpts  || 0 | number : '1.2-2'}}
+        </div>
+      </ion-col>
+      <!-- <ion-col class="data-box points-breakdown" size="2">
         <div>
           solblaze direct stake
         </div>
         <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> 6000
+          <ion-icon name="sparkles-sharp"></ion-icon>  {{ myLoyaltyScore?.pointsBreakDown?.bSOLpts| number : '1.2-2'}}
         </div>
       </ion-col>
       <ion-col class="data-box points-breakdown" size="2">
@@ -53,13 +55,12 @@
           BLZE DAO votes:
         </div>
         <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> 0
+          <ion-icon name="sparkles-sharp"></ion-icon> {{ 0 | number : '1.2-2'}}
         </div>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
   </ng-container>
   <ng-template #elseTemplate>
-    Connect your wallet to view your score
     <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
   </ng-template>
 

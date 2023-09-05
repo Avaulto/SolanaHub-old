@@ -10,8 +10,13 @@ ion-button{
 }
 ion-title{
     text-align: center;
+    line-height: 56px;
     font-size: 56px;
     color: var(--ion-text-color);
+}
+ion-chip {
+    color: var(--ion-color-secondary);
+    padding: 17px;
 }
 ion-icon {
     display: block;

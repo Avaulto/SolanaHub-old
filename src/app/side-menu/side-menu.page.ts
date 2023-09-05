@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { IonPopover, MenuController } from '@ionic/angular';
 import { pages } from '../shared/helpers/menu';
+import { SolanaUtilsService } from '../services';
 
 
 @Component({
@@ -11,9 +12,13 @@ import { pages } from '../shared/helpers/menu';
 })
 export class SideMenuPage implements OnInit {
   @ViewChild('popover') popover:IonPopover;
-  constructor(private _menu: MenuController) {
+  constructor(
+    private _solanaUtilsService:SolanaUtilsService,
+    private _menu: MenuController
+    ) {
     this.openFirst()
   }
+  public wallet$ = this._solanaUtilsService.walletExtended$
   openFirst() {
     this._menu.enable(true, 'first');
     this._menu.open('first');

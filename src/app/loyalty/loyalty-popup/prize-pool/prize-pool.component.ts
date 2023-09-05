@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-prize-pool',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./prize-pool.component.scss'],
 })
 export class PrizePoolComponent  implements OnInit {
-
+  @Input() prizePool: number = 0
   constructor() { }
 
   ngOnInit() {}

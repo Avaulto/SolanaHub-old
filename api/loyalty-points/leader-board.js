@@ -33,7 +33,7 @@ export default async function GetLeaderBoard(request, response) {
             const ptsCalcIncludePoolShare = ptsCalc.map(loyaltyStaker =>{
                 const prizePoolShare = loyaltyStaker.loyaltyPoints / totalPts
                 return {...loyaltyStaker, prizePoolShare}
-            })
+            }).sort((a, b) => b.loyaltyPoints - a.loyaltyPoints)
             return { AvalutoLoyaltyPoints: ptsCalcIncludePoolShare, totalPoints:totalPts, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)

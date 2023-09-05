@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./loyalty-popup.component.scss'],
 })
 export class LoyaltyPopupComponent  implements OnInit {
-
+  public prizePool:number = 25.62
   constructor() { }
 
   ngOnInit() {}
