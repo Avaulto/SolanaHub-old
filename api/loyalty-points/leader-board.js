@@ -2,11 +2,11 @@
 
 export default async function GetLeaderBoard(request, response) {
     async function _getScore() {
-        const loyaltyScore = await (await fetch('https://dev.compact-defi.xyz/api/loyalty-points/score-calculator')).json()
+        const loyaltyScore = await (await fetch('https://dev.SolanaHub.app/api/loyalty-points/score-calculator')).json()
         return loyaltyScore
     }
     async function _getValidatorBribe() {
-        const validatorBribe = await (await fetch(`https://dev.compact-defi.xyz/api/loyalty-points/get-validator-bribe`)).json()
+        const validatorBribe = await (await fetch(`https://dev.SolanaHub.app/api/loyalty-points/get-validator-bribe`)).json()
         return validatorBribe
     }
 
@@ -23,7 +23,7 @@ export default async function GetLeaderBoard(request, response) {
                 const mSOLpts = (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
                 const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)
                 let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts
-                //  AvaultoLoyaltyScore.compactDeFi_Boost;
+  
                 return { walletOwner: staker.walletOwner, loyaltyPoints, pointsBreakDown: { nativeStakePts, bSOLpts, mSOLpts, veMNDEpts } }
             })
             const totalPts = ptsCalc.reduce(

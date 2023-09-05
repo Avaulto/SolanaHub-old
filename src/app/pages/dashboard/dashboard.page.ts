@@ -82,7 +82,7 @@ export class DashboardPage implements OnInit, OnDestroy {
   ) { 
   }
   ionViewWillEnter(){
-    this._titleService.setTitle('CompactDeFi - dashboard')
+    this._titleService.setTitle('SolanaHub - dashboard')
   }
   async openSwapSmallBalancePopup() {
     const popover = await this._popoverController.create({

@@ -1,5 +1,5 @@
 <ion-grid class="data-box ion-padding ion-margin-top">
-  <app-private-score [prizePool]="prizePool" [wallet]="walletExtended$ | async" [leaderBoard]="loyaltyLeaderBoard$ | async"></app-private-score>
+  <app-private-score [prizePool]="prizePool" [wallet]="wallet" [leaderBoard]="loyaltyLeaderBoard$ | async"></app-private-score>
   <ion-row class="ion-justify-content-center ion-margin-bottom">
     <ion-label class="sub">
       total points:
@@ -31,7 +31,7 @@
       <app-item *ngFor="let item of LDP;let i = index" 
       [loyaltyScore]="item"
       [prizePool]="prizePool"
-      [wallet]="walletExtended$ | async"
+      [wallet]="wallet"
         [index]="i"></app-item>
     </ng-container>
     <ng-template #elseTemplate>

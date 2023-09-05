@@ -29,7 +29,7 @@ export class TokenSwapPage implements OnInit {
   ) {
   }
   ionViewWillEnter() {
-    this._titleService.setTitle('CompactDeFi - swap tokens')
+    this._titleService.setTitle('SolanaHub - swap tokens')
   }
   public wSOL = "So11111111111111111111111111111111111111112";
   public wallet

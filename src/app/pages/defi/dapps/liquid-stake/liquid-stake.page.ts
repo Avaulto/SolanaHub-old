@@ -99,7 +99,7 @@ export class LiquidStakePage {
 
   private _queryParam$: Subscription;
   async ionViewWillEnter() {
-    this._titleService.setTitle('CompactDeFi - Liquid staking')
+    this._titleService.setTitle('SolanaHub - Liquid staking')
     this._queryParam$ = this.initConfigStartup();
     this.stakePoolStore.getStakePoolsInfo()
   }

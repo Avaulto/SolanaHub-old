@@ -74,7 +74,7 @@ export class TheLaboratoryPage implements OnInit {
   }
 
   public defiTour = [{
-    title: 'welcome to CompactDeFi Laboratory',
+    title: 'welcome to SolanaHub Laboratory',
     description: `Don't let your hard-earned assets sit idle – let us empower you to reach new 1-click yield strategies! and btw, we do not involves any smart contract from our end`,
   },
   // 

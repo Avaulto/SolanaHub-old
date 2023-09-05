@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { UtilsService } from 'src/app/services';
+import { SolanaUtilsService, UtilsService } from 'src/app/services';
 import { LoyaltyPopupComponent } from '../loyalty-popup/loyalty-popup.component';
+import { LoyaltyService } from '../loyalty.service';
+import { Observable, map } from 'rxjs';
+import { AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
 
 @Component({
   selector: 'app-loyalty-btn',
@@ -12,9 +15,15 @@ export class LoyaltyBtnComponent implements OnInit {
 
   constructor(
     private _utilsService: UtilsService,
-    private _popoverController: PopoverController
+    private _popoverController: PopoverController,
+    private _loyaltyService:LoyaltyService,
+    private _solanaUtilsService:SolanaUtilsService
   ) { }
 
+  public loyaltyPersonalScore$: Observable<string> = this._loyaltyService.getLoyaltyLeaderBoard().pipe(
+    map(res => this._utilsService.formatBigNumbers(res.find(s => s.walletOwner === this._solanaUtilsService.getCurrentWallet().publicKey.toBase58()).loyaltyPoints)
+    ))
+  
 
   async openLoyaltyPopup() {
     const popover = await this._popoverController.create({
@@ -30,14 +39,8 @@ export class LoyaltyBtnComponent implements OnInit {
     await popover.present();
 
   }
-  public points = null;
+
   ngOnInit() {
-    console.log('loaded')
-    this.points = this._utilsService.formatBigNumbers(100000)
-
-    // JavaScript used to set randomness for particles.
-    // Could be done via SSR
-
     const RANDOM = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
     const PARTICLES = document.querySelectorAll('.particle')
     PARTICLES.forEach(P => {

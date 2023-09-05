@@ -81,7 +81,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
 
   }
   async ionViewWillEnter() {
-    this._titleService.setTitle('CompactDeFi - stake with us')
+    this._titleService.setTitle('SolanaHub - stake with us')
 
   }
 

@@ -40,7 +40,7 @@ export class NftGalleryPage {
   allNft$: Subscription;
   public totalFloor:{sol:number,usd: number} = {sol:0,usd:0};
   async ionViewWillEnter() {
-    this._titleService.setTitle('CompactDeFi - NFT gallery')
+    this._titleService.setTitle('SolanaHub - NFT gallery')
 
   }
   ionViewDidLeave() {

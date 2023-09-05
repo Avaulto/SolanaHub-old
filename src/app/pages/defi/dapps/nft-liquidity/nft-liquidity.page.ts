@@ -30,7 +30,7 @@ export class NftLiquidityPage implements OnInit {
     )
 
   ionViewWillEnter(){
-    this._titleService.setTitle('CompactDeFi - NFT Liquidity')
+    this._titleService.setTitle('SolanaHub - NFT Liquidity')
   }
   searchItem(term: any) {
     this.searchTerm = term.value;

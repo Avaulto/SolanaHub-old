@@ -3,6 +3,7 @@ import { LoyaltyService } from '../../loyalty.service';
 import { Observable, map, shareReplay, tap } from 'rxjs';
 import { LoyaltyLeaderBoard, AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
 import { SolanaUtilsService } from 'src/app/services';
+import { WalletExtended } from 'src/app/models';
 
 @Component({
   selector: 'app-leader-board',
@@ -24,7 +25,7 @@ export class LeaderBoardComponent implements OnInit {
     ))
   )
   public totalLoyaltyPoints = 0
-  public walletExtended$: Observable<any> = this._solanaUtilsService.walletExtended$
+  public wallet: WalletExtended = this._solanaUtilsService.getCurrentWallet()
   ngOnInit() { }
 
 }

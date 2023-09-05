@@ -55,7 +55,7 @@ export class DefiPage   {
   
   constructor(private _popoverController: PopoverController, private _titleService: Title) { }
   ionViewWillEnter(){
-    this._titleService.setTitle('CompactDeFi - defi')
+    this._titleService.setTitle('SolanaHub - defi')
   }
 
   defiTour = [{
@@ -69,7 +69,7 @@ export class DefiPage   {
      It aims to promote financial inclusion and democratize ownership of assets by anyone with a computer.`,
   },
   {
-    title: 'Why Compact-DeFi',
+    title: 'Why SolanaHub',
     description: `We have been reviewing a variety of DeFi applications to find the best fit for our platform. 
     Our goal is to provide you with seamless and permissionless access to a new generation of finance.`,
 

@@ -1,9 +1,9 @@
 {
-  "name": "compact-defi",
+  "name": "solana-hub",
   "description": "Solana DeFi project",
   "version": "1.0.2",
-  "author": "avaulto",
-  "homepage": "https://avaulto.com/",
+  "author": "SolanaHub",
+  "homepage": "https://solana-hub.xyz",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --configuration=development",

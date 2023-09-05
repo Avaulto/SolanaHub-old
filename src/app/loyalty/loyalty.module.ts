@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { LoyaltyComponent } from './loyalty.component';
 import { LoyaltyBtnComponent } from './loyalty-btn/loyalty-btn.component';
 import { LoyaltyPopupComponent } from './loyalty-popup/loyalty-popup.component';
 import { IonicModule } from '@ionic/angular';
@@ -14,7 +12,6 @@ import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    LoyaltyComponent,
     LoyaltyBtnComponent,
     LoyaltyPopupComponent,
     PrizePoolComponent,
