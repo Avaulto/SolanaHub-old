@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { WalletExtended } from 'src/app/models';
-import { AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
+import { LoyaltyPoint } from 'src/app/models/loyalty.model';
 import { UtilsService } from 'src/app/services';
 
 @Component({
@@ -10,7 +10,7 @@ import { UtilsService } from 'src/app/services';
 })
 export class ItemComponent  implements OnInit {
   @Input() index;
-  @Input() loyaltyScore: AvalutoLoyaltyPoint;
+  @Input() loyaltyScore: LoyaltyPoint;
   @Input() prizePool: number = 0;
   @Input() wallet: WalletExtended;
   constructor(private _utilsService:UtilsService) { }

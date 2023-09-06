@@ -1,11 +1,11 @@
 
   export interface LoyaltyLeaderBoard {
-    AvalutoLoyaltyPoints: AvalutoLoyaltyPoint[];
+    AvalutoLoyaltyPoints: LoyaltyPoint[];
     totalPoints:          number;
     snapshotDate:         Date;
 }
 
-export interface AvalutoLoyaltyPoint {
+export interface LoyaltyPoint {
     walletOwner:     string;
     loyaltyPoints:   number;
     pointsBreakDown: PointsBreakDown;

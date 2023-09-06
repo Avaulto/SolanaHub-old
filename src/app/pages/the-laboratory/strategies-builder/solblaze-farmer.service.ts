@@ -62,7 +62,7 @@ interface StrategySDK {
 export class SolblazeFarmerService {
   protected _solblazePoolAddress = new PublicKey("stk9ApL5HeVAwPLr3TLhDXdZS8ptVu7zp6ov8HFDuMi");
   protected _sol_bsol_pool_address = new PublicKey('DvWpLaNUPqoCGn4foM6hekAPKqMtADJJbJWhwuMiT6vK');
-  protected _avaultoVoteKey = new PublicKey('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh');
+  protected _VoteKey = new PublicKey('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh');
   protected _bSOL = new PublicKey("bSo13r4TkiE4KumL71LsHTPpL2euBYLFx6h9HP3piy1");
   protected _wSOL = new PublicKey("So11111111111111111111111111111111111111112");
   protected _meteoraAPI = 'https://app.meteora.ag';
@@ -479,7 +479,7 @@ export class SolblazeFarmerService {
   }
 
   private async _bSolStake(amount: BN): Promise<{ txIns: TransactionInstruction[], signers: any }> {
-    const validator = this._avaultoVoteKey;
+    const validator = this._VoteKey;
     const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     const deposit = await this._stakePoolStore.stakePoolSDK.depositSol(
       this._solanaUtilsService.connection,

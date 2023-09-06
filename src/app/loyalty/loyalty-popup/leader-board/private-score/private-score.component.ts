@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { WalletExtended } from 'src/app/models';
-import { AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
+import { LoyaltyPoint } from 'src/app/models/loyalty.model';
 
 @Component({
   selector: 'app-private-score',
@@ -9,9 +9,9 @@ import { AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
 })
 export class PrivateScoreComponent  implements OnChanges {
   @Input() wallet:WalletExtended;
-  @Input() leaderBoard: AvalutoLoyaltyPoint[]
+  @Input() leaderBoard: LoyaltyPoint[]
   @Input() prizePool: number = 0;
-  public myLoyaltyScore: AvalutoLoyaltyPoint = null;
+  public myLoyaltyScore: LoyaltyPoint = null;
   constructor() { }
 
   ngOnInit() {}

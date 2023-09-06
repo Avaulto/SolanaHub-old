@@ -2,26 +2,26 @@
 
 export default async function GetLeaderBoard(request, response) {
     async function _getScore() {
-        const loyaltyScore = await (await fetch('/api/loyalty-points/score-calculator')).json()
+        const loyaltyScore = await (await fetch('https://dev.SolanaHub.app/api/loyalty-points/score-calculator')).json()
         return loyaltyScore
     }
     async function _getValidatorBribe() {
-        const validatorBribe = await (await fetch(`/api/loyalty-points/get-validator-bribe`)).json()
+        const validatorBribe = await (await fetch(`https://dev.SolanaHub.app/api/loyalty-points/get-validator-bribe`)).json()
         return validatorBribe
     }
 
     async function loyaltyPointsCalc() {
         try {
-            const [AvaultoLoyaltyScore, bribeRecord] = await Promise.all([_getScore(), _getValidatorBribe()])
+            const [LoyaltyScore, bribeRecord] = await Promise.all([_getScore(), _getValidatorBribe()])
 
             const ptsCalc = bribeRecord.validatorBribeData.map(staker => {
-                let agingBooster = staker.stakeAccountAging * AvaultoLoyaltyScore.nativeStakeLongTermBoost;
+                let agingBooster = staker.stakeAccountAging * LoyaltyScore.nativeStakeLongTermBoost;
                 agingBooster = agingBooster > 0.50 ? 0.50 : agingBooster
                 // stake account aging
                 const nativeStakePts = (staker.nativeStake * (agingBooster + 1))
-                const bSOLpts = (staker.bSOL_directStake * AvaultoLoyaltyScore.bSOL_DirectStakeBoost)
-                const mSOLpts = (staker.mSOL_directStake * AvaultoLoyaltyScore.mSOL_DirectStakeBoost)
-                const veMNDEpts = (staker.mSOL_votePower * AvaultoLoyaltyScore.veMNDE_Boost)
+                const bSOLpts = (staker.bSOL_directStake * LoyaltyScore.bSOL_DirectStakeBoost)
+                const mSOLpts = (staker.mSOL_directStake * LoyaltyScore.mSOL_DirectStakeBoost)
+                const veMNDEpts = (staker.mSOL_votePower * LoyaltyScore.veMNDE_Boost)
                 let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts
   
                 return { walletOwner: staker.walletOwner, loyaltyPoints, pointsBreakDown: { nativeStakePts, bSOLpts, mSOLpts, veMNDEpts } }

@@ -147,7 +147,7 @@ export class SolanaUtilsService {
       catchError(this._formatErrors)
     );
   }
-  public getAvaultoStakeChange(){
+  public getStakeChange(){
     return this._apiService.get(`https://api.stakewiz.com/validator_epoch_stakes/7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh`).pipe(
       map((stake) => {
         console.log(stake)

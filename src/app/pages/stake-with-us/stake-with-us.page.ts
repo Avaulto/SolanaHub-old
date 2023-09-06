@@ -45,10 +45,10 @@ interface DirectStake {
 })
 export class StakeWithUsPage implements OnInit, OnDestroy {
   public apy: number;
-  private AvaultoVoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
+  private VoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   private anchorWallet$: Subscription;
   public wallet: WalletExtended;
-  public stakeChange = this._solanaUtilsService.getAvaultoStakeChange();
+  public stakeChange = this._solanaUtilsService.getStakeChange();
   public getValidatorInfo: Observable<ValidatorData | any> = this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh').pipe(
     switchMap(async (validator: ValidatorData) => {
       validator.delegetors = await this._getDelegetors()
@@ -102,7 +102,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     const { current } = await this._solanaUtilsService.connection.getVoteAccounts();
     // const nodes: ContactInfo[] = await this._solanaUtilsService.connection.getClusterNodes();
     const sortedValidators = current.sort((a, b) => b.activatedStake - a.activatedStake);
-    const validatorRank = sortedValidators.findIndex((validator) => validator.votePubkey == this.AvaultoVoteKey);
+    const validatorRank = sortedValidators.findIndex((validator) => validator.votePubkey == this.VoteKey);
     const rank = {
       rank: validatorRank,
       numOfValidators: sortedValidators.length
@@ -117,7 +117,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
           // dataSize: 200,    //size of account (bytes)
           memcmp: {
             offset: 124,     //location of our query in the account (bytes)
-            bytes: this.AvaultoVoteKey,  //our search criteria, a base58 encoded string
+            bytes: this.VoteKey,  //our search criteria, a base58 encoded string
           }
         }]
       }
@@ -133,7 +133,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   private _getMSOLDirectStake(): Observable<DirectStake> {
 
     return this._apiService.get('https://snapshots-api.marinade.finance/v1/votes/msol/latest').pipe(map((r: mSOL_DirectStake) => {
-      const record = r.records.find(vote => vote.validatorVoteAccount === this.AvaultoVoteKey && vote.tokenOwner === this.wallet.publicKey.toBase58())
+      const record = r.records.find(vote => vote.validatorVoteAccount === this.VoteKey && vote.tokenOwner === this.wallet.publicKey.toBase58())
       const directStake: DirectStake = { symbol: 'mSOL', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.amount) }
       return directStake
     }))
@@ -141,7 +141,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   }
   private _getBSOLDirectStake(): Observable<DirectStake> {
     return this._apiService.get('https://stake.solblaze.org/api/v1/cls_boost').pipe(map((snapshot: bSOL_DirectStake) => {
-      const amount = snapshot.applied_stakes[this.AvaultoVoteKey][this.wallet.publicKey.toBase58()]
+      const amount = snapshot.applied_stakes[this.VoteKey][this.wallet.publicKey.toBase58()]
       const directStake: DirectStake = { symbol: 'bSOL', image: 'assets/images/icons/bSOL-logo.png', amount }
       return directStake
     }))

@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 export default async function GetScore(request, response) {
   /**
       @param loyaltyScore;
-          group of loyalty score base on various ways to boost Avaulto validator node on Solana blockchain
+          group of loyalty score base on various ways to boost  validator node on Solana blockchain
 
       @prop nativeLongTermBoost
           boost for long term commitment on native staking, 
@@ -39,13 +39,13 @@ export default async function GetScore(request, response) {
       const msolPrice =  await (await fetch(`https://api.marinade.finance/msol/price_sol`)).json()
       const mSOLpoolSize = (await (await fetch('https://api.marinade.finance/tlv')).json());
       const mSOL_total_allocated_stake = (mSOLpoolSize.staked_sol + mSOLpoolSize.marinade_native_stake_sol) * 0.2;
-      const AvaultoVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
+      const VoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
       const msol_votes_ds = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
       const totalDirectStake = msol_votes_ds.records.filter(record => record.amount).reduce(
         (accumulator, currentValue) => accumulator + Number(currentValue.amount * msolPrice),
         0
       );
-      const singleDirectStake = Number(msol_votes_ds.records.filter(record => record.amount > 0 && record.validatorVoteAccount === AvaultoVoteKey)[0].amount * msolPrice)
+      const singleDirectStake = Number(msol_votes_ds.records.filter(record => record.amount > 0 && record.validatorVoteAccount === VoteKey)[0].amount * msolPrice)
 
       // how much % each stake control out of the total ds
       const singleStakeControlInPercentage = singleDirectStake / totalDirectStake
@@ -62,13 +62,13 @@ export default async function GetScore(request, response) {
   const getVotesRatio_MNDE = async () => {
     try {
       const mSOL_total_allocated_stake = (await (await fetch('https://api.marinade.finance/tlv')).json()).total_sol * 0.2;
-      const AvaultoVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
+      const VoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
       const mnde_votes = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json())
       const totalVotes = mnde_votes.records.filter(record => record.amount).reduce(
         (accumulator, currentValue) => accumulator + Number(currentValue.amount),
         0
       );
-      const singleVote = Number(mnde_votes.records.filter(record => record.amount > 0 && record.validatorVoteAccount === AvaultoVoteKey)[0].amount)
+      const singleVote = Number(mnde_votes.records.filter(record => record.amount > 0 && record.validatorVoteAccount === VoteKey)[0].amount)
 
       // how much % each stake control out of the total ds
       const singleVoteControlInPercentage = singleVote / totalVotes

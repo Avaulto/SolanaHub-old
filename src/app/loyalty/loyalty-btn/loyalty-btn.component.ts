@@ -4,7 +4,6 @@ import { SolanaUtilsService, UtilsService } from 'src/app/services';
 import { LoyaltyPopupComponent } from '../loyalty-popup/loyalty-popup.component';
 import { LoyaltyService } from '../loyalty.service';
 import { Observable, map } from 'rxjs';
-import { AvalutoLoyaltyPoint } from 'src/app/models/avaulto-loyalty.model';
 
 @Component({
   selector: 'app-loyalty-btn',
