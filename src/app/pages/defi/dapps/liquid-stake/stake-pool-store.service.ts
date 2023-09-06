@@ -175,8 +175,8 @@ export class StakePoolStoreService {
       const selectedPool: StakePoolProvider = this.providers.find(p => p.poolName.toLowerCase() === pool);
       await this._stakePoolStakeSOL(selectedPool.poolPublicKey, walletOwner, sol, validatorVoteAccount)
     }
-
-    va.track('liquid staking', { pool, type: `direct stake with ${validatorVoteAccount}` });
+    const message = validatorVoteAccount ? `direct stake with ${validatorVoteAccount}` : ''
+    va.track('liquid staking', { pool, type: message });
   }
 
 
@@ -225,7 +225,7 @@ export class StakePoolStoreService {
   }
 
 
-  public async getStakePoolInfo(poolAddress: PublicKey): Promise<{totalStake: number, totalSupply:number, conversion: number}> {
+  public async getStakePoolInfo(poolAddress: PublicKey): Promise<{ totalStake: number, totalSupply: number, conversion: number }> {
     let info = await stakePoolInfo(this._solanaUtilsService.connection, poolAddress);
 
     let solanaAmount = info.details.reserveStakeLamports;
@@ -240,6 +240,6 @@ export class StakePoolStoreService {
     // console.log(`Total bSOL (Supply): ${tokenAmount / LAMPORTS_PER_SOL}`);
     const totalStake = solanaAmount / LAMPORTS_PER_SOL;
     const totalSupply = tokenAmount / LAMPORTS_PER_SOL
-    return {totalStake, totalSupply, conversion}
+    return { totalStake, totalSupply, conversion }
   }
 }
