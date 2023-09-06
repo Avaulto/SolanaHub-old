@@ -1,9 +1,9 @@
 {
   "name": "solana-hub",
   "description": "Solana DeFi project",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "author": "SolanaHub",
-  "homepage": "https://solana-hub.app",
+  "homepage": "https://www.solanahub.app",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --configuration=development",
