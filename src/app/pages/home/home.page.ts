@@ -25,7 +25,7 @@ export class HomePage implements OnInit, OnDestroy {
     stakeInfo: this._solanaUtilsService.getStake(),
     TPS: this._solanaUtilsService.getTPS(),
     epochInfo: this._solanaUtilsService.getEpochInfo(),
-    supply: this._solanaUtilsService.getSupply()
+    // supply: this._solanaUtilsService.getSupply()
   }).pipe(shareReplay(),map( (data: any) => {
     
     data.TPS = Math.trunc(data?.TPS)
