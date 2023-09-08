@@ -83,14 +83,15 @@ export default async function GetScore(request, response) {
   }
 
   const getVotesRatio_BLZE = () => {
-
+    return 1
   }
 
   try {
-    const calls = await Promise.all([getDirectStakeRatio_bSOL(), getDirectStakeRatio_mSOL(), getVotesRatio_MNDE()])
+    const calls = await Promise.all([getDirectStakeRatio_bSOL(), getDirectStakeRatio_mSOL(), getVotesRatio_MNDE(),getVotesRatio_BLZE()])
     loyaltyScore.bSOL_DirectStakeBoost =  calls[0]
     loyaltyScore.mSOL_DirectStakeBoost =  calls[1]
     loyaltyScore.veMNDE_Boost =  calls[2];
+    loyaltyScore.veBLZE_Boost = calls[3]
     return response.status(200).json(loyaltyScore);
   } catch (error) {
     console.error(error)

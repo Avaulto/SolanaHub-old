@@ -60,15 +60,15 @@ export default async function UpdateValidatorBribe(request, response) {
         const Validator_mSOL_DS = record
         return Validator_mSOL_DS;
     }
-    async function _getValidatorMNDEVotes() {
+    async function _getValidator_veMNDEVotes() {
         const mnde_votes = await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json()
-        const ValidatormSOL_Votes = mnde_votes.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
+        const ValidatorveMNDE_Votes = mnde_votes.records.filter(vote => Number(vote.amount) && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
             return {
                 walletOwner: votes.tokenOwner,
-                mSOL_votePower: Number(votes.amount)
+                veMNDE_Votes: Number(votes.amount)
             }
         })
-        return ValidatormSOL_Votes
+        return ValidatorveMNDE_Votes
     }
     async function _getValidatorBSOLDirectStake() {
         const snapshot = (await (await fetch('https://stake.solblaze.org/api/v1/cls_boost')).json())
@@ -82,11 +82,12 @@ export default async function UpdateValidatorBribe(request, response) {
                 bSOL_directStake: amount,
             }
             return bSOL_directStake;
-        })
+        }).filter(v => v.bSOL_directStake)
         return Validator_bSOL_DS_arr;
     }
 
-    async function _getBLZEVotes() {
+    async function _getValidator_veBLZEVotes() {
+        return 0;
     }
 
     // steps to calc
@@ -99,14 +100,15 @@ export default async function UpdateValidatorBribe(request, response) {
     // return the score & break down
     async function validatorBribeData() {
         try {
-            const [delegetors, Validator_mSOL_DS, Validator_mSOL_Votes, Validator_bSOL_DS] = await Promise.all([
+            const [delegetors, Validator_mSOL_DS, Validator_veMNDE_Votes, Validator_bSOL_DS] = await Promise.all([
                 _getNativeDelegetors(),
                 _getValidatorMSOLDirectStake(),
-                _getValidatorMNDEVotes(),
+                _getValidator_veMNDEVotes(),
                 _getValidatorBSOLDirectStake(),
+                // _getValidator_veBLZEVotes(),
             ]);
 
-            const stakerAll = [...delegetors, ...Validator_mSOL_DS, ...Validator_mSOL_Votes, ...Validator_bSOL_DS]
+            const stakerAll = [...delegetors, ...Validator_mSOL_DS, ...Validator_veMNDE_Votes, ...Validator_bSOL_DS]
             // pools order ['marinade','solblaze','jito', 'solana foundation']
             const excludeStakePools = [
                 "9eG63CdHjsfhHmobHgLtESGC8GabbmRcaSpHAZrtmhco",
@@ -126,14 +128,14 @@ export default async function UpdateValidatorBribe(request, response) {
                     ) || 0;
                     const stakeAccountAging = delegetors.find(s => s.walletOwner === walletOwner)?.ageInEpochs || 0;
                     const mSOL_directStake = Validator_mSOL_DS.find(s => s.walletOwner === walletOwner)?.mSOL_directStake || 0;
-                    const mSOL_votePower = Validator_mSOL_Votes.find(s => s.walletOwner === walletOwner)?.mSOL_votePower || 0;
+                    const veMNDE_Votes = Validator_veMNDE_Votes.find(s => s.walletOwner === walletOwner)?.veMNDE_Votes || 0;
                     const bSOL_directStake = Validator_bSOL_DS.find(s => s.walletOwner === walletOwner)?.bSOL_directStake || 0;
                     return {
                         walletOwner,
                         nativeStake,
                         stakeAccountAging,
                         mSOL_directStake,
-                        mSOL_votePower,
+                        veMNDE_Votes,
                         bSOL_directStake
                     }
                 })
