@@ -22,10 +22,10 @@ export default async function GetLeaderBoard(request, response) {
                 const bSOLpts = (staker.bSOL_directStake * LoyaltyScore.bSOL_DirectStakeBoost)
                 const mSOLpts = (staker.mSOL_directStake * LoyaltyScore.mSOL_DirectStakeBoost)
                 const veMNDEpts = (staker.mSOL_votePower * LoyaltyScore.veMNDE_Boost)
-                const veBLZEpts = (staker.bSOL_votePower * LoyaltyScore.veBLZE_Boost)
-                let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts + veBLZEpts
+                // const veBLZEpts = (staker.bSOL_votePower * LoyaltyScore.veBLZE_Boost)
+                let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts 
   
-                return { walletOwner: staker.walletOwner, loyaltyPoints, pointsBreakDown: { nativeStakePts, bSOLpts, mSOLpts, veMNDEpts, veBLZEpts } }
+                return { walletOwner: staker.walletOwner, loyaltyPoints, pointsBreakDown: { nativeStakePts, bSOLpts, mSOLpts, veMNDEpts } }
             })
             const totalPts = ptsCalc.reduce(
                 (accumulator, currentValue) => accumulator + Number(currentValue.loyaltyPoints),

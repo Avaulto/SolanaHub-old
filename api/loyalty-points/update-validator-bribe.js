@@ -15,8 +15,8 @@ export default async function UpdateValidatorBribe(request, response) {
     if (request.query.key !== 'pullData') {
         response.status(404).end();
         return;
-      }
-      
+    }
+
     const validatorVoteKey = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'
     async function _getNativeDelegetors() {
         const connection = new Connection('https://solana-mainnet.rpc.extrnode.com')
@@ -40,7 +40,7 @@ export default async function UpdateValidatorBribe(request, response) {
                     walletOwner: accountData.meta.authorized.withdrawer,
                     amount: accountData.stake.delegation.stake / LAMPORTS_PER_SOL
                 }
-            }).filter(acc =>  Number(acc.amount) > 0.01)
+            }).filter(acc => Number(acc.amount) > 0.01)
         } catch (error) {
             console.warn(error);
         }
@@ -51,7 +51,7 @@ export default async function UpdateValidatorBribe(request, response) {
 
     async function _getValidatorMSOLDirectStake() {
         const snapshot = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
-        const record = snapshot.records.filter(vote => Number(vote.amount) >  0.01 && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
+        const record = snapshot.records.filter(vote => Number(vote.amount) > 0.01 && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
             return {
                 walletOwner: votes.tokenOwner,
                 mSOL_directStake: Number(votes.amount)
@@ -62,7 +62,7 @@ export default async function UpdateValidatorBribe(request, response) {
     }
     async function _getValidator_veMNDEVotes() {
         const mnde_votes = await (await fetch('https://snapshots-api.marinade.finance/v1/votes/vemnde/latest')).json()
-        const ValidatorveMNDE_Votes = mnde_votes.records.filter(vote => Number(vote.amount) >  0.01 && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
+        const ValidatorveMNDE_Votes = mnde_votes.records.filter(vote => Number(vote.amount) > 0.01 && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
             return {
                 walletOwner: votes.tokenOwner,
                 veMNDE_Votes: Number(votes.amount)
