@@ -13,7 +13,7 @@
 
   <ion-row class="ion-justify-content-center"> 
       <ion-icon name="gift-sharp"></ion-icon>
-      <ion-title>{{prizePool}} SOL</ion-title>
+      <ion-title>{{prizePool || 0 | number : '1.2-2'}} SOL</ion-title>
   </ion-row>
 
   <ion-row>

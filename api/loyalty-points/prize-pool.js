@@ -47,7 +47,8 @@ export default async function getEstimatePrizePool(request, response) {
     const blzeBoostEmissions = async () => {
         const validatorScore = (await (await fetch('https://rewards.solblaze.org/api/v1/data')).json()).scores[validatorPubKey];
         const blzeAirdrop = (await (await fetch(`https://rewards.solblaze.org/api/v1/daily_rewards?score=${validatorScore}`)).json()).amount * distributeTime;
-        const inputAmountInSmallestUnits = Math.round(Number(blzeAirdrop) * 10 ** 9)
+        const blzeToDistribute = blzeAirdrop * 0.9;
+        const inputAmountInSmallestUnits = Math.round(Number(blzeToDistribute) * 10 ** 9)
         const blze_to_sol_emmistions = (await (await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=BLZEEuZUBVqFhj8adcCFPJvPVCiCyVmh3hkJMrU8KuJA&outputMint=So11111111111111111111111111111111111111112&amount=${inputAmountInSmallestUnits}&slippageBps=1`)).json()).outAmount / LAMPORTS_PER_SOL;
         // console.log( blzeAirdrop, blze_to_sol_emmistions.outAmount / LAMPORTS_PER_SOL)
         return { blzeAirdrop, blze_to_sol_emmistions }

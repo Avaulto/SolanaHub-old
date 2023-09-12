@@ -25,7 +25,7 @@
         </div>
       </ion-col>
       <ion-col class="data-box points-breakdown" size="3.5">
-        <app-icon-tooltip tooltip="mSOL & bSOL liquid staking"></app-icon-tooltip>
+        <app-icon-tooltip tooltip="mSOL & bSOL liquid direct staking"></app-icon-tooltip>
         <div>
           liquid stake:
         </div>
@@ -34,7 +34,7 @@
         </div>
       </ion-col>
       <ion-col class="data-box points-breakdown" size="3.5">
-        <app-icon-tooltip tooltip="veMNDE & veBLZE votes to allocate stake from the DAO"></app-icon-tooltip>
+        <app-icon-tooltip tooltip="veMNDE & veBLZE votes"></app-icon-tooltip>
         <div>
           DAO votes:
         </div>
@@ -42,22 +42,6 @@
           <ion-icon name="sparkles-sharp"></ion-icon>  {{ myLoyaltyScore?.pointsBreakDown?.veMNDEpts  || 0 | number : '1.2-2'}}
         </div>
       </ion-col>
-      <!-- <ion-col class="data-box points-breakdown" size="2">
-        <div>
-          solblaze direct stake
-        </div>
-        <div>
-          <ion-icon name="sparkles-sharp"></ion-icon>  {{ myLoyaltyScore?.pointsBreakDown?.bSOLpts| number : '1.2-2'}}
-        </div>
-      </ion-col>
-      <ion-col class="data-box points-breakdown" size="2">
-        <div>
-          BLZE DAO votes:
-        </div>
-        <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> {{ 0 | number : '1.2-2'}}
-        </div>
-      </ion-col> -->
     </ion-row>
   </ng-container>
   <ng-template #elseTemplate>

@@ -44,7 +44,6 @@ export default async function GetLeaderBoard(request, response) {
     }
     try {
         const loyaltyPoints = await loyaltyPointsCalc()
-        console.log(loyaltyPoints)
         return response.status(200).json(loyaltyPoints);
     } catch (error) {
         console.error(error)
