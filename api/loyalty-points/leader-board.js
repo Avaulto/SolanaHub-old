@@ -2,11 +2,11 @@
 
 export default async function GetLeaderBoard(request, response) {
     async function _getScore() {
-        const loyaltyScore = await (await fetch('https://dev.SolanaHub.app/api/loyalty-points/score-calculator')).json()
+        const loyaltyScore = await (await fetch('/api/loyalty-points/score-calculator')).json()
         return loyaltyScore
     }
     async function _getValidatorBribe() {
-        const validatorBribe = await (await fetch(`https://dev.SolanaHub.app/api/loyalty-points/get-validator-bribe`)).json()
+        const validatorBribe = await (await fetch(`/api/loyalty-points/get-validator-bribe`)).json()
         return validatorBribe
     }
 
@@ -34,7 +34,9 @@ export default async function GetLeaderBoard(request, response) {
             const ptsCalcIncludePoolShare = ptsCalc.map(loyaltyStaker =>{
                 const prizePoolShare = loyaltyStaker.loyaltyPoints / totalPts
                 return {...loyaltyStaker, prizePoolShare}
-            }).sort((a, b) => b.loyaltyPoints - a.loyaltyPoints)
+            })
+            .filter(staker => staker.loyaltyPoints > 1)
+            .sort((a, b) => b.loyaltyPoints - a.loyaltyPoints)
             return { AvalutoLoyaltyPoints: ptsCalcIncludePoolShare, totalPoints:totalPts, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)
@@ -49,4 +51,5 @@ export default async function GetLeaderBoard(request, response) {
         // return response.status(500).json(error);
     }
 }
+
 
