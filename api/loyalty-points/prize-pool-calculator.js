@@ -1,22 +1,4 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
 const uri = process.env.MONGODB_URI;
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-// prize pool builder:
-// get direct stake msol/bsol
-// get vote direct stake mnde/blze
-// calc convert rate from mnde & blze to SOL
-// take 50% of direct stake rewards - example: 100 direct stake
-// sum the rewards from those direct stake + blze/mnde rewards
-
 
 export default async function getEstimatePrizePool(request, response) {
 
@@ -75,15 +57,11 @@ export default async function getEstimatePrizePool(request, response) {
 
 
     const weeklyRebates = async () => {
-        try {
-            const stakeRewardsWeeklyRebates = await totalRebatesFromDirectStake();
-            const BLZEAirdropWeeklyRebates = await blzeBoostEmissions();
-            const totalRebates = stakeRewardsWeeklyRebates + BLZEAirdropWeeklyRebates.blze_to_sol_emmistions
-            const stakeBoost = { totalRebates, breakdown: { directStakeRebate: stakeRewardsWeeklyRebates, BLZEAirdrop: { weekly_BLZE_emmistion: BLZEAirdropWeeklyRebates.blzeAirdrop, BLZE_TO_SOL: BLZEAirdropWeeklyRebates.blze_to_sol_emmistions } } }
-            return stakeBoost
-        } catch (error) {
-
-        }
+        const stakeRewardsWeeklyRebates = await totalRebatesFromDirectStake();
+        const BLZEAirdropWeeklyRebates = await blzeBoostEmissions();
+        const totalRebates = stakeRewardsWeeklyRebates + BLZEAirdropWeeklyRebates.blze_to_sol_emmistions
+        const stakeBoost = { totalRebates, breakdown: { directStakeRebate: stakeRewardsWeeklyRebates, BLZEAirdrop: { weekly_BLZE_emmistion: BLZEAirdropWeeklyRebates.blzeAirdrop, BLZE_TO_SOL: BLZEAirdropWeeklyRebates.blze_to_sol_emmistions } } }
+        return stakeBoost
     }
 
 
@@ -91,10 +69,7 @@ export default async function getEstimatePrizePool(request, response) {
         const rebates = await weeklyRebates()
         return response.status(200).json(rebates);
     } catch (error) {
-        return response.status(500).json({ message: 'Fail to retrieve validator bribe data', error });
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
+        return response.status(500).json({ message: 'Fail to prize pool calc', error });
     }
 
 }
