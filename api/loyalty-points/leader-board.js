@@ -12,16 +12,16 @@ export default async function GetLeaderBoard(request, response) {
 
     async function loyaltyPointsCalc() {
         try {
-            const [LoyaltyScore, bribeRecord] = await Promise.all([_getScore(), _getValidatorBribe()])
+            const [loyaltyScore, bribeRecord] = await Promise.all([_getScore(), _getValidatorBribe()])
 
             const ptsCalc = bribeRecord.validatorBribeData.map(staker => {
-                let agingBooster = staker.stakeAccountAging * LoyaltyScore.nativeStakeLongTermBoost;
+                let agingBooster = staker.stakeAccountAging * loyaltyScore.nativeStakeLongTermBoost;
                 agingBooster = agingBooster > 0.50 ? 0.50 : agingBooster
                 // stake account aging
                 const nativeStakePts = (staker.nativeStake * (agingBooster + 1))
-                const bSOLpts = (staker.bSOL_directStake * LoyaltyScore.bSOL_DirectStakeBoost)
-                const mSOLpts = (staker.mSOL_directStake * LoyaltyScore.mSOL_DirectStakeBoost)
-                const veMNDEpts = (staker.mSOL_votePower * LoyaltyScore.veMNDE_Votes)
+                const bSOLpts = (staker.bSOL_directStake * loyaltyScore.bSOL_DirectStakeBoost)
+                const mSOLpts = (staker.mSOL_directStake * loyaltyScore.mSOL_DirectStakeBoost)
+                const veMNDEpts = (staker.mSOL_votePower * loyaltyScore.veMNDE_Boost)
                 // const veBLZEpts = (staker.bSOL_votePower * LoyaltyScore.veBLZE_Boost)
                 let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts 
   
