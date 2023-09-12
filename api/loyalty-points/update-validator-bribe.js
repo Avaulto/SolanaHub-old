@@ -109,16 +109,17 @@ export default async function UpdateValidatorBribe(request, response) {
             ]);
 
             const stakerAll = [...delegetors, ...Validator_mSOL_DS, ...Validator_veMNDE_Votes, ...Validator_bSOL_DS]
-            // pools order ['marinade','solblaze','jito', 'solana foundation']
-            const excludeStakePools = [
+            // pools order ['marinade','solblaze','jito', 'solana foundation', 'Alameda Staking #1']
+            const excludeWallets = [
                 "9eG63CdHjsfhHmobHgLtESGC8GabbmRcaSpHAZrtmhco",
                 "6WecYymEARvjG5ZyqkrVQ6YkhPfujNzWpSPwNKXHCbV2",
                 "6iQKfEyhr3bZMotVkW6beNZz5CPAkiwvgV2CTje9pVSS",
-                "4ZJhPQAgUseCsWhKvJLTmmRRUV74fdoTpQLNfKoekbPY"
+                "4ZJhPQAgUseCsWhKvJLTmmRRUV74fdoTpQLNfKoekbPY",
+                "EhYXq3ANp5nAerUpbSgd7VK2RRcxK1zNuSQ755G5Mtxx"
             ]
 
 
-            const validatorsBribe = Array.from(new Set(stakerAll.map(s => s.walletOwner))).filter(s => !excludeStakePools.includes(s))
+            const validatorsBribe = Array.from(new Set(stakerAll.map(s => s.walletOwner))).filter(s => !excludeWallets.includes(s))
                 .map((walletOwner, i) => {
 
                     // merge amount of multiple stake accounts owned by same wallet owner
