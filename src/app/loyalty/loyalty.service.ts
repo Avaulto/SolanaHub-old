@@ -11,7 +11,7 @@ import { LoyaltyLeaderBoard, LoyaltyPoint } from '../models/loyalty.model'
   providedIn: 'root'
 })
 export class LoyaltyService {
-  protected api = environment.serverlessAPI +'/api/loyalty-points'
+  protected api = this._utilsService.serverlessAPI +'/api/loyalty-points'
   constructor(
     private _utilsService:UtilsService,
     private _apiService:ApiService
@@ -20,7 +20,7 @@ export class LoyaltyService {
     return this._apiService.get(`${this.api}/leader-board`).pipe(
       this._utilsService.isNotNull,
        map((loyaltyLeaderBoard: LoyaltyLeaderBoard) => {
-        return loyaltyLeaderBoard.AvalutoLoyaltyPoints
+        return loyaltyLeaderBoard.loyaltyPoints
        }) 
     )}
 }

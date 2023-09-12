@@ -4,21 +4,22 @@ import { SolanaUtilsService } from './solana-utils.service';
 
 import { collectionStats, ListInstuction, Nft, NFTGroup } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
-import { Keypair, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import {  LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { environment } from 'src/environments/environment';
+import { UtilsService } from './utils.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class NftStoreService {
-  protected magicEdenApiProxy = environment.serverlessAPI + '/api/ME-proxy?env=mainnet';
-  protected metaplexApiProxy = environment.serverlessAPI + '/api/MP-proxy';
+  protected magicEdenApiProxy =  this._utilsService.serverlessAPI + '/api/ME-proxy?env=mainnet';
+  protected metaplexApiProxy =  this._utilsService.serverlessAPI + '/api/MP-proxy';
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
   // private myNfts: Subject<Nft[]> = new Subject();
   // public myNft$ = this.myNfts.asObservable();
   constructor(
-
+    private _utilsService:UtilsService,
     private _solanaUtilsService: SolanaUtilsService,
   ) {
 

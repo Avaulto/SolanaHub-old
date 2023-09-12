@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, combineLatest, combineLatestWith, map, throwError } from 'rxjs';
 import { Proposal, newProposal, toastData, voter } from 'src/app/models';
-import { ApiService, SolanaUtilsService, ToasterService, TxInterceptService } from 'src/app/services';
-import { environment } from 'src/environments/environment';
+import { ApiService, ToasterService,  UtilsService } from 'src/app/services';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VotesService {
-  protected votesProxy = environment.serverlessAPI;
+  protected votesProxy = this._utilsService.serverlessAPI;
   constructor(
-    private _solanaUtilsService: SolanaUtilsService,
-    private _txInterceptService: TxInterceptService,
+
     private _toasterService: ToasterService,
     private apiService: ApiService,
+    private _utilsService:UtilsService,
   ) { }
   public emitGetProposals = new BehaviorSubject(true as boolean)
 

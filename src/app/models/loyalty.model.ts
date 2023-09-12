@@ -1,6 +1,6 @@
 
   export interface LoyaltyLeaderBoard {
-    AvalutoLoyaltyPoints: LoyaltyPoint[];
+    loyaltyPoints: LoyaltyPoint[];
     totalPoints:          number;
     snapshotDate:         Date;
 }

@@ -37,7 +37,7 @@ export default async function GetLeaderBoard(request, response) {
             })
             .filter(staker => staker.loyaltyPoints > 1)
             .sort((a, b) => b.loyaltyPoints - a.loyaltyPoints)
-            return { AvalutoLoyaltyPoints: ptsCalcIncludePoolShare, totalPoints:totalPts, snapshotDate: bribeRecord.date }
+            return { loyaltyPoints: ptsCalcIncludePoolShare, totalPoints:totalPts, snapshotDate: bribeRecord.date }
         } catch (error) {
             console.log(error)
         }
@@ -48,7 +48,7 @@ export default async function GetLeaderBoard(request, response) {
         return response.status(200).json(loyaltyPoints);
     } catch (error) {
         console.error(error)
-        // return response.status(500).json(error);
+        return response.status(500).json(error);
     }
 }
 

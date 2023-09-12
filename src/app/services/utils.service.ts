@@ -38,6 +38,7 @@ export class UtilsService {
     this.renderer = this.factory.createRenderer(null, null);
     this.changeTheme(this._systemTheme.value);
   }
+  public serverlessAPI = location.hostname === "localhost" ? 'https://dev.SolanaHub.app' : ''
   private renderer: Renderer2;
   private _systemPair = new BehaviorSubject<string>('USD' as string);
   private _systemExplorer = new BehaviorSubject<string>(this.localStore.getData('explorer') || 'https://solana.fm' as string);
