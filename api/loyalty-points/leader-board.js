@@ -21,7 +21,7 @@ export default async function GetLeaderBoard(request, response) {
                 const nativeStakePts = (staker.nativeStake * (agingBooster + 1))
                 const bSOLpts = (staker.bSOL_directStake * LoyaltyScore.bSOL_DirectStakeBoost)
                 const mSOLpts = (staker.mSOL_directStake * LoyaltyScore.mSOL_DirectStakeBoost)
-                const veMNDEpts = (staker.mSOL_votePower * LoyaltyScore.veMNDE_Boost)
+                const veMNDEpts = (staker.mSOL_votePower * LoyaltyScore.veMNDE_Votes)
                 // const veBLZEpts = (staker.bSOL_votePower * LoyaltyScore.veBLZE_Boost)
                 let loyaltyPoints = nativeStakePts + bSOLpts + mSOLpts + veMNDEpts 
   
