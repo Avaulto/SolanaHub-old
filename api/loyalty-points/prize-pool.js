@@ -1,5 +1,3 @@
-const uri = process.env.MONGODB_URI;
-
 export default async function getEstimatePrizePool(request, response) {
 
     const LAMPORTS_PER_SOL = 1000000000;

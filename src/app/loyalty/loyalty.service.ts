@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment.prod';
 import { ApiService } from '../services/api.service';
 import { UtilsService } from '../services/utils.service';
 import { Observable, map } from 'rxjs';
-import { LoyaltyLeaderBoard, LoyaltyPoint } from '../models/loyalty.model'
+import { LoyaltyLeaderBoard, LoyaltyPoint, PrizePool } from '../models/loyalty.model'
 
 
 
@@ -23,4 +23,11 @@ export class LoyaltyService {
         return loyaltyLeaderBoard.loyaltyPoints
        }) 
     )}
+    public getPrizePool(): Observable<number>{
+      return this._apiService.get(`${this.api}/prize-pool`).pipe(
+        this._utilsService.isNotNull,
+         map((prizePool: PrizePool) => {
+          return prizePool.totalRebates
+         }) 
+      )} 
 }

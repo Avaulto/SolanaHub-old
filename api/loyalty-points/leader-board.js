@@ -2,7 +2,7 @@
 
 export default async function GetLeaderBoard(request, response) {
     async function _getScore() {
-        const loyaltyScore = await (await fetch('/api/loyalty-points/score-calculator')).json()
+        const loyaltyScore = await (await fetch('/api/loyalty-points/score')).json()
         return loyaltyScore
     }
     async function _getValidatorBribe() {
