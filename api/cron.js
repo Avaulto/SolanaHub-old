@@ -1,5 +1,6 @@
+const key = process.env.updateBribeKey
 export default async function handler(request, response) {
-    if (request.query.key !== 'pullData') {
+    if (request.query.key !== key) {
       response.status(404).end();
       return;
     }

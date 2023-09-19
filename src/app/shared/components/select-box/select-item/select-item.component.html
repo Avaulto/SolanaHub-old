@@ -1,4 +1,6 @@
-<div class="list-item" (click)="onSelectItem(item)" [ngClass]="{'not-supported': item && item?.selectable == false}">
+<div 
+
+class="list-item" (click)="onSelectItem(item)" [ngClass]="{'not-supported': item && item?.selectable == false, 'marinade-native': item?.name === 'Marinade Native'}">
   <div class="list-item-img">
     <ion-img [src]="item?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
   </div>
@@ -6,6 +8,12 @@
     <div class="list-item-name ButtonText">{{item?.name || 'select here'}}</div>
     <ion-icon *ngIf="showDropDownIcon" name="chevron-down-outline" [ngClass]="{'selected-item': isDropDownOpen}">
     </ion-icon>
+    <ng-container *ngIf=" item?.name === 'Marinade Native'; else elseTemplate">
+      <span class="sub" >Automatically rebalance the stake on the most performing validators </span>
+    </ng-container>
+    
+    <ng-template #elseTemplate>
+    
     <div *ngIf="item" class="list-item-sub" id="extra-data">
       <span class="sub" 
        *ngFor="let extra of item.extraData | keyvalue ;
@@ -17,5 +25,7 @@
         
        </span>
     </div>
+  </ng-template>
+    
   </div>
 </div>

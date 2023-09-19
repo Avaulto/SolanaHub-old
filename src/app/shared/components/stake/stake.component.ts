@@ -26,6 +26,7 @@ export class StakeComponent implements OnInit {
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
   @Input() avgApy: number;
   @Input() privateValidatorPage: boolean = false;
+
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
   public formSubmitted: boolean = false;

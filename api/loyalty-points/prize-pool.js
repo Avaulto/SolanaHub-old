@@ -19,13 +19,21 @@ export default async function getEstimatePrizePool(request, response) {
     // 6 multiple by 7 days
     // 7 evaluate total stake
     // 8 figure the rebates APY 
-    const totalValidatorRewardsFromMarinadePool = async () => {
+    async function calcAPYboost(weeklyStakeBoost) {
+        const validatorBribe = await (await fetch(`https://dev.solanahub.app/api/loyalty-points/get-validator-bribe`)).json()
+        const baseAPY = validatorBribe.totalStake * solInflation * (1 - validatorFee);
+        const extraAPY = weeklyStakeBoost * 52 
+        const APY_boost = extraAPY / baseAPY;
+        return APY_boost;
+    }
+
+    const totalValidatorStakeFromMarinadePool = async () => {
         const marinadeHistoryRecord = (await (await fetch(`https://validators-api.marinade.finance/validators/score-breakdown?query_vote_account=${validatorVoteKey}`)).json());
         const score = marinadeHistoryRecord.score_breakdown
-        const yearlyRebate = score.target_stake_vemnde + score.target_stake_msol;
-        return yearlyRebate
+        const marinadeStake = score.target_stake_vemnde + score.target_stake_msol;
+        return marinadeStake
     }
-    const totalValidatorRewardsFromSolblzePool = async () => {
+    const totalValidatorStakeFromSolblzePool = async () => {
         const snapshot = (await (await fetch('https://stake.solblaze.org/api/v1/cls_boost?validator=7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh')).json())
         const Validator_bSOL_DS = snapshot.applied_stakes
         let yearlyRebate = Object.keys(Validator_bSOL_DS).filter(s => Validator_bSOL_DS[s]).reduce(
@@ -37,8 +45,8 @@ export default async function getEstimatePrizePool(request, response) {
     }
 
     const totalRebatesFromDirectStake = async () => {
-        const marinadeRebate = await totalValidatorRewardsFromMarinadePool();
-        const solblazeRebate = await totalValidatorRewardsFromSolblzePool();
+        const marinadeRebate = await totalValidatorStakeFromMarinadePool();
+        const solblazeRebate = await totalValidatorStakeFromSolblzePool();
         const totalDirectStake = marinadeRebate + solblazeRebate;
         const totalRebates = totalDirectStake * rebates
         const weeklyRewards = totalRebates / year * distributeTime;
@@ -60,7 +68,8 @@ export default async function getEstimatePrizePool(request, response) {
         const BLZEAirdropWeeklyRebates = await blzeBoostEmissions();
         const totalRebates = stakeRewardsWeeklyRebates + BLZEAirdropWeeklyRebates.blze_to_sol_emmistions
         // breakdown: { directStakeRebate: stakeRewardsWeeklyRebates, BLZEAirdrop: { weekly_BLZE_emmistion: BLZEAirdropWeeklyRebates.blzeAirdrop, BLZE_TO_SOL: BLZEAirdropWeeklyRebates.blze_to_sol_emmistions } 
-        const stakeBoost = { totalRebates}
+        const stakeBoost = { totalRebates, APY_boost: calcAPYboost(totalRebates)}
+        
         return stakeBoost
     }
 

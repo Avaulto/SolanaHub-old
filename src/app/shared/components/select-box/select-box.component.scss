@@ -27,6 +27,11 @@
     --background: transparent;
     height: 154px;
 }
+ion-item{
+    border-bottom: 1px solid rgba(132, 141, 164, 0.2);
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+}
 cdk-virtual-scroll-viewport {
     height: 100%;
     width: 100%;

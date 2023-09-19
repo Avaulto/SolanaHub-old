@@ -1,7 +1,7 @@
 import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { MongoClient, ServerApiVersion } from 'mongodb';
 const uri = process.env.MONGODB_URI;
-
+const key = process.env.updateBribeKey
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
@@ -12,7 +12,7 @@ const client = new MongoClient(uri, {
 });
 
 export default async function UpdateValidatorBribe(request, response) {
-    if (request.query.key !== 'pullData') {
+    if (request.query.key !== key) {
         response.status(404).end();
         return;
     }
@@ -50,11 +50,12 @@ export default async function UpdateValidatorBribe(request, response) {
 
 
     async function _getValidatorMSOLDirectStake() {
+        const msolPrice =  await (await fetch(`https://api.marinade.finance/msol/price_sol`)).json()
         const snapshot = (await (await fetch('https://snapshots-api.marinade.finance/v1/votes/msol/latest')).json())
         const record = snapshot.records.filter(vote => Number(vote.amount) > 0.01 && vote.validatorVoteAccount === validatorVoteKey).map(votes => {
             return {
                 walletOwner: votes.tokenOwner,
-                mSOL_directStake: Number(votes.amount)
+                mSOL_directStake: Number(votes.amount * msolPrice)
             }
         })
         const Validator_mSOL_DS = record
@@ -90,14 +91,19 @@ export default async function UpdateValidatorBribe(request, response) {
         return 0;
     }
 
-    // steps to calc
-    // 1. fetch all delegators
-    // 2. look up stakers from various staking options by wallet owner
-    // 3. gather all info into one object
-    // 4. evaluate how much score each property is worth
-    // 5. combine all the scores
-    // 6. add multipliers
-    // return the score & break down
+
+    async function calcTotalStake(allStake){
+        const loyaltyScore = await (await fetch('https://dev.solanahub.app/api/loyalty-points/score')).json()
+
+        const totalSOL_Stake = allStake.reduce(
+            (accumulator, currentValue) => accumulator + Number(currentValue.nativeStake) + 
+                                                         Number(currentValue.mSOL_directStake) + 
+                                                         Number(currentValue.bSOL_directStake) + 
+                                                         Number(currentValue.veMNDE_Votes * loyaltyScore.veMNDE_Boost),
+            0
+        )
+        return totalSOL_Stake
+    }
     async function validatorBribeData() {
         try {
             const [delegetors, Validator_mSOL_DS, Validator_veMNDE_Votes, Validator_bSOL_DS] = await Promise.all([
@@ -140,22 +146,23 @@ export default async function UpdateValidatorBribe(request, response) {
                         bSOL_directStake
                     }
                 })
-
             return validatorsBribe
         } catch (error) {
             console.log(error)
         }
     }
-    async function storeValidatorBribe(storeRecord) {
+    async function storeValidatorBribe(storeRecord, totalStake) {
         await client.connect();
         const db = client.db("CDv1")
         const collection = db.collection('validator-bribe')
-        await collection.insertOne({ validatorBribeData: storeRecord, date: new Date() });
+        await collection.insertOne({ validatorBribeData: storeRecord,totalStake, date: new Date() });
         return true
     }
     try {
         const validatorsBribe = await validatorBribeData()
-        await storeValidatorBribe(validatorsBribe)
+        const totalStake = calcTotalStake(validatorsBribe);
+
+        await storeValidatorBribe(validatorsBribe, totalStake)
         return response.status(200).json({ message: 'saved!' });
     } catch (error) {
         console.warn(error)
