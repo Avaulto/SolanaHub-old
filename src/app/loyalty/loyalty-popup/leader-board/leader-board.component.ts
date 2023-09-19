@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoyaltyService } from '../../loyalty.service';
 import { Observable, map, shareReplay, tap } from 'rxjs';
-import { LoyaltyLeaderBoard, LoyaltyPoint } from 'src/app/models/loyalty.model';
+import { LoyaltyLeaderBoard, LoyaltyPoint, PrizePool } from 'src/app/models/loyalty.model';
 import { SolanaUtilsService } from 'src/app/services';
 import { WalletExtended } from 'src/app/models';
 
@@ -16,7 +16,7 @@ export class LeaderBoardComponent implements OnInit {
     private _solanaUtilsService: SolanaUtilsService,
     private _loyaltyService: LoyaltyService
   ) { }
-  @Input() prizePool: number
+  @Input() prizePool: PrizePool
   public loyaltyLeaderBoard$: Observable<LoyaltyPoint[]> = this._loyaltyService.getLoyaltyLeaderBoard().pipe(
     shareReplay(),
     tap(lb => this.totalLoyaltyPoints = lb.reduce(

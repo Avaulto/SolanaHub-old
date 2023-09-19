@@ -4,6 +4,6 @@
     <ion-icon name="copy-outline" appCopyText [copyText]="loyaltyScore.walletOwner"
     class="ion-margin-end"></ion-icon>
   </ion-col>
-  <ion-col>{{loyaltyScore?.loyaltyPoints | number : '1.2-5' }}</ion-col>
-  <ion-col>{{(prizePool * loyaltyScore?.prizePoolShare | number : '1.2-5')}} SOL</ion-col>
+  <ion-col>{{loyaltyScore?.loyaltyPoints | number : '1.2-3' }}</ion-col>
+  <ion-col>{{(prizePoolRebate * loyaltyScore?.prizePoolShare | number : '1.2-3')}} SOL</ion-col>
 </ion-row>

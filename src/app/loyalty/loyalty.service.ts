@@ -23,11 +23,11 @@ export class LoyaltyService {
         return loyaltyLeaderBoard.loyaltyPoints
        }) 
     )}
-    public getPrizePool(): Observable<number>{
+    public getPrizePool(): Observable<PrizePool>{
       return this._apiService.get(`${this.api}/prize-pool`).pipe(
         this._utilsService.isNotNull,
          map((prizePool: PrizePool) => {
-          return prizePool.totalRebates
+          return prizePool
          }) 
       )} 
 }

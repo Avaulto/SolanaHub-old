@@ -10,7 +10,7 @@ import { LoyaltyPoint } from 'src/app/models/loyalty.model';
 export class PrivateScoreComponent  implements OnChanges {
   @Input() wallet:WalletExtended;
   @Input() leaderBoard: LoyaltyPoint[]
-  @Input() prizePool: number = 0;
+  @Input() totalRebates: number = 0;
   public myLoyaltyScore: LoyaltyPoint = null;
   constructor() { }
 

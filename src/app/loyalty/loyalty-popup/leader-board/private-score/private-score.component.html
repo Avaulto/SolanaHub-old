@@ -9,7 +9,7 @@
         </div>
         <div id="private-prize-share">
           your prize pool share
-          {{(prizePool * myLoyaltyScore?.prizePoolShare || 0 | number : '1.2-2')}} SOL
+          {{(totalRebates * myLoyaltyScore?.prizePoolShare || 0 | number : '1.2-2')}} SOL
         </div>
       </ion-col>
     </ion-row>

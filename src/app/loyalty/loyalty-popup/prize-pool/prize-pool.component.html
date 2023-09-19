@@ -2,7 +2,7 @@
 
   <ion-row class="ion-justify-content-between ">
     <ion-col>
-      <ion-chip class="sub>">15% APR staking rewards bonus</ion-chip>
+      <ion-chip class="sub>">Up to {{prizePool?.APR_boost / 100 | percent:'1.0-2'}} APR staking rewards bonus</ion-chip>
     </ion-col>
     <ion-col>
       <ion-button size="small" fill="clear">
@@ -13,7 +13,7 @@
 
   <ion-row class="ion-justify-content-center"> 
       <ion-icon name="gift-sharp"></ion-icon>
-      <ion-title>{{prizePool || 0 | number : '1.2-2'}} SOL</ion-title>
+      <ion-title>{{prizePool?.totalRebates || 0 | number : '1.2-2'}} SOL</ion-title>
   </ion-row>
 
   <ion-row>

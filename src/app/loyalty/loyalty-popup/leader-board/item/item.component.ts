@@ -11,7 +11,7 @@ import { UtilsService } from 'src/app/services';
 export class ItemComponent  implements OnInit {
   @Input() index;
   @Input() loyaltyScore: LoyaltyPoint;
-  @Input() prizePool: number = 0;
+  @Input() prizePoolRebate: number = 0;
   @Input() wallet: WalletExtended;
   constructor(private _utilsService:UtilsService) { }
 

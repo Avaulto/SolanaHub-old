@@ -72,12 +72,13 @@ export default async function UpdateValidatorBribe(request, response) {
         return ValidatorveMNDE_Votes
     }
     async function _getValidatorBSOLDirectStake() {
+        const bsolPrice =  await (await fetch(`https://stake.solblaze.org/api/v1/conversion`)).json()
         const snapshot = (await (await fetch('https://stake.solblaze.org/api/v1/cls_boost')).json())
         const Validator_bSOL_DS = snapshot.applied_stakes[validatorVoteKey]
 
         let Validator_bSOL_DS_arr = Object.keys(Validator_bSOL_DS).map((v, i) => {
             const walletOwner = v;
-            const amount = Number(Validator_bSOL_DS[walletOwner]);
+            const amount = Number(Validator_bSOL_DS[walletOwner] * conversion.bsol_to_sol);
             let bSOL_directStake = {
                 walletOwner,
                 bSOL_directStake: amount,

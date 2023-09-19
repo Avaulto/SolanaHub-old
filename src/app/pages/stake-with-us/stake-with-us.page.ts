@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Connection, ContactInfo, GetProgramAccountsConfig, GetProgramAccountsFilter, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { firstValueFrom, forkJoin, map, mergeMap, Observable, shareReplay, Subject, Subscription, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData, WalletExtended } from 'src/app/models';
+import { ValidatorBribe } from 'src/app/models/validatorBribeData.model';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
 interface mSOL_DirectStake {
   mSolSnapshotCreatedAt: null;
@@ -64,10 +65,9 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     this._utilsService.isNotNull,
     this._utilsService.isNotUndefined,
     switchMap(async res => {
-      let directStakeArr = []
-      const mSOLds = await firstValueFrom(this._getMSOLDirectStake())
-      const bSOLds = await firstValueFrom(this._getBSOLDirectStake())
-      directStakeArr.push(mSOLds, bSOLds)
+      let directStakeArr = await firstValueFrom(this._getLiquidDirectStake())
+     
+      // directStakeArr.push(...ds)
       return directStakeArr
     }))
 
@@ -130,22 +130,20 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   }
 
 
-  private _getMSOLDirectStake(): Observable<DirectStake> {
+  private _getLiquidDirectStake(): Observable<DirectStake[]> {
 
-    return this._apiService.get('https://snapshots-api.marinade.finance/v1/votes/msol/latest').pipe(map((r: mSOL_DirectStake) => {
-      const record = r.records.find(vote => vote.validatorVoteAccount === this.VoteKey && vote.tokenOwner === this.wallet.publicKey.toBase58())
-      const directStake: DirectStake = { symbol: 'mSOL', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.amount) }
-      return directStake
+    return this._apiService.get(`${this._utilsService.serverlessAPI}/api/loyalty-points/get-validator-bribe`).pipe(map((r: ValidatorBribe) => {
+      const record = r.validatorBribeData.find(vote => vote.walletOwner === this.wallet.publicKey.toBase58())
+      if (record) {
+        console.log(record)
+        const marinadeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.mSOL_directStake) }
+        const solblazeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/bSOL-logo.png', amount: Number(record.bSOL_directStake) }
+        return  [marinadeDS ,solblazeDS ]
+      }
     }))
 
   }
-  private _getBSOLDirectStake(): Observable<DirectStake> {
-    return this._apiService.get('https://stake.solblaze.org/api/v1/cls_boost').pipe(map((snapshot: bSOL_DirectStake) => {
-      const amount = snapshot.applied_stakes[this.VoteKey][this.wallet.publicKey.toBase58()]
-      const directStake: DirectStake = { symbol: 'bSOL', image: 'assets/images/icons/bSOL-logo.png', amount }
-      return directStake
-    }))
-  }
+
 
 
 
