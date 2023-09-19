@@ -160,7 +160,7 @@ export default async function UpdateValidatorBribe(request, response) {
     }
     try {
         const validatorsBribe = await validatorBribeData()
-        const totalStake = calcTotalStake(validatorsBribe);
+        const totalStake = await calcTotalStake(validatorsBribe);
 
         await storeValidatorBribe(validatorsBribe, totalStake)
         return response.status(200).json({ message: 'saved!' });
