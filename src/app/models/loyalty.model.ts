@@ -10,6 +10,7 @@ export interface LoyaltyPoint {
     loyaltyPoints:   number;
     pointsBreakDown: PointsBreakDown;
     prizePoolShare:  number;
+    prize?: number
 }
 
 export interface PointsBreakDown {

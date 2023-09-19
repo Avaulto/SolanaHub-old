@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { LoyaltyService } from '../loyalty.service';
-import { Observable } from 'rxjs';
-import { PrizePool } from 'src/app/models/loyalty.model';
+import { Observable, shareReplay } from 'rxjs';
+import { LoyaltyLeaderBoard, LoyaltyPoint, PrizePool } from 'src/app/models/loyalty.model';
 
 @Component({
   selector: 'app-loyalty-popup',
@@ -9,11 +9,14 @@ import { PrizePool } from 'src/app/models/loyalty.model';
   styleUrls: ['./loyalty-popup.component.scss'],
 })
 export class LoyaltyPopupComponent  implements OnInit {
-  public prizePool$:Observable<PrizePool> = this._loyaltyService.getPrizePool()
+  public prizePool$:Observable<PrizePool> = this._loyaltyService.getPrizePool().pipe(shareReplay())
+  @Input() loyaltyLeaderBoard: LoyaltyLeaderBoard 
   constructor(
     private _loyaltyService: LoyaltyService
    ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.loyaltyLeaderBoard)
+  }
   
 }

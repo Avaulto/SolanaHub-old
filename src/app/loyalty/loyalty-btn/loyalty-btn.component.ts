@@ -4,6 +4,7 @@ import { SolanaUtilsService, UtilsService } from 'src/app/services';
 import { LoyaltyPopupComponent } from '../loyalty-popup/loyalty-popup.component';
 import { LoyaltyService } from '../loyalty.service';
 import { Observable, map } from 'rxjs';
+import { LoyaltyLeaderBoard, LoyaltyPoint } from 'src/app/models/loyalty.model';
 
 @Component({
   selector: 'app-loyalty-btn',
@@ -11,7 +12,7 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./loyalty-btn.component.scss'],
 })
 export class LoyaltyBtnComponent implements OnInit {
-
+  private _loyaltyLeaderBoard: LoyaltyLeaderBoard
   constructor(
     private _utilsService: UtilsService,
     private _popoverController: PopoverController,
@@ -20,14 +21,19 @@ export class LoyaltyBtnComponent implements OnInit {
   ) { }
 
   public loyaltyPersonalScore$: Observable<string> = this._loyaltyService.getLoyaltyLeaderBoard().pipe(
-    map(res => this._utilsService.formatBigNumbers(res.find(s => s.walletOwner === this._solanaUtilsService.getCurrentWallet().publicKey.toBase58()).loyaltyPoints)
+    map(res => {
+      this._loyaltyLeaderBoard = res;
+      return this._utilsService.formatBigNumbers(
+      res.loyaltyPoints.find(s => s.walletOwner === this._solanaUtilsService.getCurrentWallet().publicKey.toBase58()
+      
+      )?.loyaltyPoints || 0)}
     ))
   
 
   async openLoyaltyPopup() {
     const popover = await this._popoverController.create({
       component: LoyaltyPopupComponent,
-      componentProps: null,
+      componentProps: {loyaltyLeaderBoard: this._loyaltyLeaderBoard},
       // event: e,
       alignment: 'start',
       // showBackdrop:false,

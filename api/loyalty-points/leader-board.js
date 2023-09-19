@@ -13,10 +13,10 @@ export default async function GetLeaderBoard(request, response) {
     async function loyaltyPointsCalc() {
         try {
             const [loyaltyScore, bribeRecord] = await Promise.all([_getScore(), _getValidatorBribe()])
-
+            const capBoostAccountAging = 0.10
             const ptsCalc = bribeRecord.validatorBribeData.map(staker => {
                 let agingBooster = staker.stakeAccountAging * loyaltyScore.nativeStakeLongTermBoost;
-                agingBooster = agingBooster > 0.50 ? 0.50 : agingBooster
+                agingBooster = agingBooster > capBoostAccountAging ? capBoostAccountAging : agingBooster
                 // stake account aging
                 const nativeStakePts = (staker.nativeStake * (agingBooster + 1))
                 const bSOLpts = (staker.bSOL_directStake * loyaltyScore.bSOL_DirectStakeBoost)

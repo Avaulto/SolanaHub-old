@@ -10,22 +10,12 @@ import { WalletExtended } from 'src/app/models';
   templateUrl: './leader-board.component.html',
   styleUrls: ['./leader-board.component.scss'],
 })
-export class LeaderBoardComponent implements OnInit {
-
+export class LeaderBoardComponent  {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
-    private _loyaltyService: LoyaltyService
   ) { }
   @Input() prizePool: PrizePool
-  public loyaltyLeaderBoard$: Observable<LoyaltyPoint[]> = this._loyaltyService.getLoyaltyLeaderBoard().pipe(
-    shareReplay(),
-    tap(lb => this.totalLoyaltyPoints = lb.reduce(
-      (previousValue, currentValue: LoyaltyPoint) => previousValue + currentValue.loyaltyPoints,
-      0
-    ))
-  )
-  public totalLoyaltyPoints = 0
+  @Input() loyaltyLeaderBoard: LoyaltyLeaderBoard 
   public wallet: WalletExtended = this._solanaUtilsService.getCurrentWallet()
-  ngOnInit() { }
 
 }

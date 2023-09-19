@@ -5,7 +5,7 @@
       loyalty Points
       <ion-col>
         <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> {{myLoyaltyScore?.loyaltyPoints | number : '1.2-2'}}
+          <ion-icon name="sparkles-sharp"></ion-icon> {{myLoyaltyScore?.loyaltyPoints || 0 | number : '1.2-2'}}
         </div>
         <div id="private-prize-share">
           your prize pool share

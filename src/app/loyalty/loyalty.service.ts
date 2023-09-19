@@ -16,11 +16,11 @@ export class LoyaltyService {
     private _utilsService:UtilsService,
     private _apiService:ApiService
     ) { }
-  public getLoyaltyLeaderBoard(): Observable<LoyaltyPoint[]>{
+  public getLoyaltyLeaderBoard(): Observable<LoyaltyLeaderBoard>{
     return this._apiService.get(`${this.api}/leader-board`).pipe(
       this._utilsService.isNotNull,
        map((loyaltyLeaderBoard: LoyaltyLeaderBoard) => {
-        return loyaltyLeaderBoard.loyaltyPoints
+        return loyaltyLeaderBoard
        }) 
     )}
     public getPrizePool(): Observable<PrizePool>{

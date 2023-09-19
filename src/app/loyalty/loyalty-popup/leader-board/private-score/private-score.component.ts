@@ -16,10 +16,9 @@ export class PrivateScoreComponent  implements OnChanges {
 
   ngOnInit() {}
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.leaderBoard)
     if(this.wallet && this.leaderBoard){
       this.myLoyaltyScore = this.leaderBoard.filter(staker =>staker.walletOwner === this.wallet.publicKey.toBase58())[0] || null
     }
-    console.log(this.myLoyaltyScore )
+    console.log(this.myLoyaltyScore, this.wallet,this.leaderBoard )
   }
 }
