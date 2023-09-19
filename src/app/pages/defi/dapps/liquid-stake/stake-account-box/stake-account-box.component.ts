@@ -135,7 +135,7 @@ export class StakeAccountBoxComponent implements OnInit {
 
       const txId = await this._txInterceptService.sendTx([txs, memoInstruction], this.wallet.publicKey, txs.signers);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
-      va.track('liquid staking', { type: `custom validator stake SOL ${validatorVoteAccount} using account` });
+      va.track('liquid staking', { type: `direct stake with ${validatorVoteAccount} using account` });
     } catch (error) {
       console.log(error)
       const toasterMessage: toastData = {

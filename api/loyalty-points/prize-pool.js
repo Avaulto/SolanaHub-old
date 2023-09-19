@@ -68,7 +68,7 @@ export default async function getEstimatePrizePool(request, response) {
         const BLZEAirdropWeeklyRebates = await blzeBoostEmissions();
         const totalRebates = stakeRewardsWeeklyRebates + BLZEAirdropWeeklyRebates.blze_to_sol_emmistions
         // breakdown: { directStakeRebate: stakeRewardsWeeklyRebates, BLZEAirdrop: { weekly_BLZE_emmistion: BLZEAirdropWeeklyRebates.blzeAirdrop, BLZE_TO_SOL: BLZEAirdropWeeklyRebates.blze_to_sol_emmistions } 
-        const stakeBoost = { totalRebates, APY_boost: calcAPYboost(totalRebates)}
+        const stakeBoost = { totalRebates, APY_boost: await calcAPYboost(totalRebates)}
         
         return stakeBoost
     }
