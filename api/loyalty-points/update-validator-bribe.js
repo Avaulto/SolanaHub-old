@@ -78,7 +78,7 @@ export default async function UpdateValidatorBribe(request, response) {
 
         let Validator_bSOL_DS_arr = Object.keys(Validator_bSOL_DS).map((v, i) => {
             const walletOwner = v;
-            const amount = Number(Validator_bSOL_DS[walletOwner] * conversion.bsol_to_sol);
+            const amount = Number(Validator_bSOL_DS[walletOwner] * bsolPrice.conversion.bsol_to_sol);
             let bSOL_directStake = {
                 walletOwner,
                 bSOL_directStake: amount,
