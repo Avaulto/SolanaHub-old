@@ -5,33 +5,8 @@ import { firstValueFrom, forkJoin, map, mergeMap, Observable, shareReplay, Subje
 import { Asset, ValidatorData, WalletExtended } from 'src/app/models';
 import { ValidatorBribe } from 'src/app/models/validatorBribeData.model';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
-interface mSOL_DirectStake {
-  mSolSnapshotCreatedAt: null;
-  voteRecordsCreatedAt: Date;
-  records: Record[];
-}
 
-interface Record {
-  amount: null | string;
-  tokenOwner: string;
-  validatorVoteAccount: string;
-}
 
-interface bSOL_DirectStake {
-
-  success: boolean,
-  boost: {
-    staked: number,
-    pool: number,
-    match: number,
-    conversion: number
-  },
-  applied_stakes: {
-    [key: string]: { // validator identity
-      [key: string]: number // voter + amount stake
-    }
-  }
-}
 
 interface DirectStake {
   symbol: string,
@@ -135,7 +110,6 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     return this._apiService.get(`${this._utilsService.serverlessAPI}/api/loyalty-points/get-validator-bribe`).pipe(map((r: ValidatorBribe) => {
       const record = r.validatorBribeData.find(vote => vote.walletOwner === this.wallet.publicKey.toBase58())
       if (record) {
-        console.log(record)
         const marinadeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.mSOL_directStake) }
         const solblazeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/bSOL-logo.png', amount: Number(record.bSOL_directStake) }
         return  [marinadeDS ,solblazeDS ]

@@ -21,7 +21,6 @@ export class SideMenuPage implements OnInit {
     switchMap(async res => {
       const validatorInfo:ValidatorData | any = await firstValueFrom(this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'))
       const totalApy = validatorInfo.apy_estimate * (res.APR_boost + 1) / 100
-      console.log(totalApy)
       return totalApy
     } ),
     shareReplay())

@@ -16,7 +16,7 @@ export class LoyaltyPopupComponent  implements OnInit {
    ) { }
 
   ngOnInit() {
-    console.log(this.loyaltyLeaderBoard)
+
   }
   
 }

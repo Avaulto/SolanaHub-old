@@ -7,18 +7,17 @@ import { LoyaltyPoint } from 'src/app/models/loyalty.model';
   templateUrl: './private-score.component.html',
   styleUrls: ['./private-score.component.scss'],
 })
-export class PrivateScoreComponent  implements OnChanges {
+export class PrivateScoreComponent  implements OnInit {
   @Input() wallet:WalletExtended;
   @Input() leaderBoard: LoyaltyPoint[]
   @Input() totalRebates: number = 0;
   public myLoyaltyScore: LoyaltyPoint = null;
   constructor() { }
 
-  ngOnInit() {}
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnInit() {
     if(this.wallet && this.leaderBoard){
       this.myLoyaltyScore = this.leaderBoard.filter(staker =>staker.walletOwner === this.wallet.publicKey.toBase58())[0] || null
     }
-    console.log(this.myLoyaltyScore, this.wallet,this.leaderBoard )
   }
+
 }

@@ -23,7 +23,7 @@ button {
     display: flex;
     align-items: center;
     margin: 50px auto;
-    gap: 29%;
+    // gap: 29%;
     white-space: nowrap;
     border-radius: 100px;
     position: relative;
@@ -231,7 +231,8 @@ button:is(:hover, :focus-visible) {
 }
 
 .text {
-	translate: 2% -6%;
+	width: 100%;
+	z-index: 1;
 	letter-spacing: 0.01ch;
 	background: linear-gradient(90deg, hsl(0 0% calc((var(--active) * 100%) + 65%)), hsl(0 0% calc((var(--active) * 100%) + 26%)));
 	-webkit-background-clip: text;

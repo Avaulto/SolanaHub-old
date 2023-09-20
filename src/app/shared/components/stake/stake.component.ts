@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
 import { firstValueFrom,  Observable, of, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
@@ -23,15 +23,12 @@ interface StakePool {
   templateUrl: './stake.component.html',
   styleUrls: ['./stake.component.scss'],
 })
-export class StakeComponent implements OnInit {
+export class StakeComponent implements OnInit,OnChanges {
   public wallet$ = this._solanaUtilsService.walletExtended$;
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
-  @Input() avgApy: number;
+  @Input() avgApy: number = 0;
   @Input() privateValidatorPage: boolean = false;
-  public loyaltyProgramBoost$:Observable<number> = this._loyaltyService.getPrizePool().pipe(
-    switchMap(async r => this.avgApy * r.APR_boost / 100),
-    shareReplay()
-    )
+  public loyaltyProgramBoost = 0;
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
   public formSubmitted: boolean = false;
@@ -53,6 +50,12 @@ export class StakeComponent implements OnInit {
     private _activeRoute: ActivatedRoute,
     private _stakePoolStore: StakePoolStoreService
   ) { }
+  async ngOnChanges(changes: SimpleChanges) {
+    if(this.avgApy){
+      const loyaltyProgramApr =  await firstValueFrom(this._loyaltyService.getPrizePool())
+      this.loyaltyProgramBoost = this.avgApy * loyaltyProgramApr.APR_boost / 100
+    }
+  }
   async ngOnInit() {
 
     this.stakeForm = this._fb.group({

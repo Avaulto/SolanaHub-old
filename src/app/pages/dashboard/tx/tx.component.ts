@@ -38,7 +38,6 @@ export class TxComponent implements OnInit {
         })
         // validators.unshift(this._marinadeNativeStake)
       }
-      console.log(validators)
       return validators
     }),
     shareReplay(),
