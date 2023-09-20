@@ -1,17 +1,37 @@
 <ion-app>
   <ion-grid>
     <app-settings class="ion-hide-lg-down" ></app-settings>
-    <ion-row style="height:100%">
-      <ion-col class="ion-hide-lg-down" sizeLg="2" size="0">
+    <ion-row style="height:100%" >
+      <ion-col sizeLg="2" class="ion-hide-lg-down">
         <app-side-menu></app-side-menu>
       </ion-col>
-      <ion-col sizeLg="10" size="12">
-        <ion-router-outlet></ion-router-outlet>
+      <ion-col id="main-content">
+        
+        <ion-header class="ion-hide-lg-up">
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-menu-button></ion-menu-button>
+            </ion-buttons>
+            <ion-img id="logo-icon" src="assets/images/icons/solanahub-icon.svg"></ion-img>
+          </ion-toolbar>
+        </ion-header>
+         <div class="divider" class="ion-hide-lg-up"></div>
+            <ion-router-outlet></ion-router-outlet> 
+         
+       
       </ion-col>
     </ion-row>
-    <!-- <ion-col sizeLg="0" size="12"> -->
-      <app-tabs-menu class="ion-hide-lg-up"></app-tabs-menu>
-    <!-- </ion-col> -->
+
+   
+      <ion-menu contentId="main-content" >
+        <ion-content>
+          <app-side-menu></app-side-menu>
+        </ion-content>
+      </ion-menu>
+      
+
+
+
   </ion-grid>
 
 </ion-app>

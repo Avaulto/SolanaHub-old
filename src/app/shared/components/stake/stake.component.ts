@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
-import { firstValueFrom,  Observable, of, Subscriber, switchMap } from 'rxjs';
+import { firstValueFrom,  Observable, of, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 import { ActivatedRoute } from '@angular/router';
@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import va from '@vercel/analytics';
 import { StakePoolStoreService } from 'src/app/pages/defi/dapps/liquid-stake/stake-pool-store.service';
 import {  BN } from '@marinade.finance/marinade-ts-sdk';
+import { PrizePool } from 'src/app/models/loyalty.model';
+import { LoyaltyService } from 'src/app/loyalty/loyalty.service';
 
 interface StakePool {
   logo: string,
@@ -26,7 +28,10 @@ export class StakeComponent implements OnInit {
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
   @Input() avgApy: number;
   @Input() privateValidatorPage: boolean = false;
-
+  public loyaltyProgramBoost$:Observable<number> = this._loyaltyService.getPrizePool().pipe(
+    switchMap(async r => this.avgApy * r.APR_boost / 100),
+    shareReplay()
+    )
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
   public formSubmitted: boolean = false;
@@ -40,6 +45,7 @@ export class StakeComponent implements OnInit {
   public stakePools$: Observable<StakePool[]> = of(this._stakePools)
   private _selectedStakePool = null;
   constructor(
+    private _loyaltyService:LoyaltyService,
     public loaderService: LoaderService,
     private _fb: FormBuilder,
     private _solanaUtilsService: SolanaUtilsService,

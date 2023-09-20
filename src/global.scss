@@ -150,7 +150,9 @@ a {
     text-align: left;
 
 }
-
+.ion-color-primary{
+    color:var(--ion-color-primary);
+}
 .ion-color-primary.button-disabled {
     --ion-color-base: #092F4E !important;
 }

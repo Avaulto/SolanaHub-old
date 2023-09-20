@@ -43,10 +43,12 @@
             <ng-template #elseTemplate>
                 <ion-button  *ngIf="supportDirectStake" class="cls-btn" fill="clear"
                     (click)="addValidatorControl()"
-                    tooltip="stake with direct validator will give you the benefit to support your favorite validator while join liquid staking pool">
+
+                    >
                     <div>
                         add direct stake to validator
                     </div>
+                    <app-icon-tooltip tip="stake with custom validator will give you the benefit to support your favorite validator while join liquid staking pool"></app-icon-tooltip>
                 </ion-button>
             </ng-template>
             <ion-row class="sub" style="margin-bottom:8px;">

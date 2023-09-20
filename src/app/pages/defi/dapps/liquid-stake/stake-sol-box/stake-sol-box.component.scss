@@ -61,15 +61,17 @@
 }
 
 
-#cls-wrapper{
+#cls-wrapper {
     position: relative;
-    ion-button{
+
+    ion-button {
         position: absolute;
-        top: 0;
+        top: -11px;
         right: 0;
         width: 68px;
     }
 }
+
 .cls-btn {
     height: 20px;
     color: white;

@@ -1,7 +1,11 @@
-
-
-::ng-deep{
-    .inner-page{
+::ng-deep {
+    .inner-page {
         padding: 23px;
     }
+}
+
+#logo-icon {
+    width: 40px;
+    margin: 0 auto;
+    transform: translateX(-22px);
 }
