@@ -147,7 +147,7 @@ export default async function UpdateValidatorBribe(request, response) {
                         bSOL_directStake
                     }
                 })
-                .filter(stake => stake.nativeStake + stake.mSOL_directStake + stake.veMNDE_Votes + stake.bSOL_directStake < 1 )
+                .filter(stake => stake.nativeStake + stake.mSOL_directStake + stake.veMNDE_Votes + stake.bSOL_directStake > 1 )
             return validatorsBribe
         } catch (error) {
             console.log(error)
