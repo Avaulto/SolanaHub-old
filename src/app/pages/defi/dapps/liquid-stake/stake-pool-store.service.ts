@@ -5,7 +5,7 @@ import { firstValueFrom, Observable, shareReplay, Subject, throwError } from 'rx
 import { StakePoolProvider } from './stake-pool.model';
 import { UtilsService, SolanaUtilsService, ToasterService, ApiService, TxInterceptService } from 'src/app/services';
 import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
-import { BN, Marinade, MarinadeConfig } from '@marinade.finance/marinade-ts-sdk';
+import { BN, Marinade, MarinadeConfig, getRefNativeStakeSOLTx } from '@marinade.finance/marinade-ts-sdk';
 import * as StakePoolSDK from '@solana/spl-stake-pool';
 
 import { depositSol, withdrawStake, stakePoolInfo } from '@solana/spl-stake-pool';
@@ -179,7 +179,16 @@ export class StakePoolStoreService {
     va.track('liquid staking', { pool, type: message });
   }
 
-
+  public async marinadeNativeStake(amountLamports) {
+    try {
+      const walletOwnerPK = this._solanaUtilsService.getCurrentWallet().publicKey
+      const versionedTransaction = await getRefNativeStakeSOLTx(walletOwnerPK, amountLamports, '3j0t4wyu')
+      // sign and send the `transaction`
+      await this._txInterceptService.sendTxV2(versionedTransaction)
+    } catch (error) {
+      va.track('marinade native stake', {size: amountLamports});
+    }
+  }
   private async _marinadeStakeSOL(sol: BN, walletOwner, validatorVoteAccount: string) {
     const directToValidatorVoteAddress = validatorVoteAccount ? new PublicKey(validatorVoteAccount) : null;
     const { transaction } = await this.marinadeSDK.deposit(sol, { directToValidatorVoteAddress });

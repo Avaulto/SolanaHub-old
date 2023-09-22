@@ -221,9 +221,9 @@ export class SolanaUtilsService {
     const validatorVoteKey = parsedData?.delegation?.voter
     const stake = Number(parsedData?.delegation?.stake) || 0;
     const startEpoch = parsedData.delegation.activationEpoch;
-    const rentReseve = Number(account.account.data.parsed.info.meta.rentExemptReserve);
+    const rentReserve = Number(account.account.data.parsed.info.meta.rentExemptReserve);
     const accountLamport = Number(account.account.lamports);
-    const excessLamport = accountLamport - stake - rentReseve
+    const excessLamport = accountLamport - stake - rentReserve
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
     let validatorData: ValidatorData | any = null;
     if (this.validatorsData) {

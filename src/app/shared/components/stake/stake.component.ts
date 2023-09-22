@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
-import { firstValueFrom,  Observable, of, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
+import { firstValueFrom,  map,  Observable, of, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 import { ActivatedRoute } from '@angular/router';
@@ -25,13 +25,31 @@ interface StakePool {
 })
 export class StakeComponent implements OnInit,OnChanges {
   public wallet$ = this._solanaUtilsService.walletExtended$;
-  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData>;
+  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData | any>;
   @Input() avgApy: number = 0;
   @Input() privateValidatorPage: boolean = false;
   public loyaltyProgramBoost = 0;
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
   public formSubmitted: boolean = false;
+  private _marinadeNativeStrategy:ValidatorData = {
+    name: 'Marinade Native',
+    identity: 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq',
+    image:'assets/images/icons/marinade-native-logo.svg',
+    vote_identity:'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq',
+    website:'https://marinade.finance',
+    wizScore: 100,
+    commission: 0,
+    apy_estimate: 7.47,
+    activated_stake: 2000000, // https://api.marinade.finance/tlv
+    uptime: 100,
+    skipRate: 'none',
+    selectable: true,
+    extraData:  {
+      'APY estimate': 7.47 + '%',
+      commission:  + '%'
+    }
+  }
   public rewardInfo = {
     apy: 0,
     amount: 0
@@ -55,6 +73,7 @@ export class StakeComponent implements OnInit,OnChanges {
       const loyaltyProgramApr =  await firstValueFrom(this._loyaltyService.getPrizePool())
       this.loyaltyProgramBoost = this.avgApy * loyaltyProgramApr.APR_boost / 100
     }
+
   }
   async ngOnInit() {
 
@@ -68,6 +87,7 @@ export class StakeComponent implements OnInit,OnChanges {
     })
 
     const validatorData: any = await firstValueFrom(this.validatorsData);
+    validatorData.unshift(this._marinadeNativeStrategy)
     if (!this.privateValidatorPage) {
       this._activeRoute.queryParams
         .subscribe(params => {
@@ -79,7 +99,6 @@ export class StakeComponent implements OnInit,OnChanges {
         );
     } else {
       const myValidatorIdentity = validatorData.vote_identity
-      validatorData.extraData['Support MEV'] = true;
       this._preSelectValidator([validatorData], myValidatorIdentity);
     }
   }
@@ -110,24 +129,18 @@ export class StakeComponent implements OnInit,OnChanges {
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
   }
 
-  // public setSelectedStakePool(pool: StakePool): void {
-
-
-  //   this._selectedStakePool = pool;
-
-  //   this.stakeForm.controls.sta.setValue(validator.vote_identity);
-  // }
-
 
   public async submitNewStake(): Promise<void> {
-
-
-    let { amount, voteAccount, monthLockuptime, stakePool } = this.stakeForm.value;
-    const walletOwner = this._solanaUtilsService.getCurrentWallet();
-    if (this.stakingType === 'native') {
-      await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
-    } else {
-      await this._liquidStake(stakePool, amount, voteAccount)
+    if(this.selectedValidator.name === 'Marinade Native'){
+      this._marinadeNativeStake()
+    }else{ 
+      let { amount, voteAccount, monthLockuptime, stakePool } = this.stakeForm.value;
+      const walletOwner = this._solanaUtilsService.getCurrentWallet();
+      if (this.stakingType === 'native') {
+        await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
+      } else {
+        await this._liquidStake(stakePool, amount, voteAccount)
+      }
     }
   }
 
@@ -150,13 +163,23 @@ export class StakeComponent implements OnInit,OnChanges {
 
 
   public stakingType: 'native' | 'liquid' = 'native'
-  public selectStakePath(option: 'native' | 'liquid'): void {
+  public async selectStakePath(option: 'native' | 'liquid'): Promise<void> {
+    this.showValidatorList = false
+    const validatorData: any = await firstValueFrom(this.validatorsData);
+    console.log(validatorData)
     this.stakingType = option
     if (option === 'liquid') {
+      validatorData.shift(this._marinadeNativeStrategy)
       this._addStakePoolControl()
     } else {
+      validatorData.unshift(this._marinadeNativeStrategy)
       this._removeStakePoolControl()
     }
+  }
 
+  private _marinadeNativeStake(){
+    let { amount } = this.stakeForm.value;
+    const sol = new BN((amount - 0.001) * LAMPORTS_PER_SOL);
+    this._stakePoolStore.marinadeNativeStake(sol)
   }
 }
