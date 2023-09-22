@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
 import { firstValueFrom,  map,  Observable, of, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
@@ -23,7 +23,7 @@ interface StakePool {
   templateUrl: './stake.component.html',
   styleUrls: ['./stake.component.scss'],
 })
-export class StakeComponent implements OnInit,OnChanges {
+export class StakeComponent implements OnInit,OnChanges, OnDestroy {
   public wallet$ = this._solanaUtilsService.walletExtended$;
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData | any>;
   @Input() avgApy: number = 0;
@@ -181,5 +181,12 @@ export class StakeComponent implements OnInit,OnChanges {
     let { amount } = this.stakeForm.value;
     const sol = new BN((amount - 0.001) * LAMPORTS_PER_SOL);
     this._stakePoolStore.marinadeNativeStake(sol)
+  }
+
+  async ngOnDestroy(): Promise<void> {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    const validatorData: any = await firstValueFrom(this.validatorsData);
+    validatorData.shift(this._marinadeNativeStrategy)
   }
 }
