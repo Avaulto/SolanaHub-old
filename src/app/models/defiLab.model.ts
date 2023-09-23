@@ -59,6 +59,5 @@ interface Risk_breakdown {
 }
 export interface StrategyClaimableAsset {
   name: string,
-  amount: number,
-  toBeClaim?: number
+  toClaim?: number
 }

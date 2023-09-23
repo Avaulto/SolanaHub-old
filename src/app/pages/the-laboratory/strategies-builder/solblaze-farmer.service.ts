@@ -145,13 +145,11 @@ export class SolblazeFarmerService {
     totalTransactions: 3,
     claimAssets: [{
       name: 'bSOL',
-      amount: 0,
-      toBeClaim: 0
+      toClaim: 0
     },
     {
       name: 'BLZE',
-      amount: 0,
-      toBeClaim: 0
+      toClaim: 0
     }
     ],
     assetHoldings: [
@@ -342,10 +340,10 @@ export class SolblazeFarmerService {
       const rewardAmountA = rewards.amountA.toNumber() / LAMPORTS_PER_SOL;
       const rewardAmountB = rewards.amountB.toNumber() / LAMPORTS_PER_SOL;
       this.strategyConfiguration.claimAssets[0].name = 'bSOL';
-      this.strategyConfiguration.claimAssets[0].amount = rewardAmountA;
+      this.strategyConfiguration.claimAssets[0].toClaim = rewardAmountA;
 
       this.strategyConfiguration.claimAssets[1].name = 'BLZE';
-      this.strategyConfiguration.claimAssets[1].amount = rewardAmountB;
+      this.strategyConfiguration.claimAssets[1].toClaim = rewardAmountB;
 
       const balances = await this.getTotalBalanceBreakDown()
       userHoldings = { SOL: balances.position_balance.SOL, USD: balances.position_balance.USD }

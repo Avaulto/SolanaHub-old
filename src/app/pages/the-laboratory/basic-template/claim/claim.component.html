@@ -2,7 +2,7 @@
 
   <ion-row class="ion-margin-bottom" id="deposit-apr-box">
     <div id="rewards-wrapper">
-      <div *ngFor="let reward of claimAssets; let i = index">{{reward?.amount || 0}} 
+      <div *ngFor="let reward of claimAssets; let i = index">{{reward?.toClaim || 0}} 
         <span> {{reward?.name || ''}}</span> 
         <small style="    margin-inline: 10px;" *ngIf="claimAssets.length > i + 1" class="reward-color"> &</small>
       </div>
@@ -21,7 +21,7 @@
 
   <ion-row class="ion-justify-content-center">
     <ng-container *ngIf="walletExtended$; else elseTemplate">
-      <ion-button [disabled]="claimAssets[0]?.amount <= 0" (click)="claimReward()" type="button"
+      <ion-button (click)="claimReward()" type="button"
       class="ion-text-capitalize">
       <span>
         claim

@@ -87,8 +87,8 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
     })
 
     const validatorData: any = await firstValueFrom(this.validatorsData);
-    validatorData.unshift(this._marinadeNativeStrategy)
     if (!this.privateValidatorPage) {
+      validatorData.unshift(this._marinadeNativeStrategy)
       this._activeRoute.queryParams
         .subscribe(params => {
           const validatorIdentity = params.validatorIdentity

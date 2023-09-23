@@ -10,7 +10,9 @@
     transform: translateX(-22px);
 }
 
-
+ion-toolbar{
+    --background: var(--deep-background);
+}
 
 @media only screen and (max-width: 990px) {
     ion-router-outlet {
