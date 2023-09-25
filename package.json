@@ -42,7 +42,7 @@
     "@types/readable-stream": "^2.3.13",
     "@vercel/analytics": "^1.0.0",
     "angularx-qrcode": "16.0.1",
-    "chart.js": "^3.7.1",
+    "chart.js": "^4.4.0",
     "mongodb": "^5.5.0",
     "rxjs": "~7.5.0",
     "swiper": "^10.1.0",

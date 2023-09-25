@@ -1,21 +1,52 @@
 <ion-grid class="data-box ion-padding">
   <ng-container *ngIf="wallet && leaderBoard; else elseTemplate">
 
-    <ion-row id="loyalty-your-score">
-      loyalty Points
+    <!-- <ion-row>
       <ion-col>
-        <div>
-          <ion-icon name="sparkles-sharp"></ion-icon> {{myLoyaltyScore?.loyaltyPoints || 0 | number : '1.2-2'}}
+        <ion-label>
+          points: 3000
+        </ion-label>
+      </ion-col>
+      <ion-col class="ion-text-right">
+        <ion-label>
+          level: 6
+        </ion-label>
+      </ion-col>
+    </ion-row> -->
+    <ion-row id="loyalty-your-score">
+      <ion-col>
+        <div class="private-prize-text ion-text-capitalize ion-text-center">
+          loyalty Points:
+           {{myLoyaltyScore?.loyaltyPoints || 0 | number : '1.2-2'}} 
+           <ion-icon name="sparkles-sharp"></ion-icon>
         </div>
-        <div id="private-prize-share">
-          your prize pool share
-          {{(totalRebates * myLoyaltyScore?.prizePoolShare || 0 | number : '1.2-2')}} SOL
-        </div>
+          
       </ion-col>
     </ion-row>
 
-    <ion-row class="ion-justify-content-between">
-      <ion-col class="data-box points-breakdown" size="3.5">
+    <ion-row class="ion-justify-content-between" style="height: 100px;">
+      
+      <canvas #barChart></canvas>
+
+
+      <!-- <div id="custom-progress-bar">
+        <div id="native" class="bar" tooltip="10 PTS LST">
+          LIQUID STAKING
+        </div>
+        <div id="lst" class="bar" tooltip="30 SOL native stake"> 
+          NATIVE STAKING
+        </div>
+        <div id="dao" class="bar" tooltip="100 MNDE votes">
+          DAO VOTES
+        </div>
+      </div> -->
+      <!-- <ion-progress-bar value=".15" buffer=".45">
+        <span tooltip="103 PTS from SOL stake + 10 epoch account aging"></span>
+        <span tooltip="10 PTS LST"></span>
+        <span tooltip="45 PTS LST"></span>
+      </ion-progress-bar> -->
+
+      <!-- <ion-col class="data-box points-breakdown" size="3.5">
         <app-icon-tooltip tooltip="Native stake SOL + stake account aging"></app-icon-tooltip>
         <div>
           native stake:
@@ -41,8 +72,30 @@
         <div>
           <ion-icon name="sparkles-sharp"></ion-icon>  {{ myLoyaltyScore?.pointsBreakDown?.veMNDEpts  || 0 | number : '1.2-2'}}
         </div>
-      </ion-col>
+      </ion-col> -->
     </ion-row>
+<ion-row class="ion-margin-top">
+  <ion-title>Points Multiplier</ion-title>
+</ion-row>
+<ion-row class="ion-text-capitalize ion-justify-content-between">
+  <ion-col class="group sub native-stake">
+    <ion-label>native stake: </ion-label>
+    <ion-text>{{(loyaltyScore$ | async).nativeStakeLongTermBoost}}</ion-text>
+    <small>long term boost: </small>
+  </ion-col>
+  <ion-col class="group sub liquid-stake">
+    <ion-label>mSOL direct stake: </ion-label>
+    <ion-text>x1</ion-text>
+  </ion-col>
+  <ion-col class="group sub liquid-stake">
+    <ion-label>bSOL direct stake: </ion-label>
+    <ion-text>x1</ion-text>
+  </ion-col>
+  <ion-col class="group sub dao-vote">
+    <ion-label>MNDE vote: </ion-label>
+    <ion-text>x1</ion-text>
+  </ion-col>
+</ion-row>
   </ng-container>
   <ng-template #elseTemplate>
     <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>

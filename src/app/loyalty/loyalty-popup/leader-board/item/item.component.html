@@ -1,4 +1,4 @@
-<ion-row [class.selected]="loyaltyScore?.walletOwner === wallet.publicKey.toBase58()" class="ion-justify-content-between">
+<ion-row class="ion-justify-content-between">
   <ion-col>{{index +1}}</ion-col>
   <ion-col>{{shortenAddr(loyaltyScore?.walletOwner)}}
     <ion-icon name="copy-outline" appCopyText [copyText]="loyaltyScore.walletOwner"

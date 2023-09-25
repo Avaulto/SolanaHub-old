@@ -24,3 +24,11 @@ app-item{
     align-items: center;
     justify-content: center;
 }
+
+.myRank{    
+    position: sticky;
+    bottom: 0;
+    top: 0;
+    background:var( --apr-box);
+    z-index: 2;
+}

@@ -75,6 +75,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   }
   private async _getRank() {
     const { current } = await this._solanaUtilsService.connection.getVoteAccounts();
+    console.log(current)
     // const nodes: ContactInfo[] = await this._solanaUtilsService.connection.getClusterNodes();
     const sortedValidators = current.sort((a, b) => b.activatedStake - a.activatedStake);
     const validatorRank = sortedValidators.findIndex((validator) => validator.votePubkey == this.VoteKey);

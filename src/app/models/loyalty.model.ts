@@ -1,4 +1,12 @@
 
+export interface LoyaltyScore {
+    nativeStakeLongTermBoost: number;
+    mSOL_DirectStakeBoost:    number;
+    bSOL_DirectStakeBoost:    number;
+    veMNDE_Boost:             number;
+    veBLZE_Boost:             number;
+    SolanaHub_Boost:          number;
+}
   export interface LoyaltyLeaderBoard {
     loyaltyPoints: LoyaltyPoint[];
     totalPoints:          number;

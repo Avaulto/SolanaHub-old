@@ -16,6 +16,7 @@ export default async function GetScore(request, response) {
       boost value driven from SPL like MNDE & BLZE, where users can cast their vote to allocate stake from delegation strategy
    */
   const loyaltyScore = {
+    nativeStake: 1,
     nativeStakeLongTermBoost: 0.01, // cap 0.1
     mSOL_DirectStakeBoost: null,
     bSOL_DirectStakeBoost: null,
