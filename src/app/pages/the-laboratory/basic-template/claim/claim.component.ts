@@ -24,7 +24,6 @@ export class ClaimComponent implements OnInit, OnChanges {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     this.claimAssets = this.strategyConfiguration.claimAssets
-    console.log(this.strategyConfiguration.claimAssets)
     this.claimAssets.map(reward => {
       reward.toClaim > 0 ? this.canClaim = true : false;
     })

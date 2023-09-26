@@ -1,13 +1,8 @@
 <ion-grid class="data-box ion-padding ion-margin-top">
   <app-private-score [totalRebates]="prizePool?.totalRebates" [wallet]="wallet" [leaderBoard]="loyaltyLeaderBoard.loyaltyPoints"></app-private-score>
-  <ion-row class="ion-justify-content-center ion-margin-bottom">
-    <ion-label class="sub">
-      total points: 
-    </ion-label>
+  <ion-row class="ion-justify-content-end ion-margin-bottom">
     <ion-text class="sub">
-     
-        {{loyaltyLeaderBoard.totalPoints | number : '1.2-2'}} 
-      
+      total points: {{loyaltyLeaderBoard.totalPoints | number : '1.0-0'}}   
       <ion-icon name="sparkles-sharp"></ion-icon>
     </ion-text>
   </ion-row>
@@ -39,4 +34,6 @@
       <app-loader></app-loader>
     </ng-template>
   </ion-row>
+
+  <app-score></app-score>
 </ion-grid>

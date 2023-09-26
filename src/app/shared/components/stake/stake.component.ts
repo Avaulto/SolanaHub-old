@@ -166,7 +166,6 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
   public async selectStakePath(option: 'native' | 'liquid'): Promise<void> {
     this.showValidatorList = false
     const validatorData: any = await firstValueFrom(this.validatorsData);
-    console.log(validatorData)
     this.stakingType = option
     if (option === 'liquid') {
       validatorData.shift(this._marinadeNativeStrategy)

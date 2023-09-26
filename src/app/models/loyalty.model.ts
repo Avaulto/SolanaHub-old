@@ -1,5 +1,6 @@
 
 export interface LoyaltyScore {
+    nativeStake: number;
     nativeStakeLongTermBoost: number;
     mSOL_DirectStakeBoost:    number;
     bSOL_DirectStakeBoost:    number;
@@ -34,3 +35,8 @@ export interface PrizePool {
     APR_boost: number;
 }
 
+export interface NextAirdrop{
+    nextAirdrop: Date,
+    days: number,
+    hours: number
+}

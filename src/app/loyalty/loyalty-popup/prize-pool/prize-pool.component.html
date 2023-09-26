@@ -9,7 +9,7 @@
         next airdrop
       </ion-text><br>
       <!-- <ion-progress-bar [buffer]="0.20" [value]="0"></ion-progress-bar> -->
-      <span class="sub">ETA 1 Days and 23 Hours</span>
+      <span class="sub">{{nextAirdrop | async}}</span>
     </ion-col>
     <ion-col class="ion-text-right"> 
       <ion-chip  class="sub>">{{prizePool?.APR_boost | percent:'1.0-2'}} APR staking rewards bonus</ion-chip>

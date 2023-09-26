@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { PrizePool } from 'src/app/models/loyalty.model';
+import { NextAirdrop, PrizePool } from 'src/app/models/loyalty.model';
+import { LoyaltyService } from '../../loyalty.service';
+import { Observable, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-prize-pool',
@@ -8,8 +10,11 @@ import { PrizePool } from 'src/app/models/loyalty.model';
 })
 export class PrizePoolComponent  implements OnInit {
   @Input() prizePool: PrizePool;
-  constructor() { }
+  public nextAirdrop:Observable<string> = this._loyaltyService.getNextAirdrop().pipe(map((res:NextAirdrop) =>{
+    return  `ETA in ${res.days} Days`
+  }))
+  constructor(private _loyaltyService:LoyaltyService) { }
 
   ngOnInit() {}
 
-}
+} 

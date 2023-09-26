@@ -1,0 +1,25 @@
+<ion-row class="ion-margin-top">
+  <div id="pts-m" class="heading-3 ion-text-center">Points Multiplier </div>
+</ion-row>
+
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-col class="group ion-text-center native-stake">
+    <ion-label>native stake: </ion-label>
+    <span class="sub">{{(loyaltyScore$ | async)?.nativeStake | percent}}</span> <br>
+    <ion-label>long term boost: </ion-label>
+    <span class="sub">{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost | percent}}</span>
+
+  </ion-col>
+  <ion-col class="group ion-text-center liquid-stake">
+    <ion-label>mSOL direct stake: </ion-label>
+    <span class="sub">{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost | percent}}</span>
+  </ion-col>
+  <ion-col class="group ion-text-center liquid-stake">
+    <ion-label>bSOL direct stake: </ion-label>
+    <span class="sub">{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost | percent}}</span>
+  </ion-col>
+  <ion-col class="group ion-text-center dao-vote">
+    <ion-label>MNDE vote: </ion-label>
+    <span class="sub">{{(loyaltyScore$ | async)?.veMNDE_Boost | percent}}</span>
+  </ion-col>
+</ion-row>

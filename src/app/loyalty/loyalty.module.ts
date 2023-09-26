@@ -7,6 +7,7 @@ import { LeaderBoardComponent } from './loyalty-popup/leader-board/leader-board.
 import { ItemComponent } from './loyalty-popup/leader-board/item/item.component';
 import { PrivateScoreComponent } from './loyalty-popup/leader-board/private-score/private-score.component';
 import { SharedModule } from '../shared/shared.module';
+import { ScoreComponent } from './loyalty-popup/leader-board/score/score.component';
 
 
 
@@ -18,6 +19,7 @@ import { SharedModule } from '../shared/shared.module';
     LeaderBoardComponent,
     ItemComponent,
     PrivateScoreComponent,
+    ScoreComponent
   ],
   imports: [
     SharedModule

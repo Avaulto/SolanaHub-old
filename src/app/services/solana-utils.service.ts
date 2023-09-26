@@ -144,6 +144,7 @@ export class SolanaUtilsService {
         }
         return result;
       }),
+      shareReplay(),
       catchError(this._formatErrors)
     );
   }
