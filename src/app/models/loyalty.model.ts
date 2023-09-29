@@ -31,7 +31,7 @@ export interface PointsBreakDown {
 
 
 export interface PrizePool {
-    totalRebates: number;
+    rebates: number;
     APR_boost: number;
 }
 

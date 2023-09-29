@@ -69,7 +69,7 @@ export class PrivateScoreComponent implements OnInit {
           , {
           label: 'Liquid stake',
           backgroundColor: '#395DF0',
-          data: [this.myLoyaltyScore?.pointsBreakDown?.mSOLpts  || 0 + this.myLoyaltyScore?.pointsBreakDown?.bSOLpts || 0],
+          data: [this.myLoyaltyScore?.pointsBreakDown?.mSOLpts + this.myLoyaltyScore?.pointsBreakDown?.bSOLpts || 0],
         }, {
           label: 'DAO votes',
           backgroundColor: '#FE5B94',

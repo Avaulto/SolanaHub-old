@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TooltipPosition } from '../../layouts/tooltip/tooltip.enums';
 
 @Component({
   selector: 'app-data-box',
@@ -10,6 +11,8 @@ export class DataBoxComponent implements OnInit {
   @Input() desc: any;
   @Input() size: string;
   @Input() loading: any = true;
+  @Input() tip?: string;
+  position: TooltipPosition = TooltipPosition.BELOW;
   constructor() { }
 
   ngOnInit() {

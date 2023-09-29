@@ -12,7 +12,6 @@ export class ScoreComponent  implements OnInit {
   public loyaltyScore$ = this._loyaltyService.getLoyaltyScore()
   chartData: any;
   constructor(
-    private _utilsService:UtilsService,
     private _loyaltyService: LoyaltyService
      ) { }
   ngOnInit() {}

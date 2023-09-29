@@ -5,7 +5,7 @@ import { LoyaltyPopupComponent } from '../loyalty-popup/loyalty-popup.component'
 import { LoyaltyService } from '../loyalty.service';
 import { Observable, map } from 'rxjs';
 import { LoyaltyLeaderBoard, LoyaltyPoint } from 'src/app/models/loyalty.model';
-
+import va from '@vercel/analytics';
 @Component({
   selector: 'app-loyalty-btn',
   templateUrl: './loyalty-btn.component.html',
@@ -41,6 +41,7 @@ export class LoyaltyBtnComponent implements OnInit {
       // dismissOnSelect: true,
       cssClass: 'loyalty-points-popup',
     });
+    va.track('open loyalty board');
     await popover.present();
 
   }

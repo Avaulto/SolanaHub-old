@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { SolanaUtilsService } from './solana-utils.service';
 
-import { collectionStats, ListInstuction, Nft, NFTGroup } from '../models';
+import { collectionStats, ListInstuction, Nft, NFT2, NFTGroup, WalletNFT } from '../models';
 import { Metaplex, walletAdapterIdentity } from "@metaplex-foundation/js";
 import {  LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { environment } from 'src/environments/environment';
@@ -15,6 +15,7 @@ import { UtilsService } from './utils.service';
 export class NftStoreService {
   protected magicEdenApiProxy =  this._utilsService.serverlessAPI + '/api/ME-proxy?env=mainnet';
   protected metaplexApiProxy =  this._utilsService.serverlessAPI + '/api/MP-proxy';
+  protected heliusApiProxy = this._utilsService.serverlessAPI +'/api/nft-gallery'
   private _metaplex = new Metaplex(this._solanaUtilsService.connection);
   // private myNfts: Subject<Nft[]> = new Subject();
   // public myNft$ = this.myNfts.asObservable();
@@ -108,9 +109,9 @@ export class NftStoreService {
     // debugger
     try {
 
-      const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
-      const getNFTsReq = await fetch(uri)
-      const metaPlexNfts: Nft[] = await getNFTsReq.json();
+      // const uri = `${this.metaplexApiProxy}?env=${environment.solanaEnv}&walletAdress=${walletOwnerAddress}`
+      // const getNFTsReq = await fetch(uri)
+      // const metaPlexNfts: Nft[] = await getNFTsReq.json();
 
       const magicEdenNfts: Nft[] = await this.getMagicEdenOwnerNFTS(walletOwnerAddress);
 
@@ -132,7 +133,7 @@ export class NftStoreService {
             {}
           )
         )
-      let allNft: Nft[] = await Promise.all(allSourcesNfts(metaPlexNfts, magicEdenNfts).map(async nft => {
+      let allNft: Nft[] = await Promise.all(allSourcesNfts(magicEdenNfts).map(async nft => {
         nft.floorPrice = await this._getFloorPrice(nft.collection);
         return nft;
       }
@@ -145,5 +146,10 @@ export class NftStoreService {
     return extendedNfts
 
   }
-
+  public async getAllOnwerNfts2(walletOwnerAddress): Promise<NFT2[]>{
+    const uri = `${this.heliusApiProxy}?=ownerAddress${walletOwnerAddress}`
+    const getNFTsReq = await fetch(uri)
+    const nfts: NFT2[] = await (await getNFTsReq.json()).items;
+    return nfts
+  }
 }

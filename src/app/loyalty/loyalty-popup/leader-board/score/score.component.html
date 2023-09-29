@@ -3,23 +3,35 @@
 </ion-row>
 
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-col class="group ion-text-center native-stake">
+  <ion-col sizeMd="2" size="4" class="group ion-text-center native-stake">
     <ion-label>native stake: </ion-label>
     <span class="sub">{{(loyaltyScore$ | async)?.nativeStake | percent}}</span> <br>
     <ion-label>long term boost: </ion-label>
     <span class="sub">{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost | percent}}</span>
 
   </ion-col>
-  <ion-col class="group ion-text-center liquid-stake">
+  <ion-col sizeMd="2" size="4" class="group ion-text-center liquid-stake">
     <ion-label>mSOL direct stake: </ion-label>
     <span class="sub">{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost | percent}}</span>
   </ion-col>
-  <ion-col class="group ion-text-center liquid-stake">
+  <ion-col sizeMd="2" size="4" class="group ion-text-center liquid-stake">
     <ion-label>bSOL direct stake: </ion-label>
     <span class="sub">{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost | percent}}</span>
   </ion-col>
-  <ion-col class="group ion-text-center dao-vote">
+  <ion-col sizeMd="2" size="4" class="group ion-text-center dao-vote">
     <ion-label>MNDE vote: </ion-label>
     <span class="sub">{{(loyaltyScore$ | async)?.veMNDE_Boost | percent}}</span>
   </ion-col>
+  <ion-col sizeMd="2" size="4" class="group ion-text-center sh-activity">
+    <ion-label>SolanaHub Usage: </ion-label>
+    <span class="sub">{{(loyaltyScore$ | async)?.SolanaHub_Boost| percent}}</span>
+  </ion-col>
 </ion-row>
+
+<ion-row>
+  <ion-col class="ion-text-right">
+    <ion-button color="medium" class="sub" fill="clear">
+      <a href="https://docs.solanahub.app/solanahub/loyalty-program" target="_blank">learn more <ion-icon name="log-out-outline"></ion-icon></a>
+    </ion-button>
+  </ion-col>
+  </ion-row>

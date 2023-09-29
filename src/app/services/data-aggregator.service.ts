@@ -47,6 +47,7 @@ export class DataAggregatorService {
           website: links.homepage[0],
           image,
           contract_address,
+          marketCap: market_data.market_cap.usd,
           price_change_percentage_24h_in_currency: { btc: market_data.price_change_percentage_24h_in_currency.btc.toFixed(1), usd: market_data.price_change_percentage_24h_in_currency.usd.toFixed(1) }
         }
         return coinInfo;

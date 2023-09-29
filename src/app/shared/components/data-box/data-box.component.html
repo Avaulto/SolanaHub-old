@@ -1,5 +1,7 @@
 <ion-col sizeSm="12">
-  <div class="heading-4 ion-margin-bottom ion-text-uppercase">{{title}}</div>
+  <div class="heading-4 ion-margin-bottom ion-text-uppercase box-title">{{title}}
+    <app-icon-tooltip *ngIf="tip" [position]="position" [tip]="tip"></app-icon-tooltip>
+  </div>
   <div *ngIf="!loading" id="box-desc">
     <div class="heading-2">{{desc}}</div>
     <ng-content style="display: block;" #data></ng-content>

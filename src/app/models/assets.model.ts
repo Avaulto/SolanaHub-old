@@ -17,6 +17,7 @@ export interface Asset {
   decimals?: number;
 }
 export interface CoinData {
+  marketCap: number
   name?: string,
   symbol?: string;
   price: { btc: number, usd: number },

@@ -26,14 +26,16 @@ export class HomePage implements OnInit, OnDestroy {
     TPS: this._solanaUtilsService.getTPS(),
     epochInfo: this._solanaUtilsService.getEpochInfo(),
     // supply: this._solanaUtilsService.getSupply()
-  }).pipe(shareReplay(),map( (data: any) => {
-    
+  }).pipe(map( (data: any) => {
+    data.solData.marketCap = this._utilsService.formatBigNumbers(data.solData.marketCap)
     data.TPS = Math.trunc(data?.TPS)
     return data
-  }))
+  }),
+  shareReplay()
+  )
 
-  public getSupply: Subject<any> = new Subject();
   constructor(
+    private _utilsService:UtilsService,
     private _dataAggregatorService: DataAggregatorService,
     private _solanaUtilsService: SolanaUtilsService,
     public loaderService: LoaderService,
@@ -44,8 +46,7 @@ export class HomePage implements OnInit, OnDestroy {
     this._titleService.setTitle('SolanaHub - home')
   }
   async ngOnInit() {
-    const getSupply = await this._solanaUtilsService.getSupply();
-    this.getSupply.next(getSupply)
+
   }
   ngOnDestroy(): void {
   }

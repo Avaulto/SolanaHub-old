@@ -7,11 +7,12 @@
                 </app-data-box>
 
             </ion-col> -->
-            <ion-col size="5" sizeLg="2.2" class="data-box ion-padding">
+ 
+            <ion-col size="5" sizeLg="2" class="data-box ion-padding">
                 <app-data-box [title]="'Active Stake'" [loading]="(clusterInfo | async) == null" [desc]="(clusterInfo | async)?.stakeInfo.activeStake">
                 </app-data-box>
             </ion-col>
-            <ion-col size="5" sizeLg="2.2" class="data-box ion-padding ">
+            <ion-col size="5" sizeLg="2" class="data-box ion-padding ">
                 <app-data-box [title]="'TPS'" [loading]="(clusterInfo | async) == null" >
                     <span class="heading-2" 
                     [ngClass]="{'tps-good': (clusterInfo | async)?.TPS > '3000',
@@ -22,18 +23,22 @@
                 </app-data-box>
 
             </ion-col>
-            <ion-col size="5" sizeLg="2.2" class="data-box ion-padding ">
-                <app-data-box [title]="'Epoch'" [loading]="(clusterInfo | async) == null">
+            <ion-col size="5" sizeLg="2" class="data-box ion-padding ">
+                <app-data-box [title]="'Epoch'" [tip]="'An epoch is a period of time that is linked to both inflation and staking rewards.'" [loading]="(clusterInfo | async) == null">
                         <span class="heading-2 ion-margin-bottom">#{{(clusterInfo | async)?.epochInfo?.epoch}}</span>
                         <ion-progress-bar [buffer]="(clusterInfo | async)?.epochInfo?.timepassInPercentgae"></ion-progress-bar>
                         <span class="sub">{{(clusterInfo | async)?.epochInfo?.ETA}}</span>
                 </app-data-box>
             </ion-col>
-            <ion-col size="12" sizeLg="2.2" class="data-box ion-padding ">
+            <ion-col size="5" sizeLg="2" class="data-box ion-padding">
+                <app-data-box [title]="'Market Cap'" [loading]="(clusterInfo | async) == null" [desc]="'$'+(clusterInfo | async)?.solData.marketCap">
+                </app-data-box>
+            </ion-col>
+            <ion-col size="12" sizeLg="2" class="data-box ion-padding ">
                 <app-data-box [title]="'Price'" [loading]="(clusterInfo | async) == null">
                    
                         <span class="heading-2" style="display: flex;">${{(clusterInfo | async)?.solData.price?.usd}} <span class="price-bg" >{{(clusterInfo | async)?.solData.price_change_percentage_24h_in_currency?.usd}}%</span></span> 
-                  
+                        <!-- <div _ngcontent-ng-c3353063481="" class="heading-5">{{(clusterInfo | async)?.solData.marketCap | currency}}</div> -->
                 </app-data-box>
             </ion-col>
         </ion-row>

@@ -2,7 +2,7 @@
 <div id="prize-pool">
 
 
-  <ion-row class="ion-justify-content-between ">
+  <ion-row class="ion-justify-content-between ion-align-items-center">
     
     <ion-col class="ion-text-left">
       <ion-text class="heading-4">
@@ -23,7 +23,7 @@
       <ion-icon name="gift-sharp"></ion-icon>
 </div>
   <ion-row class="ion-justify-content-center ion-margin-bottom"> 
-    <ion-title>{{prizePool?.totalRebates || 0 | number : '1.2-2'}} SOL</ion-title>
+    <ion-title>{{prizePool?.rebates || 0 | number : '1.2-2'}} SOL</ion-title>
   </ion-row>
 
 </div>
