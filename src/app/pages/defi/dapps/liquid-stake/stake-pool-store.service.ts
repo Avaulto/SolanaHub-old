@@ -175,8 +175,7 @@ export class StakePoolStoreService {
       const selectedPool: StakePoolProvider = this.providers.find(p => p.poolName.toLowerCase() === pool);
       await this._stakePoolStakeSOL(selectedPool.poolPublicKey, walletOwner, sol, validatorVoteAccount)
     }
-    const message = validatorVoteAccount ? `direct stake with ${validatorVoteAccount}` : ''
-    va.track('liquid staking', { pool, type: message });
+    va.track('liquid staking', { pool,amount: Number(sol.toString()), validatorVoteAccount });
   }
 
   public async marinadeNativeStake(amountLamports) {
