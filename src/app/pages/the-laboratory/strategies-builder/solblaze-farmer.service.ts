@@ -241,7 +241,7 @@ export class SolblazeFarmerService {
       setTimeout(() => {
         this.txStatus$.next({ ...this.txStatus$.value, start: false })
       }, 2000);
-      va.track('solblaze-farmer strategy', { type: 'deposit', size: SOL_amount });
+      va.track('solblaze-farmer strategy', { type: 'deposit', amount: SOL_amount });
     } catch (error) {
       console.warn(error);
     }

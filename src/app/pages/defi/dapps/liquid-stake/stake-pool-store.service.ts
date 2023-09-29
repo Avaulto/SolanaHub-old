@@ -184,7 +184,7 @@ export class StakePoolStoreService {
       const versionedTransaction = await getRefNativeStakeSOLTx(walletOwnerPK, amountLamports, '3j0t4wyu')
       // sign and send the `transaction`
       await this._txInterceptService.sendTxV2(versionedTransaction)
-      va.track('marinade native stake', {size: amountLamports});
+      va.track('marinade native stake', {amount: amountLamports});
     } catch (error) {
       console.error(error)
     }
