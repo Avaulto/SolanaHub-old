@@ -13,58 +13,33 @@ export class PrivateScoreComponent implements OnInit {
   @Input() leaderBoard: LoyaltyPoint[]
   @Input() totalRebates: number = 0;
   public myLoyaltyScore: LoyaltyPoint = null;
-  @ViewChild('barChart') barChart: ElementRef;
+  @ViewChild('barChart',{static:true}) barChart: ElementRef;
 
   chartData: any;
   constructor(
 
-     ) { }
+  ) { }
 
   ngOnInit() {
+    this.myLoyaltyScore = this.leaderBoard.filter(staker => staker.walletOwner === this.wallet.publicKey.toBase58())[0] || null
 
-    if (this.wallet && this.leaderBoard) {
-      this.myLoyaltyScore = this.leaderBoard.filter(staker => staker.walletOwner === this.wallet.publicKey.toBase58())[0] || null
-    }
     this.createBarChart();
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    if(this.barChart){
-      this.createBarChart();
-    }
-  }
-  // ngAfterViewInit(): void {
-
-  //   this.createBarChart();
-  // }
-
 
 
   private createBarChart() {
     this.chartData ? this.chartData.destroy() : null
     const chartEl = this.barChart.nativeElement
-    // const ctx = chartEl.getContext('2d');
-    // var background_1 = ctx.createLinearGradient(0, 0, 0, 600);
-    // background_1.addColorStop(0, '#13CFC6');
-    // background_1.addColorStop(1, '#395DF0');
 
-    // var background_2 = ctx?.createLinearGradient(0, 0, 0, 600);
-    // background_2.addColorStop(0, '#395DF0');
-    // background_2.addColorStop(1, '#FE5B94');
-
-    // var background_3 = ctx?.createLinearGradient(0, 0, 0, 600);
-    // background_3.addColorStop(0, '#FE5B94');
-    // background_3.addColorStop(1, '#FE5B94');
-    const config2:ChartConfiguration = {
+    const config2: ChartConfiguration = {
       type: 'bar',
       data: {
         labels: ['Personal score'],
         datasets: [{
           label: 'Native stake + Account aging',
           backgroundColor: '#13CFC6',
-          data: [this.myLoyaltyScore?.pointsBreakDown?.nativeStakePts || 0 ],
-          
+          data: [this.myLoyaltyScore?.pointsBreakDown?.nativeStakePts || 0],
+
         }
           , {
           label: 'Liquid stake',
@@ -87,18 +62,18 @@ export class PrivateScoreComponent implements OnInit {
 
         plugins: {
           tooltip: {
-    
-            padding:10,
+
+            padding: 10,
             callbacks: {
               title: () => ''
             }
           }
         },
 
-    
+
         scales: {
           x: {
-            
+
             stacked: true,
           },
           y: {

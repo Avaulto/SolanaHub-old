@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { of, switchMap } from 'rxjs';
+import { of, shareReplay, switchMap } from 'rxjs';
 import { Asset, StakeAccountExtended } from 'src/app/models';
 import { LoaderService, SolanaUtilsService, TxInterceptService } from 'src/app/services';
 import { ActionsComponent } from './actions/actions.component';
@@ -29,7 +29,9 @@ export class AccountsComponent implements OnChanges {
       }else{
         return null
       }
-    }))
+    }),
+    shareReplay(1),
+    )
     
   public stakeAccountStatic = null;
 

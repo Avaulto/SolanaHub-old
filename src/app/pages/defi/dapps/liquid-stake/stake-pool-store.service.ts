@@ -175,7 +175,7 @@ export class StakePoolStoreService {
       const selectedPool: StakePoolProvider = this.providers.find(p => p.poolName.toLowerCase() === pool);
       await this._stakePoolStakeSOL(selectedPool.poolPublicKey, walletOwner, sol, validatorVoteAccount)
     }
-    va.track('liquid staking', { pool,amount: Number(sol.toString()), validatorVoteAccount });
+    va.track('liquid staking', { pool,amount: Number(sol.toString()) / LAMPORTS_PER_SOL, validatorVoteAccount });
   }
 
   public async marinadeNativeStake(amountLamports) {
@@ -184,7 +184,7 @@ export class StakePoolStoreService {
       const versionedTransaction = await getRefNativeStakeSOLTx(walletOwnerPK, amountLamports, '3j0t4wyu')
       // sign and send the `transaction`
       await this._txInterceptService.sendTxV2(versionedTransaction)
-      va.track('marinade native stake', {amount: amountLamports});
+      va.track('marinade native stake', {amount: amountLamports / LAMPORTS_PER_SOL});
     } catch (error) {
       console.error(error)
     }

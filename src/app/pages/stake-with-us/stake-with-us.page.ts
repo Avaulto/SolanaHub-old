@@ -27,13 +27,16 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   public stakeChange = this._solanaUtilsService.getStakeChange();
   public getValidatorInfo: Observable<ValidatorData | any> = this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh').pipe(
     switchMap(async (validator: ValidatorData) => {
+      console.log(validator)
       validator.delegetors = await this._getDelegetors()
       validator.rank = await this._getRank()
       this.apy = validator.apy_estimate;
       validator.activated_stake = Number(validator?.activated_stake) || 0;
       return validator
     }),
-    shareReplay(),
+    shareReplay(1),
+   
+    
   )
 
   public getStakePoolDirectStake$: Observable<DirectStake[]> = this._solanaUtilsService.walletExtended$.pipe(
@@ -44,7 +47,10 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
      
       // directStakeArr.push(...ds)
       return directStakeArr
-    }))
+    }),
+    shareReplay(1),
+    
+    )
 
 
   constructor(

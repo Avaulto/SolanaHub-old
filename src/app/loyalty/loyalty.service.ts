@@ -29,11 +29,11 @@ export class LoyaltyService {
   }
   public getNextAirdrop(): Observable<NextAirdrop> {
     return this._apiService.get(`${this.api}/get-next-airdrop`).pipe(
-      shareReplay(),
       this._utilsService.isNotNull,
       map((nextAirdrop: NextAirdrop) => {
         return nextAirdrop
       }),
+      shareReplay(),
       catchError((err) => this._formatErrors(err))
     )
   }
@@ -50,20 +50,20 @@ export class LoyaltyService {
   public getLoyaltyLeaderBoard(): Observable<LoyaltyLeaderBoard> {
     return this._apiService.get(`${this.api}/leader-board`).pipe(
       this._utilsService.isNotNull,
-      shareReplay(),
       map((loyaltyLeaderBoard: LoyaltyLeaderBoard) => {
         return loyaltyLeaderBoard
       }),
+      shareReplay(),
       catchError((err) => this._formatErrors(err))
     )
   }
   public getPrizePool(): Observable<PrizePool> {
     return this._apiService.get(`${this.api}/prize-pool`).pipe(
-      shareReplay(),
       this._utilsService.isNotNull,
       map((prizePool: PrizePool) => {
         return prizePool
       }),
+      shareReplay(),
       catchError((err) => this._formatErrors(err))
     )
   }

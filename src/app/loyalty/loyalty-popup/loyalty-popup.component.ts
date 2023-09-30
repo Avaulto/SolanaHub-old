@@ -9,7 +9,7 @@ import { LoyaltyLeaderBoard, LoyaltyPoint, PrizePool } from 'src/app/models/loya
   styleUrls: ['./loyalty-popup.component.scss'],
 })
 export class LoyaltyPopupComponent  implements OnInit {
-  public prizePool$:Observable<PrizePool> = this._loyaltyService.getPrizePool().pipe(shareReplay())
+  @Input() prizePool: PrizePool //= this._loyaltyService.getPrizePool().pipe(shareReplay())
   @Input() loyaltyLeaderBoard: LoyaltyLeaderBoard 
   constructor(
     private _loyaltyService: LoyaltyService

@@ -1,5 +1,4 @@
 <ion-grid class="data-box ion-padding">
-  <ng-container *ngIf="wallet && leaderBoard; else elseTemplate">
 
     <ion-row class="ion-justify-content-between" style="height: 100px;">
       <canvas #barChart></canvas>
@@ -15,10 +14,5 @@
 
       </ion-col>
     </ion-row>
-
-  </ng-container>
-  <ng-template #elseTemplate>
-    <app-wallet-not-connected-state [showBtn]="true"></app-wallet-not-connected-state>
-  </ng-template>
 
 </ion-grid>

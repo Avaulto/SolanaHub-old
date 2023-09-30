@@ -15,20 +15,22 @@ import { ValidatorData } from '../models';
   styleUrls: ['./side-menu.page.scss'],
 })
 export class SideMenuPage implements OnInit {
-  @ViewChild('popover') popover:IonPopover;
-  public validatorAPY$:Observable<number> = this._loyaltyService.getPrizePool().pipe(
-
+  @ViewChild('popover') popover: IonPopover;
+  public prizePool: PrizePool;
+  public validatorAPY$: Observable<number> = this._loyaltyService.getPrizePool().pipe(
     switchMap(async res => {
-      const validatorInfo:ValidatorData | any = await firstValueFrom(this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'))
-      const totalApy = validatorInfo.apy_estimate * (res.APR_boost + 1) / 100
+      this.prizePool = res;
+      const validatorInfo: ValidatorData | any = await firstValueFrom(this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'))
+      const totalApy = validatorInfo.apy_estimate * (res.APR_boost + 1) / 100;
       return totalApy
-    } ),
-    shareReplay())
+    }),
+
+  )
   constructor(
-    private _solanaUtilsService:SolanaUtilsService,
+    private _solanaUtilsService: SolanaUtilsService,
     private _menu: MenuController,
-    private _loyaltyService:LoyaltyService
-    ) {
+    private _loyaltyService: LoyaltyService
+  ) {
     this.openFirst()
   }
   public wallet$ = this._solanaUtilsService.walletExtended$
@@ -53,7 +55,7 @@ export class SideMenuPage implements OnInit {
     this.isTncOpen = true;
   }
 
-  openTNC(){
+  openTNC() {
 
   }
 }

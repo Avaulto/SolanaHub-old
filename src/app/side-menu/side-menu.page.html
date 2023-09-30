@@ -40,7 +40,7 @@
 
   </div>
   <div id="footer-menu">
-    <app-loyalty-btn *ngIf="wallet$ | async"></app-loyalty-btn>
+    <app-loyalty-btn [prizePool]="prizePool" *ngIf="(wallet$ | async) && prizePool"></app-loyalty-btn>
     <app-wallet-connect></app-wallet-connect>
     <div class="divider"></div>
     <div id="socials">

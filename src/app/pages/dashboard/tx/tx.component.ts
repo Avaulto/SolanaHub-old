@@ -11,7 +11,7 @@ import { SolanaUtilsService } from 'src/app/services/solana-utils.service';
 export class TxComponent implements OnInit {
 
   public validatorsData: Observable<ValidatorData[] | any> = this._solanaUtilsService.getValidatorData().pipe(
-    shareReplay(),
+    shareReplay(1),
   )
   public menu: string[] = ['stake', 'accounts', 'send'];
   public currentTab: string = this.menu[0]

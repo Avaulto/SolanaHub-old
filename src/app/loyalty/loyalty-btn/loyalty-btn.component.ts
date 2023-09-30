@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
 import { LoyaltyPopupComponent } from '../loyalty-popup/loyalty-popup.component';
 import { LoyaltyService } from '../loyalty.service';
 import { Observable, map } from 'rxjs';
-import { LoyaltyLeaderBoard, LoyaltyPoint } from 'src/app/models/loyalty.model';
+import { LoyaltyLeaderBoard, LoyaltyPoint, PrizePool } from 'src/app/models/loyalty.model';
 import va from '@vercel/analytics';
 @Component({
   selector: 'app-loyalty-btn',
@@ -12,6 +12,7 @@ import va from '@vercel/analytics';
   styleUrls: ['./loyalty-btn.component.scss'],
 })
 export class LoyaltyBtnComponent implements OnInit {
+  @Input() prizePool:PrizePool
   private _loyaltyLeaderBoard: LoyaltyLeaderBoard
   constructor(
     private _utilsService: UtilsService,
@@ -23,17 +24,20 @@ export class LoyaltyBtnComponent implements OnInit {
   public loyaltyPersonalScore$: Observable<string> = this._loyaltyService.getLoyaltyLeaderBoard().pipe(
     map(res => {
       this._loyaltyLeaderBoard = res;
-      return this._utilsService.formatBigNumbers(
+      const member = this._utilsService.formatBigNumbers(
       res.loyaltyPoints.find(s => s.walletOwner === this._solanaUtilsService.getCurrentWallet().publicKey.toBase58()
       
-      )?.loyaltyPoints || 0)}
+      )?.loyaltyPoints || 0)
+    console.log(member)
+    return member
+    }
     ))
   
 
   async openLoyaltyPopup() {
     const popover = await this._popoverController.create({
       component: LoyaltyPopupComponent,
-      componentProps: {loyaltyLeaderBoard: this._loyaltyLeaderBoard},
+      componentProps: {loyaltyLeaderBoard: this._loyaltyLeaderBoard, prizePool: this.prizePool },
       // event: e,
       alignment: 'start',
       // showBackdrop:false,
