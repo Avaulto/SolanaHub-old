@@ -1,71 +1,73 @@
-
 <div id="side-menu">
 
   <div id="logo-wrapper">
     <app-logo></app-logo>
   </div>
-  <div id="routes-wrapper">
-    <div *ngFor="let p of pages">
-      <ion-item (click)="closeMenu()" class="menu-item" button [routerLink]="p.url" [ngClass]="{'gen-2-item': p.url == 'stake-gen2'}" [routerLinkActiveOptions]="{exact: true}"
-        routerLinkActive="active">
-        <ion-icon [name]="p.icon"></ion-icon>
-        <ion-label>
-          {{ p.title }}
-          <span style="display: block;" class="ion-text-capitalize sub ion-color-primary" *ngIf="p.url === 'stake-with-us'">up to {{(validatorAPY$ | async  | percent:'1.0-2') || 0}}</span>
-        </ion-label>
-        <ion-icon name="chevron-down-outline" *ngIf="p?.children"
-          [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
-        </ion-item>
-      <ion-list *ngIf="p.open">
-        <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
+  <div id="menu-options">
+    <div id="routes-wrapper">
+      <div *ngFor="let p of pages">
+        <ion-item (click)="closeMenu()" class="menu-item" button [routerLink]="p.url"
+          [ngClass]="{'gen-2-item': p.url == 'stake-gen2'}" [routerLinkActiveOptions]="{exact: true}"
           routerLinkActive="active">
-          <div class="menu-icon">
-
-            <ion-icon [name]="sub.icon"></ion-icon>
-          </div>
-          <div class="wallet-info">
-            <ion-label>
-              {{ sub.title }}
-            </ion-label>
-            <ion-label class="balance-sub">
-              {{sub.sub}}
-            </ion-label>
-          </div>
+          <ion-icon [name]="p.icon"></ion-icon>
+          <ion-label>
+            {{ p.title }}
+            <span style="display: block;" class="ion-text-capitalize sub ion-color-primary"
+              *ngIf="p.url === 'stake-with-us'">up to {{(validatorAPY$ | async | percent:'1.0-2') || 0}}</span>
+          </ion-label>
+          <ion-icon name="chevron-down-outline" *ngIf="p?.children"
+            [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
         </ion-item>
+        <ion-list *ngIf="p.open">
+          <ion-item lines="none" *ngFor="let sub of p?.children" class="menu-item" [routerLink]="sub.url"
+            routerLinkActive="active">
+            <div class="menu-icon">
 
-      </ion-list>
+              <ion-icon [name]="sub.icon"></ion-icon>
+            </div>
+            <div class="wallet-info">
+              <ion-label>
+                {{ sub.title }}
+              </ion-label>
+              <ion-label class="balance-sub">
+                {{sub.sub}}
+              </ion-label>
+            </div>
+          </ion-item>
 
+        </ion-list>
+
+
+      </div>
 
     </div>
+    <div id="footer-menu">
+      <app-loyalty-btn [prizePool]="prizePool" *ngIf="(wallet$ | async) && prizePool"></app-loyalty-btn>
+      <app-wallet-connect></app-wallet-connect>
+      <div class="divider"></div>
+      <div id="socials">
 
-  </div>
-  <div id="footer-menu">
-    <app-loyalty-btn [prizePool]="prizePool" *ngIf="(wallet$ | async) && prizePool"></app-loyalty-btn>
-    <app-wallet-connect></app-wallet-connect>
-    <div class="divider"></div>
-    <div id="socials">
+        <a target="_blank" href="https://discord.gg/GbRw4UYS2e">
 
-      <a target="_blank" href="https://discord.gg/GbRw4UYS2e">
+          <ion-icon name="logo-discord"></ion-icon>
 
-        <ion-icon name="logo-discord"></ion-icon>
+        </a>
+        <a target="_blank" href="https://twitter.com/SolanaHubApp">
 
-      </a>
-      <a target="_blank" href="https://twitter.com/SolanaHubApp">
+          <ion-icon name="logo-twitter"></ion-icon>
 
-        <ion-icon name="logo-twitter"></ion-icon>
+        </a>
+        <a target="_blank" href="https://github.com/Avaulto/SolanaHub">
 
-      </a>
-      <a target="_blank" href="https://github.com/Avaulto/SolanaHub">
+          <ion-icon name="logo-github"></ion-icon>
 
-        <ion-icon name="logo-github"></ion-icon>
+        </a>
+      </div>
+      <a id="docs" target="_blank" class="ion-text-center ion-margin-vertical" href="https://docs.solanahub.app">
+
+        View the documentation
 
       </a>
     </div>
-    <a id="docs" target="_blank" class="ion-text-center ion-margin-vertical"
-      href="https://docs.solanahub.app">
-
-      View the documentation
-
-    </a>
   </div>
 </div>

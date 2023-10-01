@@ -25,7 +25,11 @@ export class PrivateScoreComponent implements OnInit {
 
     this.createBarChart();
   }
-
+  ngOnChanges(changes: SimpleChanges): void {
+    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+    //Add '${implements OnChanges}' to the class.
+    this.createBarChart();
+  }
 
   private createBarChart() {
     this.chartData ? this.chartData.destroy() : null

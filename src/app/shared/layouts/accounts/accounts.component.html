@@ -1,5 +1,8 @@
 <ion-grid>
     <ng-container *ngIf="stakeAccounts$ | async as stakeAccounts; else loaderTemplate">
+      <div class=" sub ion-margin-top" *ngIf="stakeAccounts.length === 0">
+        You do not own any stake accounts
+      </div>
       <ion-accordion-group multiple>
         <ion-accordion [value]="i" *ngFor="let account of stakeAccounts; let i = index">
           <ion-item slot="header" button detail="true">

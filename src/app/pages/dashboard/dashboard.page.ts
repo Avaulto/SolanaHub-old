@@ -160,6 +160,8 @@ export class DashboardPage implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     // this.walletExtended.unsubscribe()
   }
-
+  public openME(): void{
+    window.open('https://magiceden.io/','_blank')
+  }
 }
 
