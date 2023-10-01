@@ -131,7 +131,6 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
 
 
   public async submitNewStake(): Promise<void> {
-    console.log( this.stakeForm )
     if(this.selectedValidator.name === 'Marinade Native'){
       this._marinadeNativeStake()
     }else{ 

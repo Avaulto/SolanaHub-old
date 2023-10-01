@@ -186,19 +186,19 @@ export class TxInterceptService {
       this._formatErrors(error)
     }
   }
-  public createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey) => {
+  public createStakeAccount = async (lamportToSend: number, stakeAccountOwner: PublicKey, lockuptime?) => {
 
     const fromPubkey = stakeAccountOwner;
     const newStakeAccount = new Keypair();
     const authorizedPubkey = stakeAccountOwner;
     const authorized = new Authorized(authorizedPubkey, authorizedPubkey);
-    // const lockup = new Lockup(lockuptime, 0, fromPubkey);
+    const lockup = new Lockup(lockuptime, 0, fromPubkey);
     const lamports = lamportToSend;
     const stakeAccountIns: CreateStakeAccountParams = {
       fromPubkey,
       stakePubkey: newStakeAccount.publicKey,
       authorized,
-      // lockup,
+      lockup,
       lamports
     }
     const newStakeAccountIns = StakeProgram.createAccount(stakeAccountIns)
@@ -213,7 +213,7 @@ export class TxInterceptService {
     }
 
     try {
-      const stakeAccountData = await this.createStakeAccount(lamportsToDelegate, walletOwnerPk)
+      const stakeAccountData = await this.createStakeAccount(lamportsToDelegate, walletOwnerPk,lockuptime)
       const stakeAcc: Keypair = stakeAccountData.newStakeAccount;
       const instruction: DelegateStakeParams = {
         stakePubkey: stakeAcc.publicKey,

@@ -2,11 +2,11 @@
 
   <form [formGroup]="stakeForm" id="stake-box" class="ion-text-capitalize">
     <ion-row class="ion-margin-bottom" id="stake-apr-box">
-      
+
       <div>~{{avgApy}}% <span>APY</span>
         <span *ngIf="privateValidatorPage">
 
-          <span  class="extra-reward">+ {{ loyaltyProgramBoost | percent:'1.0-2'}} APR Loyalty program</span>
+          <span class="extra-reward">+ {{ loyaltyProgramBoost | percent:'1.0-2'}} APR Loyalty program</span>
           <span class="extra-reward">+ MEV rewards</span>
         </span>
       </div>
@@ -40,21 +40,9 @@
 
       </div>
     </ion-row>
-    <!-- <ion-row class="heading-6 ion-justify-content-between">
-      <div class="aligned">lockup 
-        <app-icon-tooltip tooltip="feeling bulish? lock your stake account and commit to yourself"></app-icon-tooltip>
-      </div>
-      <div>
-        months: {{stakeForm.value.monthLockuptime}}
-      </div>
-    </ion-row> 
-      <ion-row id="commitment-amount">
-      <ion-range formControlName="monthLockuptime" [min]="0" [max]="32" [pin]="true" [ticks]="true" [snaps]="true">
-      </ion-range>
-    </ion-row>
-  -->
 
-    <ion-row id="btn-controls" class="ion-margin-bottom ion-align-items-center ion-margin-bottom ion-justify-content-between">
+    <ion-row id="btn-controls"
+      class="ion-margin-bottom ion-align-items-center ion-margin-bottom ion-justify-content-between">
 
       <ion-col sizeLg="5.8" sizeMd="12" class="stake-by" [ngClass]="{'selected-path': stakingType == 'native'}"
         (click)="selectStakePath('native')">
@@ -79,15 +67,30 @@
         </div>
       </ion-col>
     </ion-row>
-<ion-row  *ngIf="stakingType === 'liquid'"class="ion-margin-bottom">
+    <ion-row *ngIf="stakingType === 'liquid'" class="ion-margin-bottom">
 
-  <ion-select formControlName="stakePool" aria-label="stake-pool" placeholder="select pool" interface="popover">
-    <ion-select-option value="marinade">
-      <app-image-placeholder imagePath="assets/images/icons/mSOL-logo.png"></app-image-placeholder>
-      marinade</ion-select-option>
-    <ion-select-option value="solblaze">solblaze</ion-select-option>
-  </ion-select>
-</ion-row>
+      <ion-select formControlName="stakePool" aria-label="stake-pool" placeholder="select pool" interface="popover">
+        <ion-select-option value="marinade">
+          <app-image-placeholder imagePath="assets/images/icons/mSOL-logo.png"></app-image-placeholder>
+          marinade</ion-select-option>
+        <ion-select-option value="solblaze">solblaze</ion-select-option>
+      </ion-select>
+    </ion-row>
+
+    <ng-container *ngIf="stakingType === 'native'"> 
+      <ion-row class="heading-6 ion-justify-content-between">
+        <div class="aligned">lockup <app-icon-tooltip tooltip="Locking up will create a stake account that is locked for the duration of time you specify."></app-icon-tooltip>
+        </div>
+        <div>
+          months: {{stakeForm.value.monthLockuptime}}
+        </div>
+      </ion-row> 
+        <ion-row id="commitment-amount">
+        <ion-range formControlName="monthLockuptime" [min]="0" [max]="32" [pin]="true" [ticks]="true" [snaps]="true">
+        </ion-range>
+      </ion-row>
+    </ng-container>
+
     <ion-row class="ion-justify-content-center">
       <ng-container *ngIf="wallet$ | async; else elseTemplate">
         <ion-button [disabled]="formSubmitted || stakeForm.invalid" (click)="submitNewStake()" type="button"
