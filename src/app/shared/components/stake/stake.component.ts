@@ -168,10 +168,15 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
     const validatorData: any = await firstValueFrom(this.validatorsData);
     this.stakingType = option
     if (option === 'liquid') {
-      validatorData.shift(this._marinadeNativeStrategy)
+      if(!this.privateValidatorPage){
+        validatorData.shift(this._marinadeNativeStrategy)
+      }
+      
       this._addStakePoolControl()
     } else {
-      validatorData.unshift(this._marinadeNativeStrategy)
+      if(!this.privateValidatorPage){
+        validatorData.unshift(this._marinadeNativeStrategy)
+      }
       this._removeStakePoolControl()
     }
   }
