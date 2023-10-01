@@ -131,6 +131,7 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
 
 
   public async submitNewStake(): Promise<void> {
+    console.log( this.stakeForm )
     if(this.selectedValidator.name === 'Marinade Native'){
       this._marinadeNativeStake()
     }else{ 
@@ -165,6 +166,7 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
   public stakingType: 'native' | 'liquid' = 'native'
   public async selectStakePath(option: 'native' | 'liquid'): Promise<void> {
     this.selectedValidator = null
+    this.stakeForm.controls.voteAccount.reset()
     this.showValidatorList = false
     const validatorData: any = await firstValueFrom(this.validatorsData);
     this.stakingType = option
