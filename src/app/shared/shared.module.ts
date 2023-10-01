@@ -1,6 +1,6 @@
 import { IonicModule } from "@ionic/angular";
 import { CommonModule, DecimalPipe } from "@angular/common";
-import {  NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
@@ -29,6 +29,7 @@ import {
   TabsComponent,
   AssetsBalanceComponent,
   LoaderComponent,
+  DefiTourComponent
 } from "./components";
 
 // // import directives
@@ -44,7 +45,12 @@ import { CustomInterceptor } from "../services";
 import { CopyTextDirective } from "./directives/copy-text.directive";
 import { TooltipModule } from "./layouts/tooltip/tooltip.module";
 import { WalletModule } from "./wallet.module";
+
+
+import { register } from 'swiper/element/bundle';
+register();
 @NgModule({
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA],
   declarations: [
     FilterPipe,
     SafePipe,
@@ -67,6 +73,7 @@ import { WalletModule } from "./wallet.module";
     IconTooltipComponent,
     TabsComponent,
     AssetsBalanceComponent,
+    DefiTourComponent
   ],
   imports: [
     LoaderComponent,
@@ -108,7 +115,7 @@ import { WalletModule } from "./wallet.module";
     NftListingComponent,
     NftSendComponent,
     ChartComponent,
-
+    DefiTourComponent,
     StakeComponent,
     ApyCalcComponent,
     SearchInputComponent,
