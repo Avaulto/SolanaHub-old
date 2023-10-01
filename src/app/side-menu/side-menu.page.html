@@ -6,7 +6,7 @@
   </div>
   <div id="routes-wrapper">
     <div *ngFor="let p of pages">
-      <ion-item class="menu-item" button [routerLink]="p.url" [ngClass]="{'gen-2-item': p.url == 'stake-gen2'}" [routerLinkActiveOptions]="{exact: true}"
+      <ion-item (click)="closeMenu()" class="menu-item" button [routerLink]="p.url" [ngClass]="{'gen-2-item': p.url == 'stake-gen2'}" [routerLinkActiveOptions]="{exact: true}"
         routerLinkActive="active">
         <ion-icon [name]="p.icon"></ion-icon>
         <ion-label>

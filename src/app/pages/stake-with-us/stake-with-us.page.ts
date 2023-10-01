@@ -27,7 +27,6 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   public stakeChange = this._solanaUtilsService.getStakeChange();
   public getValidatorInfo: Observable<ValidatorData | any> = this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh').pipe(
     switchMap(async (validator: ValidatorData) => {
-      console.log(validator)
       validator.delegetors = await this._getDelegetors()
       validator.rank = await this._getRank()
       this.apy = validator.apy_estimate;

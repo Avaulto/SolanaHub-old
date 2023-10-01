@@ -42,7 +42,9 @@ export class SideMenuPage implements OnInit {
   openEnd() {
     this._menu.open('end');
   }
-
+  closeMenu(){
+    this._menu.close()
+  }
   pages = pages
 
   ngOnInit() {

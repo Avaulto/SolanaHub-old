@@ -28,7 +28,6 @@ export class LoyaltyBtnComponent implements OnInit {
       res.loyaltyPoints.find(s => s.walletOwner === this._solanaUtilsService.getCurrentWallet().publicKey.toBase58()
       
       )?.loyaltyPoints || 0)
-    console.log(member)
     return member
     }
     ))

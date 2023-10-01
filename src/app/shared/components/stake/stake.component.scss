@@ -6,7 +6,7 @@
 }
 
 #stake-apr-box {
-    height: 99px;
+
     background:var( --apr-box);
     border-radius: 6px;
     display: flex;
@@ -14,6 +14,7 @@
     justify-content: center;
     text-align: center;
     text-transform: capitalize;
+    padding: 10px;
     div {
         font-weight: 600;
         font-size: 24px;
