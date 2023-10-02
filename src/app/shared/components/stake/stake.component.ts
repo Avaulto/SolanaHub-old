@@ -164,8 +164,10 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
 
   public stakingType: 'native' | 'liquid' = 'native'
   public async selectStakePath(option: 'native' | 'liquid'): Promise<void> {
+    if(!this.privateValidatorPage){
     this.selectedValidator = null
-    this.stakeForm.controls.voteAccount.reset()
+      this.stakeForm.controls.voteAccount.reset()
+    }
     this.showValidatorList = false
     const validatorData: any = await firstValueFrom(this.validatorsData);
     this.stakingType = option
