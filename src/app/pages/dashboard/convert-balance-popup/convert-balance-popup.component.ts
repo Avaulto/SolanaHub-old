@@ -21,11 +21,7 @@ export class ConvertBalancePopupComponent implements OnInit {
   public wSOL = { address: "So11111111111111111111111111111111111111112" };
   public checkAll: boolean = true
   @Input() assets: Asset[];
-  @Input() wallet: {
-    publicKey: PublicKey;
-    signTransaction: (transaction: Transaction | VersionedTransaction) => Promise<Transaction>;
-    signAllTransactions: (transactions: Transaction[] | VersionedTransaction[]) => Promise<Transaction[]>;
-  };
+
   // @Input() wallet
   public rentAccountSize = 2039280 / LAMPORTS_PER_SOL;
 
@@ -51,8 +47,9 @@ export class ConvertBalancePopupComponent implements OnInit {
 
   private _avaliableToSwap() {
     //  filter tokens for merge conditions(maximum 2% of wallet portfolio)
+    console.log(this.assets)
     const filterTokens = this.assets.filter(token => {
-      if (token.baseOfPortfolio < 2 && token.name != 'SOL') {
+      if (token.baseOfPortfolio < 2 && token.symbol != 'SOL') {
         return token
       }
     })
@@ -121,7 +118,7 @@ export class ConvertBalancePopupComponent implements OnInit {
         // The first iteration uses an already resolved Promise
         // so, it will immediately continue.
         await promise;
-        await this._txInterceptService.sendTx([tx], this.wallet.publicKey)
+        await this._txInterceptService.sendTx([tx], this._solanaUtilsService.getCurrentWallet().publicKey)
       }, Promise.resolve());
     }
 
@@ -131,7 +128,7 @@ export class ConvertBalancePopupComponent implements OnInit {
         // The first iteration uses an already resolved Promise
         // so, it will immediately continue.
         await promise;
-        await this._txInterceptService.sendTx(tx, this.wallet.publicKey)
+        await this._txInterceptService.sendTx(tx, this._solanaUtilsService.getCurrentWallet().publicKey)
       }, Promise.resolve());
     }
     va.track('bulk swap');
@@ -140,7 +137,7 @@ export class ConvertBalancePopupComponent implements OnInit {
   async closeATA(asset: Asset): Promise<TransactionInstruction[]> {
 
     const mintAddressPK = new PublicKey(asset.address);
-    const walletOwner = this.wallet.publicKey;
+    const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
     const tokenAccountPubkey = await this._solanaUtilsService.findAssociatedTokenAddress(walletOwner, mintAddressPK);
     const inputAmountInSmallestUnits = asset
     ? Math.round(Number(asset.balance) * 10 ** asset.decimals)

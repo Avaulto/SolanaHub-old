@@ -30,6 +30,8 @@ interface StakeWizEpochInfo {
   providedIn: 'root'
 })
 export class SolanaUtilsService {
+  private _currentSolPrice$ = new BehaviorSubject(0 as number);
+  public solPrice$ = this._currentSolPrice$.asObservable()
   public connection: Connection;
   public accountChange$ = new BehaviorSubject({});
   private validatorsData: ValidatorData[];
@@ -41,7 +43,7 @@ export class SolanaUtilsService {
 
   // add balance utility
   public walletExtended$ = this._walletExtended$.asObservable().pipe(
-    
+
     combineLatestWith(this.accountChange$),
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async ([wallet, accountStateChange]: any) => {
@@ -63,6 +65,12 @@ export class SolanaUtilsService {
   ) {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
     this._walletStore.anchorWallet$.subscribe(wallet => this._walletExtended$.next(wallet));
+  }
+  public setSolPrice(price:number) {
+    this._currentSolPrice$.next(price)
+  }
+  public lastSolPrice(){
+    return this._currentSolPrice$.value;
   }
   public getCurrentWallet(): WalletExtended {
     return this._walletExtended$.value
@@ -148,7 +156,7 @@ export class SolanaUtilsService {
       catchError(this._formatErrors)
     );
   }
-  public getStakeChange(){
+  public getStakeChange() {
     return this._apiService.get(`https://api.stakewiz.com/validator_epoch_stakes/7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh`).pipe(
       map((stake) => {
         return stake
@@ -241,7 +249,7 @@ export class SolanaUtilsService {
     const stakeAccountInfo: StakeAccountExtended = {
       addr,
       shortAddr: this._utilService.addrUtil(addr).addrShort,
-      balance: this._utilService.shortenNum(Number((stake / LAMPORTS_PER_SOL)), 3),
+      balance: Number((stake / LAMPORTS_PER_SOL)),
       state,
       validatorData,
       validatorVoteKey,
@@ -300,27 +308,6 @@ export class SolanaUtilsService {
       }),
       catchError(this._formatErrors)
     );
-  }
-  async getWalletHistory(walletPubKey: PublicKey) {
-    // try {
-    //   const signatures: ConfirmedSignatureInfo[] = await this.connection.getConfirmedSignaturesForAddress2(walletPubKey);
-    //   let records: any[] = [];
-    //   let walletHistory = []
-    //   signatures.forEach(async signature => {
-    //     const txInfo = await this.connection.getTransaction(signature.signature);
-    //     records.push(txInfo);
-    //   });
-    //   records.forEach((record, i) => {
-    //     const from = record?.transaction?.instructions[0]?.keys[0]?.pubkey.toBase58() || null;
-    //     const to = record.transaction?.instructions[0]?.keys[1]?.pubkey.toBase58() || null;;
-    //     const amount = (record.meta?.postBalances[1] - record.meta?.preBalances[1]) / LAMPORTS_PER_SOL || null;
-    //     walletHistory.push({ signature: signatures[i].signature, block: record.slot, amount, from, to } || null)
-    //   });
-    //   return walletHistory;
-    // } catch (error) {
-    //   console.error(error)
-    //   this._toasterService.msg.next({ message: 'failed to retrieve transaction history', icon: '', segmentClass: 'toastError' })
-    // }
   }
 
   public async getTokenAccountsBalance(wallet: string, getType?: 'token' | 'nft'): Promise<TokenBalance[]> {

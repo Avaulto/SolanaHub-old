@@ -1,0 +1,69 @@
+:host {
+    padding: 16px;
+}
+
+#send-amount {
+    position: relative;
+
+    span {
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
+}
+
+#send-input {
+    width: 100%;
+    display: flex;
+
+    div {
+        background: var(--deep-background);
+        width: 11%;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+ion-img {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 25px;
+    height: 25px;
+}
+
+.input-error {
+    border-color: var(--ion-color-danger);
+}
+
+#private-balance {
+    display: flex;
+    width: 100%;
+    color: var(--ion-color-tertiary);
+
+    span {
+        margin-inline: 2px;
+    }
+}
+
+#private-tx-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+
+}
+
+#power-by {
+    margin-block-start: 16px;
+    display: flex;
+    justify-content: center;
+
+    a {
+        margin: 0 5px;
+    }
+}

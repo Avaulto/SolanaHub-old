@@ -7,6 +7,7 @@ export interface WalletExtended {
 }
 export interface Asset {
   name: string,
+  symbol?: string,
   balance: number,
   price?: number,
   icon: string,

@@ -17,6 +17,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
   {
+    path: 'dashboardtwo',
+    loadChildren: () => import('./pages/dashboard2/dashboard2.module').then( m => m.Dashboard2PageModule)
+  },
+  {
     path: 'nft-gallery',
     loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
     // canActivate:[AuthGuard]
@@ -41,6 +45,7 @@ const routes: Routes = [
     path:"**",
     redirectTo:'home'
   },
+
 
 ];
 

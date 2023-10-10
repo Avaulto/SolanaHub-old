@@ -4,11 +4,14 @@
     --color-checked:var(--ion-text-color);
     --indicator-color: var(--ion-color-primary);
     --indicator-height: 2px;
-    height: 62px;
+    // height: 62px;
   }
   
   
   ion-label {
     text-transform: capitalize;
     font-size: 16px;
+}
+ion-segment-button.md::part(indicator-background) {
+  height: 4px;
 }

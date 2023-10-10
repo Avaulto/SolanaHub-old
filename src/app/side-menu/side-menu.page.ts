@@ -4,7 +4,7 @@ import { IonPopover, MenuController } from '@ionic/angular';
 import { pages } from '../shared/helpers/menu';
 import { SolanaUtilsService } from '../services';
 import { PrizePool } from '../models/loyalty.model';
-import { Observable, firstValueFrom, map, shareReplay, switchMap, tap } from 'rxjs';
+import { Observable, firstValueFrom, forkJoin, map, shareReplay, switchMap, tap } from 'rxjs';
 import { LoyaltyService } from '../loyalty/loyalty.service';
 import { ValidatorData } from '../models';
 
@@ -17,15 +17,18 @@ import { ValidatorData } from '../models';
 export class SideMenuPage implements OnInit {
   @ViewChild('popover') popover: IonPopover;
   public prizePool: PrizePool;
-  public validatorAPY$: Observable<number> = this._loyaltyService.getPrizePool().pipe(
-    switchMap(async res => {
-      this.prizePool = res;
-      const validatorInfo: ValidatorData | any = await firstValueFrom(this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'))
-      const totalApy = validatorInfo.apy_estimate * (res.APR_boost + 1) / 100;
+  public validatorAPY$: Observable<number> = forkJoin({
+    prizePool: this._loyaltyService.getPrizePool(),
+    validatorInfo: this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh')
+  }).pipe(
+    map((data) => {
+      this.prizePool = data.prizePool;
+      const validatorInfo: ValidatorData | any =  data.validatorInfo
+      const totalApy = validatorInfo.apy_estimate * (this.prizePool.APR_boost + 1) / 100;
       return totalApy
-    }),
+    }))
 
-  )
+
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _menu: MenuController,
@@ -42,7 +45,7 @@ export class SideMenuPage implements OnInit {
   openEnd() {
     this._menu.open('end');
   }
-  closeMenu(){
+  closeMenu() {
     this._menu.close()
   }
   pages = pages

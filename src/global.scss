@@ -75,7 +75,9 @@ input[type=number]::-webkit-outer-spin-button {
 a {
     color: var(--ion-color-text);
 }
-
+.global-usd-color {
+    color: var(--ion-color-tertiary);
+}
 .data-box {
     min-height: 110px;
     margin-bottom: 24px;
@@ -220,7 +222,7 @@ textarea{
     --color: var(--ion-text-color);
     --background: var(--notif-background);
     --min-height: 50px;
-    --width: 280px;
+    --width: 310px;
     --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     --border-radius: 4px;
     font-size: 12px;
@@ -266,10 +268,17 @@ textarea{
     --width: 350px;
 }
 .merge-accounts-popup{
-    --width: 450px;
-    --height:550px;
+    --width: 455px;
+    --height:575px;
     --max-width:98%;
 }
+
+.send-asset-popup{
+    --width: 455px;
+    --height:265px;
+    --max-width:98%;
+}
+
 
 .loyalty-points-popup{
     --width: 1050px;

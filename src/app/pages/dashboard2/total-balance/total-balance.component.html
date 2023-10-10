@@ -1,0 +1,40 @@
+<ion-row class="ion-padding data-box ion-justify-content-between">
+  <ion-col size="12" sizeMd="5.9" class="data-box ion-padding-horizontal">
+
+      <h3 class="heading-4 ion-margin-bottom ion-text-uppercase box-title">Total Balance</h3>
+
+   
+    <ng-container *ngIf="portfolio; else elseTemplate">
+      <div id="total-balance">
+        <p>{{ totalBalanceUsd | solValue }}</p>
+        <span class="global-usd-color sub-strong">{{ totalBalanceUsd | currency}}</span>
+      </div>
+      <div id="controls">
+        <ion-button class="ButtonText">send</ion-button>
+        <ion-button class="ButtonText" fill="outline"><ion-icon name="qr-code-outline"></ion-icon>receive</ion-button>
+      </div>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-wallet-not-connected-state></app-wallet-not-connected-state>
+    </ng-template>
+    
+    
+  </ion-col>
+  <ion-col size="12" sizeMd="5.9" class="data-box ion-padding-horizontal">
+    <div class="head-line">
+      <h3 class="heading-4 ion-margin-bottom ion-text-uppercase box-title">breakdown</h3>
+    </div>
+
+    
+    <div id="chart-breakdown" [hidden]="!portfolio">
+      <div style="height: 180px;">
+        <canvas #breakdownChart></canvas>
+      </div>
+    </div>
+    <ng-container *ngIf="!portfolio">
+   
+        <app-wallet-not-connected-state></app-wallet-not-connected-state>
+     
+    </ng-container>
+  </ion-col>
+</ion-row>

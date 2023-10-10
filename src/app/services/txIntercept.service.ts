@@ -50,7 +50,7 @@ export class TxInterceptService {
     const toastData: toastData = {
       message: error.message,
       segmentClass: "toastError",
-
+      duration:5000
     }
     this.toasterService.msg.next(toastData);
     return throwError(error);
@@ -95,7 +95,7 @@ export class TxInterceptService {
 
   }
 
-  public async transferStakeAccountAuth(stakePubkey: PublicKey, walletOwnerPk: PublicKey,newAuthorizedPubkey: PublicKey){
+  public async transferStakeAccountAuth(stakePubkey: PublicKey, walletOwnerPk: PublicKey, newAuthorizedPubkey: PublicKey) {
     const authWithdraw: AuthorizeStakeParams = {
       stakePubkey,
       authorizedPubkey: walletOwnerPk,
@@ -123,7 +123,7 @@ export class TxInterceptService {
       });
     })
 
-   return await this.sendTx(mergeAccounts, walletOwnerPk)
+    return await this.sendTx(mergeAccounts, walletOwnerPk)
   }
 
   public async withdrawFromStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {
@@ -133,14 +133,14 @@ export class TxInterceptService {
       toPubkey: walletOwnerPk,
       lamports, // Withdraw the full balance at the time of the transaction
     });
-    // try {
-    //   const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
-    //   if (validTx) {
-    this.sendTx([withdrawTx], walletOwnerPk)
-    //   }
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    try {
+      //   const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
+      //   if (validTx) {
+      await this.sendTx([withdrawTx], walletOwnerPk)
+      // }
+    } catch (error) {
+      console.error(error)
+    }
   }
   async getOrCreateTokenAccountInstruction(mint: PublicKey, user: PublicKey, payer: PublicKey | null = null): Promise<TransactionInstruction | null> {
     try {
@@ -172,13 +172,13 @@ export class TxInterceptService {
         mintAddressPK,
         tokenAccountTargetPubkey,
         walletOwner,
-        amount,
+        amount * Math.pow(10, decimals),
         decimals,
         [],
         TOKEN_PROGRAM_ID
       )
       const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
-      this.sendTx(instructions, walletOwner)
+      await this.sendTx(instructions, walletOwner)
     } catch (error) {
 
       const res = new TokenOwnerOffCurveError()
@@ -213,7 +213,7 @@ export class TxInterceptService {
     }
 
     try {
-      const stakeAccountData = await this.createStakeAccount(lamportsToDelegate, walletOwnerPk,lockuptime)
+      const stakeAccountData = await this.createStakeAccount(lamportsToDelegate, walletOwnerPk, lockuptime)
       const stakeAcc: Keypair = stakeAccountData.newStakeAccount;
       const instruction: DelegateStakeParams = {
         stakePubkey: stakeAcc.publicKey,
@@ -237,7 +237,6 @@ export class TxInterceptService {
   }
   public delegateStakeAccount(stakeAcc: StakeAccountExtended, walletOwnerPk) {
     try {
-
       const instruction: DelegateStakeParams = {
         stakePubkey: new PublicKey(stakeAcc.addr),
         authorizedPubkey: walletOwnerPk,
@@ -283,7 +282,7 @@ export class TxInterceptService {
       let transaction: Transaction = new Transaction(txArgs).add(...txParam);
       const priorityFeeInst = this._addPriorityFee(this._utilsService.priorityFee)
       if (priorityFeeInst?.length > 0) transaction.add(...priorityFeeInst)
-      
+
       let signedTx = await firstValueFrom(this._walletStore.signTransaction(transaction)) as Transaction;
       if (extraSigners?.length > 0) signedTx.partialSign(...extraSigners)
 
@@ -317,7 +316,8 @@ export class TxInterceptService {
       return signature
 
     } catch (error) {
-      console.warn(error)
+      console.error(error)
+     this._formatErrors(error)
       return null
       // onMsg('transaction failed', 'error')
     }

@@ -3,7 +3,7 @@
 
     <h4 class="heading-4 ion-text-capitalize">target account</h4>
     <div id="current-account">
-      <app-account [account]="account"></app-account>
+      <app-account [actionType]="actionType" [account]="account"></app-account>
     </div>
 
     <ion-row id="tip" class="data-box ion-margin-vertical ion-padding">
@@ -24,7 +24,7 @@
           <div id="selectable-accounts-list" class="data-box">
             <ion-item *ngFor="let account of accountsToMerge" slot="header" button style="--background:transparent;">
               <app-account [mergeCondition]="true" (onClickAccount)="storeSelection($event)"
-                [account]="account"></app-account>
+                [account]="account" [actionType]="actionType"></app-account>
             </ion-item>
           </div>
         </ng-container>

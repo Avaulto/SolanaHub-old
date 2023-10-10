@@ -12,8 +12,8 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { environment } from 'src/environments/environment.prod';
 import { Router } from '@angular/router';
-import { distinctUntilChanged } from 'rxjs';
-import { SolanaUtilsService, UtilsService } from './services';
+import { distinctUntilChanged, firstValueFrom } from 'rxjs';
+import { DataAggregatorService, SolanaUtilsService, UtilsService } from './services';
 
 @Component({
   selector: 'app-root',
@@ -28,11 +28,12 @@ export class AppComponent {
     private _connectionStore: ConnectionStore,
     private _walletStore: WalletStore,
     private _utilsService: UtilsService,
-    private _solanaUtilsService: SolanaUtilsService
+    private _solanaUtilsService: SolanaUtilsService,
+    private _dataAggregatorService:DataAggregatorService
   ) { }
   async ngOnInit(): Promise<void> {
 
-    
+    this._getSOLprice();
     this._walletStore.anchorWallet$.pipe(
       this._utilsService.isNotNull,
       this._utilsService.isNotUndefined,
@@ -59,6 +60,9 @@ export class AppComponent {
     ]);
 
   }
-
+  private async _getSOLprice(): Promise<void> {
+    const coindata = await firstValueFrom(this._dataAggregatorService.getCoinData('solana'))
+    this._solanaUtilsService.setSolPrice(coindata.price.usd)
+  }
 
 }

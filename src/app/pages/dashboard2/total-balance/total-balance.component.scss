@@ -1,0 +1,38 @@
+// #total-balance,#chart-breakdown{
+//     height:85%;
+// }
+
+.head-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#controls{
+    margin-block: 40px;
+}
+#total-balance{
+    p{
+        font-size: 31px;
+        line-height: 24px;
+    }
+    span{
+        margin-bottom: 10px;
+    }
+}
+ion-button{
+    margin-inline-end: 4px;
+    ion-icon{
+        margin-inline-end: 4px;
+    }
+}
+
+
+
+ion-segment-button {
+    --indicator-color: var(--ion-color-primary);;
+  }
+  
+
+ion-segment{
+    width: 137px;
+}

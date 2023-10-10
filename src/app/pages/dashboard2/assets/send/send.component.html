@@ -1,0 +1,53 @@
+<ion-grid id="send-box" class="ion-text-capitalize">
+  <form [formGroup]="sendCoinForm" id="stake-box" class="ion-text-capitalize">
+
+
+    <app-label-layout [layoutConfig]="{title: 'Amount', balance: formatNumber(coin.amount)}">
+      <div *ngIf="sendCoinForm.controls.privateTx.value == true" id="private-balance">
+        private balance: <span>{{privateBalance}}</span>
+        <app-icon-tooltip tip="Any funds within your private balance will be utilized first."></app-icon-tooltip>
+      </div>
+
+    </app-label-layout>
+
+    <ion-row id="send-amount" style="margin-bottom:8px;">
+      <div id="send-input">
+        <div>
+          <ion-img [src]="coin.logoURI"></ion-img>
+        </div>
+        <ion-input class="button-text" type="number" formControlName="amount" placeholder="Amount"></ion-input>
+      </div>
+      <span class="heading-6" (click)="setMaxAmount()">MAX</span>
+    </ion-row>
+
+    
+    <app-label-layout [layoutConfig]="{title: 'To'}"></app-label-layout>
+
+    <ion-row>
+      <ion-input class="button-text" formControlName="targetAddress" placeholder="wallet address"></ion-input>
+      <span class="heading-6"></span>
+    </ion-row>
+
+
+    <!-- <ion-row id="private-tx-wrapper" *ngIf="wallet$ | async;">
+
+      <app-label-layout [layoutConfig]="{title: 'Private Transaction'}">
+      </app-label-layout>
+      <ion-toggle (ionChange)="_initElusivSDK($event)" style="height: 25px;" formControlName="privateTx"></ion-toggle>
+    </ion-row> -->
+
+    <ion-row class="ion-justify-content-center">
+     
+        <ion-button (click)="send()" [disabled]="formSubmitted || sendCoinForm.invalid" class="ion-text-capitalize">
+          send
+          <ion-spinner *ngIf="formSubmitted" name="dots"></ion-spinner>
+        </ion-button>
+
+
+
+    </ion-row>
+    <ion-row id="power-by" class="sub" *ngIf="sendCoinForm.controls.privateTx.value == true">
+      Private transaction Powered by <a href="https://elusiv.io/" target="_blank"> Elusiv</a>
+    </ion-row>
+  </form>
+</ion-grid>

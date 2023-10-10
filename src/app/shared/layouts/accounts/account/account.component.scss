@@ -1,22 +1,28 @@
-:host{
+:host {
     display: block;
-    width: 100%;
+    height: 50px;
 }
+
 .flex-item-center {
     display: flex;
     align-items: center;
 }
+ion-col{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .table-icon {
     width: 26px;
     height: 26px;
-    margin-inline-end: 20px;
+    margin-inline-end: 10px;
     overflow: hidden;
     background: black;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    
+
 }
 
 .validator-info.heading-6 {
@@ -27,17 +33,20 @@
 }
 
 
-::ng-deep{
-
-    ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon {
-        
-        color: var(--icon-color);
-    }
-}
-
 .item-head {
     display: flex;
     justify-content: space-between;
-    width: 95%;
     align-items: center;
+}
+
+.global-selected-pair {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 11px;
+    margin-inline-end: 4px;
+}
+.controls{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
 }

@@ -7,7 +7,7 @@ import { RouterModule } from "@angular/router";
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // import pipes
-import { FilterPipe, SafePipe, ReversePipe } from "./pipes";
+import { FilterPipe, SafePipe, ReversePipe, SolConverterPipe } from "./pipes";
 
 // import componenets
 import {
@@ -55,6 +55,7 @@ register();
     FilterPipe,
     SafePipe,
     ReversePipe,
+    SolConverterPipe,
     DataBoxComponent,
     SelectBoxComponent,
     SelectItemComponent,
@@ -103,6 +104,7 @@ register();
     FilterPipe,
     SafePipe,
     ReversePipe,
+    SolConverterPipe,
     DataBoxComponent,
     TooltipModule,
     WalletModule,

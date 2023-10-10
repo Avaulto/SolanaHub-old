@@ -1,0 +1,35 @@
+
+
+<ion-row class="asset ion-align-items-center" *ngFor="let coin of coins">
+  <ion-col size="8" class="balance-breakdown">
+    <ion-col size="9" sizeLg="3" id="balace-number">
+      <div id="icon-wrapper">
+        <ion-img [src]="coin?.logoURI || '/assets/images/icons/placeholder.svg'"></ion-img>
+
+      </div>
+      <div>
+        <div class="short-wallet-name ion-text-uppercase">
+          {{coin?.symbol}}
+        </div>
+        <div class="button-text">
+          <span class="global-selected-pair">
+            {{coin.value | currency}}
+          </span>
+          <span class="sub">{{formatNumber(coin?.amount || 0)}}</span>
+        </div>
+      </div>
+
+    </ion-col>
+
+    <ion-col size="3" sizeLg="9" id="balance-base">
+      <div>{{coin.baseOfPortfolio / 100 || 0 | percent:'1.0-2' }}</div>
+      <div id="bar-wrapper" class="ion-hide-lg-down">
+        <span class="bar" [style]="'width:' + coin.baseOfPortfolio + '%'"></span>
+      </div>
+    </ion-col>
+  </ion-col>
+  <ion-col class="controlls">
+    <ion-button class="ButtonText" (click)="openSendPopup(coin)" >send</ion-button>
+    <!-- <ion-button color="danger">burn</ion-button> -->
+  </ion-col>
+</ion-row>

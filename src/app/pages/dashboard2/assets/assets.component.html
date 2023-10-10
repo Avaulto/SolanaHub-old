@@ -1,0 +1,21 @@
+<ion-row class="ion-padding data-box ion-justify-content-between">
+  <ion-col size="12" class="data-box ion-padding-horizontal">
+
+    <div id="title-wrapper">
+      <h3 class="heading-4 ion-margin-bottom ion-text-uppercase box-title">Assets</h3>
+      <ion-button *ngIf="currentTab === 'Coins' && portfolioSPL " (click)="openSwapSmallBalancePopup()"
+        fill="outline">Dust to SOL</ion-button>
+    </div>
+    <ng-container *ngIf="portfolioSPL; else elseTemplate">
+      <app-tabs *ngIf="portfolioSPL" [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+      <div *ngIf="portfolioSPL" [ngSwitch]="currentTab" class="ion-padding-top">
+        <app-coins *ngSwitchCase="'Coins'" [coins]="coins"></app-coins>
+        <app-nfts *ngSwitchCase="'NFTs'" [NFTs]="NFTs"></app-nfts>
+      </div>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-wallet-not-connected-state></app-wallet-not-connected-state>
+    </ng-template>
+
+  </ion-col>
+</ion-row>
