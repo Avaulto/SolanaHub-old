@@ -24,7 +24,6 @@ import {
   Transaction,
   TransactionBlockhashCtor,
   TransactionInstruction,
-  TransactionMessage,
   VersionedTransaction
 } from '@solana/web3.js';
 import { firstValueFrom, throwError } from 'rxjs';
@@ -50,7 +49,7 @@ export class TxInterceptService {
     const toastData: toastData = {
       message: error.message,
       segmentClass: "toastError",
-      duration:5000
+      duration: 5000
     }
     this.toasterService.msg.next(toastData);
     return throwError(error);
@@ -112,6 +111,23 @@ export class TxInterceptService {
     return await this.sendTx(transferAuthTx, walletOwnerPk)
   }
 
+  public async splitStakeAccounts(walletOwnerPk: PublicKey, targetStakePubKey: PublicKey, lamports: number) {
+
+    // const newStakeAccount = (await this.createStakeAccount(0,walletOwnerPk)).newStakeAccount
+    // const stakeAccountData = await this.createStakeAccount(0, walletOwnerPk)
+    // const newStakeAcc: Keypair = stakeAccountData.newStakeAccount;
+    const newStakeAccount = new Keypair();
+    const splitAccount: Transaction =
+      StakeProgram.split({
+        stakePubkey: targetStakePubKey,
+        authorizedPubkey: walletOwnerPk,
+        splitStakePubkey: newStakeAccount.publicKey,
+        lamports
+      });
+
+
+    return await this.sendTx( [splitAccount], walletOwnerPk, [newStakeAccount])
+  }
   public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey) {
 
 
@@ -299,14 +315,14 @@ export class TxInterceptService {
         message: `Transaction Submitted`,
         btnText: `view on explorer`,
         segmentClass: "toastInfo",
-        duration: 10000,
+        duration: 5000,
         cb: () => window.open(url)
       }
       this.toasterService.msg.next(txSend)
       const config: BlockheightBasedTransactionConfirmationStrategy = {
         signature, blockhash, lastValidBlockHeight//.lastValidBlockHeight
       }
-      await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
+      await this.solanaUtilsService.connection.confirmTransaction(config) //.confirmTransaction(txid, 'confirmed');
       const txCompleted: toastData = {
         message: 'Transaction Completed',
         segmentClass: "toastInfo"
@@ -317,7 +333,7 @@ export class TxInterceptService {
 
     } catch (error) {
       console.error(error)
-     this._formatErrors(error)
+      this._formatErrors(error)
       return null
       // onMsg('transaction failed', 'error')
     }
@@ -335,14 +351,14 @@ export class TxInterceptService {
         message: `Transaction Submitted`,
         btnText: `view on explorer`,
         segmentClass: "toastInfo",
-        duration: 10000,
+        duration: 5000,
         cb: () => window.open(url)
       }
       this.toasterService.msg.next(txSend)
       const config: BlockheightBasedTransactionConfirmationStrategy = {
         signature, blockhash, lastValidBlockHeight//.lastValidBlockHeight
       }
-      await this.solanaUtilsService.connection.confirmTransaction(config, 'finalized') //.confirmTransaction(txid, 'confirmed');
+      await this.solanaUtilsService.connection.confirmTransaction(config) //.confirmTransaction(txid, 'confirmed');
       const txCompleted: toastData = {
         message: 'Transaction Completed',
         segmentClass: "toastInfo"

@@ -11,7 +11,8 @@ import { Observable, map, switchMap } from 'rxjs';
 export class PrizePoolComponent  implements OnInit {
   @Input() prizePool: PrizePool;
   public nextAirdrop:Observable<string> = this._loyaltyService.getNextAirdrop().pipe(map((res:NextAirdrop) =>{
-    return  `ETA in ${res.days} Days`
+    const dStr = res.days > 1 ? 'days' : 'day';
+    return  `ETA in ${res.days} ` + dStr
   }))
   constructor(private _loyaltyService:LoyaltyService) { }
 

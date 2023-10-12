@@ -41,9 +41,9 @@ export class AppComponent {
     ).subscribe(wallet => {
       this._solanaUtilsService.onAccountChangeCB(wallet.publicKey)
     })
-    connectionConfigProviderFactory({
-      commitment: "confirmed"
-    })
+    // connectionConfigProviderFactory({
+    //   commitment: "processed"
+    // })
 
 
       this._connectionStore.setEndpoint(environment.solanaCluster)

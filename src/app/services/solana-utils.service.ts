@@ -262,12 +262,14 @@ export class SolanaUtilsService {
   }
 
   public async fetchAndUpdateStakeAccount(publicKey: PublicKey) {
-    const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
-    const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-      return await this.extendStakeAccount(acc)
-    })
-    const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-    this._stakeAccounts$.next(extendStakeAccountRes);
+
+      const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
+      const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+        return await this.extendStakeAccount(acc)
+      })
+      const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+      this._stakeAccounts$.next(extendStakeAccountRes);
+
   }
 
 

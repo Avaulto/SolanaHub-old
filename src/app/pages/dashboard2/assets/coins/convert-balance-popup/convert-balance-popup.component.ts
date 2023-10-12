@@ -47,7 +47,6 @@ export class ConvertBalancePopupComponent implements OnInit {
 
   private _avaliableToSwap() {
     //  filter tokens for merge conditions(maximum 2% of wallet portfolio)
-    console.log(this.assets)
     const filterTokens = this.assets.filter(token => {
       if (token.baseOfPortfolio < 2 && token.symbol != 'SOL') {
         return token

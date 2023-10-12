@@ -37,6 +37,17 @@ export class Dashboard2Page implements OnInit {
           return null
         }
       }));
+  public portfolioDeFi$ = this.walletPortfolio$.pipe(
+    this._utilsService.isNotUndefined,
+    map(
+      (assets) => {
+        if (assets) {
+          const defi = assets.filter(group => group.platformId !== 'wallet-tokens' && group.platformId !== 'wallet-nfts' && group.platformId != 'native-stake')
+          return defi
+        } else {
+          return null
+        }
+      }));
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _portfolio: PortfolioService,

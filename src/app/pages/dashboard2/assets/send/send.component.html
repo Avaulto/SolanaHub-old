@@ -2,7 +2,7 @@
   <form [formGroup]="sendCoinForm" id="stake-box" class="ion-text-capitalize">
 
 
-    <app-label-layout [layoutConfig]="{title: 'Amount', balance: formatNumber(coin.amount)}">
+    <app-label-layout [layoutConfig]="{title: 'Amount', balance: formatNumber(coin.balance)}">
       <div *ngIf="sendCoinForm.controls.privateTx.value == true" id="private-balance">
         private balance: <span>{{privateBalance}}</span>
         <app-icon-tooltip tip="Any funds within your private balance will be utilized first."></app-icon-tooltip>
@@ -13,7 +13,7 @@
     <ion-row id="send-amount" style="margin-bottom:8px;">
       <div id="send-input">
         <div>
-          <ion-img [src]="coin.logoURI"></ion-img>
+          <ion-img [src]="coin.icon"></ion-img>
         </div>
         <ion-input class="button-text" type="number" formControlName="amount" placeholder="Amount"></ion-input>
       </div>

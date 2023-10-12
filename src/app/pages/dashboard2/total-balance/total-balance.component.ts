@@ -4,6 +4,8 @@ import { Chart, ChartConfiguration } from 'chart.js';
 import { PortfolioElementMultiple } from '@sonarwatch/portfolio-core';
 import { CurrencyPipe } from '@angular/common';
 import { UtilsService } from 'src/app/services';
+import { PopoverController } from '@ionic/angular';
+import { ReceivePopupComponent } from './receive-popup/receive-popup.component';
 
 @Component({
   providers: [CurrencyPipe],
@@ -12,14 +14,15 @@ import { UtilsService } from 'src/app/services';
   styleUrls: ['./total-balance.component.scss'],
 })
 export class TotalBalanceComponent implements OnInit {
-  public menu: string[] = ['asset', 'group'];
-  public currentTab: string = this.menu[0]
   @Input('portfolio') portfolio: PortfolioElementMultiple[] = null;
   private currencyPipe:CurrencyPipe
   @ViewChild('breakdownChart', { static: false }) breakdownChart: ElementRef;
   chartData: any;
   public totalBalanceUsd: number = 0
-  constructor(private _utilsService:UtilsService) { }
+  constructor(
+    private _popoverController: PopoverController,
+    private _utilsService:UtilsService
+    ) { }
 
   ngOnInit() {
 
@@ -36,15 +39,7 @@ export class TotalBalanceComponent implements OnInit {
     }
   }
 
-  changeBreakDown(event) {
-    this.currentTab = event
-    if (this.currentTab === 'asset') {
-      this.createTokenChart()
-    }
-    if (this.currentTab === 'group') {
-      this.createGroupCategory()
-    }
-  }
+
   private createGroupCategory() {
 
     this.chartData ? this.chartData.destroy() : null
@@ -99,56 +94,14 @@ export class TotalBalanceComponent implements OnInit {
 
     this.chartData = new Chart(chartEl, config2)
   }
-  private createTokenChart() {
-    this.chartData ? this.chartData.destroy() : null
-    const chartEl = this.breakdownChart.nativeElement
-    const tokensBreakdown = this.portfolio.map(assets => assets.data)//.map((asset) => asset.data).map((asset: any) => asset.symbol)
-    // const tokensNames = tokensBreakdown.map((asset) => asset.data).map((asset: any) => asset.symbol)
-    // const tokensValue = tokensBreakdown.map((asset: any) => asset.value)
-    console.log(tokensBreakdown);
-    const config2: ChartConfiguration = {
-      type: 'doughnut',
-      data: {
-        labels: ['tokensNames'],
-        datasets: [{
-          // label: '',
-          data: [1],
-          backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)',
-            'rgb(55, 15, 86)',
-            'rgb(154, 62, 135)',
-            'rgb(254, 12, 35)',
-          ],
-          hoverOffset: 4
-        }]
-      },
-      options: {
-        plugins: {
-          legend: {
-            position: "left",
-            align: "center"
-          },
-          tooltip: {
-            callbacks: {
-              label: (d) => {
-                const total: number | any = d.dataset.data.reduce((accumulator: number, currentValue: number) => accumulator + currentValue, 0);
-                console.log(d, total)
-                const percentage = `$${Number(d.raw).toFixedNoRounding(2)} (${(Number(d.raw) / total * 100).toFixedNoRounding(2)}%)`
+  async openReceivePopup() {
+    const popover = await this._popoverController.create({
+      component: ReceivePopupComponent,
+      alignment: 'start',
+      backdropDismiss: true,
+      cssClass: 'receive-assets-popup',
+    });
 
-                return percentage
-              },
-            },
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-
-      }
-    }
-
-    this.chartData = new Chart(chartEl, config2)
-
+    await popover.present();
   }
 }

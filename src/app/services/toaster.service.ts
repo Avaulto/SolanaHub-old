@@ -39,6 +39,10 @@ async presentToastWithOptions(message: string,btnText: string, segmentClass: str
   btnText ? toastOptions.buttons = buttons : null;
 
   const toast = await this.toastController.create(toastOptions);
+  if(await this.toastController.getTop()){
+    this.closeToast()
+  }
+
   toast.present();
 }
 public closeToast(){

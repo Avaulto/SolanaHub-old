@@ -5,8 +5,17 @@ import { ApiService, JupiterStoreService, SolanaUtilsService, ToasterService } f
 import { FetchersResult, mergePortfolioElementMultiples, PortfolioElement, PortfolioElementMultiple } from '@sonarwatch/portfolio-core';
 import { PublicKey } from '@solana/web3.js'
 import { Asset, Token } from 'src/app/models';
-
-
+import va from '@vercel/analytics';
+interface Platform {
+  id: string
+  name: string
+  description: string
+  image: string
+  discord: string
+  twitter: string
+  website: string
+  medium: string
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +34,17 @@ export class PortfolioService {
       message: error.error,
       segmentClass: "toastError",
     });
+    va.track('failed to fetch portfolio', { error })
     return throwError((() => error))
+  }
+  private async _getPlatformsData(): Promise<Platform[]> {
+    let platformInfo = []
+    try {
+      platformInfo = await (await fetch('https://portfolio-api.sonar.watch/v1/portfolio/platforms')).json();
+    } catch (error) {
+      console.warn(error)
+    }
+    return platformInfo
   }
   public getPortfolio(walletAddress: string): Observable<PortfolioElementMultiple[]> {
     return this._apiService.get(`https://portfolio-api.sonar.watch/v1/portfolio/fetch?owner=${walletAddress}&addressSystem=solana&useCache=false`).pipe(
@@ -40,25 +59,32 @@ export class PortfolioService {
         const tokensInfo = await firstValueFrom(this._jupStore.fetchTokenList());
 
         const extendTokenData: any = editedDataExtended.find(group => group.platformId === 'wallet-tokens')
-        this._addTokenData(extendTokenData.data.assets,extendTokenData.value, tokensInfo)
-        
-        // add icon for defi apps
-        const final = []
+        this._addTokenData(extendTokenData.data.assets,  tokensInfo, extendTokenData.value)
+
+        // add more data for platforms
+        const getPlatformsData = await this._getPlatformsData();
         editedDataExtended.forEach(async group => {
-          if (group.label !== "Wallet" && group.label !== "Staked") {
-            const { logoURI, platformUrl } = this._addPlatformData(group.platformId);
-            final.push({ ...group, platformUrl, logoURI })
-          } else {
-            final.push(group)
+          if (group.platformId !== 'wallet-tokens' && group.platformId !== 'wallet-nfts' && group.platformId != 'native-stake') {
+            const platformData = getPlatformsData.find(platfom => platfom.id === group.platformId);
+            group.platformUrl = this._addPlatformUrl(platformData.id)
+            Object.assign(group, platformData);
+
+            if(group.type === "liquidity" ){
+              group.data.liquidities.forEach(async liquid => {
+                this._addTokenData(liquid.assets,  tokensInfo, null)
+              })
+            }
+            if(group.type === "borrowlend" ){
+              this._addTokenData(group.data.suppliedAssets,  tokensInfo, null)
+              // group.data.suppliedAssets.forEach(async supplied => {
+              // })
+            }
           }
-          if(group.platformId === 'native-stake'){
-            const extendStakeAccount = await this._extendStakeAccount(walletAddress)
-            group.data = extendStakeAccount
-          }
+
         })
-      
-        console.log(final)
-        return final
+
+        console.log(editedDataExtended)
+        return editedDataExtended
       }),
 
       catchError((error) => this._formatErrors(error))
@@ -73,47 +99,36 @@ export class PortfolioService {
     });
     return edited
   }
-  private _addPlatformData(platformId) {
-    let logoURI = ''
+  private _addPlatformUrl(platformId: string) {
     let platformUrl = ''
     switch (platformId) {
       case 'solend':
-        logoURI = 'assets/images/icons/solend-logo.png'
         platformUrl = 'https://solend.fi/dashboard'
         break;
       case 'orca':
-        logoURI = 'assets/images/icons/orca-logo.png'
         platformUrl = 'https://www.orca.so/liquidity/portfolio'
         break;
       case 'meteora':
-        logoURI = 'assets/images/icons/meteora-logo.jpeg'
         platformUrl = 'https://app.meteora.ag/'
         break;
       case 'marginfi':
-        logoURI = 'assets/images/icons/marginfi-logo.jpeg'
         platformUrl = 'https://app.marginfi.com/'
         break;
       case 'raydium':
-        logoURI = 'assets/images/icons/ray-logo.jpeg'
         platformUrl = 'https://raydium.io/clmm/pools/?tab=My+Pools'
         break;
-
-
-      default:
-        logoURI = 'assets/images/nft-not-found.svg'
-        break;
     }
-    return { logoURI, platformUrl };
+    return platformUrl;
   }
 
-  private _addTokenData(assets,totalPortfolioValue: number, tokensInfo:Token[]): Asset[] {
+  private _addTokenData(assets,  tokensInfo: Token[], totalPortfolioValue: number): Asset[] {
     return assets.map(res => {
       res.data.address === "11111111111111111111111111111111" ? res.data.address = "So11111111111111111111111111111111111111112" : res.data.address
-      const { symbol,name, logoURI, decimals } = tokensInfo.find(token => token.address === res.data.address)
+      const { symbol, name, logoURI, decimals } = tokensInfo.find(token => token.address === res.data.address)
       res.baseOfPortfolio = res.value / totalPortfolioValue * 100
       res.name = name
       res.symbol = symbol;
-      res.logoURI = logoURI;
+      res.icon = logoURI;
       res.decimals = decimals;
       res.balance = res.data.amount
       res.totalUsdValue = res.value;
@@ -122,17 +137,17 @@ export class PortfolioService {
     }).map(item => {
       Object.assign(item, item.data)
       delete item.data;
-      
+
       return item
     })
   }
 
-  private async _extendStakeAccount(walletAddress: string){
+  private async _extendStakeAccount(walletAddress: string) {
     const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(new PublicKey(walletAddress));
     const extendStakeAccount = await stakeAccounts.map(async (acc) => {
       const account = await this._solanaUtilsService.extendStakeAccount(acc)
 
-    
+
       return account;
     })
     const extendStakeAccountRes = await Promise.all(extendStakeAccount);

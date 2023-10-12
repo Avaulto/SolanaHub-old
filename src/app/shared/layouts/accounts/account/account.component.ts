@@ -24,7 +24,7 @@ export class AccountComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log(this.actionType);
+  
     
   }
   public convertNumber(num){

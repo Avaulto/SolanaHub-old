@@ -1,6 +1,7 @@
 :host {
     display: block;
     height: 50px;
+    width: 100%;
 }
 
 .flex-item-center {
@@ -37,6 +38,7 @@ ion-col{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%;
 }
 
 .global-selected-pair {

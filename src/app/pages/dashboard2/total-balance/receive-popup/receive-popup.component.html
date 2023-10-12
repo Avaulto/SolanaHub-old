@@ -1,0 +1,18 @@
+<ion-grid id="receive-asset" class="ion-padding ion-text-capitalize">
+  <ion-row class="ion-justify-content-center">
+
+    <div id="canvas"></div>
+  </ion-row>
+  <ion-row class="app-deep-bg ion-padding">
+    <ion-label class="sub-strong">wallet address:</ion-label>
+    <span class="sub ion-margin-bottom" style="line-break: anywhere;">{{solanaUtilsService.getCurrentWallet().publicKey.toBase58()}}</span>
+
+
+    <span class="notif app-deep-bg">
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
+      <span>
+        This address is your unique identifier and can be used to receive any type of asset, whether it's a native SOL, a token, or an NFT 
+      </span>
+    </span>
+  </ion-row>
+</ion-grid>

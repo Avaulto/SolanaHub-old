@@ -6,7 +6,7 @@ import { combineLatestWith, distinctUntilChanged, firstValueFrom, Observable, sh
 import { Asset, Nft, TokenBalance, Token } from 'src/app/models';
 import { ApiService, UtilsService, SolanaUtilsService, NftStoreService } from 'src/app/services';
 import { JupiterStoreService } from 'src/app/services/jupiter-store.service';
-import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-balance-popup.component';
+import { ConvertBalancePopupComponent } from '../dashboard2/assets/coins/convert-balance-popup/convert-balance-popup.component';
 
 @Component({
   selector: 'app-dashboard',

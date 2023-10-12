@@ -6,11 +6,11 @@
   <div id="price-impact">
     <span>price impact</span>
     <span [ngClass]="{
-      'excelent-price-impact': (swapDetail | async)?.priceImpact < 0.005,
-      'ok-price-impact': (swapDetail | async)?.priceImpact <  0.01,
-      'severe-price-impact': (swapDetail | async)?.priceImpact > 0.01
+      'excellent-price-impact': (swapDetail | async)?.priceImpact < 0.005,
+      'ok-price-impact': (swapDetail | async)?.priceImpact <  0.025,
+      'severe-price-impact': (swapDetail | async)?.priceImpact > 0.025
       }">
-      {{this.priceImpactScore}}
+      {{this.priceImpactScore}} ({{(swapDetail | async)?.priceImpact | percent:'1.0-3'}})
     </span>
   </div>
   <div id="amm-fee">

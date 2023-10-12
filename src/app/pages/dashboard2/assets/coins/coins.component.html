@@ -4,7 +4,7 @@
   <ion-col size="8" class="balance-breakdown">
     <ion-col size="9" sizeLg="3" id="balace-number">
       <div id="icon-wrapper">
-        <ion-img [src]="coin?.logoURI || '/assets/images/icons/placeholder.svg'"></ion-img>
+        <ion-img [src]="coin?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
 
       </div>
       <div>
@@ -29,7 +29,7 @@
     </ion-col>
   </ion-col>
   <ion-col class="controlls">
-    <ion-button class="ButtonText" (click)="openSendPopup(coin)" >send</ion-button>
+    <ion-button class="ButtonText" fill="outline" (click)="openSendPopup(coin)" >send</ion-button>
     <!-- <ion-button color="danger">burn</ion-button> -->
   </ion-col>
 </ion-row>

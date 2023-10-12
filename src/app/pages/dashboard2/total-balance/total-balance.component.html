@@ -10,8 +10,7 @@
         <span class="global-usd-color sub-strong">{{ totalBalanceUsd | currency}}</span>
       </div>
       <div id="controls">
-        <ion-button class="ButtonText">send</ion-button>
-        <ion-button class="ButtonText" fill="outline"><ion-icon name="qr-code-outline"></ion-icon>receive</ion-button>
+        <ion-button class="ButtonText" (click)="openReceivePopup()" fill="outline"><ion-icon name="qr-code-outline"></ion-icon>receive</ion-button>
       </div>
     </ng-container>
     <ng-template #elseTemplate>

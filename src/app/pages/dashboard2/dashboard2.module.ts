@@ -14,6 +14,7 @@ import { DefiComponent } from './defi/defi.component';
 import { AccountsModule } from 'src/app/shared/layouts/accounts/accounts.module';
 import { StakeAccountsComponent } from './stake-accounts/stake-accounts.component';
 import { SendComponent } from './assets/send/send.component';
+import { ReceivePopupComponent } from './total-balance/receive-popup/receive-popup.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { SendComponent } from './assets/send/send.component';
     CoinsComponent,
     NFTsComponent,
     DefiComponent,
-    SendComponent
+    SendComponent,
+    ReceivePopupComponent
   ]
 })
 export class Dashboard2PageModule { }

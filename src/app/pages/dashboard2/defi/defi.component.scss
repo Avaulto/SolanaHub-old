@@ -1,0 +1,91 @@
+:host{
+    width: 100%;
+}
+.asset{
+    display: flex;
+    justify-content: space-between;
+}
+.balance-breakdown {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+#icon-wrapper {
+    display: flex;
+    align-items: center;
+    margin-inline-end: 10px;
+}
+ion-item{
+    --background: transparent;
+}
+ion-img {
+    width: 26px;
+    // margin-inline-end: 7px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.balance-number {
+    display: flex;
+    padding: 10px 0;
+}
+
+.short-wallet-name {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 8px;
+}
+
+#balance-base {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    div:first-child{
+        width: 90px;
+
+    }
+}
+
+.global-selected-pair {
+    color: var(--ion-color-tertiary);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 11px;
+}
+#bar-wrapper{
+    background: var(--deep-background);
+    width: 80%;
+    height: 8px;
+    border-radius: 8px;
+}
+.bar {
+    height: 8px;
+    display: block;
+    background: #FD49AD;
+    border-radius: 8px;
+}
+
+.global-selected-pair {
+    color: var(--ion-color-tertiary);
+}
+.multi-icon{
+     ion-img:nth-child(1) {
+        transform: translate(9px, 0px);
+        z-index: 1;
+    }
+}
+.controlls{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    margin-inline-end: 20px;
+}
+
+::ng-deep{
+
+    ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon {
+        
+        color: var(--icon-color);
+    }
+}

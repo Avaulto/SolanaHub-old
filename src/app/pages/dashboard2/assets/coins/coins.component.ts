@@ -4,13 +4,6 @@ import { TxInterceptService, UtilsService } from 'src/app/services';
 import { SendComponent } from '../send/send.component';
 import { Asset } from 'src/app/models';
 
-interface Coin {
-  address: string
-  amount: number
-  price: number
-  symbol: string
-  logoURI: string
-}
 
 @Component({
   selector: 'app-coins',

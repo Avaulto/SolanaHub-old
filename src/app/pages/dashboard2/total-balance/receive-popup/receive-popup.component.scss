@@ -1,0 +1,16 @@
+.app-deep-bg{
+    border-radius: 4px;
+    background: var(--deep-background);
+    box-shadow: var(--deep-box-shadow);
+}
+.notif{
+    ion-icon{
+        font-size: 70px;
+        margin-inline-end: 14px;
+        color: var(--ion-color-success);
+    }
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 10px;
+}

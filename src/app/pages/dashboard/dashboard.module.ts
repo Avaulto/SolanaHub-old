@@ -9,7 +9,7 @@ import { TxComponent } from './tx/tx.component';
 
 import { QRCodeModule } from 'angularx-qrcode';
 
-import { ConvertBalancePopupComponent } from './convert-balance-popup/convert-balance-popup.component';
+import { ConvertBalancePopupComponent } from '../dashboard2/assets/coins/convert-balance-popup/convert-balance-popup.component';
 import { AccountsModule } from 'src/app/shared/layouts/accounts/accounts.module';
 
 

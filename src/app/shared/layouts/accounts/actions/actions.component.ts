@@ -51,11 +51,11 @@ export class ActionsComponent implements OnInit {
   }
   public splitStake() { }
   async openMergeAccountPopup() {
-    if (this.account.state == 'active') {
+    // if (this.account.state == 'active') {
 
       const popover = await this._popoverController.create({
         component: AccountsPopupComponent,
-        componentProps: { actionType:'merge', account: this.account, wallet: this.wallet, accounts: this.accounts },
+        componentProps: { actionType:'mergeStake', account: this.account, wallet: this.wallet, accounts: this.accounts },
         // event: e,
         alignment: 'start',
         // showBackdrop:false,
@@ -64,18 +64,32 @@ export class ActionsComponent implements OnInit {
         cssClass: 'merge-accounts-popup',
       });
       await popover.present();
-    } else {
-      const toast: toastData ={
-        message: 'Available for active stake accounts only',
-        segmentClass: 'toastError'
-      }
-      this._toasterService.msg.next(toast)
-    }
+    // } 
+    // else {
+    //   const toast: toastData ={
+    //     message: 'Available for active stake accounts only',
+    //     segmentClass: 'toastError'
+    //   }
+    //   this._toasterService.msg.next(toast)
+    // }
   }
   async openTransferStakeAccount() {
     const popover = await this._popoverController.create({
       component: AccountsPopupComponent,
       componentProps: {actionType:'transferAuth',  account:this.account, wallet: this.wallet, assetType: 'stake account' },
+      // event: e,
+      alignment: 'start',
+      // showBackdrop:false,
+      backdropDismiss: true,
+      // dismissOnSelect: true,
+      cssClass: 'merge-accounts-popup',
+    });
+    await popover.present();
+  }
+  async openSplitStakeAccount() {
+    const popover = await this._popoverController.create({
+      component: AccountsPopupComponent,
+      componentProps: {actionType:'splitStake',  account:this.account, wallet: this.wallet, assetType: 'stake account' },
       // event: e,
       alignment: 'start',
       // showBackdrop:false,

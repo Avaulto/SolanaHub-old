@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { PortfolioElementMultiple } from '@sonarwatch/portfolio-core';
-import { ConvertBalancePopupComponent } from '../../dashboard/convert-balance-popup/convert-balance-popup.component';
+import { ConvertBalancePopupComponent } from './coins/convert-balance-popup/convert-balance-popup.component';
 import { PopoverController } from '@ionic/angular';
 import { Asset } from 'src/app/models';
 
@@ -22,7 +22,6 @@ export class AssetsComponent  implements OnInit,OnChanges {
   ngOnChanges(changes): void {
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
-    console.log(changes)
     if(this.portfolioSPL){
 
       this.coins = this.portfolioSPL.find(group => group.platformId === 'wallet-tokens').data.assets

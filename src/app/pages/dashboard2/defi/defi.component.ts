@@ -1,14 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { UtilsService } from 'src/app/services';
 
 @Component({
   selector: 'app-defi',
   templateUrl: './defi.component.html',
   styleUrls: ['./defi.component.scss'],
 })
-export class DefiComponent  implements OnInit {
+export class DefiComponent implements OnChanges {
+  @Input('portfolioDeFi') portfolioDeFi = null;
+  constructor(private _utilsService: UtilsService) { }
 
-  constructor() { }
+  ngOnChanges() {
+    console.log(this.portfolioDeFi);
+    
+  }
 
-  ngOnInit() {}
 
+  formatNumber = n => {
+    return this._utilsService.formatBigNumbers(n);
+  };
 }

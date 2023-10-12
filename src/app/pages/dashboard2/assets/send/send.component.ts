@@ -8,7 +8,7 @@ import { firstValueFrom, shareReplay, switchMap } from 'rxjs';
 
 import { LoaderService, UtilsService, SolanaUtilsService, TxInterceptService, ToasterService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
-import { toastData } from 'src/app/models';
+import { Asset, toastData } from 'src/app/models';
 
 // @ts-ignore
 process.browser = true;
@@ -20,7 +20,7 @@ process.browser = true;
 })
 export class SendComponent implements OnInit {
   // private _elusiv: Elusiv;
-  @Input() coin;
+  @Input() coin: Asset;
   public privateBalance: number = 0 // private balance in SOL
 
 
@@ -64,7 +64,7 @@ export class SendComponent implements OnInit {
     }
   }
   setMaxAmount() {
-    const fixedAmount = this._utilsService.shortenNum(this.coin.amount)
+    const fixedAmount = this._utilsService.shortenNum(this.coin.balance)
     this.sendCoinForm.controls.amount.setValue(fixedAmount);
   }
 

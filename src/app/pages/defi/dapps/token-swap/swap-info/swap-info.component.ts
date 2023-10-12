@@ -12,14 +12,16 @@ export class SwapInfoComponent implements OnInit {
   @Input() swapDetail: Observable<SwapDetail>;
   public priceImpactScore;
 
-  constructor() { }
-
+  constructor() {
+  }
+  
   ngOnInit(): void {
+    console.log(this.swapDetail)
 
     this.swapDetail.subscribe(swapDetail => {
       if ( swapDetail?.priceImpact  < 0.005) {
-        this.priceImpactScore = 'excelent'
-      } else if(swapDetail?.priceImpact  < 0.01) {
+        this.priceImpactScore = 'excellent'
+      } else if(swapDetail?.priceImpact  < 0.025) {
         this.priceImpactScore = 'Ok'
       }else{
         this.priceImpactScore = 'severe'

@@ -268,11 +268,16 @@ textarea{
     --width: 350px;
 }
 .merge-accounts-popup{
-    --width: 455px;
+    --width: 400px;
     --height:575px;
-    --max-width:98%;
+    --max-width:95%;
 }
 
+.receive-assets-popup{
+    --width: 455px;
+    --height:600px;
+    --max-width:95%;
+}
 .send-asset-popup{
     --width: 455px;
     --height:265px;

@@ -3,5 +3,112 @@
 
     <h3 class="heading-4 ion-margin-bottom ion-text-uppercase box-title">DeFi Liquidity</h3>
 
+    <ng-container *ngIf="portfolioDeFi; else elseTemplate">
+
+      <ion-accordion-group multiple>
+        <ion-accordion [value]="i" *ngFor="let defi of portfolioDeFi; let i = index">
+          <ion-item slot="header" button detail="true">
+            <ion-col class="balance-breakdown">
+              <ion-col class="balance-number">
+                <div id="icon-wrapper">
+                  <ion-img [src]="defi?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
+
+                </div>
+                <div>
+                  <div class="short-wallet-name ion-text-uppercase">
+                    {{defi?.name}}
+                  </div>
+                  <div class="button-text">
+                    <span class="global-selected-pair">
+                      {{defi.value | currency}}
+                    </span>
+                    <!-- <span class="sub">{{formatNumber(defi?.amount || 0)}}</span> -->
+                  </div>
+                </div>
+
+              </ion-col>
+
+            </ion-col>
+            <ion-col class="controlls" *ngIf="defi.platformUrl">
+              <a target="_blank" [href]="defi.platformUrl">
+                <ion-button class="ButtonText">open platform</ion-button>
+              </a>
+            </ion-col>
+          </ion-item>
+          <div class="ion-padding item-content" slot="content">
+            <ng-container *ngIf="defi.type === 'borrowlend'">
+
+              <ion-row class="asset ion-align-items-center ion-justify-content-between"
+                *ngFor="let platform of defi.data.suppliedAssets">
+              
+                  <ion-col class="balance-number">
+                    <div id="icon-wrapper">
+                      <ion-img [src]="platform?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
+
+                    </div>
+                    <div>
+                      <div class="short-wallet-name ion-text-uppercase">
+                        {{platform?.symbol}}
+                      </div>
+                      <div class="button-text">
+                        <span class="global-selected-pair">
+                          {{platform.value | currency}}
+                        </span>
+                        <span class="sub">{{formatNumber(platform?.balance || 0)}}</span>
+                      </div>
+                    </div>
+
+                  </ion-col>
+
+              
+
+                <ion-col id="balance-base">
+                  <div>{{platform.value / defi.value | percent:'1.0-2' }}</div>
+                  <div id="bar-wrapper" class="ion-hide-lg-down">
+                    <span class="bar" [style]="'width:' + platform.value / defi.value * 100 + '%'"></span>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ng-container>
+            <ng-container *ngIf="defi.type === 'liquidity'">
+              <ion-row class="asset ion-align-items-center ion-justify-content-between"
+                *ngFor="let liquidity of defi.data.liquidities">
+           
+                  <ion-col class="balance-number">
+                  <div id="icon-wrapper" class="multi-icon">
+                    <ion-img  *ngFor="let asset of liquidity.assets;let i = index;" [src]="asset?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
+
+                  </div>
+                  <div>
+                    <div class="short-wallet-name ion-text-uppercase">
+                      <span *ngFor="let asset of liquidity.assets;let i = index;">{{asset?.symbol}}<span *ngIf="i + 1< liquidity.assets.length">/</span></span>
+                    </div>
+                    <div class="button-text">
+                      <span class="global-selected-pair">
+                        {{liquidity.value | currency}}
+                      </span>
+                    </div>
+                  </div>
+                  </ion-col>
+
+                  <ion-col  id="balance-base">
+                    <div>{{liquidity.value / defi.value | percent:'1.0-2' }}</div>
+                    <div id="bar-wrapper" class="ion-hide-lg-down">
+                      <span class="bar" [style]="'width:' + liquidity.value / defi.value * 100 + '%'"></span>
+                    </div>
+                  </ion-col>
+                 
+              
+              </ion-row>
+            </ng-container>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+
+
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-wallet-not-connected-state></app-wallet-not-connected-state>
+    </ng-template>
   </ion-col>
 </ion-row>
