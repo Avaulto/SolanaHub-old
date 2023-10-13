@@ -1,6 +1,10 @@
 <div 
 
-class="list-item" (click)="onSelectItem(item)" [ngClass]="{'not-supported': item && item?.selectable == false, 'marinade-native': item?.name === 'Marinade Native'}">
+class="list-item" (click)="onSelectItem(item)" 
+[ngClass]="{
+  'not-supported': item && item?.selectable == false,
+  'top-validator': item?.vote_identity === '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh',
+}">
   <div class="list-item-img">
     <ion-img [src]="item?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
   </div>

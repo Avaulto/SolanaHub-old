@@ -13,10 +13,10 @@
       {{this.priceImpactScore}} ({{(swapDetail | async)?.priceImpact | percent:'1.0-3'}})
     </span>
   </div>
-  <div id="amm-fee">
+  <!-- <div id="amm-fee">
     <span>market maker fee</span>
     <span>{{(swapDetail | async)?.AMMfees}}</span>
-  </div>
+  </div> -->
   <div id="tx-fee">
     <span>transaction fee</span>
     <span>{{(swapDetail | async)?.transactionFee}}</span>

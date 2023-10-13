@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-select-box',
@@ -16,6 +16,7 @@ export class SelectBoxComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
   }
   searchItem(term: any) {
     this.searchTerm = term.value;

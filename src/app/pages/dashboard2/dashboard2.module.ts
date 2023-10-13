@@ -15,6 +15,7 @@ import { AccountsModule } from 'src/app/shared/layouts/accounts/accounts.module'
 import { StakeAccountsComponent } from './stake-accounts/stake-accounts.component';
 import { SendComponent } from './assets/send/send.component';
 import { ReceivePopupComponent } from './total-balance/receive-popup/receive-popup.component';
+import { ConvertBalancePopupComponent } from './assets/coins/convert-balance-popup/convert-balance-popup.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ReceivePopupComponent } from './total-balance/receive-popup/receive-pop
     NFTsComponent,
     DefiComponent,
     SendComponent,
-    ReceivePopupComponent
+    ReceivePopupComponent,
+    ConvertBalancePopupComponent
   ]
 })
 export class Dashboard2PageModule { }

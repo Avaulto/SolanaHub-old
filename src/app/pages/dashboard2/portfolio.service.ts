@@ -83,7 +83,6 @@ export class PortfolioService {
 
         })
 
-        console.log(editedDataExtended)
         return editedDataExtended
       }),
 

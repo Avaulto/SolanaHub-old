@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input} from '@angular/core';
 import { UtilsService } from 'src/app/services';
 
 @Component({
@@ -6,14 +6,10 @@ import { UtilsService } from 'src/app/services';
   templateUrl: './defi.component.html',
   styleUrls: ['./defi.component.scss'],
 })
-export class DefiComponent implements OnChanges {
+export class DefiComponent {
   @Input('portfolioDeFi') portfolioDeFi = null;
   constructor(private _utilsService: UtilsService) { }
 
-  ngOnChanges() {
-    console.log(this.portfolioDeFi);
-    
-  }
 
 
   formatNumber = n => {

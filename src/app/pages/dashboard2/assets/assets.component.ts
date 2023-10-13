@@ -32,7 +32,6 @@ export class AssetsComponent  implements OnInit,OnChanges {
     }
   }
   async openSwapSmallBalancePopup() {
-    console.log(this.coins)
     const popover = await this._popoverController.create({
       component: ConvertBalancePopupComponent,
       componentProps: { assets: this.coins, },

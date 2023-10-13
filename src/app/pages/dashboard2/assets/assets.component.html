@@ -7,7 +7,7 @@
         fill="outline">Dust to SOL</ion-button>
     </div>
     <ng-container *ngIf="portfolioSPL; else elseTemplate">
-      <app-tabs *ngIf="portfolioSPL" [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+      <!-- <app-tabs *ngIf="portfolioSPL" [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs> -->
       <div *ngIf="portfolioSPL" [ngSwitch]="currentTab" class="ion-padding-top">
         <app-coins *ngSwitchCase="'Coins'" [coins]="coins"></app-coins>
         <app-nfts *ngSwitchCase="'NFTs'" [NFTs]="NFTs"></app-nfts>

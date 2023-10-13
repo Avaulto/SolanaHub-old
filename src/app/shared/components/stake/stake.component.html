@@ -3,10 +3,10 @@
   <form [formGroup]="stakeForm" id="stake-box" class="ion-text-capitalize">
     <ion-row class="ion-margin-bottom" id="stake-apr-box">
 
-      <div>~{{avgApy}}% <span>APY</span>
-        <span *ngIf="privateValidatorPage">
+      <div>~{{avgApy$ | async}}% <span>APY</span>
+        <span *ngIf="privateValidatorPage || selectedValidator?.vote_identity == '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'">
 
-          <span class="extra-reward">+ {{ loyaltyProgramBoost | percent:'1.0-2'}} APR Loyalty program</span>
+          <span class="extra-reward">+ {{ loyaltyProgramBoost$ | async | percent:'1.0-2'}} APR Loyalty program</span>
           <span class="extra-reward">+ MEV rewards</span>
         </span>
       </div>

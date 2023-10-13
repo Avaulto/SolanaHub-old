@@ -28,8 +28,11 @@
       </div>
     </ion-col>
   </ion-col>
-  <ion-col class="controlls">
-    <ion-button class="ButtonText" fill="outline" (click)="openSendPopup(coin)" >send</ion-button>
+  <ion-col class="controls">
+    <div>
+      <ion-button class="ButtonText" fill="outline" (click)="openStakePopup()" *ngIf="coin?.symbol === 'SOL'">Stake</ion-button>
+      <ion-button class="ButtonText" fill="outline" (click)="openSendPopup(coin)" >send</ion-button>
+    </div>
     <!-- <ion-button color="danger">burn</ion-button> -->
   </ion-col>
 </ion-row>

@@ -37,7 +37,6 @@ export class SendComponent implements OnInit {
 
   ) { }
   ngOnInit() {
-    console.log(this.coin)
     this.sendCoinForm = this._fb.group({
       mintAddress: [this.coin.address, Validators.required],
       amount: ['', [Validators.required]],
@@ -76,7 +75,6 @@ export class SendComponent implements OnInit {
     const targetPk = new PublicKey(targetAddress);
     try {
       if (symbol !== 'SOL') {
-        console.log(address, amount)
         const mintAddress = new PublicKey(address)
         const sendSPL = await this._txInterceptService.sendSplOrNft(
           mintAddress,
@@ -84,7 +82,6 @@ export class SendComponent implements OnInit {
           targetAddress,
           amount
         )
-        console.log(sendSPL)
       } else {
         const SOL = amount * LAMPORTS_PER_SOL;
         // try {

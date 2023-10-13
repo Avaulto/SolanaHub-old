@@ -1,15 +1,14 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
-import { firstValueFrom,  map,  Observable, of, shareReplay, Subscriber, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, map, Observable, of, shareReplay, Subject, Subscriber, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
 import { ActivatedRoute } from '@angular/router';
 
 import va from '@vercel/analytics';
 import { StakePoolStoreService } from 'src/app/pages/defi/dapps/liquid-stake/stake-pool-store.service';
-import {  BN } from '@marinade.finance/marinade-ts-sdk';
-import { PrizePool } from 'src/app/models/loyalty.model';
+import { BN } from '@marinade.finance/marinade-ts-sdk';
 import { LoyaltyService } from 'src/app/loyalty/loyalty.service';
 
 interface StakePool {
@@ -23,33 +22,18 @@ interface StakePool {
   templateUrl: './stake.component.html',
   styleUrls: ['./stake.component.scss'],
 })
-export class StakeComponent implements OnInit,OnChanges, OnDestroy {
-  public wallet$ = this._solanaUtilsService.walletExtended$;
-  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData | any>;
-  @Input() avgApy: number = 0;
+export class StakeComponent implements OnInit, OnChanges {
   @Input() privateValidatorPage: boolean = false;
-  public loyaltyProgramBoost = 0;
+  @Input() validatorsData: Observable<ValidatorData[] | ValidatorData | any> = null;
+
+  public wallet$ = this._solanaUtilsService.walletExtended$;
+  public avgApy$: BehaviorSubject<number> = new BehaviorSubject(0 as number)
+  public loyaltyProgramBoost$;
+
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
   public formSubmitted: boolean = false;
-  private _marinadeNativeStrategy:ValidatorData = {
-    name: 'Marinade Native',
-    identity: 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq',
-    image:'assets/images/icons/marinade-native-logo.svg',
-    vote_identity:'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq',
-    website:'https://marinade.finance',
-    wizScore: 100,
-    commission: 0,
-    apy_estimate: 7.47,
-    activated_stake: 2000000, // https://api.marinade.finance/tlv
-    uptime: 100,
-    skipRate: 'none',
-    selectable: true,
-    extraData:  {
-      'APY estimate': 7.47 + '%',
-      commission:  + '%'
-    }
-  }
+
   public rewardInfo = {
     apy: 0,
     amount: 0
@@ -58,22 +42,16 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
   public searchTerm = '';
   private _stakePools: StakePool[] = [{ name: 'Marinade', logo: 'assets/images/icons/mSOL-logo.png' }, { name: 'SolBlaze', logo: 'assets/images/icons/bSOL-logo.png' }]
   public stakePools$: Observable<StakePool[]> = of(this._stakePools)
-  private _selectedStakePool = null;
+
   constructor(
-    private _loyaltyService:LoyaltyService,
+    private _loyaltyService: LoyaltyService,
     public loaderService: LoaderService,
     private _fb: FormBuilder,
     private _solanaUtilsService: SolanaUtilsService,
     private _txInterceptService: TxInterceptService,
-    private _activeRoute: ActivatedRoute,
     private _stakePoolStore: StakePoolStoreService
   ) { }
   async ngOnChanges(changes: SimpleChanges) {
-    if(this.avgApy){
-      const loyaltyProgramApr =  await firstValueFrom(this._loyaltyService.getPrizePool())
-      this.loyaltyProgramBoost = this.avgApy * loyaltyProgramApr.APR_boost / 100
-    }
-
   }
   async ngOnInit() {
 
@@ -85,22 +63,12 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
     this.stakeForm.valueChanges.subscribe(form => {
       this.rewardInfo.amount = form.amount
     })
-
-    const validatorData: any = await firstValueFrom(this.validatorsData);
-    if (!this.privateValidatorPage) {
-      validatorData.unshift(this._marinadeNativeStrategy)
-      this._activeRoute.queryParams
-        .subscribe(params => {
-          const validatorIdentity = params.validatorIdentity
-          if (validatorIdentity) {
-            this._preSelectValidator(validatorData, validatorIdentity);
-          }
-        }
-        );
-    } else {
-      const myValidatorIdentity = validatorData.vote_identity
-      this._preSelectValidator([validatorData], myValidatorIdentity);
+    if (this.privateValidatorPage) {
+      this._preSelectValidator()
     }
+    const getAvgAPY = await firstValueFrom(this._solanaUtilsService.getAvgApy())
+    this.avgApy$.next(getAvgAPY)
+
   }
 
   private _addStakePoolControl() {
@@ -115,45 +83,57 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
     this.stakeForm.controls.amount.setValue(fixedAmount.toFixedNoRounding(3));
   }
 
-  private async _preSelectValidator(validators: ValidatorData[], validatorVoteKey: string) {
-    // const validatorsList: ValidatorData[] | any = await firstValueFrom(this.validatorsData);
-    const getSelectedValidator = validators.filter(validator => validator.vote_identity == validatorVoteKey)[0];
-    this.setSelectedValidator(getSelectedValidator);
+  private async _preSelectValidator() {
+    const SolanaHubValidator: ValidatorData | any = await firstValueFrom(this.validatorsData);
+    this.setSelectedValidator(SolanaHubValidator);
+
   }
 
   public setSelectedValidator(validator: ValidatorData): void {
+    if(validator.vote_identity === '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'){
+
+      this.loyaltyProgramBoost$ = this.avgApy$.pipe(switchMap(async avgApy => {
+        const loyaltyProgramApr = await firstValueFrom(this._loyaltyService.getPrizePool())
+        return avgApy * loyaltyProgramApr.APR_boost / 100
+      }))
+      
+    }
+
     this.rewardInfo.apy = validator.apy_estimate
 
     this.selectedValidator = validator;
 
     this.stakeForm.controls.voteAccount.setValue(validator.vote_identity);
+
+    this.avgApy$.next(this.selectedValidator.apy_estimate);
+
+    
   }
 
 
   public async submitNewStake(): Promise<void> {
-    if(this.selectedValidator.name === 'Marinade Native'){
-      this._marinadeNativeStake()
-    }else{ 
-      let { amount, voteAccount, monthLockuptime, stakePool } = this.stakeForm.value;
-      const walletOwner = this._solanaUtilsService.getCurrentWallet();
-      if (this.stakingType === 'native') {
-        await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
-      } else {
-        await this._liquidStake(stakePool, amount, voteAccount)
-      }
+
+    let { amount, voteAccount, monthLockuptime, stakePool } = this.stakeForm.value;
+    const walletOwner = this._solanaUtilsService.getCurrentWallet();
+    if (this.stakingType === 'native') {
+      await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
+    } else {
+      await this._liquidStake(stakePool, amount, voteAccount)
     }
+
   }
 
   private async _liquidStake(poolName: string, amount, validatorVoteAccount) {
     const sol = new BN((amount - 0.001) * LAMPORTS_PER_SOL);
     this._stakePoolStore.stakeSOL(poolName.toLowerCase(), sol, validatorVoteAccount)
   }
+
   private async _nativeStake(monthLockuptime, amount, walletOwnerPublicKey, voteAccount) {
     if (monthLockuptime) {
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
     await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
-    va.track(`native stake` ,{validator:voteAccount, amount});
+    va.track(`native stake`, { validator: voteAccount, amount });
   }
   private _getLockuptimeMilisecond(months: number): number {
     const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();
@@ -164,37 +144,16 @@ export class StakeComponent implements OnInit,OnChanges, OnDestroy {
 
   public stakingType: 'native' | 'liquid' = 'native'
   public async selectStakePath(option: 'native' | 'liquid'): Promise<void> {
-    if(!this.privateValidatorPage){
-    this.selectedValidator = null
-      this.stakeForm.controls.voteAccount.reset()
-    }
-    this.showValidatorList = false
-    const validatorData: any = await firstValueFrom(this.validatorsData);
     this.stakingType = option
     if (option === 'liquid') {
-      if(!this.privateValidatorPage){
-        validatorData.shift(this._marinadeNativeStrategy)
-      }
-      
+
+
       this._addStakePoolControl()
     } else {
-      if(!this.privateValidatorPage){
-        validatorData.unshift(this._marinadeNativeStrategy)
-      }
+
       this._removeStakePoolControl()
     }
   }
 
-  private _marinadeNativeStake(){
-    let { amount } = this.stakeForm.value;
-    const sol = new BN((amount - 0.001) * LAMPORTS_PER_SOL);
-    this._stakePoolStore.marinadeNativeStake(sol)
-  }
 
-  async ngOnDestroy(): Promise<void> {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    const validatorData: any = await firstValueFrom(this.validatorsData);
-    validatorData.shift(this._marinadeNativeStrategy)
-  }
 }

@@ -70,8 +70,11 @@ ion-img {
     color: var(--ion-color-tertiary);
 }
 
-.controlls{
+.controls{
     display: flex;
     align-items: flex-end;
     flex-direction: column;
+    ion-button{
+        margin-inline: 6px;
+    }
 }

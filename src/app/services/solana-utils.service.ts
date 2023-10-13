@@ -66,10 +66,10 @@ export class SolanaUtilsService {
     this._connectionStore.connection$.subscribe(conection => this.connection = conection);
     this._walletStore.anchorWallet$.subscribe(wallet => this._walletExtended$.next(wallet));
   }
-  public setSolPrice(price:number) {
+  public setSolPrice(price: number) {
     this._currentSolPrice$.next(price)
   }
-  public lastSolPrice(){
+  public lastSolPrice() {
     return this._currentSolPrice$.value;
   }
   public getCurrentWallet(): WalletExtended {
@@ -107,46 +107,32 @@ export class SolanaUtilsService {
   public getValidatorData(vote_identity?: string): Observable<ValidatorData | ValidatorData[]> {
     const prefixPath = vote_identity ? `validator/${vote_identity}` : 'validators'
     const stakewizeAPI = 'https://api.stakewiz.com/' + prefixPath
+    const validatorData = (data) => {
+      return {
+        name: data.name || '',
+        image: data.image || '/assets/images/icons/placeholder.svg',
+        vote_identity: data.vote_identity,
+        website: data.website,
+        wizScore: data.wiz_score,
+        commission: data.commission,
+        apy_estimate: data.apy_estimate,
+        activated_stake: data.activated_stake,
+        uptime: data.uptime,
+        selectable: true,
+        extraData: {
+          'APY estimate': data.apy_estimate + '%',
+          commission: data.commission + '%'
+        },
+      }
+    }
     return this._apiService.get(stakewizeAPI).pipe(
       map(data => {
         let result;
         if (vote_identity) {
-          result = {
-            name: data.name || '',
-            image: data.image || '/assets/images/icons/placeholder.svg',
-            vote_identity: data.vote_identity,
-            website: data.website,
-            wizScore: data.wiz_score,
-            commission: data.commission,
-            apy_estimate: data.apy_estimate,
-            activated_stake: data.activated_stake,
-            uptime: data.uptime,
-            selectable: true,
-            extraData: {
-              'APY estimate': data.apy_estimate + '%',
-              commission: data.commission + '%'
-            },
-          }
+          result = validatorData(data)
         } else {
-
           result = data.map(validator => {
-
-            return {
-              name: validator.name || '',
-              image: validator.image || '/assets/images/icons/placeholder.svg',
-              vote_identity: validator.vote_identity,
-              website: validator.website,
-              wizScore: validator.wiz_score,
-              commission: validator.commission,
-              apy_estimate: validator.apy_estimate,
-              activated_stake: data.activated_stake,
-              uptime: validator.uptime,
-              selectable: true,
-              extraData: {
-                'APY estimate': validator.apy_estimate + '%',
-                commission: validator.commission + '%'
-              }
-            }
+            return validatorData(validator)
           })
           this.validatorsData = result;
         }
@@ -263,12 +249,12 @@ export class SolanaUtilsService {
 
   public async fetchAndUpdateStakeAccount(publicKey: PublicKey) {
 
-      const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
-      const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-        return await this.extendStakeAccount(acc)
-      })
-      const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-      this._stakeAccounts$.next(extendStakeAccountRes);
+    const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
+    const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+      return await this.extendStakeAccount(acc)
+    })
+    const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+    this._stakeAccounts$.next(extendStakeAccountRes);
 
   }
 

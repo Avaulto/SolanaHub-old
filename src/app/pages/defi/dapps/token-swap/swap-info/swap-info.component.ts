@@ -16,7 +16,6 @@ export class SwapInfoComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    console.log(this.swapDetail)
 
     this.swapDetail.subscribe(swapDetail => {
       if ( swapDetail?.priceImpact  < 0.005) {
