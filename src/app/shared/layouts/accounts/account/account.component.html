@@ -1,7 +1,7 @@
 
 <ion-row class="item-head" (click)="appendAccountData()">
 
-  <ion-col>
+  <ion-col size="8" sizeXl="9">
   <div class="flex-item-center">
     <div class="table-icon" [ngStyle]="{'background': mergeCondition ? 'transparent' : ''}">
       <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
@@ -16,7 +16,7 @@
     </div>
   </div>
   <!-- {{account | json}} -->
-  <div class="account-address ion-hide-lg-down">
+  <div class="account-address ion-hide-xl-down">
 
     <div class="ion-text-capitalize heading-6">account address</div>
     <div class="sub">
@@ -29,7 +29,7 @@
     <span class="sub" [ngStyle]="{'color': getStatusColor(account?.state)}">{{account?.state}}</span>
   </div>
 </ion-col>
-<ion-col size="4" class="controls" *ngIf="actionType === ''">
+<ion-col size="2" class="controls" *ngIf="actionType === ''">
   <ion-button fill="outline"
   (click)="openStakeAccountActions($event, account)">actions</ion-button>
 </ion-col>

@@ -1,7 +1,7 @@
 {
   "name": "solana-hub",
   "description": "Solana DeFi project",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "SolanaHub",
   "homepage": "https://www.solanahub.app",
   "scripts": {

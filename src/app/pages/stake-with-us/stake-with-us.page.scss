@@ -31,8 +31,8 @@
 
 // current stake STYLE
 ::ng-deep{
-    .account-status.validator-stake, .validator-info{
-        display: none !important;
+    .account-status.validator-stake, .account-address{
+        // display: none !important;
     }
 }
 

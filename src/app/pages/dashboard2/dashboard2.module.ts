@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { Dashboard2PageRoutingModule } from './dashboard2-routing.module';
 
 import { Dashboard2Page } from './dashboard2.page';
-import { QRCodeModule } from 'angularx-qrcode';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { AssetsComponent } from './assets/assets.component';
 import { TotalBalanceComponent } from './total-balance/total-balance.component';
@@ -21,7 +20,6 @@ import { ConvertBalancePopupComponent } from './assets/coins/convert-balance-pop
 @NgModule({
   imports: [
     SharedModule,
-    QRCodeModule,
     AccountsModule,
     Dashboard2PageRoutingModule
   ],
