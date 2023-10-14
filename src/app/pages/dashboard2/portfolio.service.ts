@@ -123,12 +123,13 @@ export class PortfolioService {
   private _addTokenData(assets,  tokensInfo: Token[], totalPortfolioValue: number): Asset[] {
     return assets.map(res => {
       res.data.address === "11111111111111111111111111111111" ? res.data.address = "So11111111111111111111111111111111111111112" : res.data.address
-      const { symbol, name, logoURI, decimals } = tokensInfo.find(token => token.address === res.data.address)
+      // const { symbol, name, logoURI, decimals } = tokensInfo.find(token => token.address === res.data.address)
+      const token = tokensInfo.find(token => token.address === res.data.address)
       res.baseOfPortfolio = res.value / totalPortfolioValue * 100
-      res.name = name
-      res.symbol = symbol;
-      res.icon = logoURI;
-      res.decimals = decimals;
+      res.name = token?.name ? token.name  : '';
+      res.symbol = token?.symbol ? token.symbol  : '';
+      res.icon = token?.logoURI ? token.logoURI  : '';;
+      res.decimals = token?.decimals ? token.decimals  : '';;
       res.balance = res.data.amount
       res.totalUsdValue = res.value;
       res.totalSolValue = res.value / Number(this._solanaUtilsService.lastSolPrice())
