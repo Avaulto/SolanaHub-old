@@ -78,7 +78,7 @@ export class SolanaUtilsService {
   public onAccountChangeCB(walletOwnerPk: PublicKey): void {
     this.connection.onAccountChange(walletOwnerPk, async (ev) => {
       this.accountChange$.next(ev);
-    });
+    },'finalized');
   }
   public getStakeAccountsExtended() {
     return this._stakeAccounts$.value;
@@ -249,13 +249,16 @@ export class SolanaUtilsService {
 
   public async fetchAndUpdateStakeAccount(publicKey: PublicKey) {
 
-    const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
-    const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-      return await this.extendStakeAccount(acc)
-    })
-    const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-    this._stakeAccounts$.next(extendStakeAccountRes);
-
+    
+      const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
+      console.log(stakeAccounts)
+      const extendStakeAccount = await stakeAccounts.map(async (acc) => {
+        return await this.extendStakeAccount(acc)
+      })
+      const extendStakeAccountRes = await Promise.all(extendStakeAccount);
+      this._stakeAccounts$.next(extendStakeAccountRes);
+   
+      
   }
 
 
