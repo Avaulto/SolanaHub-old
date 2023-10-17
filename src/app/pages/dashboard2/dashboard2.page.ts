@@ -19,6 +19,7 @@ export class Dashboard2Page implements OnInit {
     switchMap((wallet: WalletExtended) => {
       if (wallet) {
         // console.log(wallet, this._portfolio.getPortfolio(wallet.publicKey.toBase58()));
+
         return this._portfolio.getPortfolio(wallet.publicKey.toBase58())
       } else {
         return of(null);
@@ -43,15 +44,27 @@ export class Dashboard2Page implements OnInit {
       (assets) => {
         if (assets) {
           const defi = assets.filter(group => group.platformId !== 'wallet-tokens' && group.platformId !== 'wallet-nfts' && group.platformId != 'native-stake')
+
           return defi
+
         } else {
           return null
         }
+
+      }));
+  public portfolioAccounts$ = this.walletPortfolio$.pipe(
+    this._utilsService.isNotNull,
+    this._utilsService.isNotUndefined,
+    map(
+      (assets: any[]) => {
+        const hasAccounts = assets.filter(group => group.platformId === 'native-stake').length ? true : false
+        return hasAccounts
       }));
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _portfolio: PortfolioService,
-    private _utilsService: UtilsService
+    private _utilsService: UtilsService,
+
   ) { }
   ngOnInit(): void {
 

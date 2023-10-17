@@ -41,14 +41,11 @@ ion-col{
     height: 100%;
 }
 
-.global-selected-pair {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 11px;
-    margin-inline-end: 4px;
-}
 .controls{
     display: flex;
     align-items: flex-end;
     flex-direction: column;
+}
+.global-usd-color.sub-strong{
+    margin-inline-end: 3px;
 }

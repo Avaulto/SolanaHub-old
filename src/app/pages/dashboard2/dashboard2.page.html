@@ -5,7 +5,7 @@
 
     <app-assets [portfolioSPL]="portfolioSPL$ | async"></app-assets>
 
-    <app-stake-accounts></app-stake-accounts>
-    <app-defi [portfolioDeFi]="portfolioDeFi$ | async"></app-defi>
+    <app-stake-accounts *ngIf="portfolioAccounts$ | async"></app-stake-accounts>
+    <app-defi *ngIf="(portfolioDeFi$ | async)?.length" [portfolioDeFi]="portfolioDeFi$ | async"></app-defi>
   </ion-grid>
 </ion-content>

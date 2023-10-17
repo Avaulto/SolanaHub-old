@@ -7,7 +7,7 @@
     <ng-container *ngIf="portfolio; else elseTemplate">
       <div id="total-balance">
         <p>{{ totalBalanceUsd | solValue }}</p>
-        <span class="global-usd-color sub-strong">{{ totalBalanceUsd | currency}}</span>
+        <span class="heading-3 global-usd-color">{{ totalBalanceUsd | currency}}</span>
       </div>
       <div id="controls">
         <ion-button class="ButtonText" (click)="openReceivePopup()" fill="outline"><ion-icon name="qr-code-outline"></ion-icon>receive</ion-button>

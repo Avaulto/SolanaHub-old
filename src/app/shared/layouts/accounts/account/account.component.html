@@ -10,7 +10,7 @@
     <div class="validator-info heading-6">
       {{account?.validatorData?.name || 'name not found'}} <br>
       <span class="sub">
-        <span class="global-usd-color global-selected-pair">{{ account?.balance * solPrice | currency }}</span>  
+        <span class="global-usd-color sub-strong">{{ account?.balance * solPrice | currency }}</span>  
         <span class="sub">{{account?.balance | number: '1.3'}} ◎</span>
       </span>
     </div>

@@ -75,9 +75,7 @@ input[type=number]::-webkit-outer-spin-button {
 a {
     color: var(--ion-color-text);
 }
-.global-usd-color {
-    color: var(--ion-color-tertiary);
-}
+
 .data-box {
     min-height: 110px;
     margin-bottom: 24px;
@@ -131,7 +129,9 @@ a {
     line-height: 18px;
     color: var(--ion-text-color);
 }
-
+.global-usd-color {
+    color: var(--ion-color-tertiary);
+}
 .sub-strong {
     font-weight: 600;
     font-size: 13px;

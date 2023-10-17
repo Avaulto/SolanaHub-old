@@ -19,7 +19,7 @@
                     {{defi?.name}}
                   </div>
                   <div class="button-text">
-                    <span class="global-selected-pair">
+                    <span class="global-usd-color sub-strong">
                       {{defi.value | currency}}
                     </span>
                     <!-- <span class="sub">{{formatNumber(defi?.amount || 0)}}</span> -->
@@ -51,7 +51,7 @@
                         {{platform?.symbol}}
                       </div>
                       <div class="button-text">
-                        <span class="global-selected-pair">
+                        <span class="global-usd-color">
                           {{platform.value | currency}}
                         </span>
                         <span class="sub">{{formatNumber(platform?.balance || 0)}}</span>
@@ -84,7 +84,7 @@
                       <span *ngFor="let asset of liquidity.assets;let i = index;">{{asset?.symbol}}<span *ngIf="i + 1< liquidity.assets.length">/</span></span>
                     </div>
                     <div class="button-text">
-                      <span class="global-selected-pair">
+                      <span class="global-usd-color">
                         {{liquidity.value | currency}}
                       </span>
                     </div>

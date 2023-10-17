@@ -15,14 +15,14 @@ import { ReceivePopupComponent } from './receive-popup/receive-popup.component';
 })
 export class TotalBalanceComponent implements OnInit {
   @Input('portfolio') portfolio: PortfolioElementMultiple[] = null;
-  private currencyPipe:CurrencyPipe
+  private currencyPipe: CurrencyPipe
   @ViewChild('breakdownChart', { static: false }) breakdownChart: ElementRef;
   chartData: any;
   public totalBalanceUsd: number = 0
   constructor(
     private _popoverController: PopoverController,
-    private _utilsService:UtilsService
-    ) { }
+    private _utilsService: UtilsService
+  ) { }
 
   ngOnInit() {
 
@@ -35,7 +35,7 @@ export class TotalBalanceComponent implements OnInit {
 
       this.createGroupCategory()
       this.totalBalanceUsd = this.portfolio.filter(data => data.value).reduce((accumulator, currentValue) => accumulator + currentValue.value, 0);
-      // (group => group.label === 'Wallet')
+
     }
   }
 
@@ -44,18 +44,37 @@ export class TotalBalanceComponent implements OnInit {
 
     this.chartData ? this.chartData.destroy() : null
     const chartEl = this.breakdownChart.nativeElement
-    const filterPortfolioLowValue = this.portfolio.filter(group=>group.value > 1)
+    const filterPortfolioLowValue = this.portfolio.filter(group => group.value > 1)
     const groupNames = filterPortfolioLowValue.map((group) => group.platformId)
     const groupValue = filterPortfolioLowValue.map((group: any) => group.value)
 
-    const randomColors = groupNames.map(names => {
+
+    const randomColors = groupNames.map(name => {
       const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
       const r = randomBetween(0, 255);
       const g = randomBetween(0, 255);
       const b = randomBetween(0, 255);
       const rgb = `rgb(${r},${g},${b})`;
 
-      return rgb
+
+      let bgColor;
+
+      switch (name) {
+        case 'wallet-tokens':
+          bgColor = '#13CFC6'
+          break;
+        case 'wallet-nfts':
+          bgColor = '#FE5B94'
+          break;
+        case 'native-stake':
+          bgColor = '#395DF0'
+          break;
+        default:
+          bgColor = rgb
+          break;
+      }
+
+      return bgColor
     })
     const config2: ChartConfiguration = {
       type: 'doughnut',
