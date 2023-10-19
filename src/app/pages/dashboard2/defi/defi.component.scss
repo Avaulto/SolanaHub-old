@@ -41,16 +41,26 @@ ion-img {
     display: flex;
     align-items: center;
     text-align: center;
-    div:first-child{
-        width: 90px;
-
+    flex-direction: column;
+    #borrow-health{
+        justify-content: space-between;
+    display: flex;
+    width: 100%;
+    div{
+        display: flex;
+    }
     }
 }
 
-
+.suc-color{
+    color:var( --ion-color-success);
+}
+.err-color{
+    color:var( --ion-color-danger);
+}
 #bar-wrapper{
     background: var(--deep-background);
-    width: 80%;
+    width: 100%;
     height: 8px;
     border-radius: 8px;
 }

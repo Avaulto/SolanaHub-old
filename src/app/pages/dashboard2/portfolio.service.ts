@@ -75,7 +75,8 @@ export class PortfolioService {
               })
             }
             if(group.type === "borrowlend" ){
-              this._addTokenData(group.data.suppliedAssets,  tokensInfo, null)
+              group.data.suppliedAssets ? this._addTokenData(group.data.suppliedAssets,  tokensInfo, null) : null;
+              group.data.borrowedAssets ? this._addTokenData(group.data.borrowedAssets,  tokensInfo, null) : null;
               // group.data.suppliedAssets.forEach(async supplied => {
               // })
             }

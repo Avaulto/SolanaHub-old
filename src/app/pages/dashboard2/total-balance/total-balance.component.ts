@@ -59,6 +59,7 @@ export class TotalBalanceComponent implements OnInit {
 
       let bgColor;
 
+      console.log(name)
       switch (name) {
         case 'wallet-tokens':
           bgColor = '#13CFC6'
@@ -69,6 +70,21 @@ export class TotalBalanceComponent implements OnInit {
         case 'native-stake':
           bgColor = '#395DF0'
           break;
+        case 'solend':
+          bgColor = '#ff5b28'
+          break;
+        case 'orca':
+          bgColor = '#ffd25c'
+          break;
+        case 'meteora':
+          bgColor = '#ff536a'
+
+          break;
+        case 'marginfi':
+          bgColor = '#0f1111'
+          break;
+        case 'raydium':
+          bgColor = '#1f2d67'
         default:
           bgColor = rgb
           break;
