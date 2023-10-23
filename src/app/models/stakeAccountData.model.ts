@@ -13,4 +13,5 @@ export interface StakeAccountExtended {
   extraData?;
   checkedForMerge: boolean,
   canMerge?: boolean
+  locked?: boolean,
 }

@@ -1,8 +1,11 @@
 
 <ion-row class="item-head" (click)="appendAccountData()">
 
-  <ion-col [size]="actionType === 'mergeStake' ? 12 : 8">
-  <div class="flex-item-center">
+  <ion-col [size]="actionType === 'mergeStake' ? 12 : 10">
+    <ion-row>
+
+
+  <ion-col class="flex-item-center">
     <div class="table-icon" [ngStyle]="{'background': mergeCondition ? 'transparent' : ''}">
       <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
       <ion-checkbox #accCheckbox *ngIf="mergeCondition" [checked]="isChecked"></ion-checkbox>
@@ -14,25 +17,29 @@
         <span class="sub">{{account?.balance | number: '1.3'}} ◎</span>
       </span>
     </div>
-  </div>
+  </ion-col>
   <!-- {{account | json}} -->
-  <div class="account-address ion-hide-xl-down">
+  <ion-col class="account-address ion-hide-xl-down">
 
     <div class="ion-text-capitalize heading-6">account address</div>
     <div class="sub">
       {{account?.shortAddr}}  <ion-icon name="copy-outline"  appCopyText [copyText]="account.addr"></ion-icon>
     </div>
-  </div>
+  </ion-col>
 
-  <div class="account-status">
+  <ion-col class="account-status">
     <div class="ion-text-capitalize heading-6">status</div>
-    <span class="sub" [ngStyle]="{'color': getStatusColor(account?.state)}">{{account?.state}}</span>
-  </div>
+    <span class="sub" [ngStyle]="{'color': getStatusColor(account?.state)}">
+      {{account?.state}}
+    </span>
+    <ion-icon tooltip="Account is locked" *ngIf="account?.locked" name="lock-closed-outline"></ion-icon>
+  </ion-col>
+</ion-row>
 </ion-col>
 <ng-container *ngIf="actionType === ''">
 
   
-  <ion-col size="3" class="controls">
+  <ion-col size="2" class="controls">
     <ion-button fill="outline"
     (click)="openStakeAccountActions($event, account)">actions</ion-button>
   </ion-col>

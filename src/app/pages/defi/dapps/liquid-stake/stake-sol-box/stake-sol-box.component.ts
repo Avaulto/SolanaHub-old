@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { LAMPORTS_PER_SOL, PublicKey, TransactionInstruction } from '@solana/web3.js';
 import { SolanaUtilsService, ToasterService, TxInterceptService, UtilsService } from 'src/app/services';
 
-
+import va from '@vercel/analytics';
 import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, withdrawStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -45,12 +45,14 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm = this._fb.group({
       stakeAmount: ['', [Validators.required]]
     })
+    this.getMarinadeDelayedTicket()
   }
   async ngOnChanges() {
     this.supportDirectStake = this.selectedProvider?.poolName === 'SolBlaze' || this.selectedProvider?.poolName === 'Marinade'
     if (!this.supportDirectStake) {
       this.removeValidatorControl()
     }
+
   }
 
   setMaxAmountSOL() {
@@ -83,14 +85,19 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   }
   // stake custom validator
 
+  public hasMarinadeTicket = 0
+  public async getMarinadeDelayedTicket(){
+    const ticket = await this._stakePoolStore.marinadeSDK.getDelayedUnstakeTickets(this.wallet.publicKey)
+    ticket.size ? this.hasMarinadeTicket = ticket.size : null;
+  }
   public async liquidUnstake() {
 
-    const sol = new BN(this.unStakeAmount * LAMPORTS_PER_SOL);
+    const mSOL = new BN(this.unStakeAmount * LAMPORTS_PER_SOL);
     if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-      const { transaction } = await this._stakePoolStore.marinadeSDK.liquidUnstake(sol)
+      const { ticketAccountKeypair, transaction } = await this._stakePoolStore.marinadeSDK.orderUnstake(mSOL)
 
       // sign and send the `transaction`
-      this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
+      this._txInterceptService.sendTx([transaction], this.wallet.publicKey, [ticketAccountKeypair])
     } else {
       let withdrawTx = await withdrawStake(
         this._solanaUtilsService.connection,
@@ -99,8 +106,8 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         Number(this.unStakeAmount),
         false
       );
-      this._txInterceptService.sendTx(withdrawTx.instructions, this.wallet.publicKey, withdrawTx.signers)
-
+      await this._txInterceptService.sendTx(withdrawTx.instructions, this.wallet.publicKey, withdrawTx.signers)
+      va.track('marinade delayed unstake', {amount:mSOL.toString() })
     }
   }
 }

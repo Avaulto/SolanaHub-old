@@ -220,6 +220,7 @@ export class SolanaUtilsService {
     const accountLamport = Number(account.account.lamports);
     const excessLamport = accountLamport - stake - rentReserve
     const { active, state }: StakeActivationData = await this.connection.getStakeActivation(pk);
+    console.log( active, account.account)
     let validatorData: ValidatorData | any = null;
     if (this.validatorsData) {
       validatorData = this.validatorsData.filter(validator => validator.vote_identity == validatorVoteKey)[0];
@@ -233,6 +234,7 @@ export class SolanaUtilsService {
 
 
     const stakeAccountInfo: StakeAccountExtended = {
+      locked: account.account.data.parsed.info.meta.lockup.unixTimestamp > Math.floor(Date.now() / 1000) ? true : false ,
       addr,
       shortAddr: this._utilService.addrUtil(addr).addrShort,
       balance: Number((stake / LAMPORTS_PER_SOL)),

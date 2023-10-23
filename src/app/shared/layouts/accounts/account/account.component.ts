@@ -25,7 +25,7 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
   
-    
+    console.log(this.account)
   }
   public convertNumber(num){
     return this._utilsService.formatBigNumbers(num)
