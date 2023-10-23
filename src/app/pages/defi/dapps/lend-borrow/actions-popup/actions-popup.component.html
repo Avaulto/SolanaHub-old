@@ -1,0 +1,59 @@
+<ion-grid id="solend-box" class="ion-text-capitalize">
+  <ion-row>
+    <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+  </ion-row>
+
+
+
+  <form [formGroup]="solendActionsForm" class="ion-text-capitalize">
+
+
+    <app-label-layout [layoutConfig]="{title: currentTab, balance: formatNumber(123123123)}">
+
+    </app-label-layout>
+
+    <ion-row id="send-amount" style="margin-bottom:8px;">
+      <div id="send-input">
+        <div>
+          <ion-img [src]="pool.config.liquidityToken.logo"></ion-img>
+        </div>
+        <ion-input class="button-text" type="number" formControlName="amount" placeholder="Amount"></ion-input>
+      </div>
+      <span class="heading-6" (click)="setMaxAmount()">MAX</span>
+    </ion-row>
+
+    <div id="deposit-warning" *ngIf="currentTab === 'supply'">
+      <ion-icon name="warning-outline"></ion-icon>
+      <small>
+        You're depositing into an uninsured pool. Make sure you understand the <a
+          href="https://docs.solend.fi/permissionless-pools/risks" target="_blank"> risks </a> before depositing into
+        this pool.
+      </small>
+    </div>
+
+<div class="solana-action-info sub">
+  <div>price</div>
+  <div>29.59</div>
+</div>
+<div class="solana-action-info sub">
+  <div>User borrow limit</div>
+  <div>29.59</div>
+</div>
+<div class="solana-action-info sub">
+  <div>Utilization</div>
+  <div>29.59</div>
+</div>
+
+    <ion-row class="ion-justify-content-center">
+
+      <ion-button (click)="submit()" [disabled]="formSubmitted || solendActionsForm.invalid"
+        class="ion-text-capitalize">
+        {{currentTab}}
+        <ion-spinner *ngIf="formSubmitted" name="dots"></ion-spinner>
+      </ion-button>
+
+
+
+    </ion-row>
+  </form>
+</ion-grid>
