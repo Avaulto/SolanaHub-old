@@ -50,7 +50,7 @@ export class LiquidStakePage {
 
         this.initProviderSDK(this.currentProvider)
         if (this.currentProvider.poolName.toLowerCase() === 'marinade') {
-          console.log('trigger')
+
           this.getMarinadeDelayedTicket()
         } else {
           // reset array
