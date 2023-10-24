@@ -84,19 +84,3 @@
         width: 100%;
     }
 }
-
-#marinade-delayed-unstake {
-    display: flex;
-    text-transform: capitalize;
-    align-items: center;
-    padding: 8px;
-    background: var(--deep-background);
-    margin: 5px 0;
-    a{
-        color: var(--ion-color-primary);
-    }
-    ion-icon {
-        font-size: 26px;
-        margin-inline-end: 8px;
-    }
-}

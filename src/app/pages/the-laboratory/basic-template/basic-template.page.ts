@@ -48,7 +48,7 @@ export class BasicTemplatePage implements OnInit {
         if (this.strategyName === 'marinade-plus') {
           // await this._marinadePlusService.initStrategyStatefulStats()
         }
-
+        console.log(wallet)
         if (this.strategyName === 'solblaze-farmer') {
           this.userHoldings = { SOL: null, USD: null }
           if (this.initialFetch) {
@@ -60,7 +60,7 @@ export class BasicTemplatePage implements OnInit {
         }
         return wallet;
       } else {
-        this.userHoldings = { SOL: 0, USD: 0 }
+        this.userHoldings = { SOL: null, USD: null }
         this.initialFetch = true
         return null
       }

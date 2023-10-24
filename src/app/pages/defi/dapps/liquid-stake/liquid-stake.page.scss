@@ -120,3 +120,40 @@ app-wallet-not-connected-state {
     }
 
 }
+
+#marinade-delayed-unstake{
+    width: 40vw;
+    margin: 0 auto;
+    h3{
+        margin: 0;
+        margin-block-end: 10px;
+    }
+    .asset {
+        display: flex;
+        justify-content: space-between;
+        margin-block-end: 5px;
+        .preview {
+            display: flex;
+            align-items: center;
+        }
+        ion-img{
+            width: 30px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 10px;
+        }
+        ion-chip{
+            text-align: center;
+            background: var(--ion-color-primary);
+            color: white;
+            width: 120px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            &.claimable{
+                opacity: 1;
+            }
+        }
+    }
+}

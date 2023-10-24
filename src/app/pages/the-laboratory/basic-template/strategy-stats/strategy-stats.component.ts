@@ -10,7 +10,7 @@ import { SolblazeFarmerService } from '../../strategies-builder/solblaze-farmer.
 })
 export class StrategyStatsComponent implements  OnChanges {
   @Output() onApyReady = new EventEmitter()
-  @Input() userHoldings = { SOL: 0, USD: 0 };
+  @Input() userHoldings = { SOL: null, USD: null };
   @Input() strategyName: string = '';
   public strategyStats = {
     userHoldings: this.userHoldings,

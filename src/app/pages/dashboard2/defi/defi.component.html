@@ -41,8 +41,8 @@
                 </div>
               </ion-col>
             </ion-col>
-            <ion-col class="controlls" *ngIf="defi.platformUrl">
-              <a target="_blank" [href]="defi.platformUrl">
+            <ion-col class="controlls" >
+              <a *ngIf="defi.platformUrl" target="_blank" [href]="defi.platformUrl">
                 <ion-button class="ButtonText">open platform</ion-button>
               </a>
             </ion-col>

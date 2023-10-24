@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 
-import {  map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
+import { map, Observable, shareReplay, Subject, Subscriber, Subscription, switchMap } from 'rxjs';
 import { StakeAccountExtended, WalletExtended } from 'src/app/models';
 import { StakePoolProvider, StakePoolStats } from './stake-pool.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { StakePoolStoreService } from './stake-pool-store.service';
-import { SolanaUtilsService, UtilsService } from 'src/app/services';
+import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { Title } from '@angular/platform-browser';
-
+import { LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import va from '@vercel/analytics';
 
 @Component({
   selector: 'app-liquid-stake',
@@ -19,10 +20,11 @@ export class LiquidStakePage {
   constructor(
     public stakePoolStore: StakePoolStoreService,
     private _solanaUtilsService: SolanaUtilsService,
-    private _titleService: Title,  
+    private _titleService: Title,
     private _utilService: UtilsService,
-    private _activeRoute: ActivatedRoute
-  ) { 
+    private _activeRoute: ActivatedRoute,
+    private _txInterceptService: TxInterceptService,
+  ) {
   }
 
   public stakePoolsInfo: StakePoolProvider[] = [];
@@ -36,6 +38,7 @@ export class LiquidStakePage {
     this._utilService.isNotNull,
     this._utilService.isNotUndefined,
     map((provider) => {
+
       this.currentProvider = provider
       this.tip = `
       SOL/${provider.tokenSymbol} exchange rate is determined by a formula:
@@ -46,11 +49,19 @@ export class LiquidStakePage {
       if (this.wallet) {
 
         this.initProviderSDK(this.currentProvider)
+        if (this.currentProvider.poolName.toLowerCase() === 'marinade') {
+          console.log('trigger')
+          this.getMarinadeDelayedTicket()
+        } else {
+          // reset array
+          this.marinadeDelayedStake = []
+        }
+
       }
       return provider
     }))
   public stakeAccounts$: Observable<StakeAccountExtended[]> = this._solanaUtilsService.walletExtended$.pipe(
-   
+
     // accountStateChange used as trigger for re-render wallet related context
     switchMap(async (wallet: WalletExtended) => {
       if (wallet) {
@@ -58,6 +69,13 @@ export class LiquidStakePage {
         this.solBalance = wallet.balance
         if (this.currentProvider) {
           this.initProviderSDK(this.currentProvider)
+          if (this.currentProvider.poolName.toLowerCase() === 'marinade') {
+            console.log('trigger')
+            this.getMarinadeDelayedTicket()
+          } else {
+            // reset array
+            this.marinadeDelayedStake = []
+          }
         }
         const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
         const extendStakeAccount = await stakeAccounts.map(async (acc) => {
@@ -75,7 +93,7 @@ export class LiquidStakePage {
         })
         const extendStakeAccountRes = await Promise.all(extendStakeAccount);
         return extendStakeAccountRes;
-      }else{
+      } else {
         return null
       }
     }),
@@ -137,5 +155,65 @@ export class LiquidStakePage {
     this.stakingType = option
   }
 
+  public marinadeDelayedStake = []
 
+  public claim
+  public async getMarinadeDelayedTicket() {
+    const getRemainingTimeDays = (msLeft: number, abbreviated = true) => {
+      const days = Math.round(msLeft / 1000 / 60 / 60 / 24);
+      return abbreviated ? `${days}d` : `${days} day${days !== 1 ? "s" : ""}`;
+    };
+
+    const getRemainingTimeHours = (msLeft: number, abbreviated = true) => {
+      const hours = Math.round(msLeft / 1000 / 60 / 60);
+      return abbreviated ? `${hours}h` : `${hours} hour${hours !== 1 ? "s" : ""}`;
+    };
+
+    const getRemainingTimeMinutes = (msLeft: number, abbreviated = true) => {
+      const minutes = Math.round(msLeft / 1000 / 60);
+      return abbreviated
+        ? `${minutes}m`
+        : `${minutes} minute${minutes !== 1 ? "s" : ""}`;
+    };
+
+    const getRemainingTime = (msLeft: number, abbreviated = true) => {
+      const days = Math.round(msLeft / 1000 / 60 / 60 / 24);
+      if (days > 0) {
+        return getRemainingTimeDays(msLeft, abbreviated);
+      }
+
+      const hours = Math.round(msLeft / 1000 / 60 / 60);
+      if (hours > 0) {
+        return getRemainingTimeHours(msLeft, abbreviated);
+      }
+
+      return getRemainingTimeMinutes(msLeft, abbreviated);
+    };
+
+    try {
+      const tickets = await this.stakePoolStore.marinadeSDK.getDelayedUnstakeTickets(this.wallet.publicKey)
+      tickets.forEach((item, key) => {
+        const due = getRemainingTime(item.ticketDueDate.getTime() - Date.now(), false)
+        // @ts-ignore
+        item.due = due
+        item.ticketDue
+        // @ts-ignore
+        item.sol = Number(item.lamportsAmount.toString()) / LAMPORTS_PER_SOL
+        // @ts-ignore
+        item.account = key
+        this.marinadeDelayedStake.push(item)
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  public async claimTicket(account: PublicKey) {
+    try {
+      const { transaction } = await this.stakePoolStore.marinadeSDK.claim(account)
+      await this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
+      va.track('marinade claim delayed unstake')
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }

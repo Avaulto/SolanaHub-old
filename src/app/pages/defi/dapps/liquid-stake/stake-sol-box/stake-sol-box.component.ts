@@ -45,7 +45,6 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
     this.stakeForm = this._fb.group({
       stakeAmount: ['', [Validators.required]]
     })
-    this.getMarinadeDelayedTicket()
   }
   async ngOnChanges() {
     this.supportDirectStake = this.selectedProvider?.poolName === 'SolBlaze' || this.selectedProvider?.poolName === 'Marinade'
@@ -85,11 +84,7 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
   }
   // stake custom validator
 
-  public hasMarinadeTicket = 0
-  public async getMarinadeDelayedTicket(){
-    const ticket = await this._stakePoolStore.marinadeSDK.getDelayedUnstakeTickets(this.wallet.publicKey)
-    ticket.size ? this.hasMarinadeTicket = ticket.size : null;
-  }
+ 
   public async liquidUnstake() {
 
     const mSOL = new BN(this.unStakeAmount * LAMPORTS_PER_SOL);

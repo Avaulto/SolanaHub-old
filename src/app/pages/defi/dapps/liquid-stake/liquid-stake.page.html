@@ -22,8 +22,7 @@
                             class=" ion-align-items-center ion-margin-bottom ion-justify-content-between">
 
                             <ion-col sizeLg="5.8" sizeMd="12" class="stake-by"
-                                [ngClass]="{'selected-path': stakingType == 'sol'}"
-                                (click)="selectStakePath('sol')">
+                                [ngClass]="{'selected-path': stakingType == 'sol'}" (click)="selectStakePath('sol')">
                                 <div class="select-group">
                                     <span>
                                         Deposit SOL
@@ -75,7 +74,8 @@
                                 {{currentProvider.commission}}%
                             </div>
                         </ion-row>
-                        <ion-row id="exchange-rate" *ngIf="currentProvider.poolName.toLowerCase() === 'marinade'" class="ion-justify-content-between ion-align-items-center">
+                        <ion-row id="exchange-rate" *ngIf="currentProvider.poolName.toLowerCase() === 'marinade'"
+                            class="ion-justify-content-between ion-align-items-center">
                             <div style="display: flex; align-items:center;">
                                 <span>
                                     Deposit fee
@@ -118,12 +118,10 @@
                     <ng-container *ngIf="stakeAccounts$ | async; else elseTemplate">
 
                         <app-stake-sol-box *ngIf="stakingType == 'sol'" [selectedProvider]="currentProvider"
-                            [stakePoolStats]="stakePoolStats" [solBalance]="solBalance"
-                            [wallet]="wallet">
+                            [stakePoolStats]="stakePoolStats" [solBalance]="solBalance" [wallet]="wallet">
                         </app-stake-sol-box>
                         <app-stake-account-box *ngIf="stakingType == 'account'" [selectedProvider]="currentProvider"
-                            [stakeAccounts]="stakeAccounts$" [stakePoolStats]="stakePoolStats"
-                            [wallet]="wallet">
+                            [stakeAccounts]="stakeAccounts$" [stakePoolStats]="stakePoolStats" [wallet]="wallet">
                         </app-stake-account-box>
                     </ng-container>
                     <ng-template #elseTemplate>
@@ -132,6 +130,32 @@
 
                 </ion-col>
             </ion-row>
+
+            <ng-container *ngIf="marinadeDelayedStake.length > 0;">
+                <div id="marinade-delayed-unstake" class="data-box ion-padding">
+                    <h3 class="heading-3">Delayed unstake</h3>
+                    <div class="asset" *ngFor="let ticket of marinadeDelayedStake">
+                        <div class="preview">
+                            <ion-img src="/assets/images/icons/solana-logo.webp"></ion-img>
+                            <div class="value">
+                                <div>SOL</div>
+                                <div>{{ticket.sol | number:'1.3'}}</div>
+                            </div>
+                        </div>
+                        <ion-chip [class.claimable]="ticket.ticketDue">
+                            <ng-container *ngIf="ticket.ticketDue; else elseTemplate">
+                               <span (click)="claimTicket(ticket.account)">
+                                claim
+                               </span> 
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                in {{ticket.due}}
+                            </ng-template>
+                            </ion-chip>
+                    </div>
+                </div>
+            </ng-container>
+ 
         </ion-grid>
     </ng-container>
     <ng-template #elseTemplate>
@@ -142,13 +166,13 @@
                 <p class="ion-margin-bottom">Please select a staking pool u wish to join</p>
                 <div class="pool-provider data-box ion-padding" *ngFor="let provider of stakePoolStore.providers">
                     <div class="pool-provider-info">
-                    <ion-img [src]="provider.tokenImageURL"></ion-img>
-                    <div>
-                        <ion-text>{{provider.poolName}}</ion-text>
-                        <a class="sub" [href]="provider.website">learn more</a>
+                        <ion-img [src]="provider.tokenImageURL"></ion-img>
+                        <div>
+                            <ion-text>{{provider.poolName}}</ion-text>
+                            <a class="sub" [href]="provider.website">learn more</a>
+                        </div>
                     </div>
-                    </div>
-                    
+
 
                     <ion-button (click)="stakePoolStore.selectProvider(provider)" fill="outline" color="secondary">
                         select
