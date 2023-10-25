@@ -69,12 +69,11 @@ export class LiquidStakePage {
         this.solBalance = wallet.balance
         if (this.currentProvider) {
           this.initProviderSDK(this.currentProvider)
+          this.marinadeDelayedStake = []
           if (this.currentProvider.poolName.toLowerCase() === 'marinade') {
             console.log('trigger')
+            
             this.getMarinadeDelayedTicket()
-          } else {
-            // reset array
-            this.marinadeDelayedStake = []
           }
         }
         const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(wallet.publicKey);
@@ -207,13 +206,19 @@ export class LiquidStakePage {
       console.error(error)
     }
   }
+  public processClaimTicket = false
   public async claimTicket(account: PublicKey) {
+    this.processClaimTicket = true
     try {
       const { transaction } = await this.stakePoolStore.marinadeSDK.claim(account)
-      await this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
-      va.track('marinade claim delayed unstake')
+      const res = await this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
+      if(res){
+
+        va.track('marinade claim delayed unstake')
+      }
     } catch (e) {
       console.error(e);
     }
+    this.processClaimTicket = false
   }
 }

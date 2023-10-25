@@ -122,7 +122,8 @@ app-wallet-not-connected-state {
 }
 
 #marinade-delayed-unstake{
-    width: 40vw;
+    width: 500px;
+    max-width: 100%;
     margin: 0 auto;
     h3{
         margin: 0;
@@ -142,18 +143,16 @@ app-wallet-not-connected-state {
             overflow: hidden;
             margin: 10px;
         }
-        ion-chip{
+        ion-button{
             text-align: center;
             background: var(--ion-color-primary);
             color: white;
             width: 120px;
-            opacity: 0.8;
+            border-radius: 40%;
             display: flex;
             align-items: center;
             justify-content: center;
-            &.claimable{
-                opacity: 1;
-            }
+      
         }
     }
 }

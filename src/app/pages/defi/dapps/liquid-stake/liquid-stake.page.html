@@ -142,16 +142,20 @@
                                 <div>{{ticket.sol | number:'1.3'}}</div>
                             </div>
                         </div>
-                        <ion-chip [class.claimable]="ticket.ticketDue">
+                        
                             <ng-container *ngIf="ticket.ticketDue; else elseTemplate">
-                               <span (click)="claimTicket(ticket.account)">
-                                claim
-                               </span> 
+                                <ion-button shape="round" [disabled]="processClaimTicket" (click)="claimTicket(ticket.account)">
+                                    claim
+                                    <ion-spinner name="dots" *ngIf="processClaimTicket"></ion-spinner>
+                                </ion-button>
                             </ng-container>
+
                             <ng-template #elseTemplate>
-                                in {{ticket.due}}
+                                <ion-button shape="round" [disabled]="true">
+                                    in {{ticket.due}}
+                                </ion-button>
                             </ng-template>
-                            </ion-chip>
+                         
                     </div>
                 </div>
             </ng-container>
