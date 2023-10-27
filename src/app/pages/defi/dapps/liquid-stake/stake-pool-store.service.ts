@@ -203,7 +203,7 @@ export class StakePoolStoreService {
       Number(sol),
       undefined,
       // referral
-      new PublicKey(environment.platformATAFeeCollectorbSOL)
+      new PublicKey(environment.platformATAbSOLFeeCollector)
     );
     const stakeCLS = (validatorVoteAccount: string) => {
 
