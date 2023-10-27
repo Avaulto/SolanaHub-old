@@ -11,6 +11,7 @@ import * as StakePoolSDK from '@solana/spl-stake-pool';
 import { depositSol, withdrawStake, stakePoolInfo } from '@solana/spl-stake-pool';
 import va from '@vercel/analytics';
 import { toastData, WalletExtended } from 'src/app/models';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
@@ -202,6 +203,7 @@ export class StakePoolStoreService {
       Number(sol),
       undefined,
       // referral
+      new PublicKey(environment.platformATAFeeCollectorbSOL)
     );
     const stakeCLS = (validatorVoteAccount: string) => {
 
@@ -229,8 +231,8 @@ export class StakePoolStoreService {
       ixs.push(ix2)
     }
     const txId = await this._txInterceptService.sendTx(ixs, walletOwner.publicKey, ix.signers);
-    await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
-
+    fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
+    fetch(`https://stake.solblaze.org/api/v1/referral_stake?ref=${environment.platformFeeCollector}&txid=${txId}`);
   }
 
 

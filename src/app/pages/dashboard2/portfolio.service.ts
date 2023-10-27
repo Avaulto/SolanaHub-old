@@ -59,7 +59,9 @@ export class PortfolioService {
         const tokensInfo = await firstValueFrom(this._jupStore.fetchTokenList());
 
         const extendTokenData: any = editedDataExtended.find(group => group.platformId === 'wallet-tokens')
-        this._addTokenData(extendTokenData.data.assets,  tokensInfo, extendTokenData.value)
+        if(extendTokenData){
+          this._addTokenData(extendTokenData?.data.assets,  tokensInfo, extendTokenData?.value)
+        }
 
         // add more data for platforms
         const getPlatformsData = await this._getPlatformsData();

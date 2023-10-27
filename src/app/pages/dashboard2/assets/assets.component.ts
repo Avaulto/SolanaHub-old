@@ -24,8 +24,8 @@ export class AssetsComponent  implements OnInit,OnChanges {
     //Add '${implements OnChanges}' to the class.
     if(this.portfolioSPL){
 
-      this.coins = this.portfolioSPL.find(group => group.platformId === 'wallet-tokens').data.assets
-      this.NFTs = this.portfolioSPL.find(group => group.platformId === 'wallet-nfts')
+      this.coins = this.portfolioSPL.find(group => group.platformId === 'wallet-tokens')?.data?.assets || []
+      this.NFTs = this.portfolioSPL.find(group => group.platformId === 'wallet-nfts') || []
     }else{
       this.coins = null
       this.NFTs = null

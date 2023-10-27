@@ -74,7 +74,7 @@
                                 {{currentProvider.commission}}%
                             </div>
                         </ion-row>
-                        <ion-row id="exchange-rate" *ngIf="currentProvider.poolName.toLowerCase() === 'marinade'"
+                        <ion-row id="exchange-rate" *ngIf="currentProvider.poolName.toLowerCase() === 'marinade' || currentProvider.poolName.toLowerCase() === 'solblaze'"
                             class="ion-justify-content-between ion-align-items-center">
                             <div style="display: flex; align-items:center;">
                                 <span>
@@ -86,6 +86,7 @@
                                 0.02%
                             </div>
                         </ion-row>
+                        
                         <ion-row id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
                             <div style="display: flex; align-items:center;">
                                 <span>

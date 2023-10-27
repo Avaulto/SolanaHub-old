@@ -67,16 +67,42 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="stakingType === 'liquid'" class="ion-margin-bottom">
+    <ion-row *ngIf="stakingType === 'liquid'" >
 
       <ion-select formControlName="stakePool" aria-label="stake-pool" placeholder="select pool" interface="popover">
-        <ion-select-option value="marinade">
-          <app-image-placeholder imagePath="assets/images/icons/mSOL-logo.png"></app-image-placeholder>
-          marinade</ion-select-option>
+        <ion-select-option value="marinade">marinade</ion-select-option>
         <ion-select-option value="solblaze">solblaze</ion-select-option>
       </ion-select>
     </ion-row>
+    <ion-row *ngIf="stakingType === 'liquid' && stakeForm.controls.stakePool.value" id="exchange-rate" class="ion-justify-content-between ion-align-items-center">
+      <div style="display: flex; align-items:center;">
+          <span>
+              pool management fee
+          </span>
 
+      </div>
+      <div>
+        <span *ngIf="stakeForm.controls.stakePool.value === 'marinade'">
+          0.06%
+          </span>
+        <span *ngIf="stakeForm.controls.stakePool.value === 'solblaze'">
+        0.05%
+        </span>
+      </div>
+  </ion-row>
+  <ion-row  *ngIf="stakingType === 'liquid' && stakeForm.controls.stakePool.value && privateValidatorPage" id="exchange-rate" class="ion-justify-content-between ion-margin-bottom ion-align-items-center">
+      <div style="display: flex; align-items:center;">
+          <span>
+              Deposit fee
+          </span>
+
+      </div>
+      <div>
+          0.02%
+      </div>
+  </ion-row>
+
+    
     <ng-container *ngIf="stakingType === 'native'"> 
       <ion-row class="heading-6 ion-justify-content-between">
         <div class="aligned">lockup <app-icon-tooltip tooltip="Locking up will create a stake account that is locked for the duration of time you specify."></app-icon-tooltip>
