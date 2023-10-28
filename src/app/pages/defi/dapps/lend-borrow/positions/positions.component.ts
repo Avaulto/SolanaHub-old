@@ -67,7 +67,6 @@ export class PositionsComponent implements OnInit {
     return this._utilsService.formatBigNumbers(n);
   };
   async openLendAndBorrowPopup(coin:Asset, popupType:string) {
-    console.log(coin)
     const asset = {
       logo:coin.icon,
       balance:coin.balance,

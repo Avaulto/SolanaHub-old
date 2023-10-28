@@ -38,7 +38,12 @@ export const pages: any = [
         {
           title: "NFT Liquidity",
           url: "/defi/nft-liquidity",
-          icon: 'swap-horizontal',
+          icon: 'umbrella-outline',
+        },
+        {
+          title: "lend-borrow",
+          url: "/defi/lend-borrow",
+          icon: 'cash-outline',
         },
       ]
     },

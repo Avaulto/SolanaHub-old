@@ -58,8 +58,6 @@ export class TotalBalanceComponent implements OnInit {
 
 
       let bgColor;
-
-      console.log(name)
       switch (name) {
         case 'wallet-tokens':
           bgColor = '#13CFC6'

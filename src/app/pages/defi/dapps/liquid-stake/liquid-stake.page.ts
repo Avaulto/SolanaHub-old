@@ -71,7 +71,6 @@ export class LiquidStakePage {
           this.initProviderSDK(this.currentProvider)
           this.marinadeDelayedStake = []
           if (this.currentProvider.poolName.toLowerCase() === 'marinade') {
-            console.log('trigger')
             
             this.getMarinadeDelayedTicket()
           }

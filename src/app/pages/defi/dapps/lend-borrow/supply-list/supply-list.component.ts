@@ -48,7 +48,6 @@ export class SupplyListComponent  implements OnInit {
     map(market =>  market.reserves.map(pool => pool).filter(pool => pool.stats.symbol.toLowerCase() == 'bsol' || pool.stats.loanToValueRatio)),
     tap(m => {
       m.map(p => {
-// console.log(p)
         // const slot = 500;
         // const solendAvg30daysSupplyAPY = p.stats.supplyInterestAPY * 413 / slot
         // const solendAvg30daysBorrowAPY = p.stats.borrowInterestAPY * 413 / slot

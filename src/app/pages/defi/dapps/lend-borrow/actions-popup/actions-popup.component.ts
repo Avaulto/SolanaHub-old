@@ -50,7 +50,6 @@ export class ActionsPopupComponent implements OnInit {
       }
       this.asset.balance = tokenBalance
       // const tokensBalance = (await firstValueFrom(this._portfolioService.getPortfolio(publicKey.toBase58()))).filter(group => group.platformId === 'wallet-tokens')[0]
-      console.log(tokenBalance);
       
     }
     if (this.popupType === 'repay') {
@@ -63,14 +62,12 @@ export class ActionsPopupComponent implements OnInit {
     }
     if(this.popupType === 'borrow'){
       const res = await this.addObligation()
-      console.log(res);
       // const pool = res.borrows.filter(b => b.mintAddress == this.asset.mintAddress)[0]
       // max borrow
       const maxBorrow = res.obligationStats.borrowLimit * (1 - res.obligationStats.borrowUtilization) / this.asset.assetPriceUSD
       this.asset.balance = maxBorrow
 
     }
-    console.log(this.asset);
 
  
   }

@@ -252,7 +252,6 @@ export class SolanaUtilsService {
 
     
       const stakeAccounts = await this.getStakeAccountsByOwner(publicKey);
-      console.log(stakeAccounts)
       const extendStakeAccount = await stakeAccounts.map(async (acc) => {
         return await this.extendStakeAccount(acc)
       })
