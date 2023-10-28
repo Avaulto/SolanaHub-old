@@ -49,7 +49,6 @@ export class SolendStoreService {
     await solendMarket.loadAll();
     // Refresh all cached data
     // solendMarket.refreshAll()
-    console.log(solendMarket)
     this._solendSDK.next(solendMarket)
   }
   public getSolendStats(): Observable<Stats> {
@@ -80,7 +79,10 @@ export class SolendStoreService {
         );
       const { preLendingTxn, lendingTxn, postLendingTxn } = await solendAction.getTransactions()
       const arrayOfTx: Transaction[] = this._validatorIx([preLendingTxn, lendingTxn, postLendingTxn])
-      await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      let tx = await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      if(tx){
+        va.track('solend action', { type: 'supply'})
+      }
     } catch (error) {
       this._formatErrors(error)
     }
@@ -99,7 +101,10 @@ export class SolendStoreService {
         );
       const { preLendingTxn, lendingTxn, postLendingTxn } = await solendAction.getTransactions()
       const arrayOfTx: Transaction[] = this._validatorIx([preLendingTxn, lendingTxn, postLendingTxn])
-      await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      let tx = await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      if(tx){
+        va.track('solend action', { type: 'withdraw'})
+      }
     } catch (error) {
       this._formatErrors(error)
     }
@@ -117,7 +122,10 @@ export class SolendStoreService {
         );
       const { preLendingTxn, lendingTxn, postLendingTxn } = await solendAction.getTransactions()
       const arrayOfTx: Transaction[] = this._validatorIx([preLendingTxn, lendingTxn, postLendingTxn])
-      await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      let tx = await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      if(tx){
+        va.track('solend action', { type: 'borrow'})
+      }
     } catch (error) {
       this._formatErrors(error)
     }
@@ -135,7 +143,10 @@ export class SolendStoreService {
       const { preLendingTxn, lendingTxn, postLendingTxn } = await solendAction.getTransactions()
       const arrayOfTx: Transaction[] = this._validatorIx([preLendingTxn, lendingTxn, postLendingTxn])
 
-      await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      let tx = await this._txInterceptService.sendTx([...arrayOfTx], walletOwner)
+      if(tx){
+        va.track('solend action', { type: 'repay'})
+      }
     } catch (error) {
       this._formatErrors(error)
     }

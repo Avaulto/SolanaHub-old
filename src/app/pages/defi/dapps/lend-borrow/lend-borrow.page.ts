@@ -11,6 +11,8 @@ import { WalletExtended } from 'src/app/models';
   styleUrls: ['./lend-borrow.page.scss'],
 })
 export class LendBorrowPage implements OnInit {
+  public menu: string[] = ['supply', 'borrow'];
+  public currentTab: string = this.menu[0]
   constructor(
     private _solendStore:SolendStoreService,
      private _solanaUtilsService: SolanaUtilsService

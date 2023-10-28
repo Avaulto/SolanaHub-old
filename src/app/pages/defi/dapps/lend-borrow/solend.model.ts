@@ -46,3 +46,16 @@ export interface Stats {
     volume24h: string
   }
   
+
+  export interface Pool{
+      logo:string,
+      decimals:number,
+      balance:number,
+      symbol:string,
+      mintAddress: string,
+      assetPriceUSD?:number,
+      loanToValueRatio?:number,
+      borrowFeePercentage?:number,
+      utilization?: number
+      newBorrowUtilization?: number;
+  }

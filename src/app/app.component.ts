@@ -42,7 +42,7 @@ export class AppComponent {
       this._solanaUtilsService.onAccountChangeCB(wallet.publicKey)
     })
     // connectionConfigProviderFactory({
-    //   commitment: "processed"
+    //   commitment: "confirmed"
     // })
 
 

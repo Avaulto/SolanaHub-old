@@ -1,54 +1,52 @@
 <ion-grid id="solend-box" class="ion-text-capitalize">
-  <ion-row>
-    <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
-  </ion-row>
-
-
-
   <form [formGroup]="solendActionsForm" class="ion-text-capitalize">
 
+      <div style="margin-bottom: 4px;" class="heading-6 ion-text-end">{{popupType}}: {{ asset?.balance | number: '1.3'}} {{asset?.symbol}}</div>
 
-    <app-label-layout [layoutConfig]="{title: currentTab, balance: formatNumber(123123123)}">
-
-    </app-label-layout>
 
     <ion-row id="send-amount" style="margin-bottom:8px;">
       <div id="send-input">
         <div>
-          <ion-img [src]="pool.config.liquidityToken.logo"></ion-img>
+          <ion-img [src]="asset.logo"></ion-img>
         </div>
         <ion-input class="button-text" type="number" formControlName="amount" placeholder="Amount"></ion-input>
       </div>
       <span class="heading-6" (click)="setMaxAmount()">MAX</span>
     </ion-row>
 
-    <div id="deposit-warning" *ngIf="currentTab === 'supply'">
+    <div id="deposit-warning" *ngIf="popupType === 'supply'">
       <ion-icon name="warning-outline"></ion-icon>
       <small>
-        You're depositing into an uninsured pool. Make sure you understand the <a
-          href="https://docs.solend.fi/permissionless-pools/risks" target="_blank"> risks </a> before depositing into
-        this pool.
+        You're depositing into an uninsured asset. Make sure you understand the <a
+          href="https://docs.solend.fi/permissionless-assets/risks" target="_blank"> risks </a> before depositing into
+        this asset.
       </small>
     </div>
 
 <div class="solana-action-info sub">
-  <div>price</div>
-  <div>29.59</div>
+  <div class="sub">price</div>
+  <div class="global-usd-color sub-strong">{{asset.assetPriceUSD | currency}}</div>
 </div>
-<div class="solana-action-info sub">
-  <div>User borrow limit</div>
-  <div>29.59</div>
+<div class="solana-action-info sub" *ngIf="popupType === 'supply'">
+  <div class="sub">User borrow limit</div>
+  <div>{{solendActionsForm?.controls.amount.value * asset?.loanToValueRatio * asset?.assetPriceUSD | currency}}</div>
 </div>
-<div class="solana-action-info sub">
-  <div>Utilization</div>
-  <div>29.59</div>
+
+
+<div class="solana-action-info sub" *ngIf="popupType === 'borrow'">
+  <div class="sub">Borrow fee</div>
+  <div>{{solendActionsForm.controls.amount.value * asset.borrowFeePercentage | number: '1.3'}} {{asset.symbol}}</div>
 </div>
+<!-- <div class="solana-action-info sub">
+  <div class="sub">Utilization</div>
+  <div>29.59</div>
+</div> -->
 
     <ion-row class="ion-justify-content-center">
 
-      <ion-button (click)="submit()" [disabled]="formSubmitted || solendActionsForm.invalid"
+      <ion-button (click)="submit(popupType)" [disabled]="formSubmitted || solendActionsForm.invalid"
         class="ion-text-capitalize">
-        {{currentTab}}
+        {{popupType}}
         <ion-spinner *ngIf="formSubmitted" name="dots"></ion-spinner>
       </ion-button>
 

@@ -143,15 +143,4 @@ export class PortfolioService {
     })
   }
 
-  private async _extendStakeAccount(walletAddress: string) {
-    const stakeAccounts = await this._solanaUtilsService.getStakeAccountsByOwner(new PublicKey(walletAddress));
-    const extendStakeAccount = await stakeAccounts.map(async (acc) => {
-      const account = await this._solanaUtilsService.extendStakeAccount(acc)
-
-
-      return account;
-    })
-    const extendStakeAccountRes = await Promise.all(extendStakeAccount);
-    return extendStakeAccountRes;
-  }
 }

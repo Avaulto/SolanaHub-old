@@ -45,7 +45,7 @@
     <div>
       <span class="sub">
         Borrow limit
-        <app-icon-tooltip [position]="position" 
+        <app-icon-tooltip [position]="position"
           tip="Supply balance is the sum of all assets supplied. Increasing this value increases your borrow limit and liquidation threshold."></app-icon-tooltip>
       </span>
       <p style="text-align: right;">
@@ -55,9 +55,11 @@
 
   </ion-row>
   <ion-row class="position-stats ion-margin-bottom">
-       <div id="bar-wrapper" [tooltip]="'Current borrow rate:' + (obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.liquidationThreshold * 100).toFixed(2) + '%'">
-          <span class="bar" [style]="'width:' +  obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.borrowLimit * 100 + '%'"></span>
-        </div>
+    <div id="bar-wrapper"
+      [tooltip]="'Current borrow rate:' + (obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.liquidationThreshold * 100).toFixed(2) + '%'">
+      <span class="bar"
+        [style]="'width:' +  obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.borrowLimit * 100 + '%'"></span>
+    </div>
   </ion-row>
   <ion-row class="position-stats ion-margin-bottom">
     <div>
@@ -75,7 +77,7 @@
 
   <h4 class="heading-4 ion-text-uppercase">Assets supplied</h4>
   <ion-row class="asset" *ngFor="let coin of obligations.deposits">
-
+    <div>
       <div id="balance-number">
         <div id="icon-wrapper">
           <ion-img [src]="coin?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
@@ -94,45 +96,39 @@
 
       </div>
 
-      <div  id="balance-base">
-        <div>{{coin.baseOfPortfolio / 100  | percent:'1.0-2' }}</div>
+      <div id="balance-base">
+        <div>{{coin.baseOfPortfolio / 100 | percent:'1.0-2' }}</div>
         <!-- <div id="bar-wrapper" class="ion-hide-lg-down">
           <span class="bar" [style]="'width:' + coin.baseOfPortfolio + '%'"></span>
         </div> -->
       </div>
-
+    </div>
+    <ion-button fill="outline" (click)="openLendAndBorrowPopup(coin,'withdraw')">withdraw</ion-button>
   </ion-row>
   <h4 class="heading-4 ion-text-uppercase">Assets borrowed</h4>
   <ion-row class="asset" *ngFor="let coin of obligations.borrows">
-
-    <div id="balance-number">
-      <div id="icon-wrapper">
-        <ion-img [src]="coin?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
-      </div>
-      <div>
-        <div class="short-wallet-name ion-text-uppercase">
-          {{coin?.symbol}}
+    <div>
+      <div id="balance-number">
+        <div id="icon-wrapper">
+          <ion-img [src]="coin?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
         </div>
-        <div class="button-text">
-          <!-- <span class="global-usd-color sub-strong">
+        <div>
+          <div class="short-wallet-name ion-text-uppercase">
+            {{coin?.symbol}}
+          </div>
+          <div class="button-text">
+            <!-- <span class="global-usd-color sub-strong">
             {{coin.balance | currency}}
           </span> -->
-          <span class="sub">{{formatNumber(coin?.balance)}}</span>
+            <span class="sub">{{formatNumber(coin?.balance)}}</span>
+          </div>
         </div>
+
       </div>
-
     </div>
+    <ion-button fill="outline" (click)="openLendAndBorrowPopup(coin,'repay')">repay</ion-button>
 
-    <!-- <div  id="asset-action">
-      <ion-select formControlName="stakePool" aria-label="stake-pool" placeholder="select pool" interface="popover">
-        <ion-select-option value="marinade">Supply</ion-select-option>
-        <ion-select-option value="marinade">Borrow</ion-select-option>
-        <ion-select-option value="marinade">Withdraw</ion-select-option>
-        <ion-select-option value="marinade">Repay</ion-select-option>
-      </ion-select>
-    </div> -->
-
-</ion-row>
+  </ion-row>
 </ng-container>
 <ng-template #elseTemplate>
   <app-wallet-not-connected-state></app-wallet-not-connected-state>
