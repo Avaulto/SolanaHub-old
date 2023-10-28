@@ -78,7 +78,7 @@ export class SolanaUtilsService {
   public onAccountChangeCB(walletOwnerPk: PublicKey): void {
     this.connection.onAccountChange(walletOwnerPk, async (ev) => {
       this.accountChange$.next(ev);
-    },'finalized');
+    });
   }
   public getStakeAccountsExtended() {
     return this._stakeAccounts$.value;

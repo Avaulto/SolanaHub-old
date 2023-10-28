@@ -1,0 +1,135 @@
+<ng-container *ngIf="walletObligations$ | async as obligations; else elseTemplate">
+  <ion-row class="position-stats ion-margin-bottom">
+    <div>
+      <span class="sub">
+        Equity
+        <app-icon-tooltip tip="Value of your account calculated as (supply - borrow)"></app-icon-tooltip>
+      </span>
+      <p>
+        {{ obligations.obligationStats.netAccountValue | currency}}
+      </p>
+    </div>
+    <div>
+      <span class="sub">
+        Supply
+        <app-icon-tooltip
+          tip="Value of all assets supplied. Increasing this value increases your borrow limit and liquidation threshold."></app-icon-tooltip>
+      </span>
+      <p>
+        {{ obligations.obligationStats.userTotalDeposit | currency}}
+      </p>
+    </div>
+    <div>
+      <span class="sub">
+        Borrow
+        <app-icon-tooltip [position]="position" tip="Value of all assets borrowed."></app-icon-tooltip>
+      </span>
+      <p>
+        {{ obligations.obligationStats.userTotalBorrow | currency}}
+      </p>
+    </div>
+  </ion-row>
+
+  <ion-row class="position-stats ion-margin-bottom">
+    <div>
+      <span class="sub">
+        Weighted borrow
+        <app-icon-tooltip
+          tip="Borrow balance is the value of all assets borrowed, adjusted by their borrow weight."></app-icon-tooltip>
+      </span>
+      <p style="text-align: left;">
+        {{ obligations.obligationStats.userTotalBorrow | currency}}
+      </p>
+    </div>
+
+    <div>
+      <span class="sub">
+        Borrow limit
+        <app-icon-tooltip [position]="position"
+          tip="Supply balance is the sum of all assets supplied. Increasing this value increases your borrow limit and liquidation threshold."></app-icon-tooltip>
+      </span>
+      <p style="text-align: right;">
+        {{ obligations.obligationStats.borrowLimit | currency}}
+      </p>
+    </div>
+
+  </ion-row>
+  <ion-row class="position-stats ion-margin-bottom">
+    <div id="bar-wrapper"
+      [tooltip]="'Current borrow rate:' + (obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.liquidationThreshold * 100).toFixed(2) + '%'">
+      <span class="bar"
+        [style]="'width:' +  obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.borrowLimit * 100 + '%'"></span>
+    </div>
+  </ion-row>
+  <ion-row class="position-stats ion-margin-bottom">
+    <div>
+      <span class="sub">
+        Liquidation threshold
+        <app-icon-tooltip
+          tip="Supply balance is the sum of all assets supplied. Increasing this value increases your borrow limit and liquidation threshold."></app-icon-tooltip>
+      </span>
+
+    </div>
+    <div>
+      {{ obligations.obligationStats.liquidationThreshold | currency}}
+    </div>
+  </ion-row>
+
+  <h4 class="heading-4 ion-text-uppercase">Assets supplied</h4>
+  <ion-row class="asset" *ngFor="let coin of obligations.deposits">
+    <div>
+      <div id="balance-number">
+        <div id="icon-wrapper">
+          <ion-img [src]="coin?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
+        </div>
+        <div>
+          <div class="short-wallet-name ion-text-uppercase">
+            {{coin?.symbol}}
+          </div>
+          <div class="button-text">
+            <!-- <span class="global-usd-color sub-strong">
+              {{coin.balance | currency}}
+            </span> -->
+            <span class="sub">{{formatNumber(coin?.balance)}}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="balance-base">
+        <div>{{coin.baseOfPortfolio / 100 | percent:'1.0-2' }}</div>
+        <!-- <div id="bar-wrapper" class="ion-hide-lg-down">
+          <span class="bar" [style]="'width:' + coin.baseOfPortfolio + '%'"></span>
+        </div> -->
+      </div>
+    </div>
+    <ion-button fill="outline" (click)="openLendAndBorrowPopup(coin,'withdraw')">withdraw</ion-button>
+  </ion-row>
+  <h4 class="heading-4 ion-text-uppercase">Assets borrowed</h4>
+  <ion-row class="asset" *ngFor="let coin of obligations.borrows">
+    <div>
+      <div id="balance-number">
+        <div id="icon-wrapper">
+          <ion-img [src]="coin?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
+        </div>
+        <div>
+          <div class="short-wallet-name ion-text-uppercase">
+            {{coin?.symbol}}
+          </div>
+          <div class="button-text">
+            <!-- <span class="global-usd-color sub-strong">
+            {{coin.balance | currency}}
+          </span> -->
+            <span class="sub">{{formatNumber(coin?.balance)}}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <ion-button fill="outline" (click)="openLendAndBorrowPopup(coin,'repay')">repay</ion-button>
+
+  </ion-row>
+</ng-container>
+<ng-template #elseTemplate>
+  <app-wallet-not-connected-state></app-wallet-not-connected-state>
+</ng-template>

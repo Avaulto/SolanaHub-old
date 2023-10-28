@@ -1,0 +1,70 @@
+:host form {
+    padding: 16px;
+}
+
+#send-amount {
+    position: relative;
+
+    span {
+        cursor: pointer;
+        position: absolute;
+        color: var(--ion-color-primary);
+        z-index: 2;
+        right: 15px;
+        top: 12px;
+    }
+}
+
+#send-input {
+    width: 100%;
+    display: flex;
+
+    div {
+        background: var(--deep-background);
+        width: 11%;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+ion-img {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 25px;
+    height: 25px;
+}
+
+.input-error {
+    border-color: var(--ion-color-danger);
+}
+
+#deposit-warning {
+    a{
+        font-size: 11px;
+        text-transform: lowercase;
+        color: var(--ion-color-warning);
+    }
+    small{
+        font-size: 11px;
+    }
+    display: flex;
+    align-items: center;
+    width: 400px;
+    max-width: 100%;
+    margin: 20px auto;
+    text-align: center;
+
+    ion-icon {
+        color: var(--ion-color-warning);
+        font-size: 26px;
+        margin-inline-end: 8px;
+    }
+}
+
+.solana-action-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 4px 0px;
+}

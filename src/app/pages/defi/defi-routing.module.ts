@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'nft-liquidity',
     loadChildren: () => import('./dapps/nft-liquidity/nft-liquidity.module').then( m => m.NftLiquidityPageModule)
+  },
+  {
+    path: 'lend-borrow',
+    loadChildren: () => import('./dapps/lend-borrow/lend-borrow.module').then( m => m.LendBorrowPageModule)
   }
 ];
 

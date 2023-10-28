@@ -1,15 +1,22 @@
-:host{
-    width: 100%;
+
+.position-stats{
+    justify-content: space-between;
+    text-align: center;
+    span{
+        display: flex;
+    }
 }
-.asset{
+
+.asset {
     display: flex;
     justify-content: space-between;
-}
-.balance-breakdown {
     width: 100%;
     height: 50px;
-    display: flex;
     align-items: center;
+    transition: 0.3s ease all;
+    &:hover{
+        background: var(--deep-background);
+    }
 }
 #icon-wrapper {
     display: flex;
@@ -27,8 +34,8 @@ ion-img {
 }
 
 #balance-number {
+    align-items: center;
     display: flex;
-
 }
 
 .short-wallet-name {
@@ -40,17 +47,12 @@ ion-img {
 #balance-base {
     display: flex;
     align-items: center;
-
-    div:first-child{
-        width: 90px;
-
-    }
 }
 
 
 #bar-wrapper{
     background: var(--deep-background);
-    width: 80%;
+    width: 100%;
     height: 8px;
     border-radius: 8px;
 }
@@ -61,13 +63,6 @@ ion-img {
     border-radius: 8px;
 }
 
-
-.controls{
-    display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    text-align: right;
-    ion-button{
-        margin: 4px;
+   ion-button{
+        text-transform: capitalize;
     }
-}

@@ -16,6 +16,7 @@ export interface Asset {
   baseOfPortfolio?: any;
   address?: string;
   decimals?: number;
+  mintAddress?:string
 }
 export interface CoinData {
   marketCap: number

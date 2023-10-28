@@ -1,0 +1,40 @@
+<ion-content scroll-y style="--background:transparent;">
+  <ion-grid class="ion-padding">
+    <app-dapp-head name="Solend" imgPath="/assets/images/icons/solend-logo.png"></app-dapp-head>
+    <ion-row class="ion-justify-content-between ">
+      <ion-col size="5" sizeMd="2.8" class="data-box ion-padding">
+        <app-data-box [title]="'Solend TVL'" [loading]="(solendStats | async) == null"
+          [desc]="(solendStats | async)?.solendTVL | currency">
+        </app-data-box>
+      </ion-col>
+      <ion-col size="5" sizeMd="2.8" class="data-box ion-padding ">
+        <app-data-box [title]="'Total borrow'" [loading]="(solendStats | async) == null"
+          [desc]="(solendStats | async)?.totalBorrowsUSD | currency">
+        </app-data-box>
+      </ion-col>
+      <ion-col size="5" sizeMd="2.8" class="data-box ion-padding ">
+        <app-data-box [title]="'Total deposit'" [loading]="(solendStats | async) == null"
+          [desc]="(solendStats | async)?.totalDepositsUSD | currency">
+        </app-data-box>
+      </ion-col>
+      <ion-col size="12" sizeMd="2.8" class="data-box ion-padding ">
+        <app-data-box [title]="'Total obligations'" [loading]="(solendStats | async) == null"
+          [desc]="(solendStats | async)?.totalObligations| number">
+        </app-data-box>
+      </ion-col>
+    </ion-row>
+
+    <ion-row id="tab-wrapper" >
+      <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+    </ion-row>
+
+    <ion-row class="ion-justify-content-between ion-align-items-start">
+      <ion-col class="data-box ion-padding" size="12" sizeMd="8">
+        <app-supply-list [currentTab]="currentTab"></app-supply-list>
+      </ion-col>
+      <ion-col class="data-box ion-padding" size="12" sizeMd="3.5">
+        <app-positions></app-positions>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

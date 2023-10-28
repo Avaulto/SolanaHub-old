@@ -43,14 +43,14 @@ export class DefiPage   {
     //   deepLink: 'pools',
     //   status:'pending'
     // },
-    // {
-    //   name: 'solend',
-    //   image: 'assets/images/icons/solend-logo.png',
-    //   description: `Solend is an algorithmic, decentralized protocol for lending and borrowing on Solana.`,
-    //   learnMoreLink: 'https://docs.solend.fi/',
-    //   deepLink: 'lending-strategies',
-    //   status:'pending'
-    // },
+    {
+      name: 'solend',
+      image: 'assets/images/icons/solend-logo.png',
+      description: `Solend is an algorithmic, decentralized protocol for lending and borrowing on Solana.`,
+      learnMoreLink: 'https://docs.solend.fi/',
+      deepLink: 'lend-borrow',
+      status:'active'
+    },
   ]
   
   constructor(private _popoverController: PopoverController, private _titleService: Title) { }

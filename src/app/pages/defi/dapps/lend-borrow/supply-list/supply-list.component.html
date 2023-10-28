@@ -1,0 +1,107 @@
+
+
+
+<ion-row class=" ion-justify-content-between ion-hide-lg-down">
+  <ion-col class="sub supply-item-title">
+    Asset name
+  </ion-col>
+  <ion-col class="sub supply-item-title">
+    Open LTV
+    <app-icon-tooltip tip="Open LTV is a ratio that determines how much borrow power is contributed by a deposited asset."></app-icon-tooltip>
+  </ion-col>
+  <ion-col class="sub supply-item-title" *ngIf="currentTab === 'supply'">
+    Total supply
+  </ion-col>
+  <ion-col class="sub supply-item-title" *ngIf="currentTab === 'supply'">
+    Supply APY
+    <app-icon-tooltip tip="Open LTV is a ratio that determines how much borrow power is contributed by a deposited asset."></app-icon-tooltip>
+  </ion-col>
+  <ion-col class="sub supply-item-title" *ngIf="currentTab === 'borrow'">
+    total borrow
+  </ion-col>
+  <ion-col class="sub supply-item-title" *ngIf="currentTab === 'borrow'">
+    borrow APY
+    <app-icon-tooltip tip="Annual percentage yield (APY) earned for borrowing assets. APYs are dynamic and fluctuate over time."></app-icon-tooltip>
+  </ion-col>
+  <ion-col></ion-col>
+</ion-row>
+
+
+<ng-container *ngIf="supplyList$ | async as supplyList; else elseTemplate">
+  <ion-row  class="supply-item" *ngFor="let pool of supplyList ">
+    <ion-col size="12" sizeLg="2.5">
+        <div class="ion-hide-lg-up">Asset</div>
+        <div class="asset-info">
+
+          <div id="icon-wrapper">
+            <ion-img [src]="pool.config.liquidityToken.logo"></ion-img>
+            
+          </div>
+          <div>
+            <div class="short-wallet-name ion-text-uppercase">
+              {{pool.config.liquidityToken?.symbol}}
+            </div>
+            <div class="button-text">
+              <span class="global-usd-color sub-strong">
+                {{pool.stats.assetPriceUSD| currency}}
+              </span>
+            </div>
+          </div>
+        </div>
+  
+      </ion-col>
+  
+    <ion-col size="12" sizeLg="2.5">
+      <div class="ion-hide-lg-up">Open LTV</div>
+      {{pool.stats.loanToValueRatio}}/1
+    </ion-col>
+    <ion-col size="12"sizeLg="2.5" *ngIf="currentTab === 'supply'">
+      <div class="ion-hide-lg-up">Total supply</div>
+      <div>
+        <div>
+
+          {{pool.stats.totalDeposits  | number : '1.2-2'}}
+        </div>
+        <div class="global-usd-color sub-strong">
+          {{pool.stats.totalDeposits * pool.stats.assetPriceUSD | currency}}
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="12" sizeLg="2.5" *ngIf="currentTab === 'supply'">
+      <div class="ion-hide-lg-up"> Supply APY</div>
+      {{pool.stats.supplyInterestAPY  | percent:'1.0-2' }}
+    </ion-col>
+    <ion-col size="12" sizeLg="2.5" *ngIf="currentTab === 'borrow'">
+      <div class="ion-hide-lg-up">total borrow</div>
+      <div>
+        <div>
+
+          {{pool.stats.totalBorrows  | number : '1.2-2'}}
+        </div>
+        <div class="global-usd-color sub-strong">
+          {{pool.stats.totalBorrows * pool.stats.assetPriceUSD | currency}}
+        </div>
+      </div>
+    </ion-col>
+    <ion-col size="12" sizeLg="2.5" *ngIf="currentTab === 'borrow'">
+      <div class="ion-hide-lg-up">borrow APY</div>
+      
+      {{pool.stats.borrowInterestAPY  | percent:'1.0-2' }}
+    </ion-col>
+    <ion-col size="12" sizeLg="2">
+      <ion-button fill="outline" *ngIf="currentTab === 'supply'" color="primary" (click)="openLendAndBorrowPopup(pool, 'supply')">
+        supply
+      </ion-button>
+      <ion-button fill="outline" *ngIf="currentTab === 'borrow'" color="primary" (click)="openLendAndBorrowPopup(pool, 'borrow')">
+        borrow
+      </ion-button>
+    </ion-col>
+  
+  </ion-row>
+
+</ng-container>
+<ng-template #elseTemplate>
+  <app-loader></app-loader>
+</ng-template>
+
+

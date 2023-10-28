@@ -1,6 +1,6 @@
 
     <div class="asset ion-align-items-center" (click)="appendAssetData()">
-      <div id="balace-number">
+      <div id="balance-number">
         <div id="icon-wrapper">
           <ion-img *ngIf="!mergeCondition" [src]="asset?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
           <ion-checkbox #checkbox [checked]="isChecked" *ngIf="mergeCondition"></ion-checkbox>
