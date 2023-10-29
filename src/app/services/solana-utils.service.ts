@@ -233,6 +233,7 @@ export class SolanaUtilsService {
 
 
     const stakeAccountInfo: StakeAccountExtended = {
+      lockedDue: new Date(account.account.data.parsed.info.meta.lockup.unixTimestamp * 1000).toLocaleDateString("en-US"),
       locked: account.account.data.parsed.info.meta.lockup.unixTimestamp > Math.floor(Date.now() / 1000) ? true : false ,
       addr,
       shortAddr: this._utilService.addrUtil(addr).addrShort,

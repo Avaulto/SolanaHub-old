@@ -32,7 +32,11 @@
     <span class="sub" [ngStyle]="{'color': getStatusColor(account?.state)}">
       {{account?.state}}
     </span>
-    <ion-icon tooltip="Account is locked" *ngIf="account?.locked" name="lock-closed-outline"></ion-icon>
+    <div class="sub" *ngIf="account?.locked">
+      {{account.lockedDue}}
+      <ion-icon tooltip="Account is locked until the due date"  name="lock-closed-outline"></ion-icon>
+    </div>
+   
   </ion-col>
 </ion-row>
 </ion-col>
