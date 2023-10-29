@@ -25,6 +25,7 @@
     "@angular/platform-browser": "16.1.5",
     "@angular/platform-browser-dynamic": "16.1.5",
     "@angular/router": "16.1.5",
+    "@elusiv/sdk": "^0.1.22",
     "@frakt-protocol/frakt-sdk": "^0.8.21",
     "@heavy-duty/wallet-adapter": "^0.7.2",
     "@ionic/angular": "7.2.2",

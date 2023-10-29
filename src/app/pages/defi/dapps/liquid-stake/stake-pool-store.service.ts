@@ -167,16 +167,19 @@ export class StakePoolStoreService {
 
   public async stakeSOL(pool: string, sol: BN, validatorVoteAccount?: string) {
     const walletOwner = this._solanaUtilsService.getCurrentWallet()
+    let track = null;
     if (pool === 'marinade') {
       if (!this.marinadeSDK) {
         await this.initMarinade(walletOwner)
       }
-      await this._marinadeStakeSOL(sol, walletOwner, validatorVoteAccount)
+      track = await this._marinadeStakeSOL(sol, walletOwner, validatorVoteAccount)
     } else {
       const selectedPool: StakePoolProvider = this.providers.find(p => p.poolName.toLowerCase() === pool);
-      await this._stakePoolStakeSOL(selectedPool.poolPublicKey, walletOwner, sol, validatorVoteAccount)
+      track = await this._stakePoolStakeSOL(selectedPool.poolPublicKey, walletOwner, sol, validatorVoteAccount)
     }
-    va.track('liquid staking', { pool,amount: Number(sol.toString()) / LAMPORTS_PER_SOL, validatorVoteAccount });
+    if(track){
+      va.track('liquid staking', { pool,amount: Number(sol.toString()) / LAMPORTS_PER_SOL, validatorVoteAccount });
+    }
   }
 
   public async marinadeNativeStake(amountLamports) {

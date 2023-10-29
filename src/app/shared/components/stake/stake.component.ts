@@ -132,8 +132,10 @@ export class StakeComponent implements OnInit, OnChanges {
     if (monthLockuptime) {
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
-    await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
-    va.track(`native stake`, { validator: voteAccount, amount });
+    let stake = await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime);
+   if(stake){
+     va.track(`native stake`, { validator: voteAccount, amount });
+    }
   }
   private _getLockuptimeMilisecond(months: number): number {
     const lockupDateInSecond = new Date((new Date).setMonth((new Date).getMonth() + months)).getTime();

@@ -194,7 +194,7 @@ export class TxInterceptService {
         TOKEN_PROGRAM_ID
       )
       const instructions: TransactionInstruction[] = [ownerAta, targetAta, transferSplOrNft].filter(i => i !== null) as TransactionInstruction[];
-      await this.sendTx(instructions, walletOwner)
+      return await this.sendTx(instructions, walletOwner)
     } catch (error) {
 
       const res = new TokenOwnerOffCurveError()
@@ -220,6 +220,7 @@ export class TxInterceptService {
     const newStakeAccountIns = StakeProgram.createAccount(stakeAccountIns)
     return { newStakeAccountIns, newStakeAccount }
   }
+
   public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime?: number) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
       StakeProgram.space,

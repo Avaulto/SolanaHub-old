@@ -2,7 +2,7 @@
   <form [formGroup]="sendCoinForm" id="stake-box" class="ion-text-capitalize">
 
 
-    <app-label-layout [layoutConfig]="{title: 'Amount', balance: formatNumber(coin.balance)}">
+    <app-label-layout [layoutConfig]="{title: 'send', balance: formatNumber(coin.balance)}">
       <div *ngIf="sendCoinForm.controls.privateTx.value == true" id="private-balance">
         private balance: <span>{{privateBalance}}</span>
         <app-icon-tooltip tip="Any funds within your private balance will be utilized first."></app-icon-tooltip>
@@ -29,12 +29,12 @@
     </ion-row>
 
 
-    <!-- <ion-row id="private-tx-wrapper" *ngIf="wallet$ | async;">
+    <ion-row id="private-tx-wrapper" *ngIf="coin.symbol === 'SOL'">
 
       <app-label-layout [layoutConfig]="{title: 'Private Transaction'}">
       </app-label-layout>
       <ion-toggle (ionChange)="_initElusivSDK($event)" style="height: 25px;" formControlName="privateTx"></ion-toggle>
-    </ion-row> -->
+    </ion-row>
 
     <ion-row class="ion-justify-content-center">
      

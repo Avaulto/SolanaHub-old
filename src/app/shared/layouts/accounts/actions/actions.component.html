@@ -6,8 +6,13 @@
   <li class="sub" *ngSwitchCase="'deactivating'" (click)="reStake(account)">
     restake
   </li>
+  
   <li class="sub" *ngSwitchCase="'active'" (click)="deactiveStake(account)">
     unstake
+  </li>
+
+  <li class="sub" *ngSwitchCase="'inactive'" (click)="reStake(account)">
+    restake
   </li>
   <li class="sub" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">
     withdraw stake
