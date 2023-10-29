@@ -14,4 +14,5 @@ export interface StakeAccountExtended {
   checkedForMerge: boolean,
   canMerge?: boolean
   locked?: boolean,
+  lockedDue?: string
 }
