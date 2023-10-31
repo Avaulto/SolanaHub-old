@@ -14,7 +14,7 @@
   <li class="sub" *ngSwitchCase="'inactive'" (click)="reStake(account)">
     restake
   </li>
-  <li class="sub" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">
+  <li class="sub" [class.locked]="account?.locked" *ngSwitchCase="'inactive'" (click)="withdrawStake(account)">
     withdraw stake
   </li>
   <li class="sub" (click)="claimMEV(account)">

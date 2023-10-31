@@ -63,7 +63,14 @@ ion-img {
     display: flex;
     justify-content: center;
 
+    ion-icon{
+        margin-inline: 3px;
+    }
     a {
         margin: 0 5px;
+        text-decoration: none;
+        align-items: center;
+        display: flex;
+        color: var(--ion-color-primary);
     }
 }

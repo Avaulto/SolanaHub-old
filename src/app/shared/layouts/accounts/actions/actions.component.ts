@@ -32,7 +32,8 @@ export class ActionsComponent implements OnInit {
   public async withdrawStake(stakeAccount: StakeAccountExtended) {
     let stakeBalance = await this._solanaUtilsService.connection.getBalance(new PublicKey(stakeAccount.addr));
     const stakeAccountAddress = stakeAccount.addr
-    this._txInterceptService.withdrawFromStakeAccount(stakeAccountAddress, this.wallet.publicKey, stakeBalance)
+   await this._txInterceptService.withdrawFromStakeAccount(stakeAccountAddress, this.wallet.publicKey, stakeBalance)
+
   }
   public reStake(stakeAccount: StakeAccountExtended) {
     this._txInterceptService.delegateStakeAccount(stakeAccount, this.wallet.publicKey);

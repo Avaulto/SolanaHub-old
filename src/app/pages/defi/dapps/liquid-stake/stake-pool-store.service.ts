@@ -234,8 +234,11 @@ export class StakePoolStoreService {
       ixs.push(ix2)
     }
     const txId = await this._txInterceptService.sendTx(ixs, walletOwner.publicKey, ix.signers);
-    fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
-    fetch(`https://stake.solblaze.org/api/v1/referral_stake?ref=${environment.platformFeeCollector}&txid=${txId}`);
+    if(txId){
+      await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
+      fetch(`https://stake.solblaze.org/api/v1/ht hasd?ref=${environment.platformFeeCollector}&txid=${txId}`);
+    }
+    return txId
   }
 
 

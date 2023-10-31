@@ -142,7 +142,7 @@ export class TxInterceptService {
     return await this.sendTx(mergeAccounts, walletOwnerPk)
   }
 
-  public async withdrawFromStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<void> {
+  public async withdrawFromStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<any> {
     const withdrawTx = StakeProgram.withdraw({
       stakePubkey: new PublicKey(stakeAccount),
       authorizedPubkey: walletOwnerPk,
@@ -152,7 +152,7 @@ export class TxInterceptService {
     try {
       //   const validTx = await this.prepTx(lamports, withdrawTx, walletOwnerPk)
       //   if (validTx) {
-      await this.sendTx([withdrawTx], walletOwnerPk)
+      return await this.sendTx([withdrawTx], walletOwnerPk)
       // }
     } catch (error) {
       console.error(error)
