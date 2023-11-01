@@ -237,8 +237,8 @@ export class StakePoolStoreService {
     const txId = await this._txInterceptService.sendTx(ixs, walletOwner.publicKey, ix.signers,record);
     
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
-      fetch(`https://stake.solblaze.org/api/v1/ht hasd?ref=${environment.platformFeeCollector}&txid=${txId}`);
-    
+      fetch(`https://stake.solblaze.org/api/v1/referral_stake?ref=${environment.platformFeeCollector}&txid=${txId}`);
+
     return txId
   }
 
