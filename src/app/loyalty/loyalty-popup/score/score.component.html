@@ -5,26 +5,24 @@
 <ion-row class="span-capitalize span-center ion-justify-content-between">
   <ion-col sizeMd="2" size="4" class="group ion-text-center native-stake">
     <ion-label>native stake: </ion-label>
-    <span class="sub">{{(loyaltyScore$ | async)?.nativeStake | percent}}</span> <br>
-    <ion-label>long term boost: </ion-label>
-    <span class="sub">{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost | percent}}</span>
-
+    <span class="m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStake | number: '1.2-2'}}</span> <br>
   </ion-col>
+
   <ion-col sizeMd="2" size="4" class="group ion-text-center liquid-stake">
     <ion-label>mSOL direct stake: </ion-label>
-    <span class="sub">{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost | percent}}</span>
+    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost | number: '1.2-2'}}</span>
   </ion-col>
   <ion-col sizeMd="2" size="4" class="group ion-text-center liquid-stake">
     <ion-label>bSOL direct stake: </ion-label>
-    <span class="sub">{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost | percent}}</span>
+    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost | number: '1.2-2'}}</span>
   </ion-col>
   <ion-col sizeMd="2" size="4" class="group ion-text-center dao-vote">
     <ion-label>MNDE vote: </ion-label>
-    <span class="sub">{{(loyaltyScore$ | async)?.veMNDE_Boost | percent}}</span>
+    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veMNDE_Boost + 1 | number: '1.2-2'}}</span>
   </ion-col>
-  <ion-col sizeMd="2" size="4" class="group ion-text-center sh-activity">
-    <ion-label>SolanaHub Usage: </ion-label>
-    <span class="sub">{{(loyaltyScore$ | async)?.SolanaHub_Boost| percent}}</span>
+  <ion-col sizeMd="2" size="4" class="group ion-text-center liquid-stake">
+    <ion-label id="long-term-text">long term boost: </ion-label>
+    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost + 1 | number: '1.2-2'}}</span>
   </ion-col>
 </ion-row>
 

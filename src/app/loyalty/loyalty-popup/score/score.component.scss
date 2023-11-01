@@ -1,0 +1,48 @@
+:host{
+    margin-top: 20px;
+    display: block;
+    border-top: 1px solid #9e9e9e36;
+}
+#pts-m{
+    text-shadow: gold 1px 0 10px;
+    margin-bottom: 6px;
+    width: 100%;
+}
+
+.native-stake{
+    color:var(--ion-color-primary);
+}
+
+.liquid-stake{
+    color:var(--ion-color-secondary);
+}
+
+.dao-vote{
+    color:var(--ion-color-tertiary);
+}
+.sh-activity{
+    color: #8946fc;
+}
+a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+}
+.m-value{
+    font-weight: 300;
+    line-height: 16px;
+    color:gold;
+    span{
+        font-size: 10px;
+    }
+}
+#long-term-text{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image:linear-gradient(166deg, var(--ion-color-primary) 36%, var(--ion-color-secondary) 65%, var(--ion-color-tertiary) 10%);
+}
