@@ -75,10 +75,9 @@ export class JupiterStoreService {
       ).json();
       const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
       var transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+        const record = {message:'jupiter', data:{ type: `simple swap` }}
+      await this._txInterceptService.sendTxV2(transaction, record);
 
-      await this._txInterceptService.sendTxV2(transaction);
-
-      va.track('jupiter', { type: `simple swap` });
     } catch (error) {
       console.warn(error)
     }

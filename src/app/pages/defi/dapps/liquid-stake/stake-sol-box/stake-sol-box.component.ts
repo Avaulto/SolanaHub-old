@@ -101,8 +101,9 @@ export class StakeSolBoxComponent implements OnInit, OnChanges {
         Number(this.unStakeAmount),
         false
       );
-      await this._txInterceptService.sendTx(withdrawTx.instructions, this.wallet.publicKey, withdrawTx.signers)
-      va.track('marinade delayed unstake', {amount:mSOL.toString() })
+      const record = {message:'marinade delayed unstake', data:{amount:mSOL.toString() }};
+      await this._txInterceptService.sendTx(withdrawTx.instructions, this.wallet.publicKey, withdrawTx.signers, record)
+
     }
   }
 }

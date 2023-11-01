@@ -27,6 +27,7 @@ import {
   VersionedTransaction
 } from '@solana/web3.js';
 import { firstValueFrom, throwError } from 'rxjs';
+import va from '@vercel/analytics';
 import { StakeAccountExtended, toastData } from '../models';
 import { ToasterService, SolanaUtilsService, UtilsService } from './';
 import { PriorityFee } from '../models/priorityFee.model';
@@ -94,7 +95,7 @@ export class TxInterceptService {
 
   }
 
-  public async transferStakeAccountAuth(stakePubkey: PublicKey, walletOwnerPk: PublicKey, newAuthorizedPubkey: PublicKey) {
+  public async transferStakeAccountAuth(stakePubkey: PublicKey, walletOwnerPk: PublicKey, newAuthorizedPubkey: PublicKey,record?) {
     const authWithdraw: AuthorizeStakeParams = {
       stakePubkey,
       authorizedPubkey: walletOwnerPk,
@@ -108,10 +109,10 @@ export class TxInterceptService {
       stakeAuthorizationType: { index: 1 },
     }
     const transferAuthTx = [StakeProgram.authorize(authWithdraw), StakeProgram.authorize(authStake)];
-    return await this.sendTx(transferAuthTx, walletOwnerPk)
+    return await this.sendTx(transferAuthTx, walletOwnerPk,null,record)
   }
 
-  public async splitStakeAccounts(walletOwnerPk: PublicKey, targetStakePubKey: PublicKey, lamports: number) {
+  public async splitStakeAccounts(walletOwnerPk: PublicKey, targetStakePubKey: PublicKey, lamports: number,record?) {
 
     // const newStakeAccount = (await this.createStakeAccount(0,walletOwnerPk)).newStakeAccount
     // const stakeAccountData = await this.createStakeAccount(0, walletOwnerPk)
@@ -126,9 +127,9 @@ export class TxInterceptService {
       });
 
 
-    return await this.sendTx( [splitAccount], walletOwnerPk, [newStakeAccount])
+    return await this.sendTx( [splitAccount], walletOwnerPk, [newStakeAccount],record)
   }
-  public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey) {
+  public async mergeStakeAccounts(walletOwnerPk: PublicKey, sourceStakePubKey: PublicKey[], targetStakePubkey: PublicKey,record?) {
 
 
     const mergeAccounts: Transaction[] = sourceStakePubKey.map(sourceAcc => {
@@ -139,7 +140,7 @@ export class TxInterceptService {
       });
     })
 
-    return await this.sendTx(mergeAccounts, walletOwnerPk)
+    return await this.sendTx(mergeAccounts, walletOwnerPk,null,record)
   }
 
   public async withdrawFromStakeAccount(stakeAccount: string, walletOwnerPk: PublicKey, lamports: number): Promise<any> {
@@ -221,7 +222,7 @@ export class TxInterceptService {
     return { newStakeAccountIns, newStakeAccount }
   }
 
-  public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime?: number) {
+  public async delegate(lamportsToDelegate: number, walletOwnerPk: PublicKey, validatorVoteKey: string, lockuptime?: number, record?) {
     const minimumAmount = await this.solanaUtilsService.connection.getMinimumBalanceForRentExemption(
       StakeProgram.space,
     );
@@ -245,7 +246,7 @@ export class TxInterceptService {
 
 
       if (validTx) {
-        this.sendTx(stake, walletOwnerPk, [stakeAcc])
+        return await this.sendTx(stake, walletOwnerPk, [stakeAcc],record)
       }
     } catch (error) {
       console.warn(error)
@@ -292,7 +293,7 @@ export class TxInterceptService {
     }
     return null
   }
-  public async sendTx(txParam: (TransactionInstruction | Transaction)[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[]) {
+  public async sendTx(txParam: (TransactionInstruction | Transaction)[], walletPk: PublicKey, extraSigners?: Keypair[] | Signer[], record?:{message:string, data?:{}}) {
     try {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
       const txArgs: TransactionBlockhashCtor = { feePayer: walletPk, blockhash, lastValidBlockHeight: lastValidBlockHeight }
@@ -328,6 +329,7 @@ export class TxInterceptService {
         message: 'Transaction Completed',
         segmentClass: "toastInfo"
       }
+      va.track(record.message, record.data)
       this.toasterService.msg.next(txCompleted)
 
       return signature
@@ -339,7 +341,7 @@ export class TxInterceptService {
       // onMsg('transaction failed', 'error')
     }
   }
-  public async sendTxV2(txParam: VersionedTransaction) {
+  public async sendTxV2(txParam: VersionedTransaction, record?:{message:string, data:{}}) {
     try {
       const { lastValidBlockHeight, blockhash } = await this.solanaUtilsService.connection.getLatestBlockhash();
 
@@ -364,6 +366,7 @@ export class TxInterceptService {
         message: 'Transaction Completed',
         segmentClass: "toastInfo"
       }
+      va.track(record.message, record.data)
       this.toasterService.msg.next(txCompleted)
 
       return signature

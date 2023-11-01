@@ -11,8 +11,8 @@ import { StakePoolProvider, StakePoolStats } from '../stake-pool.model';
 import { depositSol, depositStake } from '@solana/spl-stake-pool';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakePoolStoreService } from '../stake-pool-store.service';
-import va from '@vercel/analytics';
- 
+
+
 
 @Component({
   selector: 'app-stake-account-box',
@@ -93,9 +93,9 @@ export class StakeAccountBoxComponent implements OnInit {
         if (validatorVoteAccount) {
           this.stakeCLS(depositTx, validatorVoteAccount)
         } else {
-   
-          await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers);
-          va.track('liquid staking', { type: 'stake account' });
+          const record = {message:'liquid staking',data: { type: 'stake account' }}
+          await this._txInterceptService.sendTx(depositTx.instructions, this.wallet.publicKey, depositTx.signers,record);
+
         }
 
       }
@@ -132,10 +132,10 @@ export class StakeAccountBoxComponent implements OnInit {
         programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
         data: (new TextEncoder()).encode(memo) as Buffer
       })
-
-      const txId = await this._txInterceptService.sendTx([txs, memoInstruction], this.wallet.publicKey, txs.signers);
+      const record = {message:'liquid staking', data:{ validator: validatorVoteAccount || '' }}
+      const txId = await this._txInterceptService.sendTx([txs, memoInstruction], this.wallet.publicKey, txs.signers,record);
       await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validator}&txid=${txId}`);
-      va.track('liquid staking', { validator: validatorVoteAccount || '' });
+
     } catch (error) {
       console.log(error)
       const toasterMessage: toastData = {

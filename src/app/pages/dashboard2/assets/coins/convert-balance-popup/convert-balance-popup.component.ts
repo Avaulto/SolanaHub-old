@@ -127,10 +127,9 @@ export class ConvertBalancePopupComponent implements OnInit {
         // The first iteration uses an already resolved Promise
         // so, it will immediately continue.
         await promise;
-        await this._txInterceptService.sendTx(tx, this._solanaUtilsService.getCurrentWallet().publicKey)
+        await this._txInterceptService.sendTx(tx, this._solanaUtilsService.getCurrentWallet().publicKey,null,{message:'bulk swap',data:null})
       }, Promise.resolve());
     }
-    va.track('bulk swap');
   }
 
   async closeATA(asset: Asset): Promise<TransactionInstruction[]> {

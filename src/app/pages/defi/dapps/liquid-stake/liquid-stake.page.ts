@@ -210,11 +210,8 @@ export class LiquidStakePage {
     this.processClaimTicket = true
     try {
       const { transaction } = await this.stakePoolStore.marinadeSDK.claim(account)
-      const res = await this._txInterceptService.sendTx([transaction], this.wallet.publicKey)
-      if(res){
+      await this._txInterceptService.sendTx([transaction], this.wallet.publicKey,null,{message:'marinade claim delayed unstake'})
 
-        va.track('marinade claim delayed unstake')
-      }
     } catch (e) {
       console.error(e);
     }

@@ -7,7 +7,7 @@ import { BehaviorSubject, Subject, firstValueFrom } from 'rxjs';
 import AmmImpl, { MAINNET_POOL } from '@mercurial-finance/dynamic-amm-sdk';
 import { PoolFarmImpl } from '@mercurial-finance/farming-sdk';
 import { BN } from '@marinade.finance/marinade-ts-sdk';
-import va from '@vercel/analytics';
+
 
 interface MeteoraAMMpool {
   pool_address: string;
@@ -231,8 +231,8 @@ export class SolblazeFarmerService {
       this.txStatus$.next({ ...this.txStatus$.value, finishTx: 2 })
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx3 = await this.strategySDK.farm.deposit(walletOwner, poolLpBalance);
-
-      const res3 = await this._txInterceptService.sendTx([txIx3], walletOwner)
+      const record = {message:'solblaze-farmer strategy', data:{ type: 'deposit', amount: SOL_amount }}
+      const res3 = await this._txInterceptService.sendTx([txIx3], walletOwner,null,record)
       if (!res3) {
         this.txStatus$.next({ ...this.txStatus$.value, start: false })
         return
@@ -241,7 +241,6 @@ export class SolblazeFarmerService {
       setTimeout(() => {
         this.txStatus$.next({ ...this.txStatus$.value, start: false })
       }, 2000);
-      va.track('solblaze-farmer strategy', { type: 'deposit', amount: SOL_amount });
     } catch (error) {
       console.warn(error);
     }
@@ -269,12 +268,13 @@ export class SolblazeFarmerService {
       this.txStatus$.next({ ...this.txStatus$.value, finishTx: 1 })
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
       const txIx2 = await this._withdrawFromMeteoraPool(poolLpBalance, walletOwner)
-      await this._txInterceptService.sendTx([txIx2], walletOwner)
+      const record = {message:'solblaze-farmer strategy', data:{ type: 'withdraw' }}
+
+      await this._txInterceptService.sendTx([txIx2], walletOwner,null,record)
       this.txStatus$.next({ ...this.txStatus$.value, finishTx: 2 })
       setTimeout(() => {
         this.txStatus$.next({ ...this.txStatus$.value, start: false })
       }, 2000);
-      va.track('solblaze-farmer strategy', { type: 'withdraw' });
     } catch (error) {
       console.warn(error);
     }

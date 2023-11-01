@@ -77,8 +77,7 @@ export class NftListingComponent implements OnInit {
     txn.instructions[0].keys[1].isSigner= false
     
     // submit transaction using wallet adapter
-    await this._txInterceptService.sendTx([txn], walletOwner)
-    va.track('list NFT on MagicEden');
+    await this._txInterceptService.sendTx([txn], walletOwner,null,{message:'list NFT on MagicEden'})
   }
   // public async cancelNftListing(): Promise<void> {
   //   const listInfo = this.listNftForm.value;

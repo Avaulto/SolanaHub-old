@@ -5,7 +5,6 @@ import { AuthorizeStakeParams, LAMPORTS_PER_SOL, PublicKey, StakeProgram } from 
 
 import { StakeAccountExtended } from 'src/app/models';
 import { SolanaUtilsService, TxInterceptService } from 'src/app/services';
-import va from '@vercel/analytics';
 @Component({
   selector: 'app-accounts-popup',
   templateUrl: './accounts-popup.component.html',
@@ -68,18 +67,21 @@ export class AccountsPopupComponent implements OnInit {
     this._popoverController.dismiss();
     if(this.actionType == 'mergeStake'){
       const stakeAccountsSource: PublicKey[] = this.selectedAccounts.map(account => new PublicKey(account.addr));
-      await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget);
-      va.track('account actions',{type: 'merge stake accounts'});
+      const record ={message:'account actions',data:{type: 'merge stake accounts'}}
+      await this._txInterceptService.mergeStakeAccounts(walletOwner, stakeAccountsSource, accountTarget,record);
+
     }
     if(this.actionType == 'transferAuth'){
       const authrizedPubkey = new PublicKey(this.transferAssetForm.value.authrizedPubkey)
-      await this._txInterceptService.transferStakeAccountAuth(accountTarget ,walletOwner, authrizedPubkey);
-      va.track('account actions',{type: 'transfer authority'});
+      const record ={message:'account actions',data:{type: 'transfer authority'}}
+      await this._txInterceptService.transferStakeAccountAuth(accountTarget ,walletOwner, authrizedPubkey,record);
+
     }
     if(this.actionType == 'splitStake'){
       const {amount} = this.splitStakeForm.value
-      await this._txInterceptService.splitStakeAccounts(walletOwner, accountTarget,amount * LAMPORTS_PER_SOL);
-      va.track('account actions',{type: 'split stake accounts'});
+      const record ={message:'account actions',data:{type: 'split stake accounts'}}
+      await this._txInterceptService.splitStakeAccounts(walletOwner, accountTarget,amount * LAMPORTS_PER_SOL,record);
+
     }
   }
 
