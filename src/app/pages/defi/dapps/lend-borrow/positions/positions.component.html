@@ -1,3 +1,4 @@
+
 <ng-container *ngIf="walletObligations$ | async as obligations; else elseTemplate">
   <ion-row class="position-stats ion-margin-bottom">
     <div>
@@ -6,7 +7,7 @@
         <app-icon-tooltip tip="Value of your account calculated as (supply - borrow)"></app-icon-tooltip>
       </span>
       <p>
-        {{ obligations.obligationStats.netAccountValue | currency}}
+        {{ obligations?.obligationStats?.netAccountValue || 0 | currency }}
       </p>
     </div>
     <div>
@@ -16,7 +17,7 @@
           tip="Value of all assets supplied. Increasing this value increases your borrow limit and liquidation threshold."></app-icon-tooltip>
       </span>
       <p>
-        {{ obligations.obligationStats.userTotalDeposit | currency}}
+        {{ obligations?.obligationStats?.userTotalDeposit || 0 | currency}}
       </p>
     </div>
     <div>
@@ -25,7 +26,7 @@
         <app-icon-tooltip [position]="position" tip="Value of all assets borrowed."></app-icon-tooltip>
       </span>
       <p>
-        {{ obligations.obligationStats.userTotalBorrow | currency}}
+        {{ obligations?.obligationStats?.userTotalBorrow || 0 | currency}}
       </p>
     </div>
   </ion-row>
@@ -38,7 +39,7 @@
           tip="Borrow balance is the value of all assets borrowed, adjusted by their borrow weight."></app-icon-tooltip>
       </span>
       <p style="text-align: left;">
-        {{ obligations.obligationStats.userTotalBorrow | currency}}
+        {{ obligations?.obligationStats?.userTotalBorrow || 0 | currency}}
       </p>
     </div>
 
@@ -49,16 +50,16 @@
           tip="Supply balance is the sum of all assets supplied. Increasing this value increases your borrow limit and liquidation threshold."></app-icon-tooltip>
       </span>
       <p style="text-align: right;">
-        {{ obligations.obligationStats.borrowLimit | currency}}
+        {{ obligations?.obligationStats?.borrowLimit || 0 | currency}}
       </p>
     </div>
 
   </ion-row>
   <ion-row class="position-stats ion-margin-bottom">
     <div id="bar-wrapper"
-      [tooltip]="'Current borrow rate:' + (obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.liquidationThreshold * 100).toFixed(2) + '%'">
+      [tooltip]="'Current borrow rate:' + (obligations?.obligationStats?.userTotalBorrow /  obligations?.obligationStats?.liquidationThreshold * 100 || 0).toFixed(2) + '%'">
       <span class="bar"
-        [style]="'width:' +  obligations.obligationStats.userTotalBorrow /  obligations.obligationStats.borrowLimit * 100 + '%'"></span>
+        [style]="'width:' +  (obligations?.obligationStats?.userTotalBorrow /  obligations?.obligationStats?.borrowLimit * 100)|| 0 + '%'"></span>
     </div>
   </ion-row>
   <ion-row class="position-stats ion-margin-bottom">
@@ -71,12 +72,13 @@
 
     </div>
     <div>
-      {{ obligations.obligationStats.liquidationThreshold | currency}}
+      {{ obligations?.obligationStats?.liquidationThreshold || 0 | currency}}
     </div>
   </ion-row>
 
   <h4 class="heading-4 ion-text-uppercase">Assets supplied</h4>
-  <ion-row class="asset" *ngFor="let coin of obligations.deposits">
+  
+  <ion-row class="asset" *ngFor="let coin of obligations?.deposits">
     <div>
       <div id="balance-number">
         <div id="icon-wrapper">
@@ -131,5 +133,5 @@
   </ion-row>
 </ng-container>
 <ng-template #elseTemplate>
-  <app-wallet-not-connected-state></app-wallet-not-connected-state>
+    <app-wallet-not-connected-state></app-wallet-not-connected-state>    
 </ng-template>

@@ -10,7 +10,6 @@ import { UtilsService } from 'src/app/services';
 export class ScoreComponent  implements OnInit {
 
   public loyaltyScore$ = this._loyaltyService.getLoyaltyScore()
-  chartData: any;
   constructor(
     private _loyaltyService: LoyaltyService
      ) { }

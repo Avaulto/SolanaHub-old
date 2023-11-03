@@ -16,6 +16,7 @@ import { PopoverController } from '@ionic/angular';
 })
 export class PositionsComponent implements OnInit {
   position: TooltipPosition = TooltipPosition.LEFT;
+  public noObligation = false;
   public walletObligations$: Observable<SolendObligation | any> = this._solanaUtilsService.walletExtended$.pipe(
     combineLatestWith(this._solendStore.solendSDK$),
     switchMap(async ([wallet, solendSDK]) => {
@@ -23,12 +24,17 @@ export class PositionsComponent implements OnInit {
   
         // add icon and name for tokens
         const tokensInfo = await firstValueFrom(this._jupStore.fetchTokenList());
-        const obligation = await solendSDK.fetchObligationByWallet(wallet.publicKey);
-        // console.log(obligation)
-        this._addTokenData(obligation.deposits, tokensInfo)
-        this._addTokenData(obligation.borrows, tokensInfo)
-        return obligation
+        let obligation = await solendSDK.fetchObligationByWallet(wallet.publicKey);
+        if(obligation){
+          // console.log(obligation)
+          this._addTokenData(obligation.deposits, tokensInfo)
+          this._addTokenData(obligation.borrows, tokensInfo)
+        }else{
+          obligation = {} as SolendObligation;
+        }
+        return obligation as SolendObligation
       } else {
+        this.noObligation = false
         return null
       }
     }
