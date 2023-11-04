@@ -3,7 +3,7 @@
     [clickable]="true" 
     [pagination]="true" 
     [modules]="swiperModules">
-    <swiper-slide class="intro-slide"  *ngFor="let nft of  nfts$ | async">
+    <swiper-slide class="intro-slide"  *ngFor="let nft of nfts$ | async">
 
                 <app-nft-preview [nft]="nft">
 
@@ -11,3 +11,10 @@
      
     </swiper-slide>
 </swiper-container>
+
+<div id="no-nfts" *ngIf="(nfts$ | async).length === 0">
+    <ion-icon id="icon-placeholder" name="image-outline"></ion-icon>
+    <h1 class="headings">No NFTs</h1>
+    <p class="sub ion-margin-bottom">Get started with your first NFT</p>
+    <ion-button (click)="openTensor()" class="ion-text-capitalize">browse tensor<ion-icon slot="end" name="log-out-outline"></ion-icon></ion-button>
+  </div>

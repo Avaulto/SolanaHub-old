@@ -31,7 +31,9 @@ export class NFTsComponent implements OnInit {
 
   //  this.nfts.next(updateNfts2)
   }
-
+  public openTensor(): void{
+    window.open('https://www.tensor.trade/','_blank')
+  }
   nftsUpdate(nfts) {
     const updateList = nfts.map((nft) => {
       return {
