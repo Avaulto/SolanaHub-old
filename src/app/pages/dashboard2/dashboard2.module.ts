@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 import { Dashboard2PageRoutingModule } from './dashboard2-routing.module';
 
@@ -17,7 +17,10 @@ import { ReceivePopupComponent } from './total-balance/receive-popup/receive-pop
 import { ConvertBalancePopupComponent } from './assets/coins/convert-balance-popup/convert-balance-popup.component';
 
 
+import { register } from 'swiper/element/bundle';
+register();
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     SharedModule,
     AccountsModule,

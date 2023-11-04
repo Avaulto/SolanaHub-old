@@ -16,11 +16,11 @@ const routes: Routes = [
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard2/dashboard2.module').then( m => m.Dashboard2PageModule)
   },
-  {
-    path: 'nft-gallery',
-    loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
-    // canActivate:[AuthGuard]
-  },
+  // {
+  //   path: 'nft-gallery',
+  //   loadChildren: () => import('./pages/nft-gallery/nft-gallery.module').then( m => m.NftGalleryPageModule),
+  //   // canActivate:[AuthGuard]
+  // },
   {
     path: 'defi',
     loadChildren: () => import('./pages/defi/defi.module').then( m => m.DefiPageModule)

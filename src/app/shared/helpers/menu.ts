@@ -15,11 +15,11 @@ export const pages: any = [
       url: "dashboard",
       icon: 'grid-outline'
     },
-    {
-      title: "NFT",
-      url: "nft-gallery",
-      icon: 'color-palette'
-    },
+    // {
+    //   title: "NFT",
+    //   url: "nft-gallery",
+    //   icon: 'color-palette'
+    // },
     {
       title: "DeFi",
       icon: "cube-outline",

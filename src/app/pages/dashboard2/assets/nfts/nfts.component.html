@@ -1,3 +1,13 @@
-<p>
-{{NFTs | json}}
-</p>
+<swiper-container 
+    [slidesPerView]="platform.width() > 1000 ? 4 : 2"
+    [clickable]="true" 
+    [pagination]="true" 
+    [modules]="swiperModules">
+    <swiper-slide class="intro-slide"  *ngFor="let nft of  nfts$ | async">
+
+                <app-nft-preview [nft]="nft">
+
+                </app-nft-preview> 
+     
+    </swiper-slide>
+</swiper-container>

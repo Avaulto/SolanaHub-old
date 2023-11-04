@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, firstValueFrom, map, switchMap, tap, throwError } from 'rxjs';
-import { ApiService, JupiterStoreService, SolanaUtilsService, ToasterService } from 'src/app/services';
+import { ApiService, JupiterStoreService, NftStoreService, SolanaUtilsService, ToasterService } from 'src/app/services';
 
 import { FetchersResult, mergePortfolioElementMultiples, PortfolioElement, PortfolioElementMultiple } from '@sonarwatch/portfolio-core';
 import { PublicKey } from '@solana/web3.js'
@@ -22,6 +22,7 @@ interface Platform {
 export class PortfolioService {
 
   constructor(
+    private _nftStore: NftStoreService,
     private _apiService: ApiService,
     private _toasterService: ToasterService,
     private _jupStore: JupiterStoreService,
@@ -58,6 +59,16 @@ export class PortfolioService {
         // add icon and name for tokens
         const tokensInfo = await firstValueFrom(this._jupStore.fetchTokenList());
 
+        // const nfts =await this._nftStore.getAllOnwerNfts(walletAddress)
+        // const nftsData: any = await editedDataExtended.find(group => group.platformId === 'wallet-nfts')
+        // console.log(nftsData)
+        // const r = await this._nftStore.getnftMetaData(nftsData.data.assets)
+
+
+        // console.log(r)
+        //add nft floor price
+
+        // console.log(nftsData,nfts)
         const extendTokenData: any = editedDataExtended.find(group => group.platformId === 'wallet-tokens')
         if(extendTokenData){
           this._addTokenData(extendTokenData?.data.assets,  tokensInfo, extendTokenData?.value)
@@ -67,7 +78,7 @@ export class PortfolioService {
         const getPlatformsData = await this._getPlatformsData();
         editedDataExtended.forEach(async group => {
           if (group.platformId !== 'wallet-tokens' && group.platformId !== 'wallet-nfts' && group.platformId != 'native-stake') {
-            const platformData = getPlatformsData.find(platfom => platfom.id === group.platformId);
+            const platformData = getPlatformsData.find(platform => platform.id === group.platformId);
             group.platformUrl = this._addPlatformUrl(platformData.id)
             Object.assign(group, platformData);
 

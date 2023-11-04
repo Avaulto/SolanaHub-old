@@ -1,8 +1,8 @@
 <ion-card class="nft-item" style="background: var(--deep-background) !important;">
   <ion-card-header>
     <app-image-placeholder [imagePath]="nft.image"></app-image-placeholder>
-    <app-nft-burn *ngIf="nft.listStatus != 'listed'" [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK"
-></app-nft-burn>
+    <!-- <app-nft-burn *ngIf="nft.listStatus != 'listed'" [walletOwner]="walletOwner" [mintAddressPK]="mintAddressPK"
+></app-nft-burn> -->
    <div class="listed-mark" *ngIf="nft.listStatus == 'listed'">
     listed
    </div>
@@ -18,11 +18,11 @@
       <span>
         {{nft.collectionName}}
       </span>
-      <span>
+      <!-- <span>
         {{nft.floorPrice | number: '1.2-2'}} ◎
-      </span>
+      </span> -->
     </ion-card-title>
-    <ion-accordion-group >
+    <!-- <ion-accordion-group >
       <ion-accordion value="first">
         <ion-item id="attr-header" slot="header">
           <ion-label>Attributes</ion-label>
@@ -34,27 +34,27 @@
           </div>
         </div>
       </ion-accordion>
-    </ion-accordion-group>
+    </ion-accordion-group> -->
     <ion-row class="ion-justify-content-between">
 
-      <ion-col size="12" sizeLg="5.8" class="ion-margin-bottom">
+      <ion-col size="12"  class="ion-margin-bottom">
         <ion-button id="send-nft" (click)="presentSendPopup($event)">send</ion-button>
 
    
       
       </ion-col>
-      <ion-col size="12" sizeLg="5.8" >
+      <!-- <ion-col size="12" sizeLg="5.8" >
         <ion-button fill="outline" *ngIf="nft.listStatus == 'unlisted'"
         (click)="presentListPopup($event)"
         >list
     </ion-button>
-    <!-- <ion-button  fill="outline" *ngIf="nft.listStatus == 'listed'" (click)="nftListingCancel()">
+    <ion-button  fill="outline" *ngIf="nft.listStatus == 'listed'" (click)="nftListingCancel()">
       unlist
-    </ion-button> -->
+    </ion-button>
     <ion-button id="ME-btn" color="pink" *ngIf="nft.listStatus == 'listed'">
     <a [href]="'https://magiceden.io/item-details/'+ nft.mintAddress" target="_blank">view on ME</a>  
     </ion-button>
-    </ion-col>
+    </ion-col> -->
   </ion-row>
   </ion-card-content>
 </ion-card>

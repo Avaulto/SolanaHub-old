@@ -3,6 +3,7 @@
     display: block;
     margin: 5px auto;
     height: 100%;
+    width: 100%;
 }
 
 .nft-item {
@@ -47,7 +48,7 @@ ion-item{
     background: transparent !important;
 }
 ion-card-content{
-    min-height: 146px;
+    // min-height: 146px;
     padding-bottom: 0;
     h5{
     text-transform: capitalize;

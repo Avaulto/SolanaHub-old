@@ -3,7 +3,10 @@ ion-img,ion-skeleton-text {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    aspect-ratio: 3/3;
 }
 ion-skeleton-text{
-    height: inherit;
+    position: absolute;
+     background-color: var(--deep-background);
+     height: inherit
 }

@@ -13,6 +13,7 @@ import { UtilsService } from './utils.service';
   providedIn: 'root'
 })
 export class NftStoreService {
+  protected metaDataProxy = this._utilsService.serverlessAPI + '/api/nft-metadata-proxy';
   protected magicEdenApiProxy =  this._utilsService.serverlessAPI + '/api/ME-proxy?env=mainnet';
   protected metaplexApiProxy =  this._utilsService.serverlessAPI + '/api/MP-proxy';
   protected heliusApiProxy = this._utilsService.serverlessAPI +'/api/nft-gallery'
@@ -53,14 +54,6 @@ export class NftStoreService {
     return nfts
   }
 
-  public async lockNft(addr) {
-
-    try {
-
-    } catch (error) {
-
-    }
-  }
   public async nftSellOrCancel(type: 'sell' | 'sell_cancel', { sellerAddress, auctionHouseAddress, tokenMint, tokenAccount, sol, expiry }: ListInstuction): Promise<{ tx: any, txSigned: any }> {
 
     let sellCancelNftInstructionReq: { tx: any, txSigned: any } = null;
@@ -151,5 +144,13 @@ export class NftStoreService {
     const getNFTsReq = await fetch(uri)
     const nfts: NFT2[] = await (await getNFTsReq.json()).items;
     return nfts
+  }
+
+  public async getnftMetaData(nfts): Promise<any[]> {
+
+    const getNFTsReq = await fetch(this.metaDataProxy,{body:JSON.stringify({nfts}),method:'POST'});
+    const rnfts: Nft[] = await getNFTsReq.json() || {};
+
+    return rnfts
   }
 }
