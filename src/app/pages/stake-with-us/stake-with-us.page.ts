@@ -24,7 +24,6 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   public menu: string[] = ['native','liquid'];
   public currentTab: string = this.menu[0]
   public apy: number;
-  public loyaltyLeagueAPR: number = 0;
   private VoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   private anchorWallet$: Subscription;
   public wallet: WalletExtended;
@@ -35,7 +34,6 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     nextAirdrop: this._loyaltyService.getNextAirdrop()
   }).pipe(map((res) =>{
     const dStr = res.nextAirdrop.days > 1 ? 'days' : 'day';
-    this.loyaltyLeagueAPR = res.prizePool.APR_boost
     res.nextAirdrop.desc =  `ETA in ${res.nextAirdrop.days} ` + dStr
     return res
   }, shareReplay(1)))
@@ -57,7 +55,6 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     this._utilsService.isNotUndefined,
     switchMap(async res => {
       let directStakeArr = await firstValueFrom(this._getLiquidDirectStake()) || []
-     console.log(directStakeArr);
      
       // directStakeArr.push(...ds)
       return directStakeArr
@@ -83,16 +80,9 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
 
 
   async ngOnInit() {
-    this.anchorWallet$ = this._solanaUtilsService.walletExtended$.pipe(this._utilsService.isNotNull, this._utilsService.isNotUndefined).subscribe(
-      (async wallet => {
-        this.wallet = wallet;
-        const balance = (await this._solanaUtilsService.connection.getBalance(wallet.publicKey)) / LAMPORTS_PER_SOL;
-        this.wallet.balance = this._utilsService.shortenNum(balance)
-        return this.wallet;
-      }))
+
   }
   ngOnDestroy(): void {
-    this.anchorWallet$.unsubscribe();
   }
   private async _getRank() {
     const { current } = await this._solanaUtilsService.connection.getVoteAccounts();

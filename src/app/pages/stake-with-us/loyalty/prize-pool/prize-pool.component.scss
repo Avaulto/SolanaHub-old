@@ -20,3 +20,11 @@ a {
     margin-block-end: 2px;
     text-transform: capitalize;
 }
+@media only screen and (max-width:1000px) {
+    ion-col{
+        display: flex;
+        justify-content: space-between;
+    }
+    
+}
+

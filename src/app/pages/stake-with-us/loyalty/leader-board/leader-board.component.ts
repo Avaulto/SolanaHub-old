@@ -10,18 +10,12 @@ import { WalletExtended } from 'src/app/models';
   templateUrl: './leader-board.component.html',
   styleUrls: ['./leader-board.component.scss'],
 })
-export class LeaderBoardComponent implements OnChanges  {
+export class LeaderBoardComponent  {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
-    private _loyaltyService:LoyaltyService
   ) { }
   @Input() loyaltyLeagueStats: any
   public wallet$: Observable<WalletExtended> = this._solanaUtilsService.walletExtended$
 
-  ngOnChanges(changes): void {
-    //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
-    //Add '${implements OnChanges}' to the class.
-    console.log(this.loyaltyLeagueStats);
-    
-  }
+
 }
