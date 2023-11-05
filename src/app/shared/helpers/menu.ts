@@ -16,11 +16,6 @@ export const pages: any = [
       icon: 'grid-outline'
     },
     {
-      title: "stake",
-      url: "stake",
-      icon: 'color-palette'
-    },
-    {
       title: "DeFi",
       icon: "cube-outline",
       url: "/defi",
