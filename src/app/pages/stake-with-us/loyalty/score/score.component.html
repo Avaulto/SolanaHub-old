@@ -3,7 +3,29 @@
 </ion-row>
 
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-col sizeMd="2" size="4" class="group ion-text-center native-stake">
+  <ion-label class="native-stake">native stake: </ion-label>
+  <span class="m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStake || 0 | number: '1.2-2'}}</span>
+</ion-row>
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="liquid-stake">mSOL direct stake: </ion-label>
+  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
+</ion-row>
+
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="liquid-stake">bSOL direct stake: </ion-label>
+  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
+</ion-row>
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="dao-vote">MNDE vote: </ion-label>
+    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veMNDE_Boost + 1 || 0 | number: '1.2-2'}}</span>
+</ion-row>
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label id="long-term-text">long term boost: </ion-label>
+  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost + 1 || 0 | number: '1.2-2'}}</span>
+
+</ion-row>
+
+<!-- <ion-col sizeMd="2" size="4" class="group ion-text-center native-stake">
     <ion-label>native stake: </ion-label>
     <span class="m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStake | number: '1.2-2'}}</span> <br>
   </ion-col>
@@ -23,13 +45,13 @@
   <ion-col sizeMd="2" size="4" class="group ion-text-center liquid-stake">
     <ion-label id="long-term-text">long term boost: </ion-label>
     <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost + 1 | number: '1.2-2'}}</span>
-  </ion-col>
-</ion-row>
-
+  </ion-col> -->
+<!-- </ion-row> -->
+<!-- 
 <ion-row>
   <ion-col class="ion-text-right">
     <ion-button color="medium" class="sub" fill="clear">
       <a href="https://docs.solanahub.app/solanahub/loyalty-league" target="_blank">learn more <ion-icon name="log-out-outline"></ion-icon></a>
     </ion-button>
   </ion-col>
-  </ion-row>
+  </ion-row> -->

@@ -3,9 +3,9 @@ import { PopoverController } from '@ionic/angular';
 import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { SendComponent } from '../send/send.component';
 import { Asset, ValidatorData } from 'src/app/models';
-import { StakeComponent } from 'src/app/shared/components';
+import { StakeBoxComponent } from 'src/app/shared/components';
 import { Observable, firstValueFrom, map, shareReplay, switchMap } from 'rxjs';
-import { LoyaltyService } from 'src/app/loyalty/loyalty.service';
+import { LoyaltyService } from 'src/app/pages/stake-with-us/loyalty/loyalty.service';
 
 
 @Component({
@@ -62,7 +62,7 @@ export class CoinsComponent implements OnInit {
       shareReplay(1),
     )
     const popover = await this._popoverController.create({
-      component: StakeComponent,
+      component: StakeBoxComponent,
       componentProps: { validatorsData },
       // event: e,
       alignment: 'start',

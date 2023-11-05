@@ -5,7 +5,7 @@ import { pages } from '../shared/helpers/menu';
 import { SolanaUtilsService } from '../services';
 import { PrizePool } from '../models/loyalty.model';
 import { Observable, firstValueFrom, forkJoin, map, shareReplay, switchMap, tap } from 'rxjs';
-import { LoyaltyService } from '../loyalty/loyalty.service';
+import { LoyaltyService } from '../pages/stake-with-us/loyalty/loyalty.service';
 import { ValidatorData } from '../models';
 
 
@@ -16,23 +16,11 @@ import { ValidatorData } from '../models';
 })
 export class SideMenuPage implements OnInit {
   @ViewChild('popover') popover: IonPopover;
-  public prizePool: PrizePool;
-  public validatorAPY$: Observable<number> = forkJoin({
-    prizePool: this._loyaltyService.getPrizePool(),
-    validatorInfo: this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh')
-  }).pipe(
-    map((data) => {
-      this.prizePool = data.prizePool;
-      const validatorInfo: ValidatorData | any =  data.validatorInfo
-      const totalApy = validatorInfo.apy_estimate * (this.prizePool.APR_boost + 1) / 100;
-      return totalApy
-    }))
 
 
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _menu: MenuController,
-    private _loyaltyService: LoyaltyService
   ) {
     this.openFirst()
   }

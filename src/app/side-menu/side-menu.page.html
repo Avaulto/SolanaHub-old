@@ -12,8 +12,7 @@
           <ion-icon [name]="p.icon"></ion-icon>
           <ion-label>
             {{ p.title }}
-            <span style="display: block;" class="ion-text-capitalize sub ion-color-primary"
-              *ngIf="p.url === 'stake-with-us'">up to {{(validatorAPY$ | async | percent:'1.0-2') || 0}}</span>
+      
           </ion-label>
           <ion-icon name="chevron-down-outline" *ngIf="p?.children"
             [ngStyle]="{'transform': p.open ? 'rotate(180deg)' : 'rotate(0deg)'}" (click)="p.open = !p.open"></ion-icon>
@@ -42,7 +41,6 @@
 
     </div>
     <div id="footer-menu">
-      <app-loyalty-btn [prizePool]="prizePool" *ngIf="(wallet$ | async) && prizePool"></app-loyalty-btn>
       <app-wallet-connect></app-wallet-connect>
       <div class="divider"></div>
       <div id="socials">

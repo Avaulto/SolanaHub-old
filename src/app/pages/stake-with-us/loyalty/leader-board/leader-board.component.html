@@ -1,0 +1,34 @@
+<ion-grid class="data-box ion-padding ion-margin-top">
+  <!-- <app-private-score [totalRebates]="(prizePool | async)?.rebates" [wallet]="wallet" [leaderBoard]="loyaltyLeaderBoard.loyaltyPoints"></app-private-score> -->
+
+  <ion-row class="ion-justify-content-between leader-board">
+    <!-- <ion-col class="sub-strong">
+      rank
+    </ion-col> -->
+    <ion-col class="sub">
+      User
+    </ion-col>
+    <ion-col class="sub">
+      points
+    </ion-col>
+    <ion-col class="sub">
+      prize pool share
+    </ion-col>
+  </ion-row>
+
+  <ion-row id="leader-board-table">
+    <ng-container *ngIf="loyaltyLeagueStats?.leaderBoard?.loyaltyPoints as LDP; else elseTemplate">
+      <app-item *ngFor="let item of LDP;let i = index" 
+      [class.myRank]="item?.walletOwner === (wallet$ | async)?.publicKey.toBase58()"
+      [loyaltyScore]="item"
+      [prizePoolRebate]="loyaltyLeagueStats?.prizePool.rebates"
+      [isWalletOwner]="item?.walletOwner === (wallet$ | async)?.publicKey.toBase58()"
+        [index]="i"></app-item>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <app-loader></app-loader>
+    </ng-template>
+  </ion-row>
+
+  <app-score></app-score>
+</ion-grid>

@@ -1,0 +1,22 @@
+:host{
+    width: 100%;
+}
+#ll-summary {
+    font-weight: bold;
+    color: gold;
+    text-transform: uppercase;
+}
+
+a {
+    font-style: normal;
+    font-weight: 400;
+    color: #B8B8B8;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+.sub{
+    margin-block-end: 2px;
+    text-transform: capitalize;
+}

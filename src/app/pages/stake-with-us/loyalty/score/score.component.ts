@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoyaltyService } from 'src/app/loyalty/loyalty.service';
+import { LoyaltyService } from 'src/app/pages/stake-with-us/loyalty/loyalty.service';
 import { UtilsService } from 'src/app/services';
 
 @Component({

@@ -1,0 +1,47 @@
+<ion-grid class="data-box ion-padding">
+
+  <ion-row class="ion-justify-content-between ion-margin-bottom">
+    <div id="ll-summary">
+      Loyalty League summary
+    </div>
+    <div>
+          <a href="https://docs.solanahub.app/solanahub/loyalty-league" target="_blank">learn more <ion-icon name="log-out-outline"></ion-icon></a>
+    </div>
+  </ion-row>
+  <ion-row class="stats ion-align-items-top ion-justify-content-between">
+    <ion-col>
+      <div class="sub">
+        prize pool
+      </div>
+      <div class="sub-strong">
+        {{loyaltyLeagueStats?.prizePool.rebates| number : '1.2-2'}} SOL
+      </div>
+    </ion-col>
+
+    <ion-col>
+      <div class="sub">
+        stake boost
+      </div>
+      <div class="sub-strong">
+        {{loyaltyLeagueStats?.prizePool.APR_boost | percent:'1.0-2'}} 
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="sub">
+        total points
+      </div>
+      <div class="sub-strong">
+        {{loyaltyLeagueStats?.leaderBoard.totalPoints| number:'1.1'}}
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="sub">
+        next airdrop
+      </div>
+      <div class="sub-strong">
+        {{loyaltyLeagueStats?.nextAirdrop.desc}}
+      </div>
+    </ion-col>
+
+  </ion-row>
+</ion-grid>

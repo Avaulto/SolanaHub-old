@@ -14,7 +14,7 @@ export * from './nft-preview/nft-listing/nft-listing.component'
 export * from './nft-preview/nft-send/nft-send.component'
 export * from './chart/chart.component';
 export * from './wallet-not-connected-state/wallet-not-connected-state.component'
-export * from './stake/stake.component';
+export * from './stake-box/stake-box.component';
 export * from './apy-calc/apy-calc.component';
 export * from './search-input/search-input.component';
 export * from './dapp-head/dapp-head.component'

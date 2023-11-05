@@ -1,0 +1,40 @@
+
+ion-col{
+    text-align: left;
+    flex-wrap: nowrap;
+    display: flex;
+    align-items: center;
+}
+ion-item{
+    --background: transparent;
+    --inner-padding-start: 0;
+    --inner-padding-end: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --border-color: transparent;
+    height: 30px;
+    display: flex;
+}
+ion-icon:hover {
+    cursor: pointer;
+    color: var(--ion-color-primary);
+}
+.key {
+    max-width: 55%;
+}
+ion-icon[name="copy-outline"] {
+    margin-inline-start: 5px;
+  }
+
+
+  ion-accordion {
+    background: var(--apr-box);
+}
+
+  ::ng-deep{
+
+    ion-accordion.accordion-animated > [slot=header] .ion-accordion-toggle-icon {
+        
+        color: var(--icon-color);
+    }
+}

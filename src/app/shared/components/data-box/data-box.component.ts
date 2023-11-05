@@ -12,7 +12,7 @@ export class DataBoxComponent implements OnInit {
   @Input() size: string;
   @Input() loading: any = true;
   @Input() tip?: string;
-  position: TooltipPosition = TooltipPosition.BELOW;
+  @Input() position: TooltipPosition = TooltipPosition.BELOW;
   constructor() { }
 
   ngOnInit() {

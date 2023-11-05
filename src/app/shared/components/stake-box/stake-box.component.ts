@@ -4,12 +4,9 @@ import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
 import { BehaviorSubject, firstValueFrom, map, Observable, of, shareReplay, Subject, Subscriber, switchMap, tap } from 'rxjs';
 import { Asset, ValidatorData } from 'src/app/models';
 import { LoaderService, TxInterceptService, SolanaUtilsService } from 'src/app/services';
-import { ActivatedRoute } from '@angular/router';
 
-import va from '@vercel/analytics';
 import { StakePoolStoreService } from 'src/app/pages/defi/dapps/liquid-stake/stake-pool-store.service';
 import { BN } from '@marinade.finance/marinade-ts-sdk';
-import { LoyaltyService } from 'src/app/loyalty/loyalty.service';
 
 interface StakePool {
   logo: string,
@@ -18,17 +15,17 @@ interface StakePool {
 }
 
 @Component({
-  selector: 'app-stake',
-  templateUrl: './stake.component.html',
-  styleUrls: ['./stake.component.scss'],
+  selector: 'app-stake-box',
+  templateUrl: './stake-box.component.html',
+  styleUrls: ['./stake-box.component.scss'],
 })
-export class StakeComponent implements OnInit, OnChanges {
+export class StakeBoxComponent implements OnInit, OnChanges {
   @Input() privateValidatorPage: boolean = false;
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData | any> = null;
 
   public wallet$ = this._solanaUtilsService.walletExtended$;
   public avgApy$: BehaviorSubject<number> = new BehaviorSubject(0 as number)
-  public loyaltyProgramBoost$;
+
 
   public showValidatorList: boolean = false;
   public stakeForm: FormGroup;
@@ -44,7 +41,6 @@ export class StakeComponent implements OnInit, OnChanges {
   public stakePools$: Observable<StakePool[]> = of(this._stakePools)
 
   constructor(
-    private _loyaltyService: LoyaltyService,
     public loaderService: LoaderService,
     private _fb: FormBuilder,
     private _solanaUtilsService: SolanaUtilsService,
@@ -90,14 +86,6 @@ export class StakeComponent implements OnInit, OnChanges {
   }
 
   public setSelectedValidator(validator: ValidatorData): void {
-    if(validator.vote_identity === '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh'){
-
-      this.loyaltyProgramBoost$ = this.avgApy$.pipe(switchMap(async avgApy => {
-        const loyaltyProgramApr = await firstValueFrom(this._loyaltyService.getPrizePool())
-        return avgApy * loyaltyProgramApr.APR_boost / 100
-      }))
-      
-    }
 
     this.rewardInfo.apy = validator.apy_estimate
 

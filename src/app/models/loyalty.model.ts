@@ -38,5 +38,6 @@ export interface PrizePool {
 export interface NextAirdrop{
     nextAirdrop: Date,
     days: number,
-    hours: number
+    hours: number,
+    desc?:string
 }

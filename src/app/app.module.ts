@@ -22,7 +22,7 @@ import { LogoComponent } from './side-menu/logo/logo.component';
 import { OptionsPopupComponent } from './settings/options-popup/options-popup.component';
 import { SettingsComponent } from './settings/settings.component';
 import { WalletModule } from './shared/wallet.module';
-import { LoyaltyModule } from './loyalty/loyalty.module';
+import { LoyaltyModule } from './pages/stake-with-us/loyalty/loyalty.module';
 
 inject({mode: "auto"});
 

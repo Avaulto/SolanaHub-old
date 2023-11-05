@@ -5,6 +5,7 @@ import { firstValueFrom, forkJoin, map, mergeMap, Observable, shareReplay, Subje
 import { Asset, ValidatorData, WalletExtended } from 'src/app/models';
 import { ValidatorBribe } from 'src/app/models/validatorBribeData.model';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
+import { LoyaltyService } from './loyalty/loyalty.service';
 
 
 
@@ -20,11 +21,24 @@ interface DirectStake {
   styleUrls: ['./stake-with-us.page.scss'],
 })
 export class StakeWithUsPage implements OnInit, OnDestroy {
+  public menu: string[] = ['native','liquid'];
+  public currentTab: string = this.menu[0]
   public apy: number;
+  public loyaltyLeagueAPR: number = 0;
   private VoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   private anchorWallet$: Subscription;
   public wallet: WalletExtended;
   public stakeChange = this._solanaUtilsService.getStakeChange();
+  public loyaltyLeagueStats = forkJoin({
+    prizePool: this._loyaltyService.getPrizePool(),
+    leaderBoard: this._loyaltyService.getLoyaltyLeaderBoard(),
+    nextAirdrop: this._loyaltyService.getNextAirdrop()
+  }).pipe(map((res) =>{
+    const dStr = res.nextAirdrop.days > 1 ? 'days' : 'day';
+    this.loyaltyLeagueAPR = res.prizePool.APR_boost
+    res.nextAirdrop.desc =  `ETA in ${res.nextAirdrop.days} ` + dStr
+    return res
+  }, shareReplay(1)))
   public getValidatorInfo: Observable<ValidatorData | any> = this._solanaUtilsService.getValidatorData('7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh').pipe(
     switchMap(async (validator: ValidatorData) => {
       validator.delegetors = await this._getDelegetors()
@@ -42,7 +56,8 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     this._utilsService.isNotNull,
     this._utilsService.isNotUndefined,
     switchMap(async res => {
-      let directStakeArr = await firstValueFrom(this._getLiquidDirectStake())
+      let directStakeArr = await firstValueFrom(this._getLiquidDirectStake()) || []
+     console.log(directStakeArr);
      
       // directStakeArr.push(...ds)
       return directStakeArr
@@ -53,6 +68,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
 
 
   constructor(
+    private _loyaltyService:LoyaltyService,
     private _utilsService: UtilsService,
     private _solanaUtilsService: SolanaUtilsService,
     private _titleService: Title,

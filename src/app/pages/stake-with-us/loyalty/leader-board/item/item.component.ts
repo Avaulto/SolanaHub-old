@@ -12,7 +12,8 @@ export class ItemComponent  implements OnInit {
   @Input() index;
   @Input() loyaltyScore: LoyaltyPoint;
   @Input() prizePoolRebate: number = 0;
-  @Input() wallet: WalletExtended;
+  @Input() isWalletOwner: boolean = false;
+
   constructor(private _utilsService:UtilsService) { }
 
   ngOnInit() {

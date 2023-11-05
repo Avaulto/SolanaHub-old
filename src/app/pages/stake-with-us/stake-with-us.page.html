@@ -10,7 +10,7 @@
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
                 <app-data-box [title]="'stake'" [loading]="(getValidatorInfo | async) == null"
                     [desc]="(getValidatorInfo | async)?.activated_stake | number: '1.2-2'">
-                   
+
                 </app-data-box>
             </ion-col>
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
@@ -26,31 +26,67 @@
         </ion-row>
         <ion-row class="ion-justify-content-between ion-align-items-start">
             <ion-col size="12" sizeMd="7" class="data-box ion-padding">
-                <app-stake [validatorsData]="getValidatorInfo" [privateValidatorPage]="true"></app-stake>
+                <app-stake-box [validatorsData]="getValidatorInfo" [privateValidatorPage]="true"></app-stake-box>
             </ion-col>
-            <ion-col size="12" sizeMd="4.8" class="data-box ion-padding">
-                <div class="heading-4 ion-text-uppercase">Your Native Stake</div>
+            <ion-col size="12" sizeMd="4.8">
+            
 
-                <app-accounts class="ion-margin-bottom" [privateValidatorPage]="true"></app-accounts>
+                    <app-prize-pool [loyaltyLeagueStats]="loyaltyLeagueStats | async" ></app-prize-pool>
+              
+             
+                    <app-leader-board [loyaltyLeagueStats]="loyaltyLeagueStats | async"></app-leader-board>
+                
+            </ion-col>
+        </ion-row>
+        <ion-row class="data-box ion-padding">
+      
+                <h3 class="heading-4 ion-margin-bottom ion-text-uppercase box-title">Stake</h3>
+  
+            <ion-row style="width: 100%;">
 
+                <!-- <ion-col>
 
-                <div *ngIf="getStakePoolDirectStake$ | async as stakePoolDS;">
-                    <div class="heading-4 ion-text-uppercase" style="display: flex;" >Your Liquid Stake <app-icon-tooltip tip="Liquid direct stake is updated once per epoch"></app-icon-tooltip></div>
-                    <ion-item *ngFor="let ds of stakePoolDS">
-                        <div id="liquid-stake-assets">
+                </ion-col> -->
+                <ion-col>
+                    <ion-row id="tab-wrapper">
+                        <app-tabs [menu]="menu" (onSelectTab)="currentTab = $event"></app-tabs>
+                    </ion-row>
 
-                            <app-image-placeholder class="table-icon" [imagePath]="ds.image"></app-image-placeholder>
+                    <app-accounts *ngIf="currentTab === 'native'" class="ion-margin-bottom"
+                        [privateValidatorPage]="true"></app-accounts>
 
-                            <div class="sub">
-                                {{ds.amount | number: '1.2-2'}}
-                                {{ds.symbol}}
+                    <ng-container
+                        *ngIf="currentTab === 'liquid' &&  getStakePoolDirectStake$ | async as stakePoolDS; else elseTemplate">
+
+                    </ng-container>
+                    <ng-template #elseTemplate>
+
+                    </ng-template>
+                    <ng-container *ngIf="currentTab === 'liquid'">
+                        <ng-container *ngIf="getStakePoolDirectStake$ | async as stakePoolDS; else elseTemplate">
+                            <ion-item *ngFor="let ds of stakePoolDS">
+                                <div id="liquid-stake-assets">
+                                    <app-image-placeholder class="table-icon"
+                                        [imagePath]="ds.image"></app-image-placeholder>
+
+                                    <div class="sub">
+                                        {{ds.amount | number: '1.2-2'}}
+                                        {{ds.symbol}}
+                                    </div>
+                                </div>
+
+                            </ion-item>
+                            <div class="sub" style="    padding: 10px;
+                        text-align: center;" *ngIf="stakePoolDS.length === 0">
+                                No liquid stake
                             </div>
-                        </div>
-                    </ion-item>
-                </div>
-
-
-            </ion-col>
+                        </ng-container>
+                        <ng-template #elseTemplate>
+                            <app-loader></app-loader>
+                        </ng-template>
+                    </ng-container>
+                </ion-col>
+            </ion-row>
         </ion-row>
     </ion-grid>
 </ion-content>

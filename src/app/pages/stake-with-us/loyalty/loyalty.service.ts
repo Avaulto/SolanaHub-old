@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
-import { ApiService } from '../services/api.service';
-import { UtilsService } from '../services/utils.service';
+import { ApiService } from '../../../services/api.service';
+import { UtilsService } from '../../../services/utils.service';
 import { Observable, catchError, map, shareReplay, throwError } from 'rxjs';
-import { LoyaltyLeaderBoard, LoyaltyPoint, LoyaltyScore, NextAirdrop, PrizePool } from '../models/loyalty.model'
-import { ToasterService } from '../services';
+import { LoyaltyLeaderBoard, LoyaltyPoint, LoyaltyScore, NextAirdrop, PrizePool } from '../../../models/loyalty.model'
+import { ToasterService } from '../../../services';
 
 
 
