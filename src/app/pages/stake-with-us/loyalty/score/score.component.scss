@@ -20,8 +20,16 @@
 .dao-vote{
     color:var(--ion-color-tertiary);
 }
+.dao-vote-two{
+    color: #70eeff;
+}
 .sh-activity{
     color: #8946fc;
+}
+#long-term-text{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image:linear-gradient(166deg, var(--ion-color-primary) 36%, var(--ion-color-secondary) 65%, var(--ion-color-tertiary) 10%);
 }
 a{
     text-decoration: none;
@@ -40,9 +48,4 @@ a{
     span{
         font-size: 10px;
     }
-}
-#long-term-text{
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image:linear-gradient(166deg, var(--ion-color-primary) 36%, var(--ion-color-secondary) 65%, var(--ion-color-tertiary) 10%);
 }

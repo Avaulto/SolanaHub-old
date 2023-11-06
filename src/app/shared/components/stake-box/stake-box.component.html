@@ -80,6 +80,7 @@
 
       </div>
       <div>
+
         <span *ngIf="stakeForm.controls.stakePool.value === 'marinade'">
           0.06%
           </span>
@@ -93,10 +94,14 @@
           <span>
               Deposit fee
           </span>
-
       </div>
       <div>
-          0.0008%
+        <span *ngIf="stakeForm.controls.stakePool.value === 'marinade'">
+          0.02%
+          </span>
+        <span *ngIf="stakeForm.controls.stakePool.value === 'solblaze'">
+          0.008%
+        </span>
       </div>
   </ion-row>
 

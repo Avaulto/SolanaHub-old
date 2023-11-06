@@ -119,7 +119,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   private _getLiquidDirectStake(): Observable<DirectStake[]> {
 
     return this._apiService.get(`${this._utilsService.serverlessAPI}/api/loyalty-points/get-validator-bribe`).pipe(map((r: ValidatorBribe) => {
-      const record = r.validatorBribeData.find(vote => vote.walletOwner === this.wallet.publicKey.toBase58())
+      const record = r.validatorBribeData.find(vote => vote.walletOwner === this.wallet?.publicKey.toBase58())
       if (record) {
         const marinadeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.mSOL_directStake) }
         const solblazeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/bSOL-logo.png', amount: Number(record.bSOL_directStake) }
