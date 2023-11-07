@@ -3,7 +3,7 @@
       <app-data-box title="Strategy SOL balance"
        [loading]="strategyStats?.userHoldings?.SOL === null"
           [desc]="strategyStats?.userHoldings?.SOL | number : '1.2-2'">
-          <div class="heading-5">= ${{strategyStats?.userHoldings?.USD |  number : '1.2-2'}}</div>
+          <div class="heading-5">= ${{strategyStats?.userHoldings?.USD || 0 |  number : '1.2-2'}}</div>
       </app-data-box>
   </ion-col>
 

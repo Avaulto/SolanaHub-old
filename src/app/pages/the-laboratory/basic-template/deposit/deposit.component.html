@@ -17,7 +17,7 @@
   </ion-row>
   <ion-row id="notes" class="ion-align-items-center ion-justify-content-between" *ngFor="let fee of strategyConfiguration.fees">
    <ion-col>
-    {{fee.name}} <app-icon-tooltip [tooltip]="fee.desc"></app-icon-tooltip>
+    {{fee.name}} <app-icon-tooltip *ngIf="fee.desc" [tooltip]="fee.desc"></app-icon-tooltip>
 
 
    </ion-col>
