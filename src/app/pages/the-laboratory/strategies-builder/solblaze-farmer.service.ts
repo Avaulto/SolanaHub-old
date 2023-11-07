@@ -174,11 +174,11 @@ export class SolblazeFarmerService {
         desc: 'slippage that may cause for swapping different assets',
         value: 0.1
       },
-      {
-        name: 'Deposit fee',
-        desc: '',
-        value: 0.008
-      },
+      // {
+      //   name: 'Deposit fee',
+      //   desc: '',
+      //   value: 0.008
+      // },
       // {
       //   name: 'Liquidity Provider Fee',
       //   desc: 'the amount of fees charged on each trade that goes to the LPs',
