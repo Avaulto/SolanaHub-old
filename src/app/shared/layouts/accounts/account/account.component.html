@@ -5,8 +5,9 @@
     <ion-row>
 
 
-  <ion-col class="flex-item-center">
+  <ion-col size="8" sizeLg="5" class="flex-item-center">
     <div class="table-icon" [ngStyle]="{'background': mergeCondition ? 'transparent' : ''}">
+      <ion-img class="mnde-mange-account" [position]="position" tooltip="This stake account is managed by a native of Marinade." *ngIf="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq'" src="/assets/images/icons/mnde-icon.svg"></ion-img>
       <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
       <ion-checkbox #accCheckbox *ngIf="mergeCondition" [checked]="isChecked"></ion-checkbox>
     </div>
@@ -19,7 +20,7 @@
     </div>
   </ion-col>
   <!-- {{account | json}} -->
-  <ion-col class="account-address ion-hide-xl-down">
+  <ion-col size="0" sizeLg="4" class="account-address ion-hide-xl-down">
 
     <div class="ion-text-capitalize heading-6">account address</div>
     <div class="sub">
@@ -27,7 +28,7 @@
     </div>
   </ion-col>
 
-  <ion-col class="account-status">
+  <ion-col size="3" class="account-status">
     <div class="ion-text-capitalize heading-6">status</div>
     <span class="sub" [ngStyle]="{'color': getStatusColor(account?.state)}">
       {{account?.state}}
@@ -43,9 +44,10 @@
 <ng-container *ngIf="actionType === ''">
 
   
-  <ion-col size="2" class="controls">
-    <ion-button fill="outline"
-    (click)="openStakeAccountActions($event, account)">actions</ion-button>
+  <ion-col  size="1" class="controls">
+    <ion-icon (click)="openStakeAccountActions($event, account)" name="ellipsis-vertical-circle-outline"></ion-icon>
+    <!-- <ion-button fill="outline"
+    (click)="openStakeAccountActions($event, account)">actions</ion-button> -->
   </ion-col>
 </ng-container>
 

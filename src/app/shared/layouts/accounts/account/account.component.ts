@@ -4,12 +4,15 @@ import { StakeAccountExtended } from 'src/app/models';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
 import { ActionsComponent } from '../actions/actions.component';
 
+import { TooltipPosition } from '../../tooltip/tooltip.enums';
+
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
+  position: TooltipPosition = TooltipPosition.RIGHT;
   @Input() account: StakeAccountExtended;
   @Input() allAccounts: StakeAccountExtended[]
   @Input() mergeCondition: boolean = false;

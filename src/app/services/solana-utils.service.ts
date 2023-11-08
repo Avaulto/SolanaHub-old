@@ -178,8 +178,8 @@ export class SolanaUtilsService {
         "filters": [
           {
             "memcmp": {
-              "offset": 12,
-              "bytes": publicKey.toBase58()
+              "offset": 44, // Adjust this offset based on your account data structure
+              "bytes": publicKey.toBase58(),
             }
           }
         ]
@@ -212,10 +212,10 @@ export class SolanaUtilsService {
     const pk = account.pubkey;
     const addr = pk.toBase58()
 
-    const parsedData = account.account.data.parsed.info.stake || null//.delegation.stake
-    const validatorVoteKey = parsedData?.delegation?.voter
-    const stake = Number(parsedData?.delegation?.stake) || 0;
-    const startEpoch = parsedData.delegation.activationEpoch;
+    const parsedData = account.account.data.parsed.info || null//.delegation.stake
+    const validatorVoteKey = parsedData.stake?.delegation?.voter
+    const stake = Number(parsedData.stake?.delegation?.stake) || 0;
+    const startEpoch = parsedData.stake.delegation.activationEpoch;
     const rentReserve = Number(account.account.data.parsed.info.meta.rentExemptReserve);
     const accountLamport = Number(account.account.lamports);
     const excessLamport = accountLamport - stake - rentReserve
@@ -230,7 +230,7 @@ export class SolanaUtilsService {
         console.warn(error)
       }
     }
-
+    
 
     const stakeAccountInfo: StakeAccountExtended = {
       lockedDue: new Date(account.account.data.parsed.info.meta.lockup.unixTimestamp * 1000).toLocaleDateString("en-US"),
@@ -244,8 +244,11 @@ export class SolanaUtilsService {
       excessLamport,
       checkedForMerge: false,
       startEpoch,
+      stakeAuth: parsedData.meta.authorized.staker,
       canMerge: true
     }
+      console.log(stakeAccountInfo);
+      
     return stakeAccountInfo
   }
 

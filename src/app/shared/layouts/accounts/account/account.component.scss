@@ -8,14 +8,12 @@
     display: flex;
     align-items: center;
 }
-// ion-col{
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-// }
+ion-icon{
+    font-size: 20px;
+}
 .table-icon {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     margin-inline-end: 10px;
     overflow: hidden;
     background: black;
@@ -23,7 +21,6 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-
 }
 
 .validator-info.heading-6 {
@@ -49,3 +46,21 @@
 .global-usd-color.sub-strong{
     margin-inline-end: 3px;
 }
+
+.mnde-mange-account{
+    position: absolute;
+    left: -10px;
+    top: 0;
+    background: black;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    z-index: 0;
+    padding: 3px;
+}
+// @media only screen and (max-width: 990px) {
+//     .validator-info span {
+//         display: flex;
+//         flex-direction: column;
+//     }
+// }
