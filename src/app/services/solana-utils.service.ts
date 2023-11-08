@@ -247,7 +247,7 @@ export class SolanaUtilsService {
       stakeAuth: parsedData.meta.authorized.staker,
       canMerge: true
     }
-      console.log(stakeAccountInfo);
+
       
     return stakeAccountInfo
   }

@@ -17,6 +17,26 @@ export class AccountsComponent implements OnChanges {
       if(wallet){
         await this._solanaUtilsService.fetchAndUpdateStakeAccount(wallet.publicKey);
         let accounts = this._solanaUtilsService.getStakeAccountsExtended();
+
+  
+  
+          const marinadeNative = accounts.filter(acc => acc.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq')
+          const totalMarianadeNative = marinadeNative.reduce((acc, curr) => acc + curr.balance, 0)
+          const mariandeNativeStakeAccount: StakeAccountExtended = {
+            ...marinadeNative[0],
+            balance: totalMarianadeNative,
+            validatorData: {
+              ...marinadeNative[0].validatorData,
+              image: '/assets/images/icons/mnde-icon.svg',
+              name: 'Marinade Native'
+            },
+            canMerge: false,
+          }
+    
+          accounts = accounts.filter(acc => acc.stakeAuth !== 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq')
+          accounts.push(mariandeNativeStakeAccount)
+          // this.allAccounts = changes.account.currentValue
+   
         if(this.privateValidatorPage){
           accounts = accounts.filter(acc => {
             if(acc.validatorVoteKey === this.VoteKey){

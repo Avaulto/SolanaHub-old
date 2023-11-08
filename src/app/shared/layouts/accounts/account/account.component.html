@@ -11,9 +11,7 @@
       <ion-img 
       [class.mndeAccount]="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq'"
       *ngIf="!mergeCondition" 
-      [src]="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq' ? 
-      '/assets/images/icons/mnde-icon.svg' :
-      account?.validatorData?.image || '/assets/images/icons/placeholder.svg'
+      [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'
       "></ion-img>
       <ion-checkbox #accCheckbox *ngIf="mergeCondition" [checked]="isChecked"></ion-checkbox>
     </div>
@@ -50,7 +48,7 @@
 <ng-container *ngIf="actionType === ''">
 
   
-  <ion-col  size="1" class="controls">
+  <ion-col  size="1" class="controls" *ngIf="account.stakeAuth !== 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq'">
     <ion-icon (click)="openStakeAccountActions($event, account)" name="ellipsis-vertical-circle-outline"></ion-icon>
     <!-- <ion-button fill="outline"
     (click)="openStakeAccountActions($event, account)">actions</ion-button> -->

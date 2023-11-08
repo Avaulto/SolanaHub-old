@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { IonCheckbox, PopoverController } from '@ionic/angular';
 import { StakeAccountExtended } from 'src/app/models';
 import { SolanaUtilsService, UtilsService } from 'src/app/services';
@@ -11,7 +11,7 @@ import { TooltipPosition } from '../../tooltip/tooltip.enums';
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnChanges {
   position: TooltipPosition = TooltipPosition.RIGHT;
   @Input() account: StakeAccountExtended;
   @Input() allAccounts: StakeAccountExtended[]
@@ -21,21 +21,24 @@ export class AccountComponent implements OnInit {
   @Input() actionType: string = '';
   public solPrice = this._solanaUtilsService.lastSolPrice();
   constructor(
-    private _solanaUtilsService:SolanaUtilsService,
-    private _utilsService:UtilsService,
+    private _solanaUtilsService: SolanaUtilsService,
+    private _utilsService: UtilsService,
     private _popoverController: PopoverController
-    ) { }
+  ) { }
 
   ngOnInit() {
-  
+
 
   }
-  public convertNumber(num){
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
+  public convertNumber(num) {
     return this._utilsService.formatBigNumbers(num)
   }
-  appendAccountData(){
+  appendAccountData() {
     this.isChecked = !this.isChecked;
-    this.onClickAccount.emit({ account:this.account, accCheckbox:this.isChecked})
+    this.onClickAccount.emit({ account: this.account, accCheckbox: this.isChecked })
   }
 
   public getStatusColor(status: 'active' | 'inactive' | 'activating' | 'deactivating') {
@@ -57,10 +60,10 @@ export class AccountComponent implements OnInit {
   async openStakeAccountActions(e: Event, account: StakeAccountExtended) {
     const popover = await this._popoverController.create({
       component: ActionsComponent,
-      componentProps:{account,wallet:this._solanaUtilsService.getCurrentWallet(), accounts: this.allAccounts},
+      componentProps: { account, wallet: this._solanaUtilsService.getCurrentWallet(), accounts: this.allAccounts },
       event: e,
       alignment: 'start',
-      showBackdrop:false,
+      showBackdrop: false,
       backdropDismiss: true,
       dismissOnSelect: true,
       cssClass: 'stake-account-actions-popup',
