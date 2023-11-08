@@ -7,8 +7,14 @@
 
   <ion-col size="8" sizeLg="5" class="flex-item-center">
     <div class="table-icon" [ngStyle]="{'background': mergeCondition ? 'transparent' : ''}">
-      <ion-img class="mnde-mange-account" [position]="position" tooltip="This stake account is managed by a native of Marinade." *ngIf="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq'" src="/assets/images/icons/mnde-icon.svg"></ion-img>
-      <ion-img *ngIf="!mergeCondition" [src]="account?.validatorData?.image || '/assets/images/icons/placeholder.svg'"></ion-img>
+
+      <ion-img 
+      [class.mndeAccount]="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq'"
+      *ngIf="!mergeCondition" 
+      [src]="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq' ? 
+      '/assets/images/icons/mnde-icon.svg' :
+      account?.validatorData?.image || '/assets/images/icons/placeholder.svg'
+      "></ion-img>
       <ion-checkbox #accCheckbox *ngIf="mergeCondition" [checked]="isChecked"></ion-checkbox>
     </div>
     <div class="validator-info heading-6">
