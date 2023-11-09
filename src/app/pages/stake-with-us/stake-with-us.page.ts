@@ -27,6 +27,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   private VoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
   private anchorWallet$: Subscription;
   public wallet: WalletExtended;
+  public solPrice = this._solanaUtilsService.solPrice$;
   public stakeChange = this._solanaUtilsService.getStakeChange();
   public loyaltyLeagueStats = forkJoin({
     prizePool: this._loyaltyService.getPrizePool(),

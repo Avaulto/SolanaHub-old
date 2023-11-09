@@ -24,7 +24,6 @@ export class AccountsComponent implements OnChanges {
           const totalMarianadeNative = marinadeNative.reduce((acc, curr) => acc + curr.balance, 0)
           accounts = accounts.filter(acc => acc.stakeAuth !== 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq')
           if(marinadeNative.length){
-            console.log(marinadeNative);
             
             const mariandeNativeStakeAccount: StakeAccountExtended = {
               ...marinadeNative[0],

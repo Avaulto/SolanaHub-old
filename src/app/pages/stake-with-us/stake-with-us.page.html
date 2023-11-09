@@ -10,12 +10,15 @@
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
                 <app-data-box [title]="'stake'" [loading]="(getValidatorInfo | async) == null"
                     [desc]="(getValidatorInfo | async)?.activated_stake | number: '1.2-2'">
+                    <div class="heading-5 sub">{{ (getValidatorInfo | async)?.activated_stake * (solPrice | async) | currency}} </div>
+
 
                 </app-data-box>
             </ion-col>
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
-                <app-data-box [title]="'validator rank'" [loading]="(getValidatorInfo | async)?.rank == null"
-                    [desc]="(getValidatorInfo | async)?.rank?.rank + '/' + (getValidatorInfo | async)?.rank?.numOfValidators">
+                <app-data-box [title]="'Validator APY'" [loading]="(getValidatorInfo | async)?.rank == null"
+                    [desc]="this.apy * (1 + (loyaltyLeagueStats | async)?.prizePool?.APR_boost) / 100 | percent:'1.0-2'">
+                    <div class="heading-5 sub">({{this.apy *  (loyaltyLeagueStats | async)?.prizePool?.APR_boost / 100 | percent:'1.0-2'}} From Loyalty League)</div>
                 </app-data-box>
             </ion-col>
             <ion-col class="data-box ion-padding" sizeMd="2.8" sizeSm="5">
