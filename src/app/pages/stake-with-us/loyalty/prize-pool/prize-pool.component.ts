@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LoyaltyLeaderBoard, NextAirdrop, PrizePool } from 'src/app/models/loyalty.model';
 import { LoyaltyService } from '../loyalty.service';
-import { Observable, forkJoin, map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-prize-pool',
