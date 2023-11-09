@@ -25,8 +25,7 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
   public currentTab: string = this.menu[0]
   public apy: number;
   private VoteKey: string = '7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh';
-  private anchorWallet$: Subscription;
-  public wallet: WalletExtended;
+
   public solPrice = this._solanaUtilsService.solPrice$;
   public stakeChange = this._solanaUtilsService.getStakeChange();
   public loyaltyLeagueStats = forkJoin({
@@ -118,9 +117,10 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
 
 
   private _getLiquidDirectStake(): Observable<DirectStake[]> {
-
+    const wallet: WalletExtended = this._solanaUtilsService.getCurrentWallet()
     return this._apiService.get(`${this._utilsService.serverlessAPI}/api/loyalty-points/get-validator-bribe`).pipe(map((r: ValidatorBribe) => {
-      const record = r.validatorBribeData.find(vote => vote.walletOwner === this.wallet?.publicKey.toBase58())
+      const record = r.validatorBribeData.find(vote => vote.walletOwner === wallet?.publicKey.toBase58())
+
       if (record) {
         const marinadeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/mSOL-logo.png', amount: Number(record.mSOL_directStake) }
         const solblazeDS: DirectStake = { symbol: '◎', image: 'assets/images/icons/bSOL-logo.png', amount: Number(record.bSOL_directStake) }
