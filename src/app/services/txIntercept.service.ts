@@ -330,6 +330,8 @@ export class TxInterceptService {
         segmentClass: "toastInfo"
       }
       if(record){
+        console.log(record);
+        
         va.track(record.message, record.data)
       }
       this.toasterService.msg.next(txCompleted)
@@ -368,7 +370,10 @@ export class TxInterceptService {
         message: 'Transaction Completed',
         segmentClass: "toastInfo"
       }
-      va.track(record.message, record.data)
+
+      if(record){
+        va.track(record.message, record.data)
+      }
       this.toasterService.msg.next(txCompleted)
 
       return signature
