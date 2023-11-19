@@ -29,7 +29,7 @@
         </ion-row>
         <ion-row class="ion-justify-content-between ion-align-items-start">
             <ion-col size="12" sizeMd="7" class="data-box ion-padding">
-                <app-stake-box [validatorsData]="getValidatorInfo" [privateValidatorPage]="true"></app-stake-box>
+                <app-stake-box (stakeSuccess)="updateReferralLink()" [validatorsData]="getValidatorInfo" [privateValidatorPage]="true"></app-stake-box>
             </ion-col>
             <ion-col size="12" sizeMd="4.8">
             

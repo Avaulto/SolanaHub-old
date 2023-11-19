@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LAMPORTS_PER_SOL, } from '@solana/web3.js';
 import { BehaviorSubject, firstValueFrom, map, Observable, of, shareReplay, Subject, Subscriber, switchMap, tap } from 'rxjs';
@@ -22,7 +22,7 @@ interface StakePool {
 export class StakeBoxComponent implements OnInit, OnChanges {
   @Input() privateValidatorPage: boolean = false;
   @Input() validatorsData: Observable<ValidatorData[] | ValidatorData | any> = null;
-
+  @Output() stakeSuccess: Subject<boolean> = new Subject<boolean>();
   public wallet$ = this._solanaUtilsService.walletExtended$;
   public avgApy$: BehaviorSubject<number> = new BehaviorSubject(0 as number)
 
@@ -104,16 +104,21 @@ export class StakeBoxComponent implements OnInit, OnChanges {
     let { amount, voteAccount, monthLockuptime, stakePool } = this.stakeForm.value;
     const walletOwner = this._solanaUtilsService.getCurrentWallet();
     if (this.stakingType === 'native') {
-      await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
+      let stake = await this._nativeStake(monthLockuptime, amount, walletOwner.publicKey, voteAccount);
+      if (stake) {
+        this.stakeSuccess.next(true)
+      }
     } else {
-      await this._liquidStake(stakePool, amount, voteAccount)
+      let stake = await this._liquidStake(stakePool, amount, voteAccount)
+      if (stake) {
+        this.stakeSuccess.next(true)
+      }
     }
-
   }
 
   private async _liquidStake(poolName: string, amount, validatorVoteAccount) {
     const sol = new BN((amount - 0.001) * LAMPORTS_PER_SOL);
-    this._stakePoolStore.stakeSOL(poolName.toLowerCase(), sol, validatorVoteAccount)
+    return await this._stakePoolStore.stakeSOL(poolName.toLowerCase(), sol, validatorVoteAccount)
   }
 
   private async _nativeStake(monthLockuptime, amount, walletOwnerPublicKey, voteAccount) {
@@ -121,7 +126,7 @@ export class StakeBoxComponent implements OnInit, OnChanges {
       monthLockuptime = this._getLockuptimeMilisecond(monthLockuptime);
     }
     const record = {message:`native stake`, data:{ validator: voteAccount, amount }}
-    await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime,record);
+    return await this._txInterceptService.delegate(amount * LAMPORTS_PER_SOL, walletOwnerPublicKey, voteAccount, monthLockuptime,record);
   
   }
   private _getLockuptimeMilisecond(months: number): number {

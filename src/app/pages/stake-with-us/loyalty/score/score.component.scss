@@ -9,27 +9,24 @@
     width: 100%;
 }
 
-.native-stake{
-    color:var(--ion-color-primary);
-}
+// .native-stake{
+//     color:var(--ion-color-primary);
+// }
 
-.liquid-stake{
-    color:var(--ion-color-secondary);
-}
+// .mnde-color{
+//     color:#eb8302
+// }
+// .blze-color{
+//     color:#70eeff;
+// }
 
-.dao-vote{
-    color:var(--ion-color-tertiary);
-}
-.dao-vote-two{
-    color: #70eeff;
-}
-.sh-activity{
-    color: #8946fc;
-}
-#long-term-text{
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image:linear-gradient(166deg, var(--ion-color-primary) 36%, var(--ion-color-secondary) 65%, var(--ion-color-tertiary) 10%);
+#ref-color{
+    border-bottom: 1px dashed var(--ion-color-primary);
+    color: gold;
+    // border-bottom: 1px dashed  var(--ion-color-primary);
+    // -webkit-background-clip: text;
+    // -webkit-text-fill-color: transparent;
+    // background-image:linear-gradient(166deg, var(--ion-color-primary) 29%, var(--ion-color-secondary) 61%, var(--ion-color-tertiary) 10%);
 }
 a{
     text-decoration: none;

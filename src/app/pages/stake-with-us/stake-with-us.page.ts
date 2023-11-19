@@ -6,6 +6,7 @@ import { Asset, ValidatorData, WalletExtended } from 'src/app/models';
 import { ValidatorBribe } from 'src/app/models/validatorBribeData.model';
 import { ApiService, SolanaUtilsService, UtilsService } from 'src/app/services';
 import { LoyaltyService } from './loyalty/loyalty.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -69,7 +70,8 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
     private _utilsService: UtilsService,
     private _solanaUtilsService: SolanaUtilsService,
     private _titleService: Title,
-    private _apiService: ApiService
+    private _apiService: ApiService,
+    private _activeRoute: ActivatedRoute,
   ) {
 
   }
@@ -78,9 +80,14 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
 
   }
 
-
+  refWallet: string;
   async ngOnInit() {
-
+    this._activeRoute.queryParams
+    .subscribe(params => {
+      this.refWallet = params.refWallet;
+      console.log(this.refWallet); // price
+    }
+  );
   }
   ngOnDestroy(): void {
   }
@@ -94,6 +101,12 @@ export class StakeWithUsPage implements OnInit, OnDestroy {
       numOfValidators: sortedValidators.length
     }
     return rank;
+  }
+  public updateReferralLink() {
+    console.log('stake finish', this.refWallet);
+    const referer = this.refWallet
+    const participantAddress = this._solanaUtilsService.getCurrentWallet().publicKey.toBase58();
+    firstValueFrom(this._loyaltyService.addReferral(referer, participantAddress))
   }
   private async _getDelegetors() {
     let delegetors = []

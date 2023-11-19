@@ -67,4 +67,11 @@ export class LoyaltyService {
       catchError((err) => this._formatErrors(err))
     )
   }
+  public addReferral(referer:string, participantAddress: string) {
+    return this._apiService.get(`${this.api}/referral?referAddress=${referer}&participantAddress=${participantAddress}`).pipe(
+      this._utilsService.isNotNull,
+      shareReplay(),
+      catchError((err) => this._formatErrors(err))
+    )
+  }
 }

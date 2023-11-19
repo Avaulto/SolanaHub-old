@@ -7,24 +7,31 @@
   <span class="m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStake || 0 | number: '1.2-2'}}</span>
 </ion-row>
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="liquid-stake">mSOL direct stake: </ion-label>
-  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
-</ion-row>
-
-<ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="liquid-stake">bSOL direct stake: </ion-label>
-  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
-</ion-row>
-<ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="dao-vote">MNDE vote: </ion-label>
-    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veMNDE_Boost + 1 || 0 | number: '1.2-2'}}</span>
-</ion-row>
-<ion-row *ngIf="false" class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="dao-vote-two">BLZE vote: </ion-label>
-  <span class=" m-value"><span>x</span>???</span>
-</ion-row>
-<ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label id="long-term-text">Long term boost: </ion-label>
+  <ion-label class="native-stake">Long term boost: </ion-label>
   <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.nativeStakeLongTermBoost + 1 || 0 | number: '1.2-2'}}</span>
 </ion-row>
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="mnde-color">mSOL direct stake: </ion-label>
+  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
+</ion-row>
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="mnde-color">MNDE vote: </ion-label>
+    <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veMNDE_Boost + 1 || 0 | number: '1.2-2'}}</span>
+</ion-row>
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="blze-color">bSOL direct stake: </ion-label>
+  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
+</ion-row>
 
+<ion-row *ngIf="false" class="span-capitalize span-center ion-justify-content-between">
+  <ion-label class="blze-color">BLZE vote: </ion-label>
+  <span class=" m-value"><span>x</span>???</span>
+</ion-row>
+
+
+
+<ion-row class="span-capitalize span-center ion-justify-content-between">
+  <ion-label id="ref-color"  tooltip="get 10% loyalty points from your referral total score">Referrals: </ion-label>
+  <span class=" m-value">10%
+  </span>
+</ion-row>
