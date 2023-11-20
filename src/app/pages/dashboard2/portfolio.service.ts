@@ -48,7 +48,7 @@ export class PortfolioService {
     return platformInfo
   }
   public getPortfolio(walletAddress: string): Observable<PortfolioElementMultiple[]> {
-    return this._apiService.get(`https://portfolio-api.sonar.watch/v1/portfolio/fetch?owner=${walletAddress}&addressSystem=solana&useCache=false`).pipe(
+    return this._apiService.get(`https://portfolio-api.sonar.watch/v1/portfolio/fetch?address=${walletAddress}&addressSystem=solana&useCache=false`).pipe(
       switchMap(async (data: FetchersResult | any) => {
 
         // merge duplications
