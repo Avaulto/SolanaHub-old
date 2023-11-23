@@ -4,3 +4,8 @@
     width: 100%;
     justify-content: center;
 }
+.cdk-virtual-dropdown-menu {
+    max-height: initial;
+    overflow: visible;
+    background: black;
+}
