@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, catchError, firstValueFrom, map, switchMap, tap, throwError } from 'rxjs';
-import { ApiService, JupiterStoreService, NftStoreService, SolanaUtilsService, ToasterService } from 'src/app/services';
+import { ApiService, JupiterStoreService, NftStoreService, SolanaUtilsService, ToasterService, UtilsService } from 'src/app/services';
 
 import { FetchersResult, mergePortfolioElementMultiples, PortfolioElement, PortfolioElementMultiple } from '@sonarwatch/portfolio-core';
 import { PublicKey } from '@solana/web3.js'
@@ -22,7 +22,7 @@ interface Platform {
 export class PortfolioService {
 
   constructor(
-    private _nftStore: NftStoreService,
+    private _utilsService: UtilsService,
     private _apiService: ApiService,
     private _toasterService: ToasterService,
     private _jupStore: JupiterStoreService,
@@ -41,14 +41,14 @@ export class PortfolioService {
   private async _getPlatformsData(): Promise<Platform[]> {
     let platformInfo = []
     try {
-      platformInfo = await (await fetch('https://portfolio-api.sonar.watch/v1/portfolio/platforms')).json();
+      platformInfo = await (await fetch(`${this._utilsService.serverlessAPI}/api/platforms`)).json();
     } catch (error) {
       console.warn(error)
     }
     return platformInfo
   }
   public getPortfolio(walletAddress: string): Observable<PortfolioElementMultiple[]> {
-    return this._apiService.get(`https://portfolio-api.sonar.watch/v1/portfolio/fetch?address=${walletAddress}&addressSystem=solana&useCache=false`).pipe(
+    return this._apiService.get(`${this._utilsService.serverlessAPI}/api/portfolio?address=${walletAddress}`).pipe(
       switchMap(async (data: FetchersResult | any) => {
 
         // merge duplications
