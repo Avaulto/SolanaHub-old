@@ -13,7 +13,6 @@ import { SharedModule } from './shared/shared.module';
 
 import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
 import { SideMenuPage } from './side-menu/side-menu.page';
-import { TabsMenuComponent } from './tabs-menu/tabs-menu.component';
 import { inject } from '@vercel/analytics';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -32,7 +31,6 @@ inject({mode: "auto"});
         AppComponent,
         LogoComponent,
         SideMenuPage,
-        TabsMenuComponent,
         OptionsPopupComponent,
         SettingsComponent,
     ],

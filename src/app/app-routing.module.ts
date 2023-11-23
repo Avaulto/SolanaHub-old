@@ -38,9 +38,15 @@ const routes: Routes = [
     loadChildren: () => import('./pages/the-laboratory/the-laboratory.module').then( m => m.TheLaboratoryPageModule)
   },
   {
+    path: 'bridge-to-sol',
+    loadChildren: () => import('./pages/bridge-to-sol/bridge-to-sol.module').then( m => m.BridgeToSolPageModule)
+  },
+  {
     path:"**",
     redirectTo:'home'
   },
+
+
 
 
 ];

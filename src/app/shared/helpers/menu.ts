@@ -62,6 +62,11 @@ export const pages: any = [
       url: "stake-with-us",
       icon: 'heart-circle',
     },
+    {
+      title: "bridge to SOL",
+      url: "bridge-to-sol",
+      icon: 'subway',
+    },
     // {
     //   title: "stake gen2",
     //   url: "stake-gen2",
