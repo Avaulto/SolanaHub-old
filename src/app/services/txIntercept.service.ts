@@ -242,12 +242,9 @@ export class TxInterceptService {
       const delegateTX: Transaction = StakeProgram.delegate(instruction);
 
       const stake: Transaction[] = [stakeAccIns, delegateTX]
-      const validTx = await this.prepTx(lamportsToDelegate, delegateTX, walletOwnerPk)
 
-
-      if (validTx) {
         return await this.sendTx(stake, walletOwnerPk, [stakeAcc],record)
-      }
+ 
     } catch (error) {
       console.warn(error)
     }

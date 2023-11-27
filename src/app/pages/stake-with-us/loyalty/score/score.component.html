@@ -23,9 +23,9 @@
   <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
 </ion-row>
 
-<ion-row *ngIf="false" class="span-capitalize span-center ion-justify-content-between">
+<ion-row class="span-capitalize span-center ion-justify-content-between">
   <ion-label class="blze-color">BLZE vote: </ion-label>
-  <span class=" m-value"><span>x</span>???</span>
+  <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veBLZE_Boost + 1 || 0 | number: '1.2-2'}}</span>
 </ion-row>
 
 

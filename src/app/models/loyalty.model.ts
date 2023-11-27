@@ -27,6 +27,7 @@ export interface PointsBreakDown {
     bSOLpts:        number;
     mSOLpts:        number;
     veMNDEpts:      number;
+    veBLZEpts:      number;
     referralPts: number;
 }
 
