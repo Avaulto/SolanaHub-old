@@ -15,7 +15,7 @@
   <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.mSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
 </ion-row>
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="mnde-color">MNDE vote: </ion-label>
+  <ion-label class="mnde-color">veMNDE votes: </ion-label>
     <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veMNDE_Boost || 0 | number: '1.2-2'}}</span>
 </ion-row>
 <ion-row class="span-capitalize span-center ion-justify-content-between">
@@ -24,7 +24,7 @@
 </ion-row>
 
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="blze-color">BLZE vote: </ion-label>
+  <ion-label class="blze-color">veBLZE votes: </ion-label>
   <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veBLZE_Boost  || 0 | number: '1.5'}}</span>
 </ion-row>
 
