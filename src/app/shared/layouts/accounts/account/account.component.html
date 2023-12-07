@@ -53,6 +53,11 @@
     <!-- <ion-button fill="outline"
     (click)="openStakeAccountActions($event, account)">actions</ion-button> -->
   </ion-col>
+  <ion-col  size="1" class="controls" *ngIf="account.stakeAuth === 'stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq'">
+   
+    <ion-button fill="outline"
+    (click)="marinadeUnstake()">unstake</ion-button>
+  </ion-col>
 </ng-container>
 
 </ion-row >

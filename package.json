@@ -29,6 +29,7 @@
     "@heavy-duty/wallet-adapter": "^0.7.2",
     "@ionic/angular": "7.2.2",
     "@marinade.finance/marinade-ts-sdk": "^5.0.5",
+    "@marinade.finance/native-staking-sdk": "^1.0.0",
     "@mercurial-finance/dynamic-amm-sdk": "^0.4.7",
     "@mercurial-finance/farming-sdk": "^1.0.10",
     "@metaplex-foundation/js": "0.19.1",

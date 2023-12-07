@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { IonCheckbox, PopoverController } from '@ionic/angular';
 import { StakeAccountExtended } from 'src/app/models';
-import { SolanaUtilsService, UtilsService } from 'src/app/services';
+import { SolanaUtilsService, TxInterceptService, UtilsService } from 'src/app/services';
 import { ActionsComponent } from '../actions/actions.component';
 
 import { TooltipPosition } from '../../tooltip/tooltip.enums';
+import { NativeStakingConfig, NativeStakingSDK } from '@marinade.finance/native-staking-sdk'
+import { TransactionMessage, VersionedTransaction } from '@solana/web3.js';
 
 @Component({
   selector: 'app-account',
@@ -23,7 +25,8 @@ export class AccountComponent implements OnInit, OnChanges {
   constructor(
     private _solanaUtilsService: SolanaUtilsService,
     private _utilsService: UtilsService,
-    private _popoverController: PopoverController
+    private _popoverController: PopoverController,
+    private _txInterceptService:TxInterceptService
   ) { }
 
   ngOnInit() {
@@ -69,5 +72,19 @@ export class AccountComponent implements OnInit, OnChanges {
       cssClass: 'stake-account-actions-popup',
     });
     await popover.present();
+  }
+  public async marinadeUnstake() {
+    const {publicKey} = this._solanaUtilsService.getCurrentWallet()
+    const config = new NativeStakingConfig({ connection: this._solanaUtilsService.connection })
+    const sdk = new NativeStakingSDK(config)
+    const { blockhash } = await this._solanaUtilsService.connection.getLatestBlockhash()
+    const { payFees, onPaid } = await sdk.initPrepareForRevoke(publicKey, null) // pass `null` instead of `amount` to prepare everything for unstake
+    const tx = new VersionedTransaction(new TransactionMessage({
+      payerKey: publicKey,
+      recentBlockhash: blockhash,
+      instructions: payFees,
+  }).compileToV0Message())
+   const signature = await this._txInterceptService.sendTxV2(tx)
+   await onPaid(signature)
   }
 }
