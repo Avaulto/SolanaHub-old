@@ -145,7 +145,7 @@ export class StakePoolStoreService {
     const config = new MarinadeConfig({
       connection: this._solanaUtilsService.connection,
       publicKey: wallet.publicKey,
-      referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
+      // referralCode: new PublicKey('9CLFBo1nsG24DNoVZvsSNEYRNGU1LAHGS5M3o9Ei33o6'),
     })
     this.marinadeSDK = new Marinade(config)
   }
@@ -205,7 +205,7 @@ export class StakePoolStoreService {
       Number(sol),
       undefined,
       // referral
-      new PublicKey(environment.platformATAbSOLFeeCollector)
+      // new PublicKey(environment.platformATAbSOLFeeCollector)
     );
     const stakeCLS = (validatorVoteAccount: string) => {
 
@@ -237,7 +237,7 @@ export class StakePoolStoreService {
     const txId = await this._txInterceptService.sendTx(ixs, walletOwner.publicKey, ix.signers, record);
 
     await fetch(`https://stake.solblaze.org/api/v1/cls_stake?validator=${validatorVoteAccount}&txid=${txId}`);
-    fetch(`https://stake.solblaze.org/api/v1/referral_stake?ref=${environment.platformFeeCollector}&txid=${txId}`);
+    // fetch(`https://stake.solblaze.org/api/v1/referral_stake?ref=${environment.platformFeeCollector}&txid=${txId}`);
 
     return txId
   }
