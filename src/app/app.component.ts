@@ -3,6 +3,7 @@ import { connectionConfigProviderFactory, ConnectionStore, WalletStore } from '@
 import {
   PhantomWalletAdapter,
   SolflareWalletAdapter,
+  BackpackWalletAdapter,
   UnsafeBurnerWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import { environment } from 'src/environments/environment.prod';
@@ -42,12 +43,11 @@ export class AppComponent {
 
 
       this._connectionStore.setEndpoint(environment.solanaCluster)
-    const wallets = [new UnsafeBurnerWalletAdapter()]
-    console.log(wallets);
-    
+
     this._walletStore.setAdapters([
       new PhantomWalletAdapter(),
       new SolflareWalletAdapter(),
+      new BackpackWalletAdapter(),
       new UnsafeBurnerWalletAdapter(),
     ]);
 
