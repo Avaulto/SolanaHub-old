@@ -31,7 +31,7 @@ Special thanks to all the amazing Solana builders.
 To contribute or report issues, join our Discord at: https://discord.gg/7SxUZkqa6Q
 
 ## Support
-If you appreciate our work, consider staking with us at https://beta.SolanaHub.app/stake-with-us 
+If you appreciate our work, consider staking with us at https://solanahub.app/stake-with-us 
 Vote account: 7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh
 
 ## What's Next?
