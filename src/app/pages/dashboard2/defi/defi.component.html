@@ -16,7 +16,7 @@
                 </div>
                 <div>
                   <div class="short-wallet-name ion-text-uppercase">
-                    {{defi?.name}}
+                    {{defi?.name}} 
                   </div>
                   <div class="button-text">
                     <span class="global-usd-color sub-strong">
@@ -29,6 +29,7 @@
               </ion-col>
 
             </ion-col>
+            
             <ion-col *ngIf="defi.type === 'borrowlend'">
               <ion-col id="balance-base" class="ion-hide-md-down">
 
@@ -150,6 +151,37 @@
               
               </ion-row>
             </ng-container>
+            
+
+            <ng-container *ngIf="defi.type === 'multiple'">
+              <ion-row class="asset ion-align-items-center ion-justify-content-between"
+              *ngFor="let platform of defi.data.assets">
+            
+                <ion-col class="balance-number">
+                  <div id="icon-wrapper">
+                    <ion-img [src]="platform?.icon || '/assets/images/icons/placeholder.svg'"></ion-img>
+
+                  </div>
+                  <div>
+                    <div class="short-wallet-name ion-text-uppercase">
+                      {{platform?.symbol}}
+                    </div>
+                    <div class="button-text">
+                      <span class="global-usd-color">
+                        {{platform.value | currency}}
+                      </span>
+                      <span class="sub">{{formatNumber(platform?.balance || 0)}}</span>
+                    </div>
+                  </div>
+
+                </ion-col>
+
+            
+
+            </ion-row>
+            </ng-container>
+
+
           </div>
         </ion-accordion>
       </ion-accordion-group>

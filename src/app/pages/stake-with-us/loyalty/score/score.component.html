@@ -19,12 +19,12 @@
     <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veMNDE_Boost || 0 | number: '1.2-2'}}</span>
 </ion-row>
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="blze-color" style="text-shadow: gold 1px 0 10px;" >bSOL direct stake: </ion-label>
+  <ion-label class="blze-color" >bSOL direct stake: </ion-label>
   <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.bSOL_DirectStakeBoost || 0 | number: '1.2-2'}}</span>
 </ion-row>
 
 <ion-row class="span-capitalize span-center ion-justify-content-between">
-  <ion-label class="blze-color" style="text-shadow: gold 1px 0 10px;">veBLZE votes: </ion-label>
+  <ion-label class="blze-color" >veBLZE votes: </ion-label>
   <span class=" m-value"><span>x</span>{{(loyaltyScore$ | async)?.veBLZE_Boost  || 0 | number: '1.5'}}</span>
 </ion-row>
 

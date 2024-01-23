@@ -41,14 +41,14 @@ export class PortfolioService {
   private async _getPlatformsData(): Promise<Platform[]> {
     let platformInfo = []
     try {
-      platformInfo = await (await fetch(`${this._utilsService.serverlessAPI}/api/platforms`)).json();
+      platformInfo = await (await fetch(`${this._utilsService.serverlessAPI}/api/portfolio/platforms`)).json();
     } catch (error) {
       console.warn(error)
     }
     return platformInfo
   }
   public getPortfolio(walletAddress: string): Observable<PortfolioElementMultiple[]> {
-    return this._apiService.get(`${this._utilsService.serverlessAPI}/api/portfolio?address=${walletAddress}`).pipe(
+    return this._apiService.get(`${this._utilsService.serverlessAPI}/api/portfolio/portfolio?address=${walletAddress}`).pipe(
       switchMap(async (data: FetchersResult | any) => {
 
         // merge duplications
@@ -83,9 +83,24 @@ export class PortfolioService {
             Object.assign(group, platformData);
 
             if(group.type === "liquidity" ){
-              group.data.liquidities.forEach(async liquid => {
-                this._addTokenData(liquid.assets,  tokensInfo, null)
-              })
+              if(group.data.liquidities){
+
+                group.data.liquidities.forEach(async liquid => {
+                  this._addTokenData(liquid.assets,  tokensInfo, null)
+                })
+              }
+            }
+            console.log(group.data);
+            if(group.type === "multiple" ){
+              
+              // console.log(group.data);
+              
+                // group.data.forEach(async data => {
+                //   console.log(liquid);
+                  
+                // })
+                this._addTokenData(group.data.assets,  tokensInfo, null)
+              
             }
             if(group.type === "borrowlend" ){
               group.data.suppliedAssets ? this._addTokenData(group.data.suppliedAssets,  tokensInfo, null) : null;

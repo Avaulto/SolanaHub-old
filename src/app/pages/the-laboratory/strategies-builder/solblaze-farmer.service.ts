@@ -266,16 +266,22 @@ export class SolblazeFarmerService {
       const txIx1 = await this.strategySDK.farm.withdraw(walletOwner, farmLpBalance);
 
       const tx1Res = await this._txInterceptService.sendTx([txIx1], walletOwner)
+      console.log(tx1Res);
+      
       if (!tx1Res) {
         this.txStatus$.next({ ...this.txStatus$.value, start: false })
         return
       }
+      console.log('start tx 2');
+      
       this.txStatus$.next({ ...this.txStatus$.value, finishTx: 1 })
       const poolLpBalance = await this.strategySDK.pool.getUserBalance(walletOwner);
+      console.log('pool b:', poolLpBalance);
       const txIx2 = await this._withdrawFromMeteoraPool(poolLpBalance, walletOwner)
+      console.log('ix 2', txIx2);
       const record = {message:'solblaze-farmer strategy', data:{ type: 'withdraw' }}
-
       await this._txInterceptService.sendTx([txIx2], walletOwner,null,record)
+      console.log('tx 2 completed');
       this.txStatus$.next({ ...this.txStatus$.value, finishTx: 2 })
       setTimeout(() => {
         this.txStatus$.next({ ...this.txStatus$.value, start: false })
@@ -286,6 +292,7 @@ export class SolblazeFarmerService {
   }
 
   async _depositToMeteoraPool(depositAmount: BN, walletOwner: PublicKey): Promise<Transaction> {
+    try {
     // Get deposit quote for constant product
     const { poolTokenAmountOut, tokenAInAmount, tokenBInAmount } = this.strategySDK.pool.getDepositQuote(
       new BN(0), // SOL
@@ -296,10 +303,18 @@ export class SolblazeFarmerService {
     // console.log("out:", poolTokenAmountOut.toString(), "in a:", tokenAInAmount.toString(), "im b:", tokenBInAmount.toString())
     const depositTx = await this.strategySDK.pool.deposit(walletOwner, tokenAInAmount, tokenBInAmount, poolTokenAmountOut);
     return depositTx;
+          
+  } catch (error) {
+      console.log(error);
+      
+  }
   }
 
   private async _withdrawFromMeteoraPool(withdrawLpAmount: BN, walletOwner: PublicKey): Promise<Transaction> {
     // Get deposit quote for constant product
+    try {
+      
+
     const {
       poolTokenAmountIn,
       minTokenAOutAmount,
@@ -314,6 +329,10 @@ export class SolblazeFarmerService {
     );
     const depositTx = await this.strategySDK.pool.withdraw(walletOwner, withdrawLpAmount, tokenAOutAmount, tokenBOutAmount);
     return depositTx;
+  } catch (error) {
+    console.log(error);
+    
+  }
   }
 
   public async initStrategyStats(): Promise<{ apy, tvl }> {
@@ -482,16 +501,17 @@ export class SolblazeFarmerService {
   }
 
   private async _bSolStake(amount: BN): Promise<{ txIns: TransactionInstruction[], signers: any }> {
-    const validator = this._VoteKey;
-    const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
-    const deposit = await this._stakePoolStore.stakePoolSDK.depositSol(
-      this._solanaUtilsService.connection,
-      this._solblazePoolAddress,
-      walletOwner,
-      Number(amount),
-      undefined,
-    )
+
     try {
+      const validator = this._VoteKey;
+      const walletOwner = this._solanaUtilsService.getCurrentWallet().publicKey;
+      const deposit = await this._stakePoolStore.stakePoolSDK.depositSol(
+        this._solanaUtilsService.connection,
+        this._solblazePoolAddress,
+        walletOwner,
+        Number(amount),
+        undefined,
+      )
       let memo = JSON.stringify({
         type: "cls/validator_stake/lamports",
         value: {
