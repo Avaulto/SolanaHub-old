@@ -4,40 +4,35 @@
   <br>
 </h1>
 
-
 # SolanaHub
-SolanaHub is a landscape for Solana users where they can embrace the most used application on the ecosystem and enjoy seamless workflow for the most common usage like getting wallet balance, managing assets, and joining trusted DeFi protocols - all at once!
+SolanaHub is a platform for Solana users, offering a seamless experience with popular applications in the ecosystem. It enables users to manage wallets, view asset balances, execute transactions, participate in DeFi protocols, and access customized utilities.
 
-
-What you can find on SolanaHub?
-- Wallet connect with multiple options
-- View asset balance
-- Execute various types of transactions
-- Join defi protocols
+## Features
+- Wallet connectivity with multiple options
+- Asset balance visualization
+- Execution of various transaction types
+- Participation in DeFi protocols
 - Customized utilities
 
 ## Installation
-1. Clone the project by running Run `git clone https://github.com/Avaulto/SolanaHub` on your favorite terminal
-2. then `cd SolanaHub && npm i`
-3. run the project with `npm run start`
+1. Clone the project: `git clone https://github.com/Avaulto/SolanaHub`
+2. Navigate to the directory: `cd SolanaHub && npm install`
+3. Start the project: `npm start`
 
-FYI: you can find different types of configuration on package.json file
+Note: Find configuration options in the `package.json` file.
 
-## build
-Run `npm run build:main` to build the project with mainnet env.
-The build artifacts will be stored in the `www` directory.build the project. The build artifacts will be stored in the `www` directory.
+## Build
+To build the project for the mainnet environment, run `npm run build:main`. The build artifacts will be stored in the `www` directory.
 
 ## Credits
-
-Credit to all Solana amazing builders
+Special thanks to all the amazing Solana builders.
 
 ## How to Contribute
+To contribute or report issues, join our Discord at: https://discord.gg/7SxUZkqa6Q
 
-If you want to Contribute or having any issues, please feel free to join our discord at: https://discord.gg/7SxUZkqa6Q
+## Support
+If you appreciate our work, consider staking with us at https://solanahub.app/stake-with-us 
+Vote account: 7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh
 
-#Support
-If you like what we do, please consider staking with us at https://beta.SolanaHub.app/stake-with-us 
-| Vote account: 7K8DVxtNJGnMtUY1CQJT5jcs8sFGSZTDiG7kowvFpECh
-
-## What next?
-stay tuned with our road map at https://avaulto-SolanaHub.hellonext.co
+## What's Next?
+Stay updated with our roadmap at https://avaulto-SolanaHub.hellonext.co
