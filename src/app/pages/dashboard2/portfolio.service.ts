@@ -48,7 +48,7 @@ export class PortfolioService {
     return platformInfo
   }
   public getPortfolio(walletAddress: string): Observable<PortfolioElementMultiple[]> {
-    return this._apiService.get(`${this._utilsService.serverlessAPI}/api/portfolio/portfolio?address=${walletAddress}`).pipe(
+    return this._apiService.get(`${this._utilsService.serverlessAPI}/api/portfolio?address=${walletAddress}`).pipe(
       switchMap(async (data: FetchersResult | any) => {
 
         // merge duplications
@@ -90,23 +90,12 @@ export class PortfolioService {
                 })
               }
             }
-            console.log(group.data);
             if(group.type === "multiple" ){
-              
-              // console.log(group.data);
-              
-                // group.data.forEach(async data => {
-                //   console.log(liquid);
-                  
-                // })
                 this._addTokenData(group.data.assets,  tokensInfo, null)
-              
             }
             if(group.type === "borrowlend" ){
               group.data.suppliedAssets ? this._addTokenData(group.data.suppliedAssets,  tokensInfo, null) : null;
               group.data.borrowedAssets ? this._addTokenData(group.data.borrowedAssets,  tokensInfo, null) : null;
-              // group.data.suppliedAssets.forEach(async supplied => {
-              // })
             }
           }
 
