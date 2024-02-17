@@ -194,8 +194,14 @@ export class StakePoolStoreService {
   }
   private async _marinadeStakeSOL(sol: BN, walletOwner, validatorVoteAccount: string, record) {
     const directToValidatorVoteAddress = validatorVoteAccount ? new PublicKey(validatorVoteAccount) : null;
-    const { transaction } = await this.marinadeSDK.deposit(sol, { directToValidatorVoteAddress });
-   return await this._txInterceptService.sendTx([transaction], walletOwner.publicKey, null, record)
+      const { transaction } = await this.marinadeSDK.deposit(sol);
+      let ixs: any = [transaction]
+      if(directToValidatorVoteAddress){
+        const directStakeix = await this.marinadeSDK.createDirectedStakeVoteIx(directToValidatorVoteAddress)
+        ixs.push(directStakeix)
+      }
+      // return await this._txi.sendTx([ixs], walletOwner.publicKey, null, record)
+   return await this._txInterceptService.sendTx([ixs], walletOwner.publicKey, null, record)
   }
   private async _stakePoolStakeSOL(poolPublicKey: PublicKey, walletOwner: WalletExtended, sol: BN, validatorVoteAccount: string, record) {
     let ix = await depositSol(

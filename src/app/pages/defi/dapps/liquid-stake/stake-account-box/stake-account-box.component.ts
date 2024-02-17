@@ -78,7 +78,9 @@ export class StakeAccountBoxComponent implements OnInit {
 
     try {
       if (this.selectedProvider.poolName.toLowerCase() == 'marinade') {
-        const depositAccount: MarinadeResult.DepositStakeAccount = await  this._stakePoolStore.marinadeSDK.depositStakeAccount(stakeAccountPK,{directToValidatorVoteAddress:validatorVoteAccount});
+        const depositAccount: MarinadeResult.DepositStakeAccount = await this._stakePoolStore.marinadeSDK.depositStakeAccount(stakeAccountPK);
+      
+        
         const txIns: Transaction = depositAccount.transaction
         await this._txInterceptService.sendTx([txIns], this.wallet.publicKey);
       } else {
