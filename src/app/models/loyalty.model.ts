@@ -19,6 +19,7 @@ export interface LoyaltyPoint {
     loyaltyPoints:   number;
     pointsBreakDown: PointsBreakDown;
     prizePoolShare:  number;
+    hubDomainHolder: string;
     prize?: number
 }
 
@@ -29,6 +30,7 @@ export interface PointsBreakDown {
     veMNDEpts:      number;
     veBLZEpts:      number;
     referralPts: number;
+    hubDomainPts: number;
 }
 
 

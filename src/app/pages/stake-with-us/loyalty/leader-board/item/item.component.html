@@ -56,6 +56,10 @@
         <div class="key">Referrals</div>
         <div class="score">{{loyaltyScore.pointsBreakDown.referralPts | number : '1.0'}} <span>pts</span></div>
       </ion-row>
+      <ion-row class="ion-justify-content-between ion-align-items-center">
+        <div class="key">Hub Domain Name Holder</div>
+        <div class="score">{{loyaltyScore.pointsBreakDown.hubDomainPts | number : '1.0'}} <span>pts</span></div>
+      </ion-row>
     </div>
   </ion-accordion>
 </ion-accordion-group>
